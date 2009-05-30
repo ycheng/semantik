@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.44.1"
+   sodipodi:docbase="/compilation/semantik/src/data"
+   sodipodi:docname="semantik.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.18756036"
+     inkscape:cx="497.08341"
+     inkscape:cy="478.63913"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:window-width="949"
+     inkscape:window-height="641"
+     inkscape:window-x="155"
+     inkscape:window-y="87" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="opacity:1;fill:#500;fill-opacity:0.81097561;fill-rule:nonzero;stroke:black;stroke-width:0.6179083;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1944"
+       width="161.61066"
+       height="245.89638"
+       x="320.02817"
+       y="596.49213"
+       inkscape:export-filename="/compilation/semantik/src/data/hi64-app-semantik.png"
+       inkscape:export-xdpi="5.1335201"
+       inkscape:export-ydpi="5.1335201" />
+    <path
+       sodipodi:type="star"
+       style="opacity:1;fill:#0f00da;fill-opacity:0.80792683;fill-rule:nonzero;stroke:black;stroke-width:0.80000001;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path1942"
+       sodipodi:sides="10"
+       sodipodi:cx="-377.14285"
+       sodipodi:cy="-7.6378174"
+       sodipodi:r1="402.0864"
+       sodipodi:r2="403.06357"
+       sodipodi:arg1="0.15697129"
+       sodipodi:arg2="-1.9498718"
+       inkscape:flatsided="false"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="M 20.000004,55.219326 L -526.30126,-382.08676 L -92.794034,276.64939 L -277.71897,-398.24649 L -314.19966,389.49141 L -67.113228,-265.20698 L -559.64744,350.64356 L 25.071736,-33.784802 L -735.38467,174.9444 L -36.375603,207.62463 L -774.28571,-70.49496 L -227.98445,366.81113 L -661.49167,-291.92503 L -476.56674,382.97085 L -440.08605,-404.76704 L -687.17248,249.93134 L -194.63827,-365.91919 L -779.35744,18.509168 L -18.901031,-190.22003 L -717.9101,-222.90027 L 20.000004,55.219326 z "
+       transform="matrix(0.998797,-4.903003e-2,4.903003e-2,0.998797,777.183,385.7205)"
+       inkscape:export-filename="/compilation/semantik/src/data/hi64-app-semantik.png"
+       inkscape:export-xdpi="5.1335201"
+       inkscape:export-ydpi="5.1335201" />
+  </g>
+</svg>

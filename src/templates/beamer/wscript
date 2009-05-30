@@ -1,0 +1,55 @@
+#! /usr/bin/python
+# -*- mode: python encoding: UTF-8 -*-
+
+'''
+run:
+$ waf configure
+$ waf
+$ waf --view
+
+or just:
+$ waf --view
+'''
+
+import os, Options
+
+VERSION = '0.0.1'
+APPNAME = 'test'
+
+srcdir = '.'
+blddir = 'build'
+
+def build(bld) :
+	bld.new_task_gen(features='tex', type='pdflatex', source='main.tex')
+
+def configure(configuration):
+        configuration.check_tool('tex')
+	lat = configuration.env['LATEX']
+	cwd = os.getcwd()
+	cc = cwd + '/beamermindist/'
+
+	lst = []
+	for x in "themes/color themes/font themes/inner themes/outer themes/theme art".split():
+		lst.append(cc+x)
+	u = ":".join(lst)
+
+	configuration.env['LATEX'] = "; export TEXINPUTS=%s:$TEXINPUTS; export GS_OPTIONS=\"-sPAPERSIZE=a4\"; %s" % (u, lat)
+
+
+def set_options(options):
+	options.add_option('--view', action='store_true', default=False, help='View the document')
+
+def shutdown():
+	def exists(cmd):
+		try:
+			txt = os.popen("which %s 2>/dev/null "%cmd).read().strip()
+			return len(txt)>=len(cmd)
+		except:
+			return None
+
+	if Options.options.view:
+		for i in ["kpdf", "gnome-open", "xpdf"]:
+			if exists(i):
+				os.popen("%s build/default/main.pdf" % i)
+				break
+

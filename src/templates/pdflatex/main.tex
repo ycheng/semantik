@@ -1,0 +1,121 @@
+% pdflatex Article template
+% this file is part of the Semantik templates
+% http://freehackers.org/~tnagy/semantik.html
+% created by Thomas Nagy <tnagy2^8@yahoo.fr> in 2004 for Kdissert
+%
+% Permission is granted to redistribute copies and
+% derivated works of this script (main.tex) without
+% any restrictions.
+
+% main latex includes
+\documentclass[a4paper,12pt]{@doc_class@}
+%\usepackage[T1]{fontenc}  % on some systems T1 looks ugly
+%\usepackage[cyr]{aeguill}
+
+\usepackage[pdftex]{graphicx}
+\DeclareGraphicsExtensions{.png,.pdf,.jpg,.jpeg}
+\usepackage[pdftex, bookmarks=true, bookmarksnumbered=true, pdfpagemode=None, pdfstartview=FitH, pdfpagelayout=SinglePage, colorlinks=true, urlcolor=blue, pdfborder={0 0 0}]{hyperref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%interesting settings for the page layout
+
+%\setlength{\hoffset}{-18pt}
+%\setlength{\oddsidemargin}{0pt}  % left margin, odd pages
+%\setlength{\evensidemargin}{9pt}  % left margin, even pages
+%\setlength{\marginparwidth}{54pt}
+%\setlength{\textwidth}{481pt}  % set the text width to about 17cm
+%\setlength{\marginparsep}{7pt}
+%\setlength{\topmargin}{0pt}  % no margin on top
+%\setlength{\headheight}{13pt}
+%\setlength{\headsep}{10pt}
+%\setlength{\footskip}{27pt}
+%\setlength{\textheight}{700pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% miscalleneous packages
+
+\usepackage[@babel@]{babel}
+
+% \usepackage[frenchb]{babel} % French settings
+\usepackage{verbatim} % include eg: source code easily
+
+% If you are on Fedora Core you may have problems with accents
+% in this case replace the accentuated characters like this :
+%
+%  é -> \'e
+%  è -> \`e
+%  ê -> \^e and so on
+
+\usepackage{amsmath}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% count the number of pages for display on footer
+\usepackage{lastpage}
+
+% the following command need picture files : "logo-school.jpg"
+% and "logo-company.jpg" in the project directory
+%
+%        \lhead{\sl \includegraphics[height=1.1cm]{logo-school}}
+%        \chead{}
+%        \rhead{\sl \includegraphics[height=1.2cm]{logo-company}}
+%
+
+% default to utf-8
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%document headers and footers
+
+#ifndef @header_off@
+#ifndef @footer_off@
+\usepackage{fancyhdr}
+#endif
+#endif
+
+#ifndef @header_off@
+\lhead{@header_l@}
+\chead{@header_c@}
+\rhead{@header_r@}
+\renewcommand{\headrulewidth}{0.4pt}
+\addtolength{\headwidth}{\marginparsep}
+#endif
+
+#ifndef @footer_off@
+\lfoot{@footer_l@}
+\cfoot{@footer_c@}
+\rfoot{@footer_r@}
+#endif
+
+#ifndef @header_off@
+#ifndef @footer_off@
+\renewcommand{\footrulewidth}{0.4pt}
+\pagestyle{fancy}
+#endif
+#endif
+
+#ifndef @doc_title_off@
+\title{@doc_title@}
+#endif
+
+#ifndef @doc_date_off@
+\date{@doc_date@}
+#endif
+
+#ifndef @doc_author_off@
+\author{@doc_author@}
+#endif
+
+\begin{document}
+
+#ifndef @doc_title_off@
+\maketitle
+#endif
+
+\tableofcontents
+
+@doc_content@
+
+\end{document}
+

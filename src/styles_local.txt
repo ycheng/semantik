@@ -1,0 +1,18 @@
+
+
+exclude_pic	exclude the picture
+exclude_pic.html
+exclude_pic.pdflatex
+
+exclude_table	exclude the table
+exclude_table.html
+exclude_table.pdflatex
+
+picdim.pdflatex	picture dimension in pdf files
+
+piccaptionstyle.html	picture caption
+picdivstyle.html	html div style: style="width: 99px;"
+picstyle.html	html picture style: style="width: 99px;"
+
+make_slide.s5	fit the item on one slide
+skip_slide.s5	do not use this item for generating slides

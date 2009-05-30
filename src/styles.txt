@@ -1,0 +1,39 @@
+
+babel	latex language: english (frenchb, )
+babel.beamer
+babel.pdflatex
+
+theme.beamer	Warsaw (JuanLesPins, Montpellier, )
+
+command	command to launch (%s is the resulting file)
+command.beamer	cd `echo %s | sed s/main.tex//` && ./waf configure && waf --view
+command.html	firefox %s
+command.odp	ooimpress %s
+command.odt	oowriter %s
+command.pdflatex	cd `echo %s | sed s/main.tex//` && ./waf configure && waf --view
+command.s5	firefox %s
+
+doc_author	document author
+doc_author_off	turn off the document author (latex)
+doc_class	document class (latex: a4, report, book)
+doc_company	company
+doc_date	document date
+doc_date_off	turn of the document date (latex)
+doc_place	location of the presentation
+doc_title	document title
+doc_title_off	turn off the document title (latex)
+
+
+header_l.pdflatex	header left
+header_c.pdflatex	header center (pdflatex)
+header_r.pdflatex	header right
+header_off.pdflatex
+footer_c.pdflatex	footer center (pdflatex)
+footer_l.pdflatex	footer left (pdflatex)
+footer_r.pdflatex	footer right
+footer_off.pdflatex	turn off the fancy output
+
+oolang	openoffice.org language (fr_FR)
+oolang.odp	openoffice.org presentation language
+oolang.odt	openoffice.org text language
+

@@ -1,0 +1,46 @@
+#! /usr/bin/python
+# -*- mode: python encoding: UTF-8 -*-
+
+'''
+run:
+$ waf configure
+$ waf
+$ waf --view
+
+or just:
+$ waf --view
+'''
+
+import os
+import Options
+
+VERSION = '0.0.1'
+APPNAME = 'pdf'
+
+srcdir = '.'
+blddir = 'build'
+
+def set_options(opts):
+	opts.add_option('--view', action='store_true', default=False, help='View the document')
+
+def configure(conf):
+        conf.check_tool('tex')
+	if not conf.env['PDFLATEX']:
+		conf.fatal('install pdflatex!')
+
+def build(bld) :
+	bld.new_task_gen(features='tex pdflatex', source='main.tex')
+
+def shutdown():
+	def exists(cmd):
+		try:
+			txt = os.popen("which %s 2>/dev/null "%cmd).read().strip()
+			return len(txt)>=len(cmd)
+		except:
+			return None
+
+	if Options.options.view:
+		for i in ["kpdf", "gnome-open", "xpdf"]:
+			if exists(i):
+				os.popen("%s build/default/main.pdf" % i)
+				break

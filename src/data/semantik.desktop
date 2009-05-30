@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Semantik
+GenericName=Mind mapping software
+GenericName[tr]=Zihin haritalama uygulaması
+Type=Application
+Terminal=false
+Icon=semantik
+MimeType=application/x-semantik;
+X-KDE-StartupNotify=true
+X-DBUS-StartupType=Multi
+Categories=Qt;KDE;Application;Office;

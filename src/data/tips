@@ -1,0 +1,44 @@
+<tip category="semantik">
+<html>
+<h3>1. Essential commands</h3>
+<ul>
+ <li>double click to add a concept</li>
+ <li>double click on a leaf or use the link mode to connect concepts</li>
+ <li>double click on a link to remove it</li>
+ <li>middle button + move to scroll on the map</li>
+ <li>scroll wheel for zooming</li>
+ <li>when a concept is selected, press enter to start editing it</li>
+ <li>Control+R to reorganize the map</li>
+ <li>Control+H to center the zoom</li>
+ <li>When a map is ready, use Ctrl+G to generate a document</li>
+</ul>
+</html>
+</tip>
+
+<tip category="semantik">
+<html>
+<h3>2. Adding diagrams</h3>
+<ul>
+ <li>right-click on a map item and select data type: diagram</li>
+ <li>in the data view, double click to add a diagram item</li>
+ <li>hold the control key pressed to drag connections between items</li>
+ <li>to remove a connection, double click on it with the control key pressed</li>
+ <li>right click on a connection or on an item to change the colors</li>
+</ul>
+</html>
+</tip>
+
+<tip category="semantik">
+<html>
+<h3>3. Advanced features</h3>
+<ul>
+ <li>Control+Enter to add a child, Shift+Enter to add a sibling</li>
+ <li>Up,Left,Down,Right arrows to navigate one item at a time</li>
+ <li>PageUp/PageDown to cycle between trees</li>
+ <li>Alt + Up,Left,Down,Right arrows to move items</li>
+ <li>Control + left click on items to link them</li>
+ <li>Add document generator hints using the 'Variables' dock widget, for example fancy_off=fancy_off (format is key=value)</li>
+</ul>
+</html>
+</tip>
+

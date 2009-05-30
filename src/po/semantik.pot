@@ -1,0 +1,506 @@
+# SOME DESCRIPTIVE TITLE.
+# This file is put in the public domain.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: http://www.google.com\n"
+"POT-Creation-Date: 2009-04-26 15:50+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Empty"
+msgstr ""
+
+msgid "Toggle edit"
+msgstr ""
+
+msgid "Insert child"
+msgstr ""
+
+msgid "Delete selection"
+msgstr ""
+
+msgid "Insert sibling"
+msgstr ""
+
+msgid "Move up"
+msgstr ""
+
+msgid "Move down"
+msgstr ""
+
+msgid "Move left"
+msgstr ""
+
+msgid "Move right"
+msgstr ""
+
+msgid "Select up"
+msgstr ""
+
+msgid "Select down"
+msgstr ""
+
+msgid "Select left"
+msgstr ""
+
+msgid "Select right"
+msgstr ""
+
+msgid "Next root"
+msgstr ""
+
+msgid "Colors"
+msgstr ""
+
+msgid "Data type"
+msgstr ""
+
+msgid "Text"
+msgstr ""
+
+msgid "Diagram"
+msgstr ""
+
+msgid "Table"
+msgstr ""
+
+msgid "Image"
+msgstr ""
+
+msgid "Flag"
+msgstr ""
+
+msgid "Color"
+msgstr ""
+
+#, kde-format
+msgid "Click to set Item %1"
+msgstr ""
+
+msgid "Reorganization type"
+msgstr ""
+
+msgid "Connection type"
+msgstr ""
+
+msgid "Save document automatically"
+msgstr ""
+
+msgid "Background color"
+msgstr ""
+
+msgid "Fixed"
+msgstr ""
+
+msgid "Force-based"
+msgstr ""
+
+msgid "Incremental"
+msgstr ""
+
+msgid "Lines"
+msgstr ""
+
+msgid "Splines"
+msgstr ""
+
+msgid " min"
+msgstr ""
+
+msgid ""
+"Interval in minutes for saving the document automatically, 0 for disabling "
+"this feature"
+msgstr ""
+
+#, kde-format
+msgid "Automatic save failed for file: %1"
+msgstr ""
+
+#, kde-format
+msgid "%1 saved automatically"
+msgstr ""
+
+#, kde-format
+msgid "Color %1"
+msgstr ""
+
+#, kde-format
+msgid "File saving: missing file %1"
+msgstr ""
+
+msgid "Missing bindings for opening files"
+msgstr ""
+
+#, kde-format
+msgid "Missing filter file %1 for opening files"
+msgstr ""
+
+msgid "dirty"
+msgstr ""
+
+#, kde-format
+msgid "Code generation failed: missing file %1"
+msgstr ""
+
+msgid "<p align='center'>No item selected</p>"
+msgstr ""
+
+msgid "First Name"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Organization"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Add Box"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Color..."
+msgstr ""
+
+msgid "Connection width"
+msgstr ""
+
+msgid "1px"
+msgstr ""
+
+msgid "2px"
+msgstr ""
+
+msgid "3px"
+msgstr ""
+
+msgid "Connection style"
+msgstr ""
+
+msgid "solid line"
+msgstr ""
+
+msgid "dot line"
+msgstr ""
+
+msgid "dash line"
+msgstr ""
+
+msgid "Flag item(s) as..."
+msgstr ""
+
+msgid "exclude the table"
+msgstr ""
+
+msgid "fit the item on one slide"
+msgstr ""
+
+msgid "picture caption"
+msgstr ""
+
+msgid "picture dimension in pdf files"
+msgstr ""
+
+msgid "html div style: style=\"width: 99px;\""
+msgstr ""
+
+msgid "html picture style: style=\"width: 99px;\""
+msgstr ""
+
+msgid "do not use this item for generating slides"
+msgstr ""
+
+#, c-format
+msgid "command to launch (%s is the resulting file)"
+msgstr ""
+
+#, c-format
+msgid "cd `echo %s | sed s/main.tex//` && ./waf configure && waf --view"
+msgstr ""
+
+#, c-format
+msgid "firefox %s"
+msgstr ""
+
+#, c-format
+msgid "ooimpress %s"
+msgstr ""
+
+#, c-format
+msgid "oowriter %s"
+msgstr ""
+
+msgid "document author"
+msgstr ""
+
+msgid "turn off the document author (latex)"
+msgstr ""
+
+msgid "document class (latex: a4, report, book)"
+msgstr ""
+
+msgid "company"
+msgstr ""
+
+msgid "document date"
+msgstr ""
+
+msgid "turn of the document date (latex)"
+msgstr ""
+
+msgid "location of the presentation"
+msgstr ""
+
+msgid "document title"
+msgstr ""
+
+msgid "turn off the document title (latex)"
+msgstr ""
+
+msgid "footer center (pdflatex)"
+msgstr ""
+
+msgid "footer left (pdflatex)"
+msgstr ""
+
+msgid "turn off the fancy output"
+msgstr ""
+
+msgid "footer right"
+msgstr ""
+
+msgid "header center (pdflatex)"
+msgstr ""
+
+msgid "header left"
+msgstr ""
+
+msgid "header right"
+msgstr ""
+
+msgid "openoffice.org language (fr_FR)"
+msgstr ""
+
+msgid "openoffice.org presentation language"
+msgstr ""
+
+msgid "openoffice.org text language"
+msgstr ""
+
+msgid "Warsaw (JuanLesPins, Montpellier, )"
+msgstr ""
+
+msgid "Generator dialog"
+msgstr ""
+
+msgid "Generators"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Location"
+msgstr ""
+
+msgid "&Ok"
+msgstr ""
+
+msgid "&Cancel"
+msgstr ""
+
+msgid "No document generator chosen."
+msgstr ""
+
+msgid "Missing data"
+msgstr ""
+
+#, kde-format
+msgid "Invalid output directory %1"
+msgstr ""
+
+msgid "Missing location"
+msgstr ""
+
+msgid "Change picture"
+msgstr ""
+
+msgid "Clear picture"
+msgstr ""
+
+msgid "Click to set a picture"
+msgstr ""
+
+msgid "Select an item on the map"
+msgstr ""
+
+msgid "Choose a file"
+msgstr ""
+
+msgid "Image files (*.png *.jpg *.jpeg *.gif)"
+msgstr ""
+
+#, kde-format
+msgid "File %1 does not exist"
+msgstr ""
+
+#, kde-format
+msgid "File %1 could not be opened"
+msgstr ""
+
+msgid "something bad happened"
+msgstr ""
+
+msgid "something worse happened"
+msgstr ""
+
+msgid "<p align='center'>No preview available<br/>at this time</p>"
+msgstr ""
+
+msgid ""
+"The map is empty, Semantik\n"
+"cannot create documents from it"
+msgstr ""
+
+msgid "Empty map"
+msgstr ""
+
+#, kde-format
+msgid "Template folder %1 is not readable"
+msgstr ""
+
+msgid "&Reorganize the map"
+msgstr ""
+
+msgid "&Generate..."
+msgstr ""
+
+msgid "&Select"
+msgstr ""
+
+msgid "&Link"
+msgstr ""
+
+msgid "&Sort"
+msgstr ""
+
+msgid "&Scroll"
+msgstr ""
+
+msgid "CustomColor"
+msgstr ""
+
+msgid "Data"
+msgstr ""
+
+msgid "Variables"
+msgstr ""
+
+msgid "Preview"
+msgstr ""
+
+msgid "Linear view"
+msgstr ""
+
+msgid "Welcome to Semantik"
+msgstr ""
+
+msgid "Ready"
+msgstr ""
+
+msgid "*.sem|Semantik file (*.sem)"
+msgstr ""
+
+msgid "Choose a file name"
+msgstr ""
+
+#, kde-format
+msgid "Saved '%1'"
+msgstr ""
+
+msgid "*.sem *.kdi *.mm *.vym|All Supported Files (*.sem *.kdi *.mm *.vym)"
+msgstr ""
+
+msgid "Semantik"
+msgstr ""
+
+#, kde-format
+msgid "%1 - Semantik"
+msgstr ""
+
+msgid "Untitled"
+msgstr ""
+
+#, kde-format
+msgid ""
+"The document \"%1\" has been modified.\n"
+"Do you want to save your changes or discard them?"
+msgstr ""
+
+msgid "Close Document"
+msgstr ""
+
+msgid "Rows"
+msgstr ""
+
+msgid "Columns"
+msgstr ""
+
+msgid "Add Row"
+msgstr ""
+
+msgid "Add a row"
+msgstr ""
+
+msgid "Add Column"
+msgstr ""
+
+msgid "Add a column"
+msgstr ""
+
+msgid "Remove Row"
+msgstr ""
+
+msgid "Remove a row"
+msgstr ""
+
+msgid "Remove Column"
+msgstr ""
+
+msgid "Remove a column"
+msgstr ""
+
+msgid "Redimension"
+msgstr ""
+
+msgid "Change table dimensions"
+msgstr ""
+
+msgid "&Bold"
+msgstr ""
+
+msgid "&Italic"
+msgstr ""
+
+msgid "&Underline"
+msgstr ""
+
+msgid "Code complete"
+msgstr ""
+
+msgid "exclude the picture"
+msgstr ""
+
+msgid "latex language: english (frenchb, )"
+msgstr ""

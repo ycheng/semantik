@@ -1,0 +1,83 @@
+% LaTeX Beamer template
+% this file is part of the Semantik templates
+% http://freehackers.org/~tnagy/semantik.html
+% created by Thomas Nagy <tnagy2^8@yahoo.fr> in 2004 for Kdissert
+%
+% Permission is granted to redistribute copies and
+% derivated works of this script (main.tex) without
+% any restrictions.
+
+\documentclass{beamer}
+
+%% based on an original file from Till Tantau (thanks!)
+\mode<presentation>
+{
+  \usetheme{@theme@}
+  % or ...
+
+  \setbeamercovered{transparent}
+  % or whatever (possibly just delete it)
+}
+
+\usepackage[@babel@]{babel}
+
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+
+% or whatever
+
+\usepackage{times}
+%\usepackage[T1]{fontenc}
+% Or whatever. Note that the encoding and the font should match. If T1
+% does not look nice, try deleting the line with the fontenc.
+
+\usepackage{amsmath}
+% math extension - one probably wants to use symbols like '[' (written as '$[$')
+
+
+
+% Delete this, if you do not want the table of contents to pop up at
+% the beginning of each subsection:
+#ifdef @each_subsection_off@
+\AtBeginSubsection[]
+{
+  \begin{frame}<beamer>
+%    \frametitle{Outline}
+    \tableofcontents[currentsection,currentsubsection]
+  \end{frame}
+}
+#endif
+
+% If you wish to uncover everything in a step-wise fashion, uncomment
+% the following command:
+
+\beamerdefaultoverlayspecification{<+->}
+
+#ifndef @doc_title_off@
+\title{@doc_title@}
+#endif
+
+#ifndef @doc_date_off@
+\date{@doc_date@}
+#endif
+
+#ifndef @doc_author_off@
+\author{@doc_author@}
+#endif
+
+\begin{document}
+
+#ifndef @doc_title_off@
+\frame[plain]{\titlepage}
+#endif
+
+#ifndef @doc_tableofcontents_off@
+\begin{frame}
+\frametitle{@content_title@}
+\tableofcontents
+\end{frame}
+#endif
+
+@doc_content@
+\end{document}
+

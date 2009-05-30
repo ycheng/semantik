@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg
+   height="60"
+   width="60"
+   _SVGFile__filename="oldscale/actions/first_letter_upper.svg"
+   version="1.0"
+   y="0"
+   x="0"
+   id="svg1"
+   sodipodi:version="0.32"
+   inkscape:version="0.40"
+   sodipodi:docname="optvar.svg"
+   sodipodi:docbase="/home/danny/work/flat/SVG/mono/scalable/actions"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:xlink="http://www.w3.org/1999/xlink">
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0000000"
+     inkscape:pageshadow="2"
+     inkscape:zoom="6.9826795"
+     inkscape:cx="31.144970"
+     inkscape:cy="15.934408"
+     inkscape:window-width="1024"
+     inkscape:window-height="698"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:current-layer="svg1" />
+  <defs
+     id="defs3">
+    <linearGradient
+       id="linearGradient1160">
+      <stop
+         style="stop-color: #000000;stop-opacity: 1.0;"
+         id="stop1161"
+         offset="0" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         id="stop1162"
+         offset="1" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient1160"
+       id="linearGradient1163" />
+  </defs>
+  <path
+     style="font-size:12.000000;fill:none;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#ffffff;stroke-width:8.1250000;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-opacity:1.0000000"
+     d="M 6.6825810,4.6879174 C 5.5771860,4.6879174 4.6872830,5.5841544 4.6872830,6.6974174 L 4.6872830,53.302583 C 4.6872830,54.415846 5.5771860,55.312083 6.6825810,55.312083 L 53.317412,55.312083 C 54.422807,55.312083 55.312710,54.415846 55.312710,53.302583 L 55.312710,6.6974174 C 55.312710,5.5841544 54.422807,4.6879174 53.317412,4.6879174 L 6.6825810,4.6879174 z "
+     id="path1103" />
+  <path
+     style="font-size:12.000000;fill:#ffffff;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#000000;stroke-width:3.1249990;stroke-linejoin:round;stroke-opacity:1.0000000"
+     d="M 6.6825810,4.6879174 C 5.5771860,4.6879174 4.6872830,5.5841544 4.6872830,6.6974174 L 4.6872830,53.302583 C 4.6872830,54.415846 5.5771860,55.312083 6.6825810,55.312083 L 53.317412,55.312083 C 54.422807,55.312083 55.312710,54.415846 55.312710,53.302583 L 55.312710,6.6974174 C 55.312710,5.5841544 54.422807,4.6879174 53.317412,4.6879174 L 6.6825810,4.6879174 z "
+     id="rect812" />
+  <metadata
+     id="metadata10">
+    <RDF
+       id="RDF11">
+      <Work
+         about=""
+         id="Work12">
+        <title
+           id="title13">Part of the Flat Icon Collection (Thu Aug 26 14:38:01 2004)</title>
+        <description
+           id="description15" />
+        <subject
+           id="subject16">
+          <Bag
+             id="Bag17">
+            <li
+               id="li18" />
+          </Bag>
+        </subject>
+        <publisher
+           id="publisher19">
+          <Agent
+             about=""
+             id="Agent20">
+            <title
+               id="title21" />
+          </Agent>
+        </publisher>
+        <creator
+           id="creator22">
+          <Agent
+             about=""
+             id="Agent23">
+            <title
+               id="title24">Danny Allen</title>
+          </Agent>
+        </creator>
+        <rights
+           id="rights26">
+          <Agent
+             about=""
+             id="Agent27">
+            <title
+               id="title28">Danny Allen</title>
+          </Agent>
+        </rights>
+        <date
+           id="date30" />
+        <format
+           id="format31">image/svg+xml</format>
+        <type
+           id="type33"
+           resource="http://purl.org/dc/dcmitype/StillImage" />
+        <license
+           id="license34"
+           resource="http://creativecommons.org/licenses/LGPL/2.1/">
+          <date
+             id="date35" />
+        </license>
+        <language
+           id="language36">en</language>
+      </Work>
+    </RDF>
+    <rdf:RDF
+       id="RDF39">
+      <cc:Work
+         rdf:about=""
+         id="Work40">
+        <dc:format
+           id="format41">image/svg+xml</dc:format>
+        <dc:type
+           id="type43"
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path
+     transform="matrix(3.465994,0.000000,0.000000,3.465994,98.80205,-213.8397)"
+     style="font-size:12.000000;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:VAG Rounded Black SSi;text-anchor:start;writing-mode:lr"
+     d="M -20.208021,75.411598 L -20.208021,74.872536 C -20.590837,74.845192 -20.981461,74.792457 -21.379896,74.714333 C -21.778336,74.636208 -22.135757,74.495583 -22.452162,74.292458 C -22.764663,74.085427 -22.920912,73.810037 -22.920912,73.466286 C -22.920912,73.208475 -22.838881,72.976053 -22.674818,72.769020 C -22.506850,72.561991 -22.301772,72.458475 -22.059584,72.458473 C -21.954117,72.458475 -21.764664,72.517069 -21.491224,72.634254 C -21.217789,72.751444 -20.995133,72.839334 -20.823256,72.897926 C -20.647477,72.956522 -20.442399,72.985819 -20.208021,72.985817 L -20.208021,71.104958 C -20.708024,70.952618 -21.127946,70.794415 -21.467787,70.630348 C -21.807632,70.462384 -22.083023,70.278790 -22.293959,70.079567 C -22.504897,69.876447 -22.657241,69.657697 -22.750990,69.423317 C -22.840834,69.188947 -22.885756,68.929182 -22.885756,68.644020 C -22.885756,68.245589 -22.815444,67.882308 -22.674818,67.554176 C -22.534194,67.222153 -22.342788,66.936997 -22.100599,66.698708 C -21.854507,66.456528 -21.567398,66.263169 -21.239271,66.118629 C -20.911149,65.974107 -20.567399,65.888169 -20.208021,65.860817 L -20.208021,65.292458 C -20.208025,65.054186 -20.088884,64.935045 -19.850599,64.935036 C -19.608416,64.935045 -19.487322,65.054186 -19.487318,65.292458 L -19.487318,65.860817 C -19.194354,65.868638 -18.883807,65.913560 -18.555677,65.995583 C -18.223652,66.073716 -17.942402,66.206529 -17.711927,66.394020 C -17.481465,66.581528 -17.366231,66.831528 -17.366224,67.144020 C -17.366231,67.296371 -17.401387,67.444809 -17.471693,67.589333 C -17.538105,67.729965 -17.633808,67.843246 -17.758802,67.929176 C -17.879902,68.015120 -18.016621,68.058089 -18.168959,68.058083 C -18.262714,68.058089 -18.375995,68.028792 -18.508802,67.970192 C -18.637714,67.911605 -18.754901,67.854964 -18.860365,67.800270 C -18.965838,67.741683 -19.069354,67.694808 -19.170912,67.659645 C -19.272479,67.620590 -19.377947,67.601058 -19.487318,67.601051 L -19.487318,69.317848 C -18.670917,69.540510 -18.016621,69.854962 -17.524427,70.261208 C -17.028340,70.667462 -16.780294,71.251445 -16.780287,72.013161 C -16.780294,72.466288 -16.864278,72.870584 -17.032240,73.226051 C -17.196309,73.577615 -17.413106,73.872537 -17.682631,74.110817 C -17.948261,74.345192 -18.239277,74.524880 -18.555677,74.649879 C -18.872088,74.774879 -19.182635,74.849098 -19.487318,74.872536 L -19.487318,75.411598 C -19.487322,75.649878 -19.608416,75.769019 -19.850599,75.769020 C -20.088884,75.769019 -20.208025,75.649878 -20.208021,75.411598 M -20.208021,69.101051 L -20.208021,67.601051 C -20.403337,67.644027 -20.563493,67.735824 -20.688490,67.876442 C -20.809586,68.013167 -20.870133,68.188948 -20.870131,68.403786 C -20.870133,68.583479 -20.809586,68.731917 -20.688490,68.849098 C -20.563493,68.966291 -20.403337,69.050276 -20.208021,69.101051 M -19.487318,71.292458 L -19.487318,72.985817 C -19.295916,72.985819 -19.133807,72.901834 -19.000990,72.733864 C -18.864276,72.565897 -18.795917,72.374491 -18.795912,72.159645 C -18.795917,71.913554 -18.854510,71.726054 -18.971693,71.597145 C -19.084979,71.464336 -19.256854,71.362773 -19.487318,71.292458"
+     id="text1094" />
+</svg>

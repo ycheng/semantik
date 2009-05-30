@@ -1,0 +1,2367 @@
+\ProvidesPackage{pgf}[2004/10/08 ver 0.64]
+
+% Copyright 2003 by Till Tantau <tantau@cs.tu-berlin.de>.
+%
+% This program can be redistributed and/or modified under the terms
+% of the LaTeX Project Public License Distributed from CTAN
+% archives in directory macros/latex/base/lppl.txt.
+
+\newcount\pgf@objectcount
+
+\RequirePackage{graphicx}
+\RequirePackage{xcolor}
+\RequirePackage{keyval}
+
+
+\DeclareOption{pdf}
+{
+  % Driver commands for pdf
+  \ifx\pdfximage\@undefined% less than version 14
+  \let\pdfxform\pdfform
+  \let\pdflastxform\pdflastform
+  \let\pdfrefxform\pdfrefform
+  \fi
+
+  \def\pgfsys@lineto#1#2{\pgf@pdf{#1 #2 l}}
+  \def\pgfsys@moveto#1#2{\pgf@pdf{#1 #2 m}}
+  \def\pgfsys@closepath{\pgf@pdf{h}}
+  \def\pgfsys@path{}% no action!
+  \def\pgfsys@stroke{\pgf@pdf{S}}
+  \def\pgfsys@closestroke{\pgf@pdf{s}}
+  \def\pgfsys@fill{\pgf@pdf{f}}
+  \def\pgfsys@fillstroke{\pgf@pdf{B}}
+  \def\pgfsys@eofill{\pgf@pdf{f*}}
+  \def\pgfsys@eofillstroke{\pgf@pdf{B*}}
+  \def\pgfsys@clip{\pgf@pdf{W n}}
+  \def\pgfsys@eoclip{\pgf@pdf{W* n}}
+  \def\pgfsys@strokeclip{\pgf@pdf{W S}}
+  \def\pgfsys@closestrokeclip{\pgf@pdf{W s}}
+  \def\pgfsys@fillclip{\pgf@pdf{W f}}
+  \def\pgfsys@fillstrokeclip{\pgf@pdf{W B}}
+  \def\pgfsys@discardpath{\pgf@pdf{n}}
+  \def\pgfsys@translate#1#2{\pgf@pdf{1 0 0 1 #1 #2 cm}}
+  \def\pgfsys@scale#1#2{\pgf@pdf{#1 0 0 #2 0 0 cm}}
+  \def\pgfsys@transform#1#2#3#4#5#6{\pgf@pdf{#1 #2 #3 #4 #5 #6 cm}}
+  \def\pgfsys@openscope{\pgf@pdf{q}}
+  \def\pgfsys@closescope{\pgf@pdf{Q}}
+  \def\pgfsys@starthbox{\pgf@pdf{q}}
+  \def\pgfsys@endhbox{\pgf@pdf{Q}}
+  \def\pgfsys@openpicture{\pgf@pdf{q}}
+  \def\pgfsys@closepicture{\pgf@pdf{n Q}}
+  \def\pgfsys@setdash#1#2{\pgf@pdf{[#1] #2 d}}
+  \def\pgfsys@setlinewidth#1{\pgf@pdf{#1 w}}
+  \def\pgfsys@setmiterlimit#1{\pgf@pdf{#1 M}}
+  \def\pgfsys@bezier#1#2#3#4#5#6{\pgf@pdf{#1 #2 #3 #4 #5 #6 c}}
+  \def\pgfsys@rect#1#2#3#4{\pgf@pdf{#1 #2 #3 #4 re}}
+  \def\pgfsys@buttcap{\pgf@pdf{0 J}}
+  \def\pgfsys@roundcap{\pgf@pdf{1 J}}
+  \def\pgfsys@rectcap{\pgf@pdf{2 J}}
+  \def\pgfsys@miterjoin{\pgf@pdf{0 j}}
+  \def\pgfsys@roundjoin{\pgf@pdf{1 j}}
+  \def\pgfsys@beveljoin{\pgf@pdf{2 j}}
+  \def\pgfsys@begininvisible{\pgf@pdf{1 0 0 1 2000 2000 cm}}
+  \def\pgfsys@endinvisible{\pgf@pdf{1 0 0 1 -2000 -2000 cm}}
+
+  % xform-free version
+  \def\pgfsys@defobject#1#2#3#4{%
+    \pgf@protocol{#4}%
+    \expandafter\xdef\csname#1\endcsname{\pgf@prot\space}}
+  \def\pgfsys@useobject#1#2{%
+    \pgf@protocol{#2}%
+    \pgf@pdf{\pgf@prot}%
+    \pgf@pdf{\csname#1\endcsname}}
+
+  % xform version (crashes ghostview)
+
+  %\def\pgfsys@defobject#1#2#3#4{%
+  %  \pgf@process{#2}
+  %  \setbox\pgfobjectbox\hbox{\raise-\pgf@y\hbox{\hskip-\pgf@x\relax#4}}
+  %  \pgf@process{#3}
+  %  \pgf@xa=\pgf@x
+  %  \pgf@ya=\pgf@y
+  %  \pgf@process{#2}
+  %  \advance\pgf@xa by-\pgf@x
+  %  \advance\pgf@ya by-\pgf@y  
+  %  \wd\pgfobjectbox=\pgf@xa
+  %  \dp\pgfobjectbox=0pt
+  %  \ht\pgfobjectbox=\pgf@ya
+  %  \pdfxform\pgfobjectbox
+  %  \expandafter\xdef\csname#1\endcsname{\the\pdflastxform}
+  %  \expandafter\xdef\csname pgf@trans#1\endcsname
+  %  {{\pgfget x}{\pgfget y}}}
+  %\def\pgfsys@useobject#1#2{%
+  %  \setbox\pgfobjectbox\hbox{\pdfrefxform \csname#1\endcsname}%
+  %  \dp\pgfobjectbox=0pt%
+  %  \ht\pgfobjectbox=0pt%
+  %  \wd\pgfobjectbox=0pt%
+  %  \pgfsys@discardpath%
+  %  \pgfsys@openscope%
+  %  #2%
+  %  \edef\pgf@temp{{1}{0}{0}{1}\csname pgf@trans#1\endcsname}%
+  %  \expandafter\pgfsys@transform\pgf@temp%
+  %  \box\pgfobjectbox%
+  %  \pgfsys@closescope}
+
+  \def\pgfsys@imagesuffixlist{pdf:jpg:png}
+  
+  \def\pgfsys@defineimage{% width, height, page number
+    \ifx\pgf@imagewidth\@empty\else\edef\pgf@imagewidth{ width \pgf@imagewidth }\fi%
+    \ifx\pgf@imageheight\@empty\else\edef\pgf@imageheight{ height \pgf@imageheight }\fi%
+    \ifx\pgf@imagepage\@empty\else\edef\pgf@imagepage{ page \pgf@imagepage }\fi%
+    \ifx\pdfximage\@undefined% old version of pdflatex
+      \ifx\pgf@imagepage\@empty\else%
+        \ClassWarning{beamer}{Page selection not supported. Ignoring
+          page selection}%
+      \fi%
+      \setbox\pgf@tempbox=\hbox{%
+        \pdfimage \pgf@imageheight \pgf@imagewidth {\pgf@filename}}%
+      \pdfform\pgf@tempbox%
+      \edef\pgf@image{\noexpand\pdfrefform\the\pdflastform}%
+    \else% new version
+      {\pdfximage \pgf@imageheight \pgf@imagewidth attr
+        {\pgf@imageinterpolate\space\pgf@imagemask} \pgf@imagepage
+        {\pgf@filename}}%
+      \edef\pgf@image{\noexpand\pdfrefximage\the\pdflastximage}%
+    \fi
+    }%
+
+  \def\pgfsys@definemask{%
+    \ifx\pgf@maskmatte\@empty%
+    \else%
+    \edef\pgf@maskmatte{/Matte [\pgf@maskmatte]}%
+    \fi%
+    \edef\pgf@attr{{\pgf@maskmatte\space /Decode [1 0]}}%
+    \immediate\pdfximage attr \pgf@attr {\pgf@filename}%
+    \edef\pgf@mask{\the\pdflastximage}%
+  }
+
+  \PassOptionsToPackage{pdf}{pgfshade}
+  }
+
+\DeclareOption{postscript}
+{
+  % Driver commands for postscript
+
+  \def\pgfsys@lineto#1#2{\pgf@ps{#1 #2 lineto}}
+  \def\pgfsys@moveto#1#2{\pgf@ps{#1 #2 a}}
+  \def\pgfsys@closepath{\pgf@ps{closepath}}
+  \def\pgfsys@path{}% no action!
+  \def\pgfsys@stroke{\pgf@ps{stroke}}
+  \def\pgfsys@closestroke{\pgf@ps{closepath stroke}}
+  \def\pgfsys@fill{\pgf@ps{fill}}
+  \def\pgfsys@fillstroke{\pgf@ps{gsave fill grestore stroke}}
+  \def\pgfsys@eofill{\pgf@ps{eofill}}
+  \def\pgfsys@eofillstroke{\pgf@ps{gsave eofill grestore stroke}}
+  \def\pgfsys@clip{\pgf@ps{pgfl}}
+  \def\pgfsys@eoclip{\pgf@ps{eoclip newpath}}
+  \def\pgfsys@strokeclip{\pgf@ps{gsave stroke grestore clip newpath}}
+  \def\pgfsys@closestrokeclip{\pgf@ps{closepath gsave stroke grestore clip newpath}}
+  \def\pgfsys@fillclip{\pgf@ps{gsave fill grestore clip newpath}}
+  \def\pgfsys@fillstrokeclip{\pgf@ps{gsave fill grestore gsave stroke grestore clip newpath}}
+  \def\pgfsys@discardpath{\pgf@ps{newpath}}
+  \def\pgfsys@translate#1#2{\pgf@ps{#1 #2 translate}}
+  \def\pgfsys@scale#1#2{\pgf@ps{#1 #2 scale}}
+  \def\pgfsys@transform#1#2#3#4#5#6{\pgf@ps{[#1 #2 #3 #4 #5 #6] concat}}
+  \def\pgfsys@openscope{\pgf@ps{gsave}}
+  \def\pgfsys@closescope{\pgf@ps{grestore}}
+  \def\pgfsys@openpicture{\special{ps: }%
+    \special{ps::[begin]}\pgf@ps{pgfo}}
+  \def\pgfsys@closepicture{\pgf@ps{pgfc}\special{ps::[end]}}
+  \def\pgfsys@starthbox{\pgf@ps{pgfs}\special{ps::[end]}}
+  \def\pgfsys@endhbox{\special{ps::[begin]}\pgf@ps{pgfr}}
+  \def\pgfsys@setdash#1#2{\pgf@ps{[#1] #2 setdash}}
+  \def\pgfsys@setlinewidth#1{\pgf@ps{#1 pgfw}}
+  \def\pgfsys@setmiterlimit#1{\pgf@ps{#1 setmiterlimit}}
+  \def\pgfsys@bezier#1#2#3#4#5#6{\pgf@ps{#1 #2 #3 #4 #5 #6 curveto}}
+  \def\pgfsys@rect#1#2#3#4{\pgf@ps{#4 #3 #1 #2 pgfe}}
+  \def\pgfsys@buttcap{\pgf@ps{0 setlinecap}}
+  \def\pgfsys@roundcap{\pgf@ps{1 setlinecap}}
+  \def\pgfsys@rectcap{\pgf@ps{2 setlinecap}}
+  \def\pgfsys@miterjoin{\pgf@ps{0 setlinejoin}}
+  \def\pgfsys@roundjoin{\pgf@ps{1 setlinejoin}}
+  \def\pgfsys@beveljoin{\pgf@ps{2 setlinejoin}}
+  \def\pgfsys@begininvisible{\special{ps::[begin]}%
+    \pgf@ps{gsave nulldevice}\special{ps::[end]}}
+  \def\pgfsys@endinvisible{\special{ps::[begin]}\pgf@ps{grestore}\special{ps::[end]}}
+  \def\pgfsys@defobject#1#2#3#4{%
+    \advance\pgf@objectcount by 1
+    \expandafter\xdef\csname#1\endcsname{\the\pgf@objectcount}
+    \pgf@protocol{#4}
+    \special{! /pgf\csname#1\endcsname{gsave exec \pgf@prot\space grestore} bind def}}
+  \def\pgfsys@useobject#1#2{%
+    \pgf@protocol{#2}%
+    \pgf@ps{{\pgf@prot} pgf\csname#1\endcsname}}
+
+  \def\pgfsys@imagesuffixlist{epsi:eps:ps}
+
+  \def\pgfsys@defineimage{%
+    \ifx\pgf@imagewidth\@empty\else\edef\pgf@imagewidth{width=\pgf@imagewidth,}\fi%
+    \ifx\pgf@imageheight\@empty\else\edef\pgf@imageheight{height=\pgf@imageheight,}\fi%
+    \ifx\pgf@imagepage\@empty\else%
+    \ClassWarning{beamer}{Page selection not supported. Ignoring page selection}%
+    \fi%
+    \edef\pgf@image{\noexpand\includegraphics[\pgf@imageheight\pgf@imagewidth]{\pgf@filename}}%
+    }
+
+  \def\pgfsys@definemask{}% not supported.
+
+  % Always present specials.
+  \special{!
+    /pgfl{clip newpath}B% clipping
+    /pgfe{a dup 0 rlineto exch 0 exch rlineto neg 0 rlineto closepath}B% rectangle
+    /pgfw{setlinewidth}B% setlinewidth
+    /pgfs{save 72 Resolution div 72 VResolution div neg scale 
+      pgfx neg pgfy neg translate}B% save
+    /pgfr{globaldict /pgfdelta /delta where {pop delta} {0} ifelse
+      put restore /delta globaldict /pgfdelta get def}B %restore
+    userdict begin%
+    /pgfo{/pgfx currentpoint /pgfy exch def def @beginspecial}B %open
+    /pgfc{newpath globaldict /pgfdelta /delta where {pop delta} {0} ifelse put
+      @endspecial /delta globaldict /pgfdelta get def}B %close
+    end}
+
+  \PassOptionsToPackage{postscript}{pgfshade}
+  }
+
+\ifx\pdfoutput\@undefined \newcount\pdfoutput \fi
+\ifx\pdfoutput\relax \newcount\pdfoutput \fi
+
+\ifcase\pdfoutput
+\ExecuteOptions{postscript} % default if no pdf
+\else
+\ExecuteOptions{pdf} % default if pdf
+\fi 
+
+\newif\ifpgf@draftmode
+\pgf@draftmodefalse
+\DeclareOption{draft}{\pgf@draftmodetrue}
+
+\ProcessOptions
+
+
+% Transperency test:
+%\pdfpageresources{/ExtGState << /Semi << /Type /ExtGState /CA 0.1 /ca 0.1 >> >>}
+%\pdfliteral{q /Semi gs 10 w 0 0 m 100 100 l S 100 0 m 0 100 l S Q}
+
+%\immediate\pdfximage attr {/Matte [1 1 1] /Decode [1 0]} {g4.smask.jpg}
+%\pdfximage height 8cm attr {/Interpolate true /SMask \the\pdflastximage\space 0 R} {g4.jpg}
+%\hskip1cm\pdfrefximage\pdflastximage
+
+
+
+
+% Globals
+
+\newdimen\pgfex % will be equal to 1ex
+\newdimen\pgfem % will be equal to 1em
+\newdimen\pgf@linewidth
+\newbox\pgfpic
+\newbox\pgf@hbox
+\newbox\pgf@tempbox
+
+\newdimen\pgf@aax % Start of first line
+\newdimen\pgf@aay
+\newdimen\pgf@abx % End of first line
+\newdimen\pgf@aby
+\newdimen\pgf@bax % Start of last line
+\newdimen\pgf@bay
+\newdimen\pgf@bbx % End of last line
+\newdimen\pgf@bby
+
+
+\def\pgf@process#1{{#1\global\pgf@x=\pgf@x\global\pgf@y=\pgf@y}}
+
+
+\newdimen\pgf@tempdim
+\def\pgf@setlength#1#2{% these will be used only when \nullfont is active
+  \begingroup% keep font setting local
+    \selectfont% restore font
+    \pgf@setlengthorig\pgf@tempdim{#2}% calculate dimension (possibly using calc)
+    \global\pgf@tempdim\pgf@tempdim% make dimension global
+  \endgroup%
+  #1=\pgf@tempdim\relax}
+\def\pgf@addtolength#1#2{%
+  \begingroup% keep font setting local
+    \selectfont% restore font
+    \pgf@tempdim#1\relax%
+    \pgf@addtolengthorig\pgf@tempdim{#2}% calculate dimension (possibly using calc)
+    \global\pgf@tempdim\pgf@tempdim% make dimension global
+  \endgroup%
+  #1=\pgf@tempdim\relax}
+
+
+% Internal locals values
+\newdimen\pgf@x
+\newdimen\pgf@y
+\newdimen\pgf@xa
+\newdimen\pgf@ya
+\newdimen\pgf@xb
+\newdimen\pgf@yb
+\newdimen\pgf@xc
+\newdimen\pgf@yc
+
+
+% Internal conversion functions
+{ \catcode`\p=12\catcode`\t=12 \gdef\@gf@ge@#1pt{#1} }
+\def\pgfget#1{\expandafter\@gf@ge@\the\csname pgf@#1\endcsname}%\space}
+\def\pgf@bpcorr#1{#1=0.99626401#1}%
+\def\pgf@pdf#1{{\edef\a{{#1}}\pdfliteral\a}}
+\def\pgf@ps#1{{\edef\a{{ps:: #1}}\special\a}}
+\def\pgf@toprotocol#1{\xdef\pgf@prot{\pgf@prot#1\space}}
+\def\pgf@protocol#1{\xdef\pgf@prot{}%
+  {\let\pgf@pdf=\pgf@toprotocol%
+    \let\pgf@ps=\pgf@toprotocol%
+    #1}}
+
+
+% Extract the x-coordinate of a point to a dimensions
+%  
+% #1 = a TeX dimension
+% #2 = a point
+%
+% Example:
+%
+% \newdimen\mydim
+% \pgfextractx{\mydim}{\pgfpoint{2cm}{4pt}}
+% % \mydim is now 2cm
+
+\def\pgfextractx#1#2{%
+  \pgf@process{#2}%
+  #1=1.00375\pgf@x\relax}
+
+
+% Extract the y-coordinate of a point to a dimensions
+%  
+% #1 = a TeX dimension
+% #2 = a point
+%
+% Example:
+%
+% \newdimen\mydim
+% \pgfextracty{\mydim}{\pgfpoint{2cm}{4pt}}
+% % \mydim is now 4pt
+
+\def\pgfextracty#1#2{%
+  \pgf@process{#2}%
+  #1=1.00375\pgf@y\relax}
+
+
+% Return a corner or the middle of a side of the rectangle whose two
+% corners are given by the two points. 
+%  
+% #1 = a direction, the values nw, sw, ne, se are corners, the values
+%      n, s, e, w are middles of sides. Default is sw.
+% #1 = a point
+% #2 = a point
+%
+% Example:
+%
+% \pgfmoveto{\pgfcorner[sw]{\pgfpoint{2cm}{4pt}}{\pgfpoint{3cm}{2cm}}}
+% \pgflineto{\pgfcorner[nw]{\pgfpoint{2cm}{4pt}}{\pgfpoint{3cm}{2cm}}}
+% \pgflineto{\pgfcorner[se]{\pgfpoint{2cm}{4pt}}{\pgfpoint{3cm}{2cm}}}
+% \pgfclosepath
+
+\newcommand\pgfcorner[3][sw]{%
+  \pgf@process{#2}%
+  \pgf@xa=\pgf@x%
+  \pgf@ya=\pgf@y%
+  \pgf@process{#3}%
+  \ifdim\pgf@xa<\pgf@x%
+    \pgf@xb=\pgf@x%
+    \pgf@x=\pgf@xa%
+    \pgf@xa=\pgf@xb%
+  \fi%
+  \ifdim\pgf@ya<\pgf@y%
+    \pgf@yb=\pgf@y%
+    \pgf@y=\pgf@ya%
+    \pgf@ya=\pgf@yb%
+  \fi%
+  \csname pgf@corner@#1\endcsname\relax%    
+}
+\def\pgf@corner@se{\pgf@x=\pgf@xa}
+\def\pgf@corner@ne{\pgf@x=\pgf@xa\pgf@y=\pgf@ya}
+\def\pgf@corner@nw{\pgf@y=\pgf@ya}
+\def\pgf@corner@sw{}
+\def\pgf@corner@s{\pgf@x=.5\pgf@x\advance\pgf@x by.5\pgf@xa}
+\def\pgf@corner@n{\pgf@x=.5\pgf@x\advance\pgf@x by.5\pgf@xa\pgf@y=\pgf@ya}
+\def\pgf@corner@w{\pgf@y=.5\pgf@y\advance\pgf@y by.5\pgf@ya}
+\def\pgf@corner@e{\pgf@y=.5\pgf@y\advance\pgf@y by.5\pgf@ya\pgf@x=\pgf@xa}
+
+
+
+% Return a point
+%  
+% #1 = x-coordinate of the point 
+% #2 = y-coordinate of the point 
+%  
+% x = #1
+% y = #2
+%
+% Example:
+%
+% \pgfmoveto{\pgfpoint{2pt}{3cm}}
+
+\def\pgfpoint#1#2{%
+  \setlength\pgf@x{#1}\pgf@bpcorr{\pgf@x}%
+  \setlength\pgf@y{#2}\pgf@bpcorr{\pgf@y}\ignorespaces}
+
+
+% Return the origin.
+%  
+% x = 0
+% y = 0
+%
+% Example:
+%
+% \pgfmoveto{\pgforigin}
+
+\def\pgforigin{\pgfpoint{0pt}{0pt}\ignorespaces}
+
+
+% Return a point that is #2 in a direction #1 of the origin.  
+%  
+% #1 = a direction (n,s,e,w,ne,nw,se,sw)
+% #2 = a distance from the origin
+%  
+% Example:
+%
+% \pgfmoveto{\pgfpolar{\pgfdirection{n}}{1cm}}
+
+\def\pgfdirection#1{\csname pgf@direction#1\endcsname}
+
+\def\pgf@directionn{90}
+\def\pgf@directionnorth{90}
+\def\pgf@directionabove{90}
+\def\pgf@directions{270}
+\def\pgf@directionsouth{270}
+\def\pgf@directionbelow{270}
+\def\pgf@directionw{180}
+\def\pgf@directionwest{180}
+\def\pgf@directionleft{180}
+\def\pgf@directione{0}
+\def\pgf@directioneast{0}
+\def\pgf@directionright{0}
+\def\pgf@directionne{45}
+\def\pgf@directionse{315}
+\def\pgf@directionnw{135}
+\def\pgf@directionsw{-135}
+
+
+% Return the difference vector of two points.
+%  
+% #1 = start of vector  
+% #2 = end of vector  
+%  
+% x = x-component of difference 
+% y = y-component of difference 
+%
+% Example:
+%
+% \pgfmoveto{\pgfdiff{\pgfxy(1,1)}{\pgfxy(2,3)}}
+
+\def\pgfdiff#1#2{%
+  \pgf@process{#1}%
+  \pgf@xa=\pgf@x%
+  \pgf@ya=\pgf@y%
+  \pgf@process{#2}%
+  \advance\pgf@x by-\pgf@xa\relax%
+  \advance\pgf@y by-\pgf@ya\relax\ignorespaces}
+
+
+% Add two vectors. 
+%  
+% #1 = first vector  
+% #2 = second vector  
+%  
+% x = x-component of addition
+% y = y-component of addition
+%
+% Example:
+%
+% \pgfmoveto{\pgfrelative{\pgfxy(0,1)}{\pgfxy(2,3)}}
+
+\def\pgfrelative#1#2{%
+  \pgf@process{#1}%
+  \pgf@xa=\pgf@x%
+  \pgf@ya=\pgf@y%
+  \pgf@process{#2}%
+  \advance\pgf@x by\pgf@xa\relax%
+  \advance\pgf@y by\pgf@ya\relax\ignorespaces}
+
+
+% Return a fraction of #1 of the way from #2 to #3.
+%  
+% #1 = a fraction
+% #2 = start point
+% #3 = end point 
+%  
+% x = x-component of #1*start + (1-#1)*end
+% y = y-component of #1*start + (1-#1)*end 
+%
+% Example:
+%
+% % Middle of (1,1) and (2,3)
+% \pgfmoveto{\pgfpartway{0.5}{\pgfxy(1,1)}{\pgfxy(2,3)}}
+
+\def\pgfpartway#1#2#3{%
+  \pgf@process{#3}%
+  \pgf@xa=\pgf@x%
+  \pgf@ya=\pgf@y%
+  \pgf@process{#2}%
+  \advance\pgf@xa by-\pgf@x\relax%
+  \advance\pgf@ya by-\pgf@y\relax%
+  \advance\pgf@x by #1\pgf@xa\relax%
+  \advance\pgf@y by #1\pgf@ya\relax%  
+  \ignorespaces}
+
+
+% Move point #2 #1 many units in the direction of #3.
+%  
+% #1 = a distance
+% #2 = start point
+% #3 = end point 
+%  
+% x = x-component of start + #1*(normalise(end-start))
+% y = y-component of start + #1*(normalise(end-start))
+%
+% Example:
+%
+%
+% \pgfline{\pgfbackoff{2pt}{\pgfxy(1,1)}{\pgfxy(2,3)}}
+%         {\pgfbackoff{3pt}{\pgfxy(2,3)}{\pgfxy(1,1)}}
+
+\def\pgfbackoff#1#2#3{%
+  \pgf@process{#2}%
+  \pgf@xb=\pgf@x\relax% xb/yb = start point
+  \pgf@yb=\pgf@y\relax%
+  \pgf@process{#3}%
+  \advance\pgf@x by-\pgf@xb\relax%
+  \advance\pgf@y by-\pgf@yb\relax%
+  \pgfnormalise{}% x/y = normalised vector
+  \setlength\pgf@xa{#1}\pgf@bpcorr{\pgf@xa}%
+  \pgf@ya=\pgf@xa\relax%
+  \pgf@mult{\pgf@xa}{\pgfget x}{\pgf@xa}%
+  \pgf@mult{\pgf@ya}{\pgfget y}{\pgf@ya}%
+  \pgf@x=\pgf@xb\relax%
+  \pgf@y=\pgf@yb\relax%
+  \advance\pgf@x by\pgf@xa\relax%
+  \advance\pgf@y by\pgf@ya\relax%
+  \ignorespaces}
+
+
+
+% Calculate a position for a label above a line.
+%
+% #1 = fraction of line where to put the label, where 0 means start,
+%      1 means end, and for example 0.5 means the middle.
+% #2 = start of line
+% #3 = end of line
+% #4 = vertical offset
+%
+% Example:
+%
+% \pgfputat{\pgflabel{.5}{\pgfxy(0,0)}{\pgfxy(3,2)}{4pt}}{\pgfbox[center,base]{Hi!}}
+
+\def\pgflabel#1#2#3#4{%
+  % First, calculate base point
+  \pgfpartway{#1}{#2}{#3}%
+  \pgf@xb=\pgf@x%
+  \pgf@yb=\pgf@y%
+  \pgf@process{#2}%
+  \pgf@xa=\pgf@x% xb/yb = start point
+  \pgf@ya=\pgf@y%
+  \pgf@process{#3}%
+  \advance\pgf@x by-\pgf@xa%
+  \advance\pgf@y by-\pgf@ya%
+  \pgfnormalise{}% x/y = normalised vector
+  \setlength\pgf@ya{#4}\pgf@bpcorr{\pgf@ya}%
+  \pgf@xa=-\pgf@ya\relax%
+  \pgf@mult{\pgf@xa}{\pgfget y}{\pgf@xa}%
+  \pgf@mult{\pgf@ya}{\pgfget x}{\pgf@ya}%
+  \pgf@x=\pgf@xb\relax%
+  \pgf@y=\pgf@yb\relax%
+  \advance\pgf@x by\pgf@xa\relax%
+  \advance\pgf@y by\pgf@ya\relax%
+  \ignorespaces}
+
+
+% Place a label above a line in a rotated way.
+%
+% #1 = fraction of line where to put the label, where 0 means start,
+%      1 means end, and for example 0.5 means the middle.
+% #2 = start of line
+% #3 = end of line
+% #4 = vertical offset
+% #5 = stuff to put
+%
+% Example:
+%
+% \pgfputlabelrotated{.5}{\pgfxy(0,0)}{\pgfxy(3,2)}{4pt}{\pgfbox[center,base]{Hi!}}
+
+\def\pgfputlabelrotated#1#2#3#4#5{%
+  \pgflabel{#1}{#2}{#3}{#4}%
+  \pgfputat{}{%
+    \pgf@process{#2}%
+    \pgf@xa=\pgf@x% xb/yb = start point
+    \pgf@ya=\pgf@y%
+    \pgf@process{#3}%
+    \advance\pgf@x by-\pgf@xa%
+    \advance\pgf@y by-\pgf@ya%
+    \pgfnormalise{}% x/y = normalised vector
+    \pgf@ya=-\pgf@y%
+    \pgfsys@transform{\pgfget x}{\pgfget y}{\pgfget{ya}}{\pgfget x}{0}{0}%
+    #5}%
+  \ignorespaces}
+
+
+% Scopes
+
+
+% Pgf scope environment. All changes of the graphic state are local to
+% the scope.
+%  
+% Example:
+%
+% \begin{pgfscope}
+%    \pgfsetlinewidth{3pt}
+%    \pgfline{\pgfxy(0,0)}{\pgfxy(3,3)}
+% \end{pgfscope}
+
+\def\pgfscope{\pgfsys@openscope\ignorespaces}
+\def\endpgfscope{\pgfsys@closescope\ignorespacesafterend\ignorespaces}
+
+
+
+% Internal function for creating a hbox.
+\long\def\pgf@makehbox#1{%
+  \setbox\pgf@hbox=\hbox{{%
+    \ifx\pgf@setlengthorig\@undefined%
+    \else%
+      \let\setlength\pgf@setlengthorig%
+      \let\addtolength\pgf@addtolengthorig%
+    \fi%
+    \selectfont%
+    #1}}}
+  
+
+% Create a box that can contain normal TeX text. 
+% 
+% #1 = ``left'', ``center'' or ``right'' (horizontal align)
+% #2 = ``base'', ``bottom'', ``center'' or ``top'' (vertical align)
+% #3 = TeX text.
+% 
+% Example:
+%
+% \pgfputat{\pgforigin}{\pgfbox[center,center]{Hello World!}}
+
+\long\def\pgfbox[#1,#2]#3{%
+  \pgf@makehbox{#3}%
+  \csname pgf@halign#1\endcsname%
+  \csname pgf@valign#2\endcsname%
+  \wd\pgf@hbox=0pt%
+  \ht\pgf@hbox=0pt%
+  \dp\pgf@hbox=0pt%
+  \pgfsys@starthbox%
+  \box\pgf@hbox%
+  \pgfsys@endhbox%
+  \ignorespaces}
+
+% Internal shifters
+\def\pgf@halignleft{}% do nothing
+\def\pgf@haligncenter{\setbox\pgf@hbox=\hbox{\hskip-.5\wd\pgf@hbox\box\pgf@hbox}}
+\def\pgf@halignright{\setbox\pgf@hbox=\hbox{\hskip-\wd\pgf@hbox\box\pgf@hbox}}
+\def\pgf@valignbase{}% do nothing
+\def\pgf@valignbottom{\setbox\pgf@hbox=\hbox{\raise\dp\pgf@hbox\box\pgf@hbox}}
+\def\pgf@valigncenter{\setbox\pgf@hbox=\hbox{\raise.5\dp\pgf@hbox\hbox{\raise-.5\ht\pgf@hbox\box\pgf@hbox}}}
+\def\pgf@valigntop{\setbox\pgf@hbox=\hbox{\raise-\ht\pgf@hbox\box\pgf@hbox}}
+
+
+
+% Set the line width to #1.
+% 
+% #1 = new line width.
+% 
+% Example:
+%
+% \pgfsetlinewidth{3pt}
+
+\def\pgfsetlinewidth#1{%
+  \setlength\pgf@linewidth{#1}\pgf@bpcorr{\pgf@linewidth}%
+  \pgfsys@setlinewidth{\pgfget{linewidth}}%
+  \ignorespaces}
+
+
+% Set the miter limit to #1.
+% 
+% #1 = new miter limit.
+% 
+% Example:
+%
+% \pgfsetmiterlimit{3pt}
+
+\def\pgfsetmiterlimit#1{%
+  \setlength\pgf@x{#1}\pgf@bpcorr{\pgf@x}%
+  \pgfsys@setmiterlimit{\pgfget x}%
+  \ignorespaces}
+
+
+% Set the dash pattern to #1 with phase #2/
+% 
+% #1 = a row of numbers of length of ``on'' and ``off'' points.
+% #2 = a phase
+% 
+% Example:
+%
+% \pgfsetdash{}          {0pt} % solid line
+% \pgfsetdash{{.1cm}}    {0pt} % long dashes
+% \pgfsetdash{{1pt}{1ex}}{0pt} % dotted
+
+\def\pgfsetdash#1#2{%
+  \def\pgf@temp{}%
+  \def\pgf@next{\pgf@strip}%
+  \pgf@strip#1{pgf@stop}%
+  \setlength\pgf@x{#2}\pgf@bpcorr{\pgf@x}%
+  \pgfsys@setdash{\pgf@temp}{\pgfget x}%
+  \ignorespaces}
+
+\def\pgf@strip#1{%
+  \def\pgf@@temp{#1}%
+  \ifx\pgf@@temp\pgf@stop%
+    \def\pgf@next{}%
+  \else%
+    \setlength\pgf@x{#1}\pgf@bpcorr{\pgf@x}%
+    \edef\pgf@temp{\pgf@temp\space\pgfget x}%
+  \fi\pgf@next}
+
+\def\pgf@stop{pgf@stop}
+
+
+% Set a butt line cap.
+% 
+% Example:
+%
+% \pgfsetbuttcap
+
+\def\pgfsetbuttcap{\pgfsys@buttcap\ignorespaces}
+
+
+% Set a round line cap.
+% 
+% Example:
+%
+% \pgfsetroundcap
+
+\def\pgfsetroundcap{\pgfsys@roundcap\ignorespaces}
+
+
+% Set a rectangular line cap.
+% 
+% Example:
+%
+% \pgfsetrectcap
+
+\def\pgfsetrectcap{\pgfsys@rectcap\ignorespaces}
+
+
+% Set a miter line join.
+% 
+% Example:
+%
+% \pgfsetmiterjoin
+
+\def\pgfsetmiterjoin{\pgfsys@miterjoin\ignorespaces}
+
+
+% Set a bevel line join.
+% 
+% Example:
+%
+% \pgfsetbeveljoin
+
+\def\pgfsetbeveljoin{\pgfsys@beveljoin\ignorespaces}
+
+
+% Set a round line join.
+% 
+% Example:
+%
+% \pgfsetroundjoin
+
+\def\pgfsetroundjoin{\pgfsys@roundjoin\ignorespaces}
+
+
+% Basic drawing
+
+% Move current point to #1.
+%
+% #1 = new current point
+% 
+% Example:
+%
+% \pgfmoveto{\pgfxy(0,0)}
+% \pgflineto{\pgfxy(0,1)}
+% \pgfstroke
+
+\def\pgfmoveto#1{%
+  \pgf@process{#1}%
+  \pgfsys@moveto{\pgfget x}{\pgfget y}%
+  \pgf@aax=\pgf@x%
+  \pgf@aay=\pgf@y%
+  \pgf@bbx=\pgf@x%
+  \pgf@bby=\pgf@y\ignorespaces}
+
+
+% Append a line from the current point to #1 to the current path.
+%
+% #1 = end of line
+% 
+% Example:
+%
+% \pgfmoveto{\pgfxy(0,0)}
+% \pgflineto{\pgfxy(0,1)}
+% \pgfstroke
+
+\def\pgflineto#1{%
+  \pgf@process{#1}%
+  \pgfsys@lineto{\pgfget x}{\pgfget y}%
+  \ifnum\pgf@aax=\pgf@bbx\ifnum\pgf@aay=\pgf@bby% First lineto
+    \pgf@abx=\pgf@x%
+    \pgf@aby=\pgf@y
+  \fi\fi%
+  \pgf@bax=\pgf@bbx%
+  \pgf@bay=\pgf@bby%
+  \pgf@bbx=\pgf@x%
+  \pgf@bby=\pgf@y%
+  \ignorespaces}
+
+
+% Append a bezier spline from the current point to #3 with control
+% points #1 and #2 to the current path.
+%
+% #1 = first control point
+% #2 = second control point
+% #3 = end point
+% 
+% Example:
+%
+% \pgfmoveto{\pgfxy(0,0)}
+% \pgfbezier{\pgfxy(0,1)}{\pgfxy(1,1)}{\pgfxy(1,2)}
+% \pgfstroke
+
+\def\pgfcurveto{\pgfbezier}
+\def\pgfbezier#1#2#3{%
+  \pgf@process{#3}%
+  \pgf@xb=\pgf@x%
+  \pgf@yb=\pgf@y%
+  \pgf@process{#2}%
+  \pgf@xa=\pgf@x%
+  \pgf@ya=\pgf@y%
+  \pgf@process{#1}%
+  \pgfsys@bezier{\pgfget x}{\pgfget y}{\pgfget{xa}}{\pgfget{ya}}%
+  {\pgfget{xb}}{\pgfget{yb}}%
+  \pgf@abx=\pgf@x%
+  \pgf@aby=\pgf@y%
+  \pgf@bax=\pgf@xa%
+  \pgf@bay=\pgf@ya%
+  \pgf@bbx=\pgf@xb%
+  \pgf@bby=\pgf@yb\ignorespaces}
+
+
+% Close the current path.
+%
+% Example:
+%
+% % Draws two triangles
+% \pgfmoveto{\pgfxy(0,0)}
+% \pgflineto{\pgfxy(0,1)}
+% \pgflineto{\pgfxy(1,0)}
+% \pgfclosepath
+% \pgfmoveto{\pgfxy(2,0)}
+% \pgflineto{\pgfxy(2,1)}
+% \pgflineto{\pgfxy(3,0)}
+% \pgfclosepath
+% \pgfstroke
+
+\def\pgfclosepath{\pgfsys@closepath\ignorespaces}
+
+
+% This hook will be executed after something non-closed has been stroked.
+%
+% Example:
+%
+% \def\pgfstrokehook{\pgfcircle[fill]{\pgforigin}{4pt}}
+
+\def\pgfstrokehook{}
+
+
+% Stroke the current path.
+%
+% Example:
+%
+% % Draws two lines.
+% \pgfmoveto{\pgfxy(0,0)}
+% \pgflineto{\pgfxy(0,1)}
+% \pgflineto{\pgfxy(1,0)}
+% \pgfstroke
+
+\def\pgfstroke{\pgfsys@stroke\begingroup\pgfstrokehook\endgroup\ignorespaces}
+
+
+
+% Close the current path and then stroke it.
+%
+% Example:
+%
+% % Draw a closed triangle
+% \pgfmoveto{\pgfxy(0,0)}
+% \pgflineto{\pgfxy(0,1)}
+% \pgflineto{\pgfxy(1,0)}
+% \pgfclosestroke
+
+\def\pgfclosestroke{\pgfsys@closestroke\ignorespaces}
+
+
+% Fill the current path.
+%
+% Example:
+%
+% \pgfzerocircle{3cm}
+% \pgffill
+
+\def\pgffill{\pgfsys@fill\ignorespaces}
+
+
+% Fill and stroke the current path.
+%
+% Example:
+%
+% \pgfzerocircle{3cm}
+% \pgffillstroke
+
+\def\pgffillstroke{\pgfsys@fillstroke\ignorespaces}
+
+
+% Fill the current path using the even-odd-rule.
+%
+% Example:
+%
+% \pgfzerocircle{3cm}
+% \pgffill
+
+\def\pgfeofill{\pgfsys@eofill\ignorespaces}
+
+
+% Fill and stroke the current path the even-odd-rule.
+%
+% Example:
+%
+% \pgfzerocircle{3cm}
+% \pgffillstroke
+
+\def\pgfeofillstroke{\pgfsys@eofillstroke\ignorespaces}
+
+
+
+
+% Intersection the current path and the clipping path to form a new
+% clipping path
+%
+% Example:
+%
+% \pgfmoveto{\pgfxy(0,0)}
+% \pgflineto{\pgfxy(0,1)}
+% \pgflineto{\pgfxy(1,0)}
+% \pgfclosepath
+% \pgfclip
+
+\def\pgfclip{\pgfsys@clip\ignorespaces}
+
+
+% Stroke the current path and use it for clipping.
+%
+% Example:
+%
+% \pgfmoveto{\pgfxy(0,0)}
+% \pgflineto{\pgfxy(0,1)}
+% \pgflineto{\pgfxy(1,0)}
+% \pgfclosepath
+% \pgfstrokeclip
+
+\def\pgfstrokeclip{\pgfsys@strokeclip\ignorespaces}
+
+
+% Close the current path, stroke it, and use it for clipping.
+%
+% Example:
+%
+% \pgfmoveto{\pgfxy(0,0)}
+% \pgflineto{\pgfxy(0,1)}
+% \pgflineto{\pgfxy(1,0)}
+% \pgfclosestrokeclip
+
+\def\pgfclosestrokeclip{\pgfsys@closestrokeclip\ignorespaces}
+
+
+% Fill the current path and use it for clipping.
+%
+% Example:
+%
+% \pgfmoveto{\pgfxy(0,0)}
+% \pgflineto{\pgfxy(0,1)}
+% \pgflineto{\pgfxy(1,0)}
+% \pgffillclip
+
+\def\pgffillclip{\pgfsys@fillclip\ignorespaces}
+
+
+% Fill the current path, stroke it, and use it for clipping.
+%
+% Example:
+%
+% \pgfmoveto{\pgfxy(0,0)}
+% \pgflineto{\pgfxy(0,1)}
+% \pgflineto{\pgfxy(1,0)}
+% \pgffillstrokeclip
+
+\def\pgffillstrokeclip{\pgfsys@fillstrokeclip\ignorespaces}
+
+
+% Quick version of basic drawing commands
+
+
+% Move current point to (#1,#2).
+%
+% #1 = x dimension of new current point
+% #2 = y dimension of new current point
+% 
+% Example:
+%
+% \pgfqmoveto{0}{0}
+% \pgfqlineto{1}{1}
+% \pgfqbezier{2}{1}{2}{2}{3}{2}
+% \pgfqstroke
+
+\def\pgfqmoveto#1#2{\pgfsys@moveto{#1}{#2}\ignorespaces}
+
+
+% Append a line to (#1,#2) to the current path.
+%
+% #1 = x dimension of target
+% #2 = y dimension of target
+% 
+% Example:
+%
+% \pgfqmoveto{0}{0}
+% \pgfqlineto{1}{1}
+% \pgfqbezier{2}{1}{2}{2}{3}{2}
+% \pgfqstroke
+
+\def\pgfqlineto#1#2{\pgfsys@lineto{#1}{#2}\ignorespaces}
+
+
+% Append a bezier spline to the current path.
+%
+% #1 = x dimension of first support point
+% #2 = y dimension of first support point
+% #3 = x dimension of second support point
+% #4 = y dimension of second support point
+% #5 = x dimension of target point
+% #6 = y dimension of target point
+% 
+% Example:
+%
+% \pgfqmoveto{0}{0}
+% \pgfqlineto{1}{1}
+% \pgfqbezier{2}{1}{2}{2}{3}{2}
+% \pgfqstroke
+
+\def\pgfqcurveto{\pgfqbezier}
+\def\pgfqbezier#1#2#3#4#5#6{\pgfsys@bezier{#1}{#2}{#3}{#4}{#5}{#6}\ignorespaces}
+
+
+% Stroke current path. No hooks called.
+% 
+% Example:
+%
+% \pgfqmoveto{0cm}{0cm}
+% \pgfqlineto{1cm}{1cm}
+% \pgfqbezier{2cm}{1cm}{2cm}{2cm}{3cm}{2cm}
+% \pgfqstroke
+
+\def\pgfqstroke{\pgfsys@stroke\ignorespaces}
+
+
+% Append a circle of a given radius around the origin to the current path.
+%
+% #1 = radius
+%  
+% Example:
+%
+% \pgfzerocircle{3cm}
+% \pgfstroke
+
+\def\pgfzerocircle#1{%
+  \setlength\pgf@x{#1}\pgf@bpcorr{\pgf@x}%
+  \pgf@y=0.555\pgf@x%
+  \pgfsys@moveto{0}{\pgfget x}%
+  \pgfsys@bezier{\pgfget y}{\pgfget x}{\pgfget x}{\pgfget y}{\pgfget x}{0}%
+  \pgfsys@bezier{\pgfget x}{-\pgfget y}{\pgfget y}
+                {-\pgfget x}{0}{-\pgfget x}%
+  \pgfsys@bezier{-\pgfget y}{-\pgfget x}{-\pgfget x}%
+                {-\pgfget y}{-\pgfget x}{0}%
+  \pgfsys@bezier{-\pgfget x}{\pgfget y}{-\pgfget y}{\pgfget x}{0}{\pgfget x}%
+  \pgfsys@closepath%
+  \ignorespaces}
+
+
+% Append an ellipse with given axis vectors to the current path.
+%
+% #1 = first axis vector
+% #2 = second axis vector
+%  
+% Example:
+%
+% \pgfzeroellipse{\pgfpoint{1cm}{1cm}}{\pgfpoint{-2cm}{2cm}}
+% \pgfstroke
+
+\def\pgfzeroellipse#1#2{%
+  \pgf@process{#1}%
+  \pgf@xa=\pgf@x% store first axis in xa/ya
+  \pgf@ya=\pgf@y%
+  \pgf@process{#2}%
+  \pgf@xb=\pgf@x% store second axis in xb/yb
+  \pgf@yb=\pgf@y%
+  \pgfsys@moveto{\pgfget{xa}}{\pgfget{ya}}%
+  \pgf@x=0.555\pgf@xb% first arc
+  \pgf@y=0.555\pgf@yb%
+  \advance\pgf@x by\pgf@xa%
+  \advance\pgf@y by\pgf@ya%
+  \edef\pgf@temp{{\pgfget x}{\pgfget y}}%
+  \pgf@x=0.555\pgf@xa%
+  \pgf@y=0.555\pgf@ya%
+  \advance\pgf@x by\pgf@xb%
+  \advance\pgf@y by\pgf@yb%
+  \expandafter\pgfsys@bezier\pgf@temp{\pgfget x}{\pgfget y}{\pgfget{xb}}{\pgfget{yb}}%
+  \pgf@xa=-\pgf@xa% flip first axis
+  \pgf@ya=-\pgf@ya%
+  \pgf@x=0.555\pgf@xa% second arc
+  \pgf@y=0.555\pgf@ya%
+  \advance\pgf@x by\pgf@xb%
+  \advance\pgf@y by\pgf@yb%
+  \edef\pgf@temp{{\pgfget x}{\pgfget y}}%
+  \pgf@x=0.555\pgf@xb%
+  \pgf@y=0.555\pgf@yb%
+  \advance\pgf@x by\pgf@xa%
+  \advance\pgf@y by\pgf@ya%
+  \expandafter\pgfsys@bezier\pgf@temp{\pgfget x}{\pgfget y}{\pgfget{xa}}{\pgfget{ya}}%  
+  \pgf@xb=-\pgf@xb% flip second axis
+  \pgf@yb=-\pgf@yb%
+  \pgf@x=0.555\pgf@xb% third arc
+  \pgf@y=0.555\pgf@yb%
+  \advance\pgf@x by\pgf@xa%
+  \advance\pgf@y by\pgf@ya%
+  \edef\pgf@temp{{\pgfget x}{\pgfget y}}%
+  \pgf@x=0.555\pgf@xa%
+  \pgf@y=0.555\pgf@ya%
+  \advance\pgf@x by\pgf@xb%
+  \advance\pgf@y by\pgf@yb%
+  \expandafter\pgfsys@bezier\pgf@temp{\pgfget x}{\pgfget y}{\pgfget{xb}}{\pgfget{yb}}%  
+  \pgf@xa=-\pgf@xa% flip first axis once more
+  \pgf@ya=-\pgf@ya%
+  \pgf@x=0.555\pgf@xa% fourth arc
+  \pgf@y=0.555\pgf@ya%
+  \advance\pgf@x by\pgf@xb%
+  \advance\pgf@y by\pgf@yb%
+  \edef\pgf@temp{{\pgfget x}{\pgfget y}}%
+  \pgf@x=0.555\pgf@xb%
+  \pgf@y=0.555\pgf@yb%
+  \advance\pgf@x by\pgf@xa%
+  \advance\pgf@y by\pgf@ya%
+  \expandafter\pgfsys@bezier\pgf@temp{\pgfget x}{\pgfget y}{\pgfget{xa}}{\pgfget{ya}}%  
+  \pgfsys@closepath%
+  \ignorespaces}
+
+
+
+% Higher order drawing in xy-coordinate system
+
+% Stroke a line from #1 to #2.
+%
+% #1 = start x
+% #2 = start y
+% #3 = end x
+% #4 = end y
+%  
+% Example:
+%
+% \pgfxyline(0,0)(0,1)
+
+\def\pgfxyline(#1,#2)(#3,#4){%
+  \pgfmoveto{\pgfxy(#1,#2)}%
+  \pgflineto{\pgfxy(#3,#4)}%
+  \pgfstroke}
+
+
+
+% A bezier curve from #1 to #2 with support #3 and #4.
+%
+% #1 = start x
+% #2 = start y
+% #3 = first support x
+% #4 = first support y
+% #5 = second support x
+% #6 = second support y
+% #7 = end x
+% #8 = end y
+%
+% Example:
+%
+% \pgfxycurve(0,0)(1,0)(1,1)(2,1)
+
+\def\pgfxycurve(#1,#2)(#3,#4)(#5,#6)(#7,#8){%
+  \pgfmoveto{\pgfxy(#1,#2)}%
+  \pgfbezier{\pgfxy(#3,#4)}{\pgfxy(#5,#6)}{\pgfxy(#7,#8)}%
+  \pgfstroke}
+
+
+
+% Higher order drawing
+
+% Stroke a line from #1 to #2.
+%
+% #1 = start
+% #2 = end
+%  
+% Example:
+%
+% \pgfline{\pgfxy(0,0)}{\pgfxy(0,1)}
+
+\def\pgfline#1#2{%
+  \pgfmoveto{#1}%
+  \pgflineto{#2}%
+  \pgfstroke}
+
+
+
+% Stroke or fill an ellipse.
+%
+% #1 = ``stroke'' or ``fill'' or ``fillstroke''
+% #2 = center
+% #3 = first axis
+% #4 = second axis
+%  
+% Example:
+%
+% % Draw a filled circle of radius 3cm around the origin
+% \pgfellipse[fill]{\pgforigin}{\pgfxy(2,0)}{\pgfxy(0,1)}
+%
+% % Draw a non-filled circle of radius 1cm around the point (1,1)
+% \pgfellipse[stroke]{\pgfxy(1,1)}{\pgfxy(1,1)}{\pgfxy(-2,2)}
+
+\def\pgfellipse[#1]#2#3#4{%
+  \begin{pgftranslate}{#2}%
+    \pgfzeroellipse{#3}{#4}%
+    \expandafter\ifx\csname pgfsys@#1\endcsname\relax%
+    \PackageError{pgf}{Stroke style "#1" undefined.}{Using "stroke" instead.}%
+    \pgfsys@stroke\else%
+    \csname pgfsys@#1\endcsname\fi%
+  \end{pgftranslate}\ignorespaces}
+
+
+% Stroke or fill a circle.
+%
+% #1 = ``stroke'' or ``fill'' or ``fillstroke''
+% #2 = center
+% #3 = radius
+%  
+% Example:
+%
+% % Draw a filled circle of radius 3cm around the origin
+% \pgfcircle[fill]{\pgforigin}{3cm}
+%
+% % Draw a non-filled circle of radius 1cm around the point (1,1)
+% \pgfcircle[stroke]{\pgxy(1,1)}{3cm}
+
+\def\pgfcircle[#1]#2#3{%
+  \begin{pgftranslate}{#2}%
+    \pgfzerocircle{#3}%
+    \expandafter\ifx\csname pgfsys@#1\endcsname\relax%
+    \PackageError{pgf}{Stroke style "#1" undefined.}{Using "stroke" instead.}%
+    \pgfsys@stroke\else%
+    \csname pgfsys@#1\endcsname\fi%
+  \end{pgftranslate}\ignorespaces}
+
+
+% Stroke or fill a rectangle.
+%
+% #1 = ``stroke'' or ``fill'' or ``fillstroke''
+% #2 = lower left corner point of rectangle
+% #3 = width and height vector
+%  
+% Example:
+%
+% % Draw a filled rectangle with corners (2,2) and (3,3)
+% \pgfrect[fill]{\pgfxy(2,2)}{\pgfxy(1,1)}
+%
+% % Draw a non-filled rectangle with corners (-1,-1) and (1,1)
+% \pgfrect[fill]{\pgfxy(-1,-1)}{\pgfxy(2,2)}
+
+\def\pgfrect[#1]#2#3{%
+  \pgf@process{#3}%
+  \pgf@xa=\pgf@x%
+  \pgf@ya=\pgf@y%
+  \pgf@process{#2}%
+  \pgfsys@rect{\pgfget x}{\pgfget y}{\pgfget{xa}}{\pgfget{ya}}%
+  \csname pgfsys@#1\endcsname%
+  \ignorespaces}
+
+
+
+% Draw a grid.
+%
+% #1 = lower left point of grid
+% #2 = upper right point of grid
+%  
+% Options: 
+%  
+% stepx = x-step dimension (default 1cm)
+% stepy = y-step dimension (default 1cm)
+% step  = dimesion vector
+%  
+% Example:
+%
+% \pgfsetlinewidth{0.8pt}
+% \pgfgrid{\pgfxy(0,0)}{\pgfxy(3,2)}
+% \pgfsetlinewidth{0.4pt}
+% \pgfgrid[stepx=1cm,stepy=1cm]{\pgfxy(0,0)}{\pgfxy(3,2)}
+
+\define@key{pgfbase}{stepx}{\setlength{\pgf@x}{#1}\pgf@bpcorr{\pgf@x}\relax}
+\define@key{pgfbase}{stepy}{\setlength{\pgf@y}{#1}\pgf@bpcorr{\pgf@y}\relax}
+\define@key{pgfbase}{step}{\pgf@process{#1}}
+
+\newcommand\pgfgrid[3][]{%
+  \setkeys{pgfbase}{stepx=1cm,stepy=1cm}%
+  \setkeys{pgfbase}{#1}%
+  \pgf@xc=\pgf@x%
+  \pgf@yc=\pgf@y%
+  \pgf@process{#3}%
+  \pgf@xb=\pgf@x%
+  \pgf@yb=\pgf@y%
+  \pgf@process{#2}%
+  \pgf@xa=\pgf@x\relax%
+  \pgf@ya=\pgf@y\relax%
+  \pgf@counta=\pgf@y\relax%
+  \pgf@countb=\pgf@yc\relax%
+  \divide\pgf@counta by\pgf@countb\relax%
+  \pgf@y=\pgf@counta\pgf@yc\relax%
+  \ifdim\pgf@y<\pgf@ya%
+    \advance\pgf@y by\pgf@yc%
+  \fi%
+  \loop% horizontal lines
+    \pgfsys@moveto{\pgfget{x}}{\pgfget{y}}%
+    \pgfsys@lineto{\pgfget{xb}}{\pgfget{y}}%
+    \advance\pgf@y by\pgf@yc%
+  \ifdim\pgf@y<\pgf@yb%
+  \repeat%
+  \advance\pgf@y by-0.01pt\relax%
+  \ifdim\pgf@y<\pgf@yb%
+    \pgfsys@moveto{\pgfget{x}}{\pgfget{y}}%
+    \pgfsys@lineto{\pgfget{xb}}{\pgfget{y}}%
+  \fi%
+  \pgf@counta=\pgf@x\relax%
+  \pgf@countb=\pgf@xc\relax%
+  \divide\pgf@counta by\pgf@countb\relax%
+  \pgf@x=\pgf@counta\pgf@xc\relax%
+  \ifdim\pgf@x<\pgf@xa%
+    \advance\pgf@x by\pgf@xc%
+  \fi%
+  \loop% vertical lines
+    \pgfsys@moveto{\pgfget{x}}{\pgfget{ya}}%
+    \pgfsys@lineto{\pgfget{x}}{\pgfget{yb}}%
+    \advance\pgf@x by\pgf@xc%
+  \ifdim\pgf@x<\pgf@xb%
+  \repeat%
+  \advance\pgf@x by-0.01pt\relax%
+  \ifdim\pgf@x<\pgf@xb%
+    \pgfsys@moveto{\pgfget{x}}{\pgfget{ya}}%
+    \pgfsys@lineto{\pgfget{x}}{\pgfget{yb}}%
+  \fi%
+  \pgfsys@stroke%
+  \ignorespaces}
+
+
+
+
+
+% Object reuse
+
+% Internal box
+\newbox\pgfobjectbox
+
+
+% Define a pgf object for reuse. Such objects will be stored
+% efficiently internally.
+%
+% #1 = name for later reuse
+% #2 = lower left corner point of bounding box
+% #3 = upper right left corner point of bounding box
+% #4 = pure pgf code (nothing too fancy!)
+%
+% Description:
+% 
+% Used to define reusable objects. The object must be composed of
+% basic pgf graphic primitives. Nothing fancy can be used. The
+% created object will be stored as an xform object in pdf or as a
+% postscript procedure in postscript.
+%  
+% Example:
+%
+% \pgfdefobject{myrect}{\pgfpoint{-1pt}{-1pt}}{\pgfpoint{11pt}{11pt}}
+% {\pgfqmoveto{0}{0}
+%  \pgfqmoveto{10}{0}
+%  \pgfqmoveto{10}{10}
+%  \pgfqmoveto{0}{10}
+%  \pgfclosestroke}
+%
+% \begin{pgfpicture}{0cm}{0cm}{1cm}{1cm}
+%   \pgfuseobject{myrect}
+% \end{pgfpicture}
+
+\def\pgfdefobject#1#2#3#4{\pgfsys@defobject{#1}{#2}{#3}{#4}\ignorespaces}
+
+
+% Use an object that was previously defined using pgfdefobject
+%
+% #1 = name of previously defined object
+%  
+% Example:
+%
+% \pgfdefobject{myrect}{\pgfpoint{-1pt}{-1pt}}{\pgfpoint{11pt}{11pt}}
+% {\pgfqmoveto{0}{0}
+%  \pgfqmoveto{10}{0}
+%  \pgfqmoveto{10}{10}
+%  \pgfqmoveto{0}{10}
+%  \pgfclosestroke}
+%
+% \begin{pgfpicture}{0cm}{0cm}{1cm}{1cm}
+%   \pgfuseobject{myrect}
+% \end{pgfpicture}
+
+\def\pgfuseobject#1{\pgfsys@useobject{#1}{}\ignorespaces}
+
+
+% Use an object that was previously defined using pgfdefobject, but
+% magnify the object by the current x and y register values
+%
+% #1 = name of previously defined object
+%  
+% Example:
+%
+% \pgfdefobject{myrect}{\pgfpoint{-1pt}{-1pt}}{\pgfpoint{11pt}{11pt}}
+% {\pgfqmoveto{0}{0}
+%  \pgfqmoveto{10}{0}
+%  \pgfqmoveto{10}{10}
+%  \pgfqmoveto{0}{10}
+%  \pgfclosestroke}
+%
+% \begin{pgfpicture}{0cm}{0cm}{1cm}{1cm}
+%   \pgf@x=2pt% Scale by factor two in x-direction
+%   \pgf@y=2pt% Scale by factor two in y-direction
+%   \pgfuseobjectmagnify{myrect}
+% \end{pgfpicture}
+
+\def\pgfuseobjectmagnify#1{%
+  \pgfsys@useobject{#1}{\pgfsys@scale{\pgfget x}{\pgfget y}}\ignorespaces}
+
+
+% Coordinate systems
+
+% Internal registers
+\newdimen\pgf@xx
+\newdimen\pgf@xy
+\newdimen\pgf@yx
+\newdimen\pgf@yy
+\newdimen\pgf@zx
+\newdimen\pgf@zy
+
+
+% Store a value in polar-coordinates
+%
+% #1 = a degree
+% #2 = a radius
+%
+% x = #2 * cos(#1)
+% y = #2 * sin(#2)
+% 
+% Example:
+%
+% % Create a slanted rectangle
+%
+% \pgfmoveto{\pgfpolar{30}{1cm}}
+
+\def\pgfpolar#1#2{\pgfsincos{#1}%
+  \setlength{\pgf@xa}{#2}\pgf@bpcorr{\pgf@xa}%
+  \pgf@ya=\pgf@xa\relax%
+  \pgf@mult{\pgf@xa}{\pgfget x}{\pgf@xa}%
+  \pgf@mult{\pgf@ya}{\pgfget y}{\pgf@ya}%
+  \pgf@y=\pgf@xa\relax%
+  \pgf@x=\pgf@ya\ignorespaces}
+  
+
+% Store the vector #1 * x-vec + #2 * y-vec
+%
+% #1 = a factor for the x-vector
+% #2 = a factor fot the y-vector
+%
+% x = x-component of result vector
+% y = y-component of result vector
+%
+% Description:
+% 
+% This command can be used to create a new coordinate system
+% without using the rotate/translate/scale commands. This
+% may be useful, if you do not want arrows and line width to
+% be scaled/transformed together with the coordinate system.
+% 
+% Example:
+%
+% % Create a slanted rectangle
+%
+% \pgfsetxvec{\pgfpoint{1cm}{1cm}}
+% \pgfsetyvec{\pgfpoint{0cm}{1cm}}
+% 
+% \pgfmoveto{\pgfxy(0,0)}
+% \pgflineto{\pgfxy(1,0)}
+% \pgflineto{\pgfxy(1,1)}
+% \pgflineto{\pgfxy(0,1)}
+% \pgfclosestroke
+
+\def\pgfxy(#1,#2){\pgf@x=#1\pgf@xx%
+  \advance\pgf@x by #2\pgf@yx%
+  \pgf@y=#1\pgf@xy%
+  \advance\pgf@y by #2\pgf@yy}
+
+
+% Store the vector #1 * x-vec + #2 * y-vec + #3 * z-vec
+%
+% #1 = a factor for the x-vector
+% #2 = a factor fot the y-vector
+% #3 = a factor fot the z-vector
+%
+% x = x-component of result vector
+% y = y-component of result vector
+%
+%
+% Description:
+% 
+% This command allows you to use a 3d coordinate system.
+% 
+%
+% Example:
+%
+% % Draw a cubus
+% 
+% \pgfline{\pgfxyz(0,0,0)}{\pgfxyz(0,0,1)}
+% \pgfline{\pgfxyz(0,1,0)}{\pgfxyz(0,1,1)}
+% \pgfline{\pgfxyz(1,0,0)}{\pgfxyz(1,0,1)}
+% \pgfline{\pgfxyz(1,1,0)}{\pgfxyz(1,1,1)}
+% \pgfline{\pgfxyz(0,0,0)}{\pgfxyz(0,1,0)}
+% \pgfline{\pgfxyz(0,0,1)}{\pgfxyz(0,1,1)}
+% \pgfline{\pgfxyz(1,0,0)}{\pgfxyz(1,1,0)}
+% \pgfline{\pgfxyz(1,0,1)}{\pgfxyz(1,1,1)}
+% \pgfline{\pgfxyz(0,0,0)}{\pgfxyz(1,0,0)}
+% \pgfline{\pgfxyz(0,0,1)}{\pgfxyz(1,0,1)}
+% \pgfline{\pgfxyz(0,1,0)}{\pgfxyz(1,1,0)}
+% \pgfline{\pgfxyz(0,1,1)}{\pgfxyz(1,1,1)}
+
+\def\pgfxyz(#1,#2,#3){\pgf@x=#1\pgf@xx%
+  \advance\pgf@x by #2\pgf@yx%
+  \advance\pgf@x by #3\pgf@zx%
+  \pgf@y=#1\pgf@xy%
+  \advance\pgf@y by #2\pgf@yy%
+  \advance\pgf@y by #3\pgf@zy}
+
+
+
+
+% Set the x-vector
+%
+% #1 = a point the is the new x-vector
+%
+% Example:
+%
+% \pgfsetxvec{\pgfpoint{1cm}{0cm}}
+
+\def\pgfsetxvec#1{%
+  \pgf@process{#1}%
+  \pgf@xx=\pgf@x%
+  \pgf@xy=\pgf@y%
+  \ignorespaces}
+
+
+% Set the y-vector
+%
+% #1 = a point the is the new y-vector
+%
+% Example:
+%
+% \pgfsetyvec{\pgfpoint{0cm}{1cm}}
+
+\def\pgfsetyvec#1{%
+  \pgf@process{#1}%
+  \pgf@yx=\pgf@x%
+  \pgf@yy=\pgf@y%
+  \ignorespaces}
+
+
+% Set the z-vector
+%
+% #1 = a point the is the new z-vector
+%
+% Example:
+%
+% \pgfsetzvec{\pgfpoint{-0.385cm}{-0.385cm}}
+
+\def\pgfsetzvec#1{%
+  \pgf@process{#1}%
+  \pgf@zx=\pgf@x%
+  \pgf@zy=\pgf@y%
+  \ignorespaces}
+
+
+
+% Default values
+\pgfsetxvec{\pgfpoint{1cm}{0cm}}
+\pgfsetyvec{\pgfpoint{0cm}{1cm}}
+\pgfsetzvec{\pgfpoint{-0.385cm}{-0.385cm}}
+
+
+
+
+
+
+
+% Picture environment
+%
+% #1 = x-dimension of lower left corner
+% #2 = y-dimension of lower left corner
+% #3 = x-dimension of upper right corner
+% #4 = y-dimension of upper right corner
+%
+% Example:
+%
+% \begin{pgfpicture}{-2cm}{-2cm}{2cm}{2cm}%
+%   \pgfrect[stroke]{\pgfxy(-2,0)}{\pgfxy(1,1)}
+%   \pgfrect[stroke]{\pgfxy(1,0)}{\pgfxy(1,1)}
+%
+%   \pgfsetendarrow{\pgfarrowto}
+%   \pgfline{\pgfxy(-0.9,0.2)}{\pgfxy(0.9,0.4)}
+%   \pgfline{\pgfxy(0.9,0.6)}{\pgfxy(-0.9,0.8)}
+% \end{pgfpicture}
+
+\def\pgfpicture#1#2#3#4{%
+  \setlength\pgf@xa{#3}%
+  \setlength\pgf@x{#1}%
+  \advance\pgf@xa by-\pgf@x\relax%
+  \setlength\pgf@ya{#4}%
+  \setlength\pgf@y{#2}%
+  \advance\pgf@ya by-\pgf@y\relax%
+  \setbox\pgfpic\hb@xt@\pgf@xa\bgroup
+  \hskip-\pgf@x\relax%
+  \lower\pgf@y\hbox\bgroup%
+  \pgfsys@openpicture%
+    \pgfsetlinewidth{0.4pt}%
+    \color{.}%
+    \pgfex=1ex\pgfem=1em% no longer needed
+    \let\pgf@setlengthorig=\setlength%
+    \let\pgf@addtolengthorig=\addtolength%
+    \let\setlength=\pgf@setlength%
+    \let\addtolength=\pgf@addtolength%
+    \nullfont\spaceskip\z@\xspaceskip\z@}
+\def\endpgfpicture{\pgfsys@closepicture%
+  \egroup\hss\egroup
+  \ht\pgfpic\pgf@ya\dp\pgfpic\z@
+  \mbox{\box\pgfpic}}
+
+
+
+
+
+% Boxed Picture environment
+%
+% #1 = x-dimension of lower left corner
+% #2 = y-dimension of lower left corner
+% #3 = x-dimension of upper right corner
+% #4 = y-dimension of upper right corner
+%
+%
+% Description:
+% 
+% Draws a box around the picture. Useful for fitting the size.
+%
+%
+% Example:
+%
+% \begin{pgfpictureboxed}{-2cm}{-2cm}{2cm}{2cm}%
+%   \pgfrect[stroke]{\pgfxy(-2,0)}{\pgfxy(1,1)}
+%   \pgfrect[stroke]{\pgfxy(1,0)}{\pgfxy(1,1)}
+%
+%   \pgfsetendarrow{\pgfarrowto}
+%   \pgfline{\pgfxy(-0.9,0.2)}{\pgfxy(0.9,0.4)}
+%   \pgfline{\pgfxy(0.9,0.6)}{\pgfxy(-0.9,0.8)}
+% \end{pgfpictureboxed}
+
+\def\pgfpictureboxed#1#2#3#4{%
+  \pgfpicture{#1}{#2}{#3}{#4}%
+    \pgfmoveto{\pgfpoint{#1}{#2}}%
+    \pgflineto{\pgfpoint{#1}{#4}}%
+    \pgflineto{\pgfpoint{#3}{#4}}%
+    \pgflineto{\pgfpoint{#3}{#2}}%
+    \pgfclosestroke\ignorespaces}
+\def\endpgfpictureboxed{\endpgfpicture}
+
+
+
+% Translation and rotation
+
+
+% Magnification environment
+%
+% #1 = x magnification factor
+% #2 = y magnification factor
+%
+% Example:
+%
+% \begin{pgfmagnify}{2}{2}
+%    \pgfline{\pgforigin}{\pgfxy(1,0)}
+% \end{pgfmagnify}
+
+\def\pgfmagnify#1#2{%
+  \pgfscope\pgfsys@scale{#1}{#2}\ignorespaces}
+\def\endpgfmagnify{\endpgfscope\ignorespacesafterend\ignorespaces}
+
+
+
+% Translation environment
+%
+% #1 = new origin
+%
+% Example:
+%
+% \begin{pgftranslate}{\pgfpoint{0cm}{1cm}}
+%    \pgfline{\pgforigin}{\pgfxy(1,0)}
+% \end{pgftranslate}
+
+\def\pgftranslate#1{%
+  \pgf@process{#1}%
+  \pgfscope\pgfsys@translate{\pgfget x}{\pgfget y}\ignorespaces} 
+\def\endpgftranslate{\endpgfscope\ignorespacesafterend\ignorespaces}
+
+
+% Translation command
+%
+% #1 = new origin
+%
+% Example:
+%
+% \pgftranslateto{\pgfpoint{0cm}{1cm}}
+
+\def\pgftranslateto#1{%
+  \pgf@process{#1}%
+  \pgfsys@translate{\pgfget x}{\pgfget y}\ignorespaces} 
+
+
+
+% Rotation environment
+%
+% #1 = sin/cos of rotation degree (use \pgfdegree)
+%
+% Example:
+%
+% \begin{pgfrotateby}{\pgfdegree{30}}
+%    \pgfline{\pgforigin}{\pgfxy(1,0)}
+% \end{pgfrotateby}
+
+\def\pgfrotateby#1{%
+  \pgfscope%
+    \pgf@process{#1}%
+    \pgf@xa=-\pgf@x%
+    \pgfsys@transform{\pgfget y}{\pgfget x}{\pgfget{xa}}{\pgfget y}%
+                     {0}{0}\ignorespaces}
+\def\endpgfrotateby{\endpgfscope\ignorespacesafterend\ignorespaces}
+
+
+
+% Put something at a given location
+%
+% #1 = place where to put an object
+%
+% Example:
+%
+% \pgfputat{\pgfxy(1,0)}{\pgfbox[center,center]{Hello world}}
+
+\long\def\pgfputat#1#2{%
+  \begin{pgftranslate}{#1}#2\end{pgftranslate}\ignorespaces}
+
+
+
+
+% Declare an image
+%
+% #1 = optional argument: width, height, page specification
+% #2 = name of the image for later use
+% #4 = filename without extension, automatic extensions are .pdf,
+%      .jpg, and .png for PDF and .ps, .eps, .epsi for postscript.
+%
+% Description:
+%
+% This command declares an image file for later use. Even if the image
+% is used several times in the document, in PDF it will only be stored
+% once. 
+%
+% Example:
+%
+% \pgfdeclareimage[width=2cm,page=2]{myimage}{imagefilename}
+
+\newcommand\pgfdeclareimage[3][]{%
+  \setkeys{pgfimage}{height=,width=,page=,interpolate=false,mask=}% defaults
+  \setkeys{pgfimage}{#1}%
+  % Try to find the file
+  \gdef\pgf@filename{}%
+  % If page= parameter is not empty, try that file first:
+  \ifx\pgf@imagepage\@empty%
+  \else%
+  \expandafter\pgf@findfile\pgfsys@imagesuffixlist:+{#3.page\pgf@imagepage}%
+  \fi%
+  \ifx\pgf@filename\@empty%
+    \expandafter\pgf@findfile\pgfsys@imagesuffixlist:+{#3}%
+  \else%
+    \setkeys{pgfimage}{page=}% make page empty     
+  \fi%
+  \ifx\pgf@filename\@empty%
+    \PackageWarning{pgf}%
+    {File "#3" not found when defining image "#2".\MessageBreak
+      Tried all extensions in "\pgfsys@imagesuffixlist"}%
+    \pgf@declaredraftimage{#2}%
+  \else%
+    \ifpgf@draftmode%
+      \pgf@declaredraftimage{#2}%
+    \else%
+      \pgfsys@defineimage%
+    \fi%
+  \fi%
+  \expandafter\global\expandafter\let\csname pgf@image@#2!\endcsname=\pgf@image%
+}
+
+\define@key{pgfimage}{width}{\edef\pgf@imagewidth{#1}}
+\define@key{pgfimage}{height}{\edef\pgf@imageheight{#1}}
+\define@key{pgfimage}{page}{\edef\pgf@imagepage{#1}}
+\define@key{pgfimage}{interpolate}[true]{\edef\pgf@imageinterpolate{/Interpolate #1}}
+\define@key{pgfimage}{mask}{%
+  \edef\pgf@imagemask{#1}%
+  \ifx\pgf@imagemask\@empty%
+  \else%
+    \@ifundefined{pgf@mask@#1}%
+    {\PackageError{pgf}{Undefined mask "#1".}{}%
+      \edef\pgf@imagemask{}}%
+    {\edef\pgf@imagemask{\csname pgf@mask@#1\endcsname}%
+      \ifx\pgf@imagemask\@empty%
+      \else
+      \edef\pgf@imagemask{/SMask \pgf@imagemask\space 0 R}%
+      \fi}%
+    \fi}
+
+\def\pgf@findfile#1:#2+#3{%
+  \IfFileExists{#3.#1}%
+  {\xdef\pgf@filename{#3.#1}}%
+  {\def\pgf@mightbeempty{#2}%
+    \ifx\pgf@mightbeempty\@empty\else%
+    \pgf@findfile#2+{#3}%
+    \fi}}
+
+\def\pgf@declaredraftimage#1{%
+  \ifx\pgf@imagewidth\@empty%
+    \PackageWarning{pgf}{Missing width for image "#1" in draft mode.\MessageBreak  Using 1cm instead}%
+    \edef\pgf@imagewidth{1cm}%
+  \fi%
+  \ifx\pgf@imageheight\@empty%
+    \PackageWarning{pgf}{Missing height for image "#1" in draft mode.\MessageBreak Using 1cm instead}%
+    \edef\pgf@imageheight{1cm}%
+  \fi%  
+  \ifx\pgf@imagepage\@empty\else\edef\pgf@imagepagetext{ page \pgf@imagepagetext}\fi%
+  \edef\pgf@image{%
+    \hbox to \pgf@imagewidth{%
+      \vrule\kern-0.4pt%
+      \vbox to \pgf@imageheight{%
+        \hrule\vfil%
+        \hbox to \pgf@imagewidth{\hskip-10cm\hfil\noexpand\tiny#1\pgf@imagepage\hfil\hskip-10cm}%
+        \vfil\hrule}%
+      \kern-0.4pt\vrule}%
+  }%
+}
+
+
+
+% Declare a soft mask
+%
+% #1 = optional argument: matte specification. default matte is
+%      white. 
+% #2 = name of the mask for later use
+% #3 = filename without extension, automatic extensions are .pdf,
+%      .jpg, and .png for PDF. Postscript is not supported.
+%
+% Description:
+%
+% This command declares a soft mask for later masking an image. The
+% declared mask should be used together with an image of exactly the
+% same height/width if matte is defined. Matte should be the
+% preblended background color (see pdf spec for details).
+%
+% Example:
+%
+% \pgfdeclaremask[matte=white]{maskname}{maskfilename}
+% \pgfdeclareimage[mask=maskname]{image}{imagefilename}
+
+\newcommand\pgfdeclaremask[3][]{%
+  \setkeys{pgfmask}{matte={1 1 1}}% defaults
+  \setkeys{pgfmask}{#1}%
+  \def\pgf@mask{}%
+  % Try to find the file
+  \gdef\pgf@filename{}%
+  \expandafter\pgf@findfile\pgfsys@imagesuffixlist:+{#3}%
+  \ifx\pgf@filename\@empty%
+    \PackageWarning{pgf}%
+    {File "#3" not found when defining mask "#2".\MessageBreak
+      Tried all extensions in "\pgfsys@imagesuffixlist"}%
+  \else%
+    \pgfsys@definemask%
+  \fi%
+  \expandafter\global\expandafter\let\csname pgf@mask@#2\endcsname=\pgf@mask%
+}
+
+\define@key{pgfmask}{matte}{\edef\pgf@maskmatte{#1}}
+
+
+
+
+% Create an alias name for an image
+%
+% #1 = name of the alias
+% #2 = name of the original
+%
+% Example:
+%
+% \pgfdeclareimage{image}{1cm}{1cm}{filename
+% \pgfaliasimage{alias}{image}
+% \pgfuseimage{alias}
+
+\def\pgfaliasimage#1#2{%
+  \expandafter\global\expandafter\let\expandafter\pgf@temp\expandafter=\csname pgf@image@#2!\endcsname%
+  \expandafter\global\expandafter\let\csname pgf@image@#1!\endcsname=\pgf@temp%
+  }
+
+  
+% Use an image
+%
+% #1 = name of a previously declared image
+%
+% Example:
+%
+% \pgfputat{\pgforigin}{\pgfbox[left,base]{\pgfuseimage{myimage}}}
+
+\def\pgfuseimage#1{%
+  \def\pgf@imagename{pgf@image@#1}%
+  \pgf@tryextensions{\pgf@imagename}{\pgfalternateextension}%
+  \expandafter\@ifundefined\expandafter{\pgf@imagename}%
+  {\PackageError{pgf}{Undefined image "#1"}{}}%
+  {{\leavevmode\csname\pgf@imagename\endcsname}}}
+
+\def\pgf@tryextensions#1#2{%
+  \edef\pgf@args{[#2!]}\expandafter\pgf@@tryextensions\pgf@args{#1}}
+\def\pgf@@tryextensions[#1!#2]#3{%
+  \expandafter\@ifundefined\expandafter{#3.#1!#2}%
+  {\def\pgf@temp{#2}%
+    \ifx\pgf@temp\@empty%
+    \edef#3{#3!}%
+    \else%
+    \pgf@@tryextensions[#2]{#3}%
+    \fi}%
+  {\edef#3{#3.#1!#2}}}
+
+
+% Alternate image
+%
+% Description:
+%
+% When an image is used, pgf first attempts to use the image with the
+% alternate extension added. If this fails, the original image is
+% used. If the alternate extension contains ``!'', then the text up to
+% the ! is successively removed and the remainder is tried as an
+% alternate extension.
+%
+% Example:
+%
+% \def\pgfalternateextension{20!white}
+
+\def\pgfalternateextension{}
+
+
+
+% Directly insert an image
+%
+% #1 = optional argument: width, height, page specification
+% #2 = file name
+%
+% Description:
+%
+% Directly inserts an image without declaration. You can, however,
+% still access this image using the name pgflastimage. By using
+% pgfaliasimage, you can also save this image for later.
+%
+% Example:
+%
+% \pgfimage[height=2cm]{filename}
+
+\newcommand\pgfimage[2][]{%
+  \pgfdeclareimage[#1]{pgflastimage}{#2}%
+  \pgfuseimage{pgflastimage}}
+
+
+
+
+% Mathematical stuff
+
+
+% Internal registers
+\newcount\pgf@counta
+\newcount\pgf@countb
+
+% Internal setting function
+\def\pgf@setmath#1#2{\edef\pgf@temp{#2pt}\csname pgf@#1\endcsname=\pgf@temp}
+
+
+
+
+
+% Convert a degree into a sin/cos pair
+%
+% #1 = degree
+%
+% x  = sin of #1
+% y  = cos of #1
+%
+% Example:
+%
+% \begin{pgffrotateby}{\pgfdegree{30}}
+%    \pgfline{\pgforigin}{\pgfxy(1,0)}
+% \end{pgfrotateby}
+
+\def\pgfdegree#1{\pgfsincos{#1}\ignorespaces}
+
+
+% Calculate sin of a degree
+%
+% #1 = degree
+%
+% x  = sin of #1
+%
+% Example:
+%
+% \pgfsin{30}
+
+\def\pgfsin#1{%
+  \pgf@counta=#1\relax%
+  \pgf@countb=90%
+  \advance\pgf@countb by-\pgf@counta%
+  \ifnum\pgf@countb>179%
+  \advance\pgf@countb by-360%
+  \else%
+  \ifnum\pgf@countb<-179%
+  \advance\pgf@countb by360%
+  \fi\fi%
+  \ifnum\pgf@countb<0\relax%
+  \pgf@countb=-\pgf@countb%
+  \fi%
+  \pgf@setmath{x}{\csname pgf@cos\the\pgf@countb\endcsname}}
+
+
+% Calculate cos of a degree
+%
+% #1 = degree
+%
+% x  = cos of #1
+%
+% Example:
+%
+% \pgfcos{30}
+
+\def\pgfcos#1{%
+  \pgf@counta=#1\relax%
+  \ifnum\pgf@counta>179%
+  \advance\pgf@counta by-360%
+  \else%
+  \ifnum\pgf@counta<-179%
+  \advance\pgf@counta by360%
+  \fi\fi%
+  \ifnum\pgf@counta<0\relax%
+  \pgf@counta=-\pgf@counta%
+  \fi%
+  \pgf@setmath{x}{\csname pgf@cos\the\pgf@counta\endcsname}}
+
+
+
+% Calculate sin and cos of a degree
+%
+% #1 = degree
+%
+% x  = cos of #1
+% y  = sin of #1
+%
+% Example:
+%
+% \pgfcos{30}
+
+\def\pgfsincos#1{%
+  \pgf@counta=#1\relax%
+  \ifnum\pgf@counta>179%
+  \advance\pgf@counta by-360%
+  \else%
+  \ifnum\pgf@counta<-179%
+  \advance\pgf@counta by360%
+  \fi\fi\relax%
+  \pgf@countb=\pgf@counta\relax%
+  \ifnum\pgf@counta<0\relax%
+  \pgf@counta=-\pgf@counta%
+  \fi\relax%
+  \pgf@setmath{y}{\csname pgf@cos\the\pgf@counta\endcsname}%
+  \pgf@counta=90%
+  \advance\pgf@counta by-\pgf@countb\relax%
+  \ifnum\pgf@counta>179%
+  \advance\pgf@counta by-360%
+  \else%
+  \ifnum\pgf@counta<-179%
+  \advance\pgf@counta by360%
+  \fi\fi\relax%
+  \ifnum\pgf@counta<0\relax%
+  \pgf@counta=-\pgf@counta%
+  \fi\relax%
+  \pgf@setmath{x}{\csname pgf@cos\the\pgf@counta\endcsname}}
+
+
+
+% Normalise a point.
+%
+% #1 = point with coordinates (a,b)
+%
+% x  = a/\sqrt(a*a+b*b)
+% y  = b/\sqrt(a*a+b*b)
+%
+% Example:
+%
+% \pgfnormalise{\pgfxy(2,1)}
+
+\def\pgfnormalise#1{%
+  \pgf@process{#1}%
+  \pgf@xa=\pgf@x%
+  \pgf@ya=\pgf@y%
+  \ifnum\pgf@x<0\relax% move into first quadrant
+    \pgf@x=-\pgf@x%
+  \fi%
+  \ifnum\pgf@y<0\relax%
+    \pgf@y=-\pgf@y%
+  \fi%
+  \ifnum\pgf@x>\pgf@y% x > y
+    \pgf@counta=\pgf@x%
+    \pgf@countb=\pgf@y%
+    \multiply\pgf@countb by 100%
+    \ifnum\pgf@counta<4096\relax%
+      \pgf@x=1pt\relax%
+      \pgf@y=0pt\relax%
+    \else%
+      \divide\pgf@countb by \pgf@counta%
+      \pgf@setmath{x}{\csname pgf@cosfrac\the\pgf@countb\endcsname}%
+      \divide\pgf@counta by 4096%
+      \pgf@y=16\pgf@ya%
+      \divide\pgf@y by \pgf@counta%
+      \pgf@mult{\pgf@y}{\pgfget x}{\pgf@y}%
+    \fi%
+    \ifnum\pgf@xa<0\relax%
+      \pgf@x=-\pgf@x%
+    \fi%
+  \else% x <= y
+    \pgf@counta=\pgf@y%
+    \pgf@countb=\pgf@x%
+    \multiply\pgf@countb by 100%
+    \ifnum\pgf@counta<4096\relax%
+      \pgf@y=1pt\relax%
+      \pgf@x=0pt\relax%
+    \else%
+      \divide\pgf@countb by \pgf@counta%
+      \pgf@setmath{y}{\csname pgf@cosfrac\the\pgf@countb\endcsname}%
+      \divide\pgf@counta by 4096%
+      \pgf@x=16\pgf@xa%
+      \divide\pgf@x by \pgf@counta%
+      \pgf@mult{\pgf@x}{\pgfget y}{\pgf@x}%
+    \fi%
+    \ifnum\pgf@ya<0\relax%
+      \pgf@y=-\pgf@y%
+    \fi%
+  \fi\ignorespaces}
+
+% Internal function
+\def\pgf@mul#1#2#3{#2=#1#3}
+\def\pgf@mult#1#2#3{\edef\pgf@temp{{#2}}\expandafter\pgf@mul\pgf@temp{#1}{#3}}
+
+
+
+% Internal tables
+
+\def\pgf@def#1#2#3{\expandafter\def\csname pgf@#1#2\endcsname{#3}}
+\pgf@def{cos}{0}{1}           \pgf@def{cos}{1}{0.999848}
+\pgf@def{cos}{2}{0.999391}    \pgf@def{cos}{3}{0.99863}
+\pgf@def{cos}{4}{0.997564}    \pgf@def{cos}{5}{0.996195}
+\pgf@def{cos}{6}{0.994522}    \pgf@def{cos}{7}{0.992546}
+\pgf@def{cos}{8}{0.990268}    \pgf@def{cos}{9}{0.987688}
+\pgf@def{cos}{10}{0.984808}   \pgf@def{cos}{11}{0.981627}
+\pgf@def{cos}{12}{0.978148}   \pgf@def{cos}{13}{0.97437}
+\pgf@def{cos}{14}{0.970296}   \pgf@def{cos}{15}{0.965926}
+\pgf@def{cos}{16}{0.961262}   \pgf@def{cos}{17}{0.956305}
+\pgf@def{cos}{18}{0.951057}   \pgf@def{cos}{19}{0.945519}
+\pgf@def{cos}{20}{0.939693}   \pgf@def{cos}{21}{0.93358}
+\pgf@def{cos}{22}{0.927184}   \pgf@def{cos}{23}{0.920505}
+\pgf@def{cos}{24}{0.913545}   \pgf@def{cos}{25}{0.906308}
+\pgf@def{cos}{26}{0.898794}   \pgf@def{cos}{27}{0.891007}
+\pgf@def{cos}{28}{0.882948}   \pgf@def{cos}{29}{0.87462}
+\pgf@def{cos}{30}{0.866025}   \pgf@def{cos}{31}{0.857167}
+\pgf@def{cos}{32}{0.848048}   \pgf@def{cos}{33}{0.838671}
+\pgf@def{cos}{34}{0.829038}   \pgf@def{cos}{35}{0.819152}
+\pgf@def{cos}{36}{0.809017}   \pgf@def{cos}{37}{0.798636}
+\pgf@def{cos}{38}{0.788011}   \pgf@def{cos}{39}{0.777146}
+\pgf@def{cos}{40}{0.766044}   \pgf@def{cos}{41}{0.75471}
+\pgf@def{cos}{42}{0.743145}   \pgf@def{cos}{43}{0.731354}
+\pgf@def{cos}{44}{0.71934}    \pgf@def{cos}{45}{0.707107}
+\pgf@def{cos}{46}{0.694658}   \pgf@def{cos}{47}{0.681998}
+\pgf@def{cos}{48}{0.669131}   \pgf@def{cos}{49}{0.656059}
+\pgf@def{cos}{50}{0.642788}   \pgf@def{cos}{51}{0.62932}
+\pgf@def{cos}{52}{0.615661}   \pgf@def{cos}{53}{0.601815}
+\pgf@def{cos}{54}{0.587785}   \pgf@def{cos}{55}{0.573576}
+\pgf@def{cos}{56}{0.559193}   \pgf@def{cos}{57}{0.544639}
+\pgf@def{cos}{58}{0.529919}   \pgf@def{cos}{59}{0.515038}
+\pgf@def{cos}{60}{0.5}        \pgf@def{cos}{61}{0.48481}
+\pgf@def{cos}{62}{0.469472}   \pgf@def{cos}{63}{0.45399}
+\pgf@def{cos}{64}{0.438371}   \pgf@def{cos}{65}{0.422618}
+\pgf@def{cos}{66}{0.406737}   \pgf@def{cos}{67}{0.390731}
+\pgf@def{cos}{68}{0.374607}   \pgf@def{cos}{69}{0.358368}
+\pgf@def{cos}{70}{0.34202}    \pgf@def{cos}{71}{0.325568}
+\pgf@def{cos}{72}{0.309017}   \pgf@def{cos}{73}{0.292372}
+\pgf@def{cos}{74}{0.275637}   \pgf@def{cos}{75}{0.258819}
+\pgf@def{cos}{76}{0.241922}   \pgf@def{cos}{77}{0.224951}
+\pgf@def{cos}{78}{0.207912}   \pgf@def{cos}{79}{0.190809}
+\pgf@def{cos}{80}{0.173648}   \pgf@def{cos}{81}{0.156434}
+\pgf@def{cos}{82}{0.139173}   \pgf@def{cos}{83}{0.121869}
+\pgf@def{cos}{84}{0.104528}   \pgf@def{cos}{85}{0.0871557}
+\pgf@def{cos}{86}{0.0697565}  \pgf@def{cos}{87}{0.052336}
+\pgf@def{cos}{88}{0.0348995}  \pgf@def{cos}{89}{0.0174524}
+\pgf@def{cos}{90}{0}          \pgf@def{cos}{91}{-0.0174524}
+\pgf@def{cos}{92}{-0.0348995} \pgf@def{cos}{93}{-0.052336}
+\pgf@def{cos}{94}{-0.0697565} \pgf@def{cos}{95}{-0.0871557}
+\pgf@def{cos}{96}{-0.104528}  \pgf@def{cos}{97}{-0.121869}
+\pgf@def{cos}{98}{-0.139173}  \pgf@def{cos}{99}{-0.156434}
+\pgf@def{cos}{100}{-0.173648} \pgf@def{cos}{101}{-0.190809}
+\pgf@def{cos}{102}{-0.207912} \pgf@def{cos}{103}{-0.224951}
+\pgf@def{cos}{104}{-0.241922} \pgf@def{cos}{105}{-0.258819}
+\pgf@def{cos}{106}{-0.275637} \pgf@def{cos}{107}{-0.292372}
+\pgf@def{cos}{108}{-0.309017} \pgf@def{cos}{109}{-0.325568}
+\pgf@def{cos}{110}{-0.34202}  \pgf@def{cos}{111}{-0.358368}
+\pgf@def{cos}{112}{-0.374607} \pgf@def{cos}{113}{-0.390731}
+\pgf@def{cos}{114}{-0.406737} \pgf@def{cos}{115}{-0.422618}
+\pgf@def{cos}{116}{-0.438371} \pgf@def{cos}{117}{-0.45399}
+\pgf@def{cos}{118}{-0.469472} \pgf@def{cos}{119}{-0.48481}
+\pgf@def{cos}{120}{-0.5}      \pgf@def{cos}{121}{-0.515038}
+\pgf@def{cos}{122}{-0.529919} \pgf@def{cos}{123}{-0.544639}
+\pgf@def{cos}{124}{-0.559193} \pgf@def{cos}{125}{-0.573576}
+\pgf@def{cos}{126}{-0.587785} \pgf@def{cos}{127}{-0.601815}
+\pgf@def{cos}{128}{-0.615661} \pgf@def{cos}{129}{-0.62932}
+\pgf@def{cos}{130}{-0.642788} \pgf@def{cos}{131}{-0.656059}
+\pgf@def{cos}{132}{-0.669131} \pgf@def{cos}{133}{-0.681998}
+\pgf@def{cos}{134}{-0.694658} \pgf@def{cos}{135}{-0.707107}
+\pgf@def{cos}{136}{-0.71934}  \pgf@def{cos}{137}{-0.731354}
+\pgf@def{cos}{138}{-0.743145} \pgf@def{cos}{139}{-0.75471}
+\pgf@def{cos}{140}{-0.766044} \pgf@def{cos}{141}{-0.777146}
+\pgf@def{cos}{142}{-0.788011} \pgf@def{cos}{143}{-0.798636}
+\pgf@def{cos}{144}{-0.809017} \pgf@def{cos}{145}{-0.819152}
+\pgf@def{cos}{146}{-0.829038} \pgf@def{cos}{147}{-0.838671}
+\pgf@def{cos}{148}{-0.848048} \pgf@def{cos}{149}{-0.857167}
+\pgf@def{cos}{150}{-0.866025} \pgf@def{cos}{151}{-0.87462}
+\pgf@def{cos}{152}{-0.882948} \pgf@def{cos}{153}{-0.891007}
+\pgf@def{cos}{154}{-0.898794} \pgf@def{cos}{155}{-0.906308}
+\pgf@def{cos}{156}{-0.913545} \pgf@def{cos}{157}{-0.920505}
+\pgf@def{cos}{158}{-0.927184} \pgf@def{cos}{159}{-0.93358}
+\pgf@def{cos}{160}{-0.939693} \pgf@def{cos}{161}{-0.945519}
+\pgf@def{cos}{162}{-0.951057} \pgf@def{cos}{163}{-0.956305}
+\pgf@def{cos}{164}{-0.961262} \pgf@def{cos}{165}{-0.965926}
+\pgf@def{cos}{166}{-0.970296} \pgf@def{cos}{167}{-0.97437}
+\pgf@def{cos}{168}{-0.978148} \pgf@def{cos}{169}{-0.981627}
+\pgf@def{cos}{170}{-0.984808} \pgf@def{cos}{171}{-0.987688}
+\pgf@def{cos}{172}{-0.990268} \pgf@def{cos}{173}{-0.992546}
+\pgf@def{cos}{174}{-0.994522} \pgf@def{cos}{175}{-0.996195}
+\pgf@def{cos}{176}{-0.997564} \pgf@def{cos}{177}{-0.99863}
+\pgf@def{cos}{178}{-0.999391} \pgf@def{cos}{179}{-0.999848}
+\pgf@def{cos}{180}{-1}
+
+
+
+\pgf@def{cosfrac}{0}{1}
+\pgf@def{cosfrac}{1}{0.99995}    \pgf@def{cosfrac}{2}{0.9998}
+\pgf@def{cosfrac}{3}{0.99955}    \pgf@def{cosfrac}{4}{0.999201}
+\pgf@def{cosfrac}{5}{0.998752}   \pgf@def{cosfrac}{6}{0.998205}
+\pgf@def{cosfrac}{7}{0.997559}   \pgf@def{cosfrac}{8}{0.996815}
+\pgf@def{cosfrac}{9}{0.995974}   \pgf@def{cosfrac}{10}{0.995037}
+\pgf@def{cosfrac}{11}{0.994004}  \pgf@def{cosfrac}{12}{0.992877}
+\pgf@def{cosfrac}{13}{0.991656}  \pgf@def{cosfrac}{14}{0.990342}
+\pgf@def{cosfrac}{15}{0.988936}  \pgf@def{cosfrac}{16}{0.987441}
+\pgf@def{cosfrac}{17}{0.985856}  \pgf@def{cosfrac}{18}{0.984183}
+\pgf@def{cosfrac}{19}{0.982424}  \pgf@def{cosfrac}{20}{0.980581}
+\pgf@def{cosfrac}{21}{0.978653}  \pgf@def{cosfrac}{22}{0.976644}
+\pgf@def{cosfrac}{23}{0.974555}  \pgf@def{cosfrac}{24}{0.972387}
+\pgf@def{cosfrac}{25}{0.970143}  \pgf@def{cosfrac}{26}{0.967823}
+\pgf@def{cosfrac}{27}{0.965429}  \pgf@def{cosfrac}{28}{0.962964}
+\pgf@def{cosfrac}{29}{0.960429}  \pgf@def{cosfrac}{30}{0.957826}
+\pgf@def{cosfrac}{31}{0.955157}  \pgf@def{cosfrac}{32}{0.952424}
+\pgf@def{cosfrac}{33}{0.949629}  \pgf@def{cosfrac}{34}{0.946773}
+\pgf@def{cosfrac}{35}{0.943858}  \pgf@def{cosfrac}{36}{0.940887}
+\pgf@def{cosfrac}{37}{0.937862}  \pgf@def{cosfrac}{38}{0.934784}
+\pgf@def{cosfrac}{39}{0.931655}  \pgf@def{cosfrac}{40}{0.928477}
+\pgf@def{cosfrac}{41}{0.925252}  \pgf@def{cosfrac}{42}{0.921982}
+\pgf@def{cosfrac}{43}{0.918669}  \pgf@def{cosfrac}{44}{0.915315}
+\pgf@def{cosfrac}{45}{0.911922}  \pgf@def{cosfrac}{46}{0.90849}
+\pgf@def{cosfrac}{47}{0.905024}  \pgf@def{cosfrac}{48}{0.901523}
+\pgf@def{cosfrac}{49}{0.89799}   \pgf@def{cosfrac}{50}{0.894427}
+\pgf@def{cosfrac}{51}{0.890835}  \pgf@def{cosfrac}{52}{0.887217}
+\pgf@def{cosfrac}{53}{0.883573}  \pgf@def{cosfrac}{54}{0.879905}
+\pgf@def{cosfrac}{55}{0.876216}  \pgf@def{cosfrac}{56}{0.872506}
+\pgf@def{cosfrac}{57}{0.868777}  \pgf@def{cosfrac}{58}{0.865031}
+\pgf@def{cosfrac}{59}{0.861269}  \pgf@def{cosfrac}{60}{0.857493}
+\pgf@def{cosfrac}{61}{0.853704}  \pgf@def{cosfrac}{62}{0.849903}
+\pgf@def{cosfrac}{63}{0.846092}  \pgf@def{cosfrac}{64}{0.842271}
+\pgf@def{cosfrac}{65}{0.838444}  \pgf@def{cosfrac}{66}{0.834609}
+\pgf@def{cosfrac}{67}{0.83077}   \pgf@def{cosfrac}{68}{0.826927}
+\pgf@def{cosfrac}{69}{0.82308}   \pgf@def{cosfrac}{70}{0.819232}
+\pgf@def{cosfrac}{71}{0.815383}  \pgf@def{cosfrac}{72}{0.811534}
+\pgf@def{cosfrac}{73}{0.807687}  \pgf@def{cosfrac}{74}{0.803842}
+\pgf@def{cosfrac}{75}{0.8}       \pgf@def{cosfrac}{76}{0.796162}
+\pgf@def{cosfrac}{77}{0.792329}  \pgf@def{cosfrac}{78}{0.788502}
+\pgf@def{cosfrac}{79}{0.784682}  \pgf@def{cosfrac}{80}{0.780869}
+\pgf@def{cosfrac}{81}{0.777064}  \pgf@def{cosfrac}{82}{0.773268}
+\pgf@def{cosfrac}{83}{0.769481}  \pgf@def{cosfrac}{84}{0.765705}
+\pgf@def{cosfrac}{85}{0.761939}  \pgf@def{cosfrac}{86}{0.758185}
+\pgf@def{cosfrac}{87}{0.754443}  \pgf@def{cosfrac}{88}{0.750714}
+\pgf@def{cosfrac}{89}{0.746997}  \pgf@def{cosfrac}{90}{0.743294}
+\pgf@def{cosfrac}{91}{0.739605}  \pgf@def{cosfrac}{92}{0.735931}
+\pgf@def{cosfrac}{93}{0.732272}  \pgf@def{cosfrac}{94}{0.728628}
+\pgf@def{cosfrac}{95}{0.724999}  \pgf@def{cosfrac}{96}{0.721387}
+\pgf@def{cosfrac}{97}{0.717792}  \pgf@def{cosfrac}{98}{0.714213}
+\pgf@def{cosfrac}{99}{0.710651}  \pgf@def{cosfrac}{100}{0.707107}
+
+
+\endinput
