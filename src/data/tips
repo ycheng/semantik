@@ -42,3 +42,26 @@
 </html>
 </tip>
 
+<tip category="semantik">
+<html>
+<h3>4. Data types</h3>
+<ul>
+ <li>right-click on a map item and set the data type</li>
+ <li>A graph may be created in the diagram panel</li>
+ <li>Pictures may be added in the image panel</li>
+</ul>
+</html>
+</tip>
+
+<tip category="semantik">
+<html>
+<h3>5. Diagrams</h3>
+<ul>
+ <li>to connect diagram elements, maintain the control key pressed, select an item, and drag to the element to connect</li>
+ <li>right-click on a link to change the style</li>
+ <li>right-click on a box to change its color</li>
+</ul>
+</html>
+</tip>
+
+
