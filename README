@@ -1,0 +1,111 @@
+Semantik 0.7.2, Thomas Nagy
+contact: tnagy1024 at gmail dot com
+
+-----------------------------------------------
+
+1. Compiling and installing:
+
+First, make sure that you have a Linux(tm) system (a *BSD system should do it too)
+* the KDE4 development packages must be installed (KDE4 >= beta4)
+* the Qt development packages must be installed (Qt >= 4.3)
+
+To compile, run:
+./waf configure
+./waf
+
+Then run the following installation command as root (important - Semantik will only work if installed):
+./waf install
+
+To execute Semantik right from the source directory (developers):
+./waf --exe
+
+The generic command for creating a package is the following (packagers):
+./waf configure --prefix=/usr; ./waf; DESTDIR=$fakeroot ./waf install
+
+-----------------------------------------------
+
+2. Getting started:
+
+* double-click to add an item
+* when a leaf is selected, type 'enter' to start in-place editing, type 'enter' again to leave
+* left,right,up,down keys to navigate in the tree
+* alt+left,right,up,down keys to move the selection around
+* double-click on a leaf to add a ramification
+* double-click on a link with the control key held to disconnect
+
+Getting started with document generators:
+* look at the scripts in src/templates/
+* the naming is used for finding the files, be careful
+
+Getting started with the diagrams:
+* in the map view, right click on a map item, and select "data type: diagram"
+* now in the "data" dock widget, double-click to add a diagram item
+* when holding the control key pressed and left-clicking on a diagram item, a connection arrow is created
+* when holding the control key pressed, double-clicking on a connection thread deletes it
+
+More help in about->help
+
+-----------------------------------------------
+
+3. Document generators:
+
+* the document generation is performed in two steps: variable substitution and preprocessing
+* variables in the form @var_name@ are replaced by the corresponding document variables
+* the core of the document is a variable itself
+* a c-like preprocessor is then run on the resulting document, using (nested) conditionals such as:
+  #if 0, #if !0, #ifdef var, #endif (the #elif construct is not supported yet)
+* external viewers can be used, from the 'variables' panel, add code in the form
+  'command_'+template_name=command_line, for example:
+
+  command_html=kfmclient newTab %s
+  command_odt=oowriter %s
+  command_s5=firefox %s
+
+  this is only necessary for documents that do not have a kde component yet
+
+-----------------------------------------------
+
+4. Development:
+
+The code documentation is written in the Doxygen
+format. It is of course incomplete and most parts are
+already obsolete.
+
+The source code and the comments are in hungarian,
+the variable names use 6-letter which are easier
+to type than long names, for example:
+tglalp <- téglalap (without accents)
+the class names may have more than 6 letters however.
+
+My laptop keyboard is too old and i cannot type the
+curly brackets nor the space characters anymore. As
+i spent way too much time copying and pasting these,
+they have been replaced by the <% and %> equivalents
+(standard c/c++ digraphs).
+
+I am also disconnected from the internet and for now
+the code repository is unavailable :-/
+
+-----------------------------------------------
+
+5. Licensing:
+
+GPL V3
+
+-----------------------------------------------
+
+6. Logo:
+
+You may add the following code to your pages to show your interest in Semantik
+(the logo can be found in src/data/semantik-logo.png)
+
+<a href="http://freehackers.org/~tnagy/semantik.html">
+<img src="http://freehackers.org/~tnagy/semantik-logo.png" alt="semantik" border="0" />
+</a>
+
+-----------------------------------------------
+
+Enjoy Semantik
+
+Thomas Nagy, 2007-2009
+
