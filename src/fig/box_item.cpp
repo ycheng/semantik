@@ -397,7 +397,7 @@ void box_item::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 
 		i_oPainter->setBrush(QColor(255, 255, 0));
 		QPointF l_o = l_oRect.bottomRight();
-		i_oPainter->drawEllipse(QRectF(l_o + l_oOffset, l_o - l_oOffset));
+		i_oPainter->drawEllipse(QRectF(l_o - 2*l_oOffset, l_o));
 		i_oPainter->restore();
 	}
 
