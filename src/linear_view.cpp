@@ -253,7 +253,6 @@ void linear_view::dropEvent(QDropEvent *i_oEv)
 {
 	if (i_oEv->source() == this)
 	{
-		i_oEv->accept();
 		QTreeWidgetItem *l_oItem = itemAt(i_oEv->pos());
 		QTreeWidgetItem *l_oChild = selectedItems().at(0);
 		Q_ASSERT(l_oChild != NULL);
@@ -305,9 +304,8 @@ void linear_view::dropEvent(QDropEvent *i_oEv)
 			m_oControl->select_item(l_iId);
 		}
 	}
-	stopAutoScroll();
-	setState(NoState);
-	viewport()->update();
+	i_oEv->accept();
+	i_oEv->setDropAction(Qt::CopyAction);
 }
 
 #include "linear_view.moc"
