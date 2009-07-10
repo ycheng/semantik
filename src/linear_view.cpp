@@ -301,6 +301,10 @@ void linear_view::dropEvent(QDropEvent *i_oEv)
 					}
 				}
 			}
+			else
+			{
+				if (m_oControl->parent_of(l_iId)) m_oControl->unlink_items(l_iId, m_oControl->parent_of(l_iId));
+			}
 			m_oControl->select_item(l_iId);
 		}
 	}
