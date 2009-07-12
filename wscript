@@ -3,7 +3,7 @@
 # Thomas Nagy, 2007-2009 (pvm)
 
 APPNAME='semantik'
-VERSION='0.7.2'
+VERSION='0.7.3'
 
 srcdir = '.'
 blddir = 'build'
@@ -152,6 +152,8 @@ def build(bld):
 			uh = 'oxygen/%sx%s/actions/%s.png' % (size, size, uh)
 			bld.install_as('${KDE4_ICON_INSTALL_DIR}/' + uh, 'src/images/%s' % x)
 
+	bld.add_post_fun(post_build)
+
 def configure(conf):
 	def test(system):
 		return (sys.platform.lower().rfind(system) > -1)
@@ -181,16 +183,16 @@ def configure(conf):
 		icons = Options.options.icons
 
 	conf.check_tool('gcc g++ qt4')
-	if not conf.env['CXX']: conf.fatal('Semantik requires g++ (compilation only)')
-	if not conf.env['QT_LRELEASE']: conf.fatal('Semantik requires the program lrelease (from the Qt linguist package? - compilation only)')
+	if not conf.env.CXX: conf.fatal('Semantik requires g++ (compilation only)')
+	if not conf.env.QT_LRELEASE: conf.fatal('Semantik requires the program lrelease (from the Qt linguist package? - compilation only)')
 	conf.check_tool('python')
-	if conf.env['HAVE_QTWEBKIT'] != 1: conf.fatal('QtWebKit not found - Semantik requires Qt >= 4.4')
-	if not conf.env['PYTHON']: conf.fatal('Semantik requires Python >= 2.5 (development package for the compilation)')
+	if conf.env.HAVE_QTWEBKIT != 1: conf.fatal('QtWebKit not found - Semantik requires Qt >= 4.4')
+	if not conf.env.PYTHON: conf.fatal('Semantik requires Python >= 2.5 (development package for the compilation)')
 	conf.check_python_version((2,4,2))
 	conf.check_python_headers()
-	if not conf.env['PYTHON_VERSION'] in "2.4 2.5 2.6 2.7".split(): Logs.warn('Bad Python version %s ' % str(conf.env['PYTHON_VERSION']))
+	if not conf.env.PYTHON_VERSION in "2.4 2.5 2.6 2.7".split(): Logs.warn('Bad Python version %s ' % str(conf.env.PYTHON_VERSION))
 	conf.check_tool('ocaml')
-	if not conf.env['OCAMLOPT']: conf.fatal('Semantik requires ocamlopt (compilation only)')
+	if not conf.env.OCAMLOPT: conf.fatal('Semantik requires ocamlopt (compilation only)')
 
 	#ret = Utils.cmd_output('python-config --cflags').strip().split()
 	#conf.env.append_value('CXXFLAGS_CAML', ret)
@@ -203,33 +205,33 @@ def configure(conf):
 		#Utils.pprint('YELLOW', "kde4 is disabled (missing)")
 		conf.fatal('Compiling Semantik requires kde4 -devel')
 
-	conf.env['OCALINKFLAGS_OPT_PP']= 'str.cmxa'
-	conf.env['LINKFLAGS_CAML'] = '-lasmrun -lstr -lnums'.split()
-	conf.env['LIBPATH_CAML'] = conf.env['OCAMLLIB']
-	conf.env['LIB_CAML'] = "m".split()
-	conf.env['OCAMLFLAGS_TWT'] = '-pp default/util/ocamltwt'.split() #-unsafe -noassert -inline 10'
-	conf.env['CXXDEFINES']='WAF'
+	conf.env.OCALINKFLAGS_OPT_PP = 'str.cmxa'
+	conf.env.LINKFLAGS_CAML = '-lasmrun -lstr -lnums'.split()
+	conf.env.LIBPATH_CAML = conf.env.OCAMLLIB
+	conf.env.LIB_CAML = "m".split()
+	conf.env.OCAMLFLAGS_TWT = '-pp default/util/ocamltwt'.split() #-unsafe -noassert -inline 10'
+	conf.env.CXXDEFINES ='WAF'
 	conf.define('ICONS', icons)
 	conf.define('VERSION', VERSION)
 
-	conf.define('SEMANTIK_DIR', conf.env['KDE4_DATA_INSTALL_DIR']+'/semantik')
-	conf.define('TEMPLATE_DIR', conf.env['KDE4_DATA_INSTALL_DIR']+'/semantik/templates/')
-	conf.define('FILTER_DIR', conf.env['KDE4_DATA_INSTALL_DIR']+'/semantik/filters/')
-	conf.env['PICDIR'] = conf.env['KDE4_ICON_INSTALL_DIR'] #j('share/pixmaps/')
+	conf.define('SEMANTIK_DIR', conf.env.KDE4_DATA_INSTALL_DIR + '/semantik')
+	conf.define('TEMPLATE_DIR', conf.env.KDE4_DATA_INSTALL_DIR + '/semantik/templates/')
+	conf.define('FILTER_DIR', conf.env.KDE4_DATA_INSTALL_DIR +'/semantik/filters/')
+	conf.env.PICDIR = conf.env.KDE4_ICON_INSTALL_DIR #j('share/pixmaps/')
 
 	if Options.options.use64:
-		conf.env['shlib_INST_DIR'] = 'lib64'
+		conf.env.shlib_INST_DIR = 'lib64'
 
-	conf.env['CXXFLAGS_PYEMBED'] = [x for x in conf.env['CXXFLAGS_PYEMBED'] if x != '-g']
+	conf.env.CXXFLAGS_PYEMBED = [x for x in conf.env.CXXFLAGS_PYEMBED if x != '-g']
 
-	conf.env['CXXFLAGS']='-O2 -pipe -Wall'.split()# -DDEBUG=1 -g'
+	conf.env.CXXFLAGS = '-O2 -pipe -Wall'.split()# -DDEBUG=1 -g'
 	conf.write_config_header('aux.h')
 
 	# the Debian packagers compile with --prefix=/usr and set /etc/ld.so.conf accordingly
 	# the rpath is for end users installing into /usr/local/lib only
 	sur = '/usr/local'
 	if Options.options.prefix[:len(sur)] == sur:
-		conf.env['RPATH_NABLAH'] = '-Wl,--rpath=/usr/local/lib'
+		conf.env.RPATH_NABLAH = '-Wl,--rpath=/usr/local/lib'
 
 def set_options(opt):
 	opt.tool_options('kde4')
@@ -239,7 +241,7 @@ def set_options(opt):
 	opt.add_option('--icons', action='store', default='', help='icon dirs where to look for kde icons (configuration)')
 	opt.add_option('--use64', action='store_true', default=False, help='set the installation into lib+64 (configuration)')
 
-def shutdown():
+def post_build(bld):
 	if Options.commands['install']:
 		try: os.popen('/sbin/ldconfig 2> /dev/null')
 		except: pass
@@ -256,7 +258,7 @@ def shutdown():
 	import types
 	f = open('me.dot', 'w')
 	f.write("digraph G {\n")
-	table = Build.bld.depends_on
+	table = bld.depends_on
 	for a in table:
 		for x in table[a]:
 			if type(table[a][x]) is types.ListType:
