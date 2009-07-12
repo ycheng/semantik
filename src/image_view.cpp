@@ -40,11 +40,9 @@ image_view::image_view(QWidget *i_oParent, data_control *i_oControl) : QWidget(i
         connect(m_oClearPictureAction, SIGNAL(triggered()), this, SLOT(clear_pic()));
 	addAction(m_oClearPictureAction);
 
-	m_oMenu = new QMenu(this);
-        m_oMenu->addAction(m_oChangePictureAction);
-        m_oMenu->addAction(m_oClearPictureAction);
-
 	setAcceptDrops(true);
+
+	m_oMenu = NULL;
 
 	/*
 	QPalette l_oPalette = m_oSelect->palette();
@@ -161,6 +159,12 @@ bool image_view::event(QEvent *i_oEvent)
 void image_view::context_menu(const QPoint& i_o)
 {
 	if (!m_iId) return;
+	if (!m_oMenu)
+	{
+		m_oMenu = new QMenu(this);
+        m_oMenu->addAction(m_oChangePictureAction);
+        m_oMenu->addAction(m_oClearPictureAction);
+	}
 	m_oMenu->popup(mapToGlobal(i_o));
 }
 

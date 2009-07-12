@@ -6,6 +6,7 @@
 #include <QStackedWidget>
 #include  	"con.h"
 
+class browser;
 class QLabel;
 class QWebView;
 class pre_view : public QStackedWidget
@@ -16,7 +17,7 @@ class pre_view : public QStackedWidget
 		data_control *m_oControl;
 
 		QLabel *m_oLabel;
-		QWebView *m_oBrowser;
+		browser *m_oBrowser;
 
 
 	public slots:

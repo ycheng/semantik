@@ -13,6 +13,7 @@
 #include "pre_view.h"
 #include "con.h" 
 #include "sembind.h" 
+#include "browser.h"
 
 pre_view::pre_view(QWidget *i_oParent, data_control *i_oControl) : QStackedWidget(i_oParent)
 {
@@ -25,7 +26,7 @@ pre_view::pre_view(QWidget *i_oParent, data_control *i_oControl) : QStackedWidge
 	/*m_oBrowserObject = new KHTMLPart(this, this);
 	m_oBrowser = m_oBrowserObject->widget(); //new QTextBrowser(this);
 	addWidget(m_oBrowser);*/
-	m_oBrowser = new QWebView(this);
+	m_oBrowser = new browser(this);
 	addWidget(m_oBrowser);
 }
 
