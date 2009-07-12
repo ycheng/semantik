@@ -42,7 +42,7 @@ canvas_view::canvas_view(QWidget *i_oWidget, data_control *i_oControl) : QGraphi
 	setRenderHint(QPainter::Antialiasing);
 
 	// another bait !!
-	#ifndef Q_OS_DARWIN
+#ifndef Q_OS_DARWIN
 
 	setDragMode(QGraphicsView::NoDrag);
 
@@ -51,17 +51,17 @@ canvas_view::canvas_view(QWidget *i_oWidget, data_control *i_oControl) : QGraphi
 
 	setMinimumSize(200, 200);
 
-	#ifdef O
+#ifdef O
 	//setTransformationAnchor(AnchorUnderMouse);
 	//setResizeAnchor(AnchorViewCenter);
-	#endif
+#endif
 
 	/*QMatrix k(0, 1, 1, 0, 0, 0);
-	QMatrix kv(1, 0, 0, -1, 0, 0);*/
+	  QMatrix kv(1, 0, 0, -1, 0, 0);*/
 	m_oControl = i_oControl;
 	/*setMatrix(l_oMatrix);
-	scale(0.8, 0.8);*/
-	#endif
+	  scale(0.8, 0.8);*/
+#endif
 
 	m_iMode = select_mode;
 	m_iLastMode = no_mode;
@@ -83,22 +83,22 @@ canvas_view::canvas_view(QWidget *i_oWidget, data_control *i_oControl) : QGraphi
 
 	m_oEditAction = new QAction(trUtf8("Toggle edit"), this);
 	m_oEditAction->setShortcut(notr("Return"));
-        connect(m_oEditAction, SIGNAL(triggered()), this, SLOT(slot_edit()));
+	connect(m_oEditAction, SIGNAL(triggered()), this, SLOT(slot_edit()));
 	addAction(m_oEditAction);
 
 	m_oAddItemAction = new QAction(trUtf8("Insert child"), this);
 	m_oAddItemAction->setShortcut(notr("Ctrl+Return"));
-        connect(m_oAddItemAction, SIGNAL(triggered()), this, SLOT(slot_add_item()));
+	connect(m_oAddItemAction, SIGNAL(triggered()), this, SLOT(slot_add_item()));
 	addAction(m_oAddItemAction);
 
 	m_oDeleteAction = new QAction(trUtf8("Delete selection"), this);
 	m_oDeleteAction->setShortcut(notr("Del"));
-        connect(m_oDeleteAction, SIGNAL(triggered()), this, SLOT(slot_delete()));
+	connect(m_oDeleteAction, SIGNAL(triggered()), this, SLOT(slot_delete()));
 	addAction(m_oDeleteAction);
 
 	l_o = new QAction(trUtf8("Insert sibling"), this);
 	l_o->setShortcut(notr("Shift+Return"));
-        connect(l_o, SIGNAL(triggered()), this, SLOT(slot_add_sibling()));
+	connect(l_o, SIGNAL(triggered()), this, SLOT(slot_add_sibling()));
 	addAction(l_o);
 
 	l_o = new QAction(trUtf8("Move up"), this); l_o->setShortcut(notr("Alt+Up")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_move())); addAction(l_o); l_o->setData(QVariant(0));
@@ -306,10 +306,10 @@ void canvas_view::keyReleaseEvent(QKeyEvent *i_oEvent)
 {
 #if 0
 	if (m_oSelected.size() == 1)
-        {
-                m_oSelected[0]->keyReleaseEvent(i_oEvent);
-                return;
-        }
+	{
+		m_oSelected[0]->keyReleaseEvent(i_oEvent);
+		return;
+	}
 	QApplication::sendEvent(scene(), i_oEvent);
 #endif
 	i_oEvent->accept();
@@ -382,8 +382,8 @@ bool canvas_view::event(QEvent *i_oEvent)
 		}
 	}
 	else if (i_oEvent->type() == QEvent::KeyPress
-		|| i_oEvent->type() == QEvent::ShortcutOverride
-		|| i_oEvent->type() == QEvent::Shortcut)
+			|| i_oEvent->type() == QEvent::ShortcutOverride
+			|| i_oEvent->type() == QEvent::Shortcut)
 	{
 		if (m_oSelected.size() == 1 && m_oSelected[0]->m_bEdit)
 		{
@@ -404,9 +404,9 @@ bool canvas_view::event(QEvent *i_oEvent)
 void canvas_view::focusOutEvent(QFocusEvent *i_oEv)
 {
 	foreach (canvas_item *l_oItem, m_oSelected)
-        {
+	{
 		l_oItem->focus_out(i_oEv);
-        }
+	}
 	foreach (QAction* l_o, actions())
 	{
 		l_o->setEnabled(false);
@@ -496,10 +496,10 @@ void canvas_view::synchro_doc(const hash_params& i_o)
 					{
 						canvas_link *l_oLink = (canvas_link*) l_oItem;
 						if (
-							(l_oLink->m_oFrom == l_oR1 && l_oLink->m_oTo == l_oR2)
-							||
-							(l_oLink->m_oFrom == l_oR2 && l_oLink->m_oTo == l_oR1)
-						)
+								(l_oLink->m_oFrom == l_oR1 && l_oLink->m_oTo == l_oR2)
+								||
+								(l_oLink->m_oFrom == l_oR2 && l_oLink->m_oTo == l_oR1)
+						   )
 						{
 							l_oLink->hide();
 							l_oLink->rm_link();
@@ -570,11 +570,11 @@ void canvas_view::synchro_doc(const hash_params& i_o)
 					l_oAction->setIcon(l_oScheme->_icon());
 				}
 
-                                foreach(QAction* l_oAct, l_o->m_oFlagGroup->actions())
-                                {
-                                        l_o->m_oFlagsToolBar->addAction(l_oAct);
+				foreach(QAction* l_oAct, l_o->m_oFlagGroup->actions())
+				{
+					l_o->m_oFlagsToolBar->addAction(l_oAct);
 					l_oAct->setCheckable(true);
-                                }
+				}
 			}
 			break;
 		case cmd_update_colors:
@@ -747,10 +747,10 @@ void canvas_view::add_select(canvas_item* i_oItem, bool i_oSignal)
 	Q_ASSERT(i_oItem != NULL);
 
 	if (m_oSelected.size() == 1)
-        {
+	{
 		QFocusEvent l_oEv = QFocusEvent(QEvent::FocusOut);
 		m_oSelected[0]->focus_out(&l_oEv);
-        }
+	}
 
 	m_iSortCursor = 0;
 	m_oSelected.push_back(i_oItem);
@@ -867,23 +867,23 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 					{
 						switch (i_oEv->modifiers())
 						{
-		case Qt::ShiftModifier:
-			if (m_oSelected.contains(l_oRect))
-				rm_select(l_oRect);
-			else
-				add_select(l_oRect);
-			break;
-		default:
-			if (!m_oSelected.contains(l_oRect))
-			{
-				if (m_oSelected.size() == 1 && !m_oControl->parent_of(l_oRect->Id()))
-				{
-					if (QApplication::keyboardModifiers() & Qt::ControlModifier)
-						m_oControl->link_items(m_oSelected[0]->Id(), l_oRect->Id());
-				}
-				deselect_all();
-				add_select(l_oRect);
-			}
+							case Qt::ShiftModifier:
+								if (m_oSelected.contains(l_oRect))
+									rm_select(l_oRect);
+								else
+									add_select(l_oRect);
+								break;
+							default:
+								if (!m_oSelected.contains(l_oRect))
+								{
+									if (m_oSelected.size() == 1 && !m_oControl->parent_of(l_oRect->Id()))
+									{
+										if (QApplication::keyboardModifiers() & Qt::ControlModifier)
+											m_oControl->link_items(m_oSelected[0]->Id(), l_oRect->Id());
+									}
+									deselect_all();
+									add_select(l_oRect);
+								}
 						}
 					}
 					else
@@ -951,11 +951,11 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 			if (m_bPressed)
 			{
 				deselect_all();
-                                QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
-                                if (l_oItem && l_oItem->type() == gratype(7))
-                                {
-                                        l_oRect = (canvas_item*) l_oItem;
-                                        add_select(l_oRect);
+				QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
+				if (l_oItem && l_oItem->type() == gratype(7))
+				{
+					l_oRect = (canvas_item*) l_oItem;
+					add_select(l_oRect);
 				}
 			}
 
@@ -1188,7 +1188,7 @@ void canvas_view::check_canvas_size()
 	x -=100; y -= 100; z += 100, t += 100;
 
 	l_oR2 = QRectF(QPointF(x, y), QPointF(z, t));
-        l_oR2 = l_oR2.united(QRectF(mapToScene(l_oRect.topLeft()), mapToScene(l_oRect.bottomRight())));
+	l_oR2 = l_oR2.united(QRectF(mapToScene(l_oRect.topLeft()), mapToScene(l_oRect.bottomRight())));
 	if (l_oR2 == sceneRect()) return;
 	scene()->setSceneRect(l_oR2);
 }
@@ -1246,8 +1246,8 @@ void rubber_line::paintEvent(QPaintEvent *)
 {
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
-    //painter.setPen(Qt::NoPen);
-    painter.setBrush(QColor(Qt::red));
+	//painter.setPen(Qt::NoPen);
+	painter.setBrush(QColor(Qt::red));
 	if (_direction > 0)
 	{
 		painter.drawLine(QPoint(0, 0), QPoint(size().width(), size().height()));
@@ -1264,5 +1264,5 @@ void rubber_line::setGeometry(const QRect& i_o)
 	QRubberBand::setGeometry(i_o.normalized());
 }
 
- %: include  	"canvas_view.moc" 
+%: include  	"canvas_view.moc" 
 

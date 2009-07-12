@@ -16,6 +16,7 @@
 #include <KMenu>
 #include <KMessageBox>
 #include <ktip.h>
+#include <QFrame>
 
 #include "box_view.h"
 #include  "sembind.h"
@@ -134,8 +135,13 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	m_oControl = new data_control(this);
 	connect(m_oControl, SIGNAL(sig_message(const QString&, int)), this, SLOT(slot_message(const QString&, int)));
 
-	m_oCanvas = new canvas_view(this, m_oControl);
-	setCentralWidget(m_oCanvas);
+	QFrame *fr = new QFrame(this);
+	m_oCanvas = new canvas_view(fr, m_oControl);
+	setCentralWidget(fr);
+	QGridLayout *ll = new QGridLayout(fr);
+	ll->addWidget(m_oCanvas);
+	m_oCanvas->m_oSemantikWindow = this;
+
 	connect(m_oCanvas, SIGNAL(sig_message(const QString&, int)), this, SLOT(slot_message(const QString&, int)));
 
 	//BEGIN setup_actions();
