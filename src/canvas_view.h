@@ -114,6 +114,7 @@ class canvas_view : public QGraphicsView
 		void slot_hop();
 		void zoom_in();
 		void zoom_out();
+		void toggle_fullscreen();
 
 		void slot_change_data();
 

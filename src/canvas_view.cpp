@@ -119,6 +119,11 @@ canvas_view::canvas_view(QWidget *i_oWidget, data_control *i_oControl) : QGraphi
 	m_oMenu->addAction(m_oAddItemAction);
 	m_oMenu->addAction(m_oEditAction);
 	m_oMenu->addAction(m_oDeleteAction);
+
+	QAction *fullAction = new QAction(trUtf8("Toggle fullscreen"), this);
+	connect(fullAction, SIGNAL(triggered()), this, SLOT(toggle_fullscreen())); addAction(l_o);
+	m_oMenu->addAction(fullAction);
+
 	m_oColorMenu = m_oMenu->addMenu(trUtf8("Colors"));
 	m_oDataMenu = m_oMenu->addMenu(trUtf8("Data type"));
 
@@ -801,9 +806,9 @@ void canvas_view::enable_menu_actions()
 	m_oColorMenu->setEnabled(m_oSelected.size()>=1);
 	m_oDataMenu->setEnabled(m_oSelected.size()==1);
 	foreach (QAction* l_o, m_oDataMenu->actions())
-        {
-                l_o->setEnabled(m_oSelected.size()==1);
-        }
+	{
+		l_o->setEnabled(m_oSelected.size()==1);
+	}
 }
 
 void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
@@ -1211,6 +1216,26 @@ void canvas_view::focusInEvent(QFocusEvent *i_oEv)
 void canvas_view::slot_change_data()
 {
 	m_oControl->change_data(m_oSelected[0]->Id(), ((QAction*) QObject::sender())->data().toInt());
+}
+
+void canvas_view::toggle_fullscreen()
+{
+	if (isFullScreen())
+	{
+		setWindowModality(Qt::NonModal);
+		//setFullScreen(false);
+		setWindowState(Qt::WindowNoState);
+		setWindowFlags(Qt::Widget);
+		show();
+	}
+	else
+	{
+		setWindowFlags(Qt::Window);
+		//setFullScreen(true);
+		setWindowState(Qt::WindowFullScreen);
+		setWindowModality(Qt::ApplicationModal);
+		show();
+	}
 }
 
 rubber_line::rubber_line(QRubberBand::Shape i, QWidget* j) : QRubberBand(i, j)

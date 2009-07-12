@@ -17,7 +17,7 @@ void browser::contextMenuEvent(QContextMenuEvent * event)
 		m_oMenu = new QMenu(this);
         m_oMenu->addAction(pageAction(QWebPage::Reload));
 
-		QAction *toggle = new QAction("toggle fullscreen", this);
+		QAction *toggle = new QAction(trUtf8("Toggle fullscreen"), this);
 		connect(toggle, SIGNAL(triggered()), this, SLOT(toggleFullScreen()));
 		m_oMenu->addAction(toggle);
 	}
