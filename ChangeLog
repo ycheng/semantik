@@ -2,5 +2,4 @@ Semantik 0.7.3
 --------------
 
 * fixed a crash when reordering items in the linear view
-* change the presentation between not fullscreen and fullscreen (context menu)
-
+* enable fullscreen modes for presentation and map views (context menu)
