@@ -136,6 +136,8 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	connect(m_oControl, SIGNAL(sig_message(const QString&, int)), this, SLOT(slot_message(const QString&, int)));
 
 	QFrame *fr = new QFrame(this);
+	fr->setLineWidth(0);
+	fr->setFrameStyle(QFrame::NoFrame);
 	m_oCanvas = new canvas_view(fr, m_oControl);
 	setCentralWidget(fr);
 	QGridLayout *ll = new QGridLayout(fr);
