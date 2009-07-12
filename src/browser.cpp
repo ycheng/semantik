@@ -16,9 +16,33 @@ void browser::contextMenuEvent(QContextMenuEvent * event)
 	{
 		m_oMenu = new QMenu(this);
         m_oMenu->addAction(pageAction(QWebPage::Reload));
+
+		QAction *toggle = new QAction("toggle fullscreen", this);
+		connect(toggle, SIGNAL(triggered()), this, SLOT(toggleFullScreen()));
+		m_oMenu->addAction(toggle);
 	}
 	m_oMenu->popup(event->globalPos());
 
+}
+
+void browser::toggleFullScreen()
+{
+	if (isFullScreen())
+	{
+		setWindowModality(Qt::NonModal);
+		//setFullScreen(false);
+		setWindowState(Qt::WindowNoState);
+		setWindowFlags(Qt::Widget);
+		show();
+	}
+	else
+	{
+		setWindowFlags(Qt::Window);
+		//setFullScreen(true);
+		setWindowState(Qt::WindowFullScreen);
+		setWindowModality(Qt::ApplicationModal);
+		show();
+	}
 }
 
 #include "browser.moc"

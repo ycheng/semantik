@@ -10,6 +10,8 @@ class browser: public QWebView
 	public:
 		browser(QWidget*);
 		void contextMenuEvent(QContextMenuEvent * event);
+	public slots:
+		void toggleFullScreen();
 	private:
 		QMenu * m_oMenu;
 };

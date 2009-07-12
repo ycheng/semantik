@@ -50,9 +50,6 @@ void pre_view::synchro_doc(const hash_params&i_o)
 						m_oBrowser->show();
 					}
 					setCurrentWidget(m_oBrowser);
-					//m_oBrowser->setWindowFlags(Qt::Window);
-					//m_oBrowser->setWindowState(Qt::WindowFullScreen);
-					//m_oBrowser->show();
 				}
 				else if (l_s.endsWith(notr(".tex")))
 				{
