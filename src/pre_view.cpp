@@ -40,13 +40,18 @@ void pre_view::synchro_doc(const hash_params&i_o)
 				if (l_s.endsWith(notr(".html")))
 				{
 					if (m_oBrowser->url() == QUrl(l_s))
+					{
 						m_oBrowser->reload();
+					}
 					else
 					{
 						m_oBrowser->load(QUrl(l_s));
 						m_oBrowser->show();
 					}
 					setCurrentWidget(m_oBrowser);
+					//m_oBrowser->setWindowFlags(Qt::Window);
+					//m_oBrowser->setWindowState(Qt::WindowFullScreen);
+					//m_oBrowser->show();
 				}
 				else if (l_s.endsWith(notr(".tex")))
 				{
