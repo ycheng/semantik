@@ -323,9 +323,9 @@ void canvas_view::keyPressEvent(QKeyEvent *i_oEvent)
 		if (l_oItem->m_bEdit && i_oEvent->type() == QEvent::KeyPress)
 		{
 			l_oItem->keyPressEvent(i_oEvent);
+			i_oEvent->accept();
 		}
 	}
-	i_oEvent->accept();
 }
 
 void canvas_view::zoom_in()
