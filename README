@@ -65,36 +65,13 @@ More help in about->help
 
 -----------------------------------------------
 
-4. Development:
-
-The code documentation is written in the Doxygen
-format. It is of course incomplete and most parts are
-already obsolete.
-
-The source code and the comments are in hungarian,
-the variable names use 6-letter which are easier
-to type than long names, for example:
-tglalp <- téglalap (without accents)
-the class names may have more than 6 letters however.
-
-My laptop keyboard is too old and i cannot type the
-curly brackets nor the space characters anymore. As
-i spent way too much time copying and pasting these,
-they have been replaced by the <% and %> equivalents
-(standard c/c++ digraphs).
-
-I am also disconnected from the internet and for now
-the code repository is unavailable :-/
-
------------------------------------------------
-
-5. Licensing:
+4. Licensing:
 
 GPL V3
 
 -----------------------------------------------
 
-6. Logo:
+5. Logo:
 
 You may add the following code to your pages to show your interest in Semantik
 (the logo can be found in src/data/semantik-logo.png)
