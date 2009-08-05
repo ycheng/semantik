@@ -1,0 +1,518 @@
+# , 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: http://www.google.com\n"
+"POT-Creation-Date: 2009-04-26 15:20+0200\n"
+"PO-Revision-Date: 2009-07-28 12:17+0300\n"
+"Last-Translator: \n"
+"Language-Team: Ελληνικά <kde-i18n-doc@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Empty"
+msgstr "Κενό"
+
+msgid "Toggle edit"
+msgstr "Επεξεργασία κόμβου"
+
+msgid "Insert child"
+msgstr "Εισαγωγή απογονικού κόμβου"
+
+msgid "Delete selection"
+msgstr "Διαγραφή κόμβου"
+
+msgid "Insert sibling"
+msgstr "Εισαγωγή αδελφικού κόμβου"
+
+msgid "Move up"
+msgstr "Μετακίνηση πάνω"
+
+msgid "Move down"
+msgstr "Μετακίνηση κάτω"
+
+msgid "Move left"
+msgstr "Μετακίνηση αριστερά"
+
+msgid "Move right"
+msgstr "Μετακίνηση δεξιά"
+
+msgid "Select up"
+msgstr "Επιλογή πάνω"
+
+msgid "Select down"
+msgstr "Επιλογή κάτω"
+
+msgid "Select left"
+msgstr "Επιλογή αριστερά"
+
+msgid "Select right"
+msgstr "Επιλογή δεξιά"
+
+msgid "Next root"
+msgstr "Επόμενος γονικός κόμβος"
+
+msgid "Colors"
+msgstr "Χρώματα"
+
+msgid "Data type"
+msgstr "Είδος δεδομένων"
+
+msgid "Text"
+msgstr "Κείμενο"
+
+msgid "Diagram"
+msgstr "Διάγραμμα"
+
+msgid "Table"
+msgstr "Πίνακας"
+
+msgid "Image"
+msgstr "Εικόνα"
+
+msgid "Flag"
+msgstr "Σημαία"
+
+msgid "Color"
+msgstr "Χρώμα"
+
+#, kde-format
+msgid "Click to set Item %1"
+msgstr "Κλικ για τον ορισμό αντικειμένου %1"
+
+msgid "Reorganization type"
+msgstr "Είδος αναδιοργάνωσης"
+
+msgid "Connection type"
+msgstr "Είδος συνδέσμου"
+
+msgid "Save document automatically"
+msgstr "Αυτόματη αποθήκευση εγγράφου"
+
+msgid "Background color"
+msgstr "Χρώμα παρασκηνίου"
+
+msgid "Fixed"
+msgstr "Σταθερό"
+
+msgid "Force-based"
+msgstr "Αναγκατικό"
+
+msgid "Incremental"
+msgstr "Αυξητικό"
+
+msgid "Lines"
+msgstr "Γραμμές"
+
+msgid "Splines"
+msgstr "Καμπύλες"
+
+msgid " min"
+msgstr "μίνιμουμ"
+
+msgid ""
+"Interval in minutes for saving the document automatically, 0 for disabling "
+"this feature"
+msgstr ""
+"Χρονικό διάτημα σε λεπτά για την αυτόματη αποθήκευση του εγγράφου, "
+"0 για  απενεργοποίηση αυτής της λειτουργίας."
+
+#, kde-format
+msgid "Automatic save failed for file: %1"
+msgstr "Απέτυχε η αυτόματη αποθήκευση για το αρχείο: %1"
+
+#, kde-format
+msgid "%1 saved automatically"
+msgstr "%1 αποθηκεύτηκε αυτόματα"
+
+#, kde-format
+msgid "Color %1"
+msgstr "Χρώμα %1"
+
+#, kde-format
+msgid "File saving: missing file %1"
+msgstr "Αποθήκευση αρχείου: το αρχείο %1 λείπει"
+
+msgid "Missing bindings for opening files"
+msgstr "Ανυπαρξία δεσμών για το άνοιγμα των αρχείων"
+
+#, kde-format
+msgid "Missing filter file %1 for opening files"
+msgstr "Έλλειψη φίλτρου αρχείου %1 για το άνοιγμα των αρχείων"
+
+msgid "dirty"
+msgstr "λερωμένος"
+
+#, kde-format
+msgid "Code generation failed: missing file %1"
+msgstr "Η δημιουργία κώδικα απέτυχε: αρχείο που λείπει %1"
+
+msgid "<p align='center'>No item selected</p>"
+msgstr "<p στοίχη='κέντρο'>Δεν επιλέχθηκε αντικείμενο</p>"
+
+msgid "First Name"
+msgstr "Όνομα"
+
+msgid "Name"
+msgstr "Επώνυμο"
+
+msgid "Organization"
+msgstr "Οργανισμός"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Add Box"
+msgstr "Προσθήκη πλαισίου"
+
+msgid "Delete"
+msgstr "Διαγραφή"
+
+msgid "Color..."
+msgstr "Χρώμα..."
+
+msgid "Connection width"
+msgstr "Πλάτος σύνδεσης"
+
+msgid "1px"
+msgstr "1px"
+
+msgid "2px"
+msgstr "2px"
+
+msgid "3px"
+msgstr "3px"
+
+msgid "Connection style"
+msgstr "Στυλ σύνδεσης"
+
+msgid "solid line"
+msgstr "συμπαγής γραμμής"
+
+msgid "dot line"
+msgstr "γραμμή με τελείες"
+
+msgid "dash line"
+msgstr "γραμμή με παύλες"
+
+msgid "Flag item(s) as..."
+msgstr "Σημείωση αντικειμένου(ων) ως..."
+
+msgid "exclude the table"
+msgstr "αποκλεισμός του πίνακα"
+
+msgid "fit the item on one slide"
+msgstr "Προσαρμογή του αντικειμένου στη μια πλευρά"
+
+msgid "picture caption"
+msgstr "λεζάντα εικόνας"
+
+msgid "picture dimension in pdf files"
+msgstr "διαστάσεις εικόνας στα αρχεία pdf"
+
+msgid "html div style: style=\"width: 99px;\""
+msgstr "html div style: style=\"πλάτος: 99px;\""
+
+msgid "html picture style: style=\"width: 99px;\""
+msgstr "html picture style: style=\"πλάτος: 99px;\""
+
+msgid "do not use this item for generating slides"
+msgstr "μη χρησιμοποιήσετε αυτό το αντικείμενο για δημιουργία διαφανειών"
+
+#, c-format
+msgid "command to launch (%s is the resulting file)"
+msgstr "εντολή για φόρτωση (%s είναι το αρχείο που προκύπτει)"
+
+#, c-format
+msgid "cd `echo %s | sed s/main.tex//` && ./waf configure && waf --view"
+msgstr "cd `echo %s | sed s/main.tex//` && ./waf configure && waf --view"
+
+#, c-format
+msgid "firefox %s"
+msgstr "firefox %s"
+
+#, c-format
+msgid "ooimpress %s"
+msgstr "ooimpress %s"
+
+#, c-format
+msgid "oowriter %s"
+msgstr "oowriter %s"
+
+msgid "document author"
+msgstr "συγγραφέας εγγράφου"
+
+msgid "turn off the document author (latex)"
+msgstr "απενεργοποίηση του συγγραφέα του εγγράφου (latex)"
+
+msgid "document class (latex: a4, report, book)"
+msgstr "κλάση εγγράφου (latex: a4, report, book)"
+
+msgid "company"
+msgstr "εταιρεία"
+
+msgid "document date"
+msgstr "ημερομηνία εγγράφου"
+
+msgid "turn of the document date (latex)"
+msgstr "απενεργοποίηση ημερομηνίας εγγράφου (latex)"
+
+msgid "location of the presentation"
+msgstr "τοποθεσία της παρουσίασης"
+
+msgid "document title"
+msgstr "τίτλος εγγράφου"
+
+msgid "turn off the document title (latex)"
+msgstr "απενεργοποίηση του τίτλου του εγγράφου (latex)"
+
+msgid "footer center (pdflatex)"
+msgstr "κεντραρισμένο υποσέλιδο (pdflatex)"
+
+msgid "footer left (pdflatex)"
+msgstr "υποσελίδο αριστερά (pdflatex)"
+
+msgid "turn off the fancy output"
+msgstr "απενεργοποίηση του φανταχτερού αποτελέσματος"
+
+msgid "footer right"
+msgstr "υποσέλιδο δεξιά"
+
+msgid "header center (pdflatex)"
+msgstr "κεφαλίδα κεντραρισμένη (pdflatex)"
+
+msgid "header left"
+msgstr "κεφαλίδα αριστερά"
+
+msgid "header right"
+msgstr "κεφαλίδα δεξιά"
+
+msgid "openoffice.org language (fr_FR)"
+msgstr "γλώσσα openoffice.org (fr_FR)"
+
+msgid "openoffice.org presentation language"
+msgstr "γλώσσα παρουσίασης openoffice.org "
+
+msgid "openoffice.org text language"
+msgstr "γλώσσα κειμένου openoffice.org "
+
+msgid "Warsaw (JuanLesPins, Montpellier, )"
+msgstr "Βαρσοβία (JuanLesPins, Montpellier, )"
+
+msgid "Generator dialog"
+msgstr "Διάλογος δημιουργού"
+
+msgid "Generators"
+msgstr "Δημιουργοί"
+
+msgid "Description"
+msgstr "Περιγραφή"
+
+msgid "Location"
+msgstr "Τοποθεσία"
+
+msgid "&Ok"
+msgstr "&Εντάξει"
+
+msgid "&Cancel"
+msgstr "&Ακύρωση"
+
+msgid "No document generator chosen."
+msgstr "Δεν επιλέχθηκε δημιουργός εγγράφου."
+
+msgid "Missing data"
+msgstr "Λείπουν δεδομένα"
+
+#, kde-format
+msgid "Invalid output directory %1"
+msgstr "Μη έγκυρος φάκελος εξαγωγής%1"
+
+msgid "Missing location"
+msgstr "Λείπει η τοποθεσία"
+
+msgid "Change picture"
+msgstr "Αλλαγή εικόνας"
+
+msgid "Clear picture"
+msgstr "Καθαρισμός εικόνας"
+
+msgid "Click to set a picture"
+msgstr "Κάντε κλικ για να ορίσετε μια εικόνα"
+
+msgid "Select an item on the map"
+msgstr "Επιλέξτε ένα αντικείμενο στον χάρτη"
+
+msgid "Choose a file"
+msgstr "Επιλογή ενός αρχείου"
+
+msgid "Image files (*.png *.jpg *.jpeg *.gif)"
+msgstr "Αρχεία εικόνων (*.png *.jpg *.jpeg *.gif)"
+
+#, kde-format
+msgid "File %1 does not exist"
+msgstr "Το αρχείο %1 δεν υπάρχει"
+
+#, kde-format
+msgid "File %1 could not be opened"
+msgstr "Το αρχείο %1 δεν μπορεί να ανοίξει"
+
+msgid "something bad happened"
+msgstr "συνέβη κάτι άσχημο"
+
+msgid "something worse happened"
+msgstr "συνέβη κάτι χειρότερο"
+
+msgid "<p align='center'>No preview available<br/>at this time</p>"
+msgstr ""
+"<p align='center'>Δεν υπάρχει διαθέσιμη προεπισκόπηση<br/>αυτή τη στιγμή<"
+"/p>"
+
+msgid ""
+"The map is empty, Semantik\n"
+"cannot create documents from it"
+msgstr ""
+"Ο χάρτης είναι κενός. Το Semantik\n"
+"δεν μπορεί να δημιουργήσει έγγραφα\n"
+"από αυτόν."
+
+msgid "Empty map"
+msgstr "Κενός χάρτης"
+
+#, kde-format
+msgid "Template folder %1 is not readable"
+msgstr "Ο φάκελος των προτύπων %1 δεν είναι αναγνώσιμος"
+
+msgid "&Reorganize the map"
+msgstr "&Αναδιοργάνωση του χάρτη"
+
+msgid "&Generate..."
+msgstr "&Δημιουργία"
+
+msgid "&Select"
+msgstr "&Επιλογή"
+
+msgid "&Link"
+msgstr "&Σύνδεση"
+
+msgid "&Sort"
+msgstr "&Ταξινόμηση"
+
+msgid "&Scroll"
+msgstr "&Κύλιση"
+
+msgid "CustomColor"
+msgstr "Προσαρμοσμένο χρώμα"
+
+msgid "Data"
+msgstr "Δεδομένα"
+
+msgid "Variables"
+msgstr "Μεταβλητές"
+
+msgid "Preview"
+msgstr "Προεπισκόπηση"
+
+msgid "Linear view"
+msgstr "Γραμμική προβολή"
+
+msgid "Welcome to Semantik"
+msgstr "Καλωσήρθατε στο Semantik"
+
+msgid "Ready"
+msgstr "Έτοιμος"
+
+msgid "*.sem|Semantik file (*.sem)"
+msgstr "*.sem|Semantik file (*.sem)"
+
+msgid "Choose a file name"
+msgstr "Επιλέξτε ένα όνομα αρχείου"
+
+#, kde-format
+msgid "Saved '%1'"
+msgstr "Αποθηκεύτηκε '%1'"
+
+msgid "*.sem *.kdi *.mm *.vym|All Supported Files (*.sem *.kdi *.mm *.vym)"
+msgstr ""
+"*.sem *.kdi *.mm *.vym|Όλα τα υποστηριζόμενα αρχεία (*.sem *.kdi *.mm *."
+"vym)"
+
+msgid "Semantik"
+msgstr "Semantik"
+
+#, kde-format
+msgid "%1 - Semantik"
+msgstr "%1 - Semantik"
+
+msgid "Untitled"
+msgstr "Χωρίς τίτλο"
+
+#, kde-format
+msgid ""
+"The document \"%1\" has been modified.\n"
+"Do you want to save your changes or discard them?"
+msgstr ""
+"Το έγγραφο \"%1\" έχει τροποποιηθεί.\n"
+"Θέλετε να αποθηκεύσετε τις αλλαγές\n"
+"ή να τις απορρίψετε;"
+
+msgid "Close Document"
+msgstr "Κλείσιμο εγγράφου"
+
+msgid "Rows"
+msgstr "Γραμμές"
+
+msgid "Columns"
+msgstr "Στήλες"
+
+msgid "Add Row"
+msgstr "Προσθήκη γραμμής"
+
+msgid "Add a row"
+msgstr "Προσθήκη μιας γραμμής"
+
+msgid "Add Column"
+msgstr "Προσθήκη στήλης"
+
+msgid "Add a column"
+msgstr "Προσθήκη μιας στήλης"
+
+msgid "Remove Row"
+msgstr "Διαγραφή γραμμής"
+
+msgid "Remove a row"
+msgstr "Διαγραφή μιας γραμμής"
+
+msgid "Remove Column"
+msgstr "Διαγραφή στήλης"
+
+msgid "Remove a column"
+msgstr "Διαγραφή μιας στήλης"
+
+msgid "Redimension"
+msgstr "Επαναπροσδιορισμός διαστάσεων"
+
+msgid "Change table dimensions"
+msgstr "Αλλαγή διαστάσεων πίνακα"
+
+msgid "&Bold"
+msgstr "&Έντονα"
+
+msgid "&Italic"
+msgstr "&Πλάγια"
+
+msgid "&Underline"
+msgstr "&Υπογράμμιση"
+
+msgid "Code complete"
+msgstr "Ο κώδικας συμπληρώθηκε"
+
+msgid "exclude the picture"
+msgstr "αποκλεισμός της εικόνας"
+
+msgid "latex language: english (frenchb, )"
+msgstr "γλώσσα latex: αγγλικά (frenchb, )"
+
+
