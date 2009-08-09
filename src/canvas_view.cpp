@@ -334,6 +334,7 @@ void canvas_view::zoom_in()
 	qreal i_rFactor = matrix().scale(i_iScaleFactor, i_iScaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
 	if (i_rFactor < 0.01 || i_rFactor > 1000) return;
 	scale(i_iScaleFactor, i_iScaleFactor);
+	check_canvas_size();
 }
 
 void canvas_view::zoom_out()
@@ -342,6 +343,7 @@ void canvas_view::zoom_out()
 	qreal i_rFactor = matrix().scale(i_iScaleFactor, i_iScaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
 	if (i_rFactor < 0.01 || i_rFactor > 1000) return;
 	scale(i_iScaleFactor, i_iScaleFactor);
+	check_canvas_size();
 }
 
 void canvas_view::wheelEvent(QWheelEvent *i_oEvent)
@@ -967,7 +969,6 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 
 void canvas_view::mouseMoveEvent(QMouseEvent *i_oEv)
 {
-	check_canvas_size();
 	switch (m_iMode)
 	{
 		case select_mode:
@@ -1000,6 +1001,7 @@ void canvas_view::mouseMoveEvent(QMouseEvent *i_oEv)
 				{
 					l_oItem->update_links();
 				}
+				check_canvas_size();
 			}
 			break;
 		case link_mode:
@@ -1204,7 +1206,7 @@ void canvas_view::fit_zoom()
 		l_o |= it->boundingRect();
 	}
 #endif
-
+	//check_canvas_size();
 	fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
 }
 
