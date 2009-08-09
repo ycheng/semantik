@@ -48,6 +48,8 @@ def compile_py(task):
 def build(bld):
 	env = bld.env_of_name('default')
 
+	Options.options.compile_targets = 'camlprog,util/ocamltwt,nablah,src/semantik'
+
 	os.environ['LD_LIBRARY_PATH'] = env['LIBPATH_KDECORE']+':'+os.environ.get('LD_LIBRARY_PATH', '')
 
 	import ocaml
