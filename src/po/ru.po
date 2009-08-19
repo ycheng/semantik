@@ -1,0 +1,517 @@
+# Алексей, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: http://bugzilla.kde.org\n"
+"POT-Creation-Date: 2009-04-26 15:20+0200\n"
+"PO-Revision-Date: 2009-08-11 17:50+0400\n"
+"Last-Translator: Алексей Кузнецов\n"
+"Language-Team: Russian <kde-russian@lists.kde.ru>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+msgid "Empty"
+msgstr "Пусто"
+
+msgid "Toggle edit"
+msgstr "Правка"
+
+msgid "Insert child"
+msgstr "Вставить потомка"
+
+msgid "Delete selection"
+msgstr "Удалить выбранное"
+
+msgid "Insert sibling"
+msgstr "Добавить равнозначный элемент"
+
+msgid "Move up"
+msgstr "Поднять"
+
+msgid "Move down"
+msgstr "Опустить"
+
+msgid "Move left"
+msgstr "Сдвинуть влево"
+
+msgid "Move right"
+msgstr "Сдвинуть вправо"
+
+msgid "Select up"
+msgstr ""
+
+msgid "Select down"
+msgstr ""
+
+msgid "Select left"
+msgstr ""
+
+msgid "Select right"
+msgstr ""
+
+msgid "Next root"
+msgstr "Следующий корень"
+
+msgid "Colors"
+msgstr "Цвета"
+
+msgid "Data type"
+msgstr "Тип данных"
+
+msgid "Text"
+msgstr "Текст"
+
+msgid "Diagram"
+msgstr "Диаграмма"
+
+msgid "Table"
+msgstr "Таблица"
+
+msgid "Image"
+msgstr "Картинка"
+
+msgid "Flag"
+msgstr "Флаг"
+
+msgid "Color"
+msgstr "Цвет"
+
+#, kde-format
+msgid "Click to set Item %1"
+msgstr "Нажмите, чтобы установить объект %1"
+
+msgid "Reorganization type"
+msgstr "Вид группировки"
+
+msgid "Connection type"
+msgstr "Вид соединений"
+
+msgid "Save document automatically"
+msgstr "Сохранять автоматически"
+
+msgid "Background color"
+msgstr "Цвет фона"
+
+msgid "Fixed"
+msgstr ""
+
+msgid "Force-based"
+msgstr ""
+
+msgid "Incremental"
+msgstr ""
+
+msgid "Lines"
+msgstr "Отрезки"
+
+msgid "Splines"
+msgstr "Кривые"
+
+msgid " min"
+msgstr " мин"
+
+msgid ""
+"Interval in minutes for saving the document automatically, 0 for disabling "
+"this feature"
+msgstr ""
+"Период автоматического сохранения документа в минутах,\n"
+"«0» отключает автосохранение."
+
+#, kde-format
+msgid "Automatic save failed for file: %1"
+msgstr "Не удалось сохранить автоматически файл «%1»"
+
+#, kde-format
+msgid "%1 saved automatically"
+msgstr "«%1» автоматически сохранён."
+
+#, kde-format
+msgid "Color %1"
+msgstr "Цвет %1"
+
+#, kde-format
+msgid "File saving: missing file %1"
+msgstr "Сохранение файла: файл «%1» не существует"
+
+msgid "Missing bindings for opening files"
+msgstr "Не могу открыть файл: ошибка поддержки Python"
+
+#, kde-format
+msgid "Missing filter file %1 for opening files"
+msgstr "Не найден файл фильтра «%1» для открытия файлов"
+
+msgid "dirty"
+msgstr "черновик"
+
+#, kde-format
+msgid "Code generation failed: missing file %1"
+msgstr "Не удалось генерировать код: нет файла «%1»"
+
+msgid "<p align='center'>No item selected</p>"
+msgstr "<p align='center'>Ничего не выбрано</p>"
+
+msgid "First Name"
+msgstr "Имя"
+
+msgid "Name"
+msgstr "Фамилия"
+
+msgid "Organization"
+msgstr "Учреждение"
+
+msgid "Email"
+msgstr "Эл. почта"
+
+msgid "Add Box"
+msgstr "Добавить элемент"
+
+msgid "Delete"
+msgstr "Удалить"
+
+msgid "Color..."
+msgstr "Цвет..."
+
+msgid "Connection width"
+msgstr "Толщина соед. линии"
+
+msgid "1px"
+msgstr ""
+
+msgid "2px"
+msgstr ""
+
+msgid "3px"
+msgstr ""
+
+msgid "Connection style"
+msgstr "Тип соединений"
+
+msgid "solid line"
+msgstr "сплошная линия"
+
+msgid "dot line"
+msgstr "пунктир"
+
+msgid "dash line"
+msgstr "штриховая линия"
+
+msgid "Flag item(s) as..."
+msgstr "Пометить элемент(ы) как..."
+
+msgid "exclude the table"
+msgstr "исключить таблицу"
+
+msgid "fit the item on one slide"
+msgstr "Закрепить элементы на одном слайде"
+
+msgid "picture caption"
+msgstr "Захват картинки"
+
+msgid "picture dimension in pdf files"
+msgstr "Размеры картинки в файлах PDF"
+
+msgid "html div style: style=\"width: 99px;\""
+msgstr "html div style: style=\"width: 99px;\""
+
+msgid "html picture style: style=\"width: 99px;\""
+msgstr "html picture style: style=\"width: 99px;\""
+
+msgid "do not use this item for generating slides"
+msgstr "Не использовать этот элемент при создании слайда"
+
+#, c-format
+msgid "command to launch (%s is the resulting file)"
+msgstr "Выполняемая команда («%s» - имя целевого файла)"
+
+#, c-format
+msgid "cd `echo %s | sed s/main.tex//` && ./waf configure && waf --view"
+msgstr "cd `echo %s | sed s/main.tex//` && ./waf configure && waf --view"
+
+#, c-format
+msgid "firefox %s"
+msgstr "firefox %s"
+
+# In Russia we generally use OO.o build from the Infra-resource (http://i-rs.ru) which uses "openoffice.org3 -impress" syntax
+#, c-format
+msgid "ooimpress %s"
+msgstr "openoffice.org3 -impress %s"
+
+#, c-format
+msgid "oowriter %s"
+msgstr "openoffice.org3 -writer %s"
+
+msgid "document author"
+msgstr "Автор документа"
+
+msgid "turn off the document author (latex)"
+msgstr "Скрыть автора документа (LaTeX)"
+
+msgid "document class (latex: a4, report, book)"
+msgstr "Класс документа (latex: a4, report, book)"
+
+msgid "company"
+msgstr "Учреждение"
+
+msgid "document date"
+msgstr "Дата документа"
+
+msgid "turn of the document date (latex)"
+msgstr "Скрыть дату (LaTeX)"
+
+msgid "location of the presentation"
+msgstr "Расположение презентации"
+
+msgid "document title"
+msgstr "Заголовок документа"
+
+msgid "turn off the document title (latex)"
+msgstr "Скрыть заголовок (LaTeX)"
+
+msgid "footer center (pdflatex)"
+msgstr "Нижний колонтитул, по центру"
+
+msgid "footer left (pdflatex)"
+msgstr "Нижний колонтитул, слева"
+
+msgid "turn off the fancy output"
+msgstr "не использовать \"украшенный\" вывод (latex)"
+
+msgid "footer right"
+msgstr "Нижний колонтитул, справа"
+
+msgid "header center (pdflatex)"
+msgstr "Верхний колонтитул, по центру"
+
+msgid "header left"
+msgstr "Верхний колонтитул, слева"
+
+msgid "header right"
+msgstr "Верхний колонтитул, справа"
+
+msgid "openoffice.org language (fr_FR)"
+msgstr "язык для openoffice.org (ru_RU)"
+
+msgid "openoffice.org presentation language"
+msgstr "Язык для презентации openoffice.org"
+
+msgid "openoffice.org text language"
+msgstr "Язык для текстового документа openoffice.org"
+
+msgid "Warsaw (JuanLesPins, Montpellier, )"
+msgstr ""
+
+msgid "Generator dialog"
+msgstr "Диалог создания документа"
+
+msgid "Generators"
+msgstr "Генераторы"
+
+msgid "Description"
+msgstr "Описание"
+
+msgid "Location"
+msgstr "Расположение"
+
+msgid "&Ok"
+msgstr "&Угу"
+
+msgid "&Cancel"
+msgstr "&Отменить"
+
+msgid "No document generator chosen."
+msgstr "Не выбран генератор документа."
+
+msgid "Missing data"
+msgstr "Нет данных"
+
+#, kde-format
+msgid "Invalid output directory %1"
+msgstr "Неверный целевой каталог «%1»"
+
+msgid "Missing location"
+msgstr "Не указано расположение"
+
+msgid "Change picture"
+msgstr "Изменить картинку"
+
+msgid "Clear picture"
+msgstr "Убрать картинку"
+
+msgid "Click to set a picture"
+msgstr "Нажмите, чтобы задать картинку"
+
+msgid "Select an item on the map"
+msgstr "Выбрать объект на плане"
+
+msgid "Choose a file"
+msgstr "Выбор файла"
+
+msgid "Image files (*.png *.jpg *.jpeg *.gif)"
+msgstr "Файлы изображений (*.png *.jpg *.jpeg *.gif)"
+
+#, kde-format
+msgid "File %1 does not exist"
+msgstr "Файл «%1» не существует"
+
+#, kde-format
+msgid "File %1 could not be opened"
+msgstr "Файл «%1» не может быть открыт"
+
+msgid "something bad happened"
+msgstr "случилось нечто плохое"
+
+msgid "something worse happened"
+msgstr "случилось нечто страшное"
+
+msgid "<p align='center'>No preview available<br/>at this time</p>"
+msgstr "<p align='center'>В настоящее время<br/>предпросмотр недоступен</p>"
+
+msgid ""
+"The map is empty, Semantik\n"
+"cannot create documents from it"
+msgstr ""
+"План пуст; Semantik\n"
+"не может создать документ."
+
+msgid "Empty map"
+msgstr "Пустой план"
+
+#, kde-format
+msgid "Template folder %1 is not readable"
+msgstr "Каталог с шаблонами («%1») недоступен для чтения"
+
+msgid "&Reorganize the map"
+msgstr "&Перегруппировать"
+
+msgid "&Generate..."
+msgstr "&Создать..."
+
+msgid "&Select"
+msgstr "&Выбрать"
+
+msgid "&Link"
+msgstr "&Ссылка"
+
+msgid "&Sort"
+msgstr "&Упорядочить"
+
+msgid "&Scroll"
+msgstr "&Прокрутка"
+
+msgid "CustomColor"
+msgstr "Другой цвет"
+
+msgid "Data"
+msgstr "Данные"
+
+msgid "Variables"
+msgstr "Переменные"
+
+msgid "Preview"
+msgstr "Предв. просмотр"
+
+msgid "Linear view"
+msgstr "Структура"
+
+msgid "Welcome to Semantik"
+msgstr "Добро пожаловать в Semantik"
+
+msgid "Ready"
+msgstr "Готово"
+
+msgid "*.sem|Semantik file (*.sem)"
+msgstr "*.sem|Файлы Semantik (*.sem)"
+
+msgid "Choose a file name"
+msgstr "Укажите имя файла"
+
+#, kde-format
+msgid "Saved '%1'"
+msgstr "«%1» сохранён"
+
+msgid "*.sem *.kdi *.mm *.vym|All Supported Files (*.sem *.kdi *.mm *.vym)"
+msgstr ""
+"*.sem *.kdi *.mm *.vym|Файлы поддерживаемых форматов (*.sem *.kdi *.mm *."
+"vym)"
+
+msgid "Semantik"
+msgstr "Semantik"
+
+#, kde-format
+msgid "%1 - Semantik"
+msgstr "%1 - Semantik"
+
+msgid "Untitled"
+msgstr "Неназванный"
+
+#, kde-format
+msgid ""
+"The document \"%1\" has been modified.\n"
+"Do you want to save your changes or discard them?"
+msgstr ""
+"Документ «%1» изменён. \n"
+"Сохранить изменения или отклонить их?"
+
+msgid "Close Document"
+msgstr "Закрыть документ"
+
+msgid "Rows"
+msgstr "Строки"
+
+msgid "Columns"
+msgstr "Столбцы"
+
+msgid "Add Row"
+msgstr "Добавить строку"
+
+msgid "Add a row"
+msgstr "Вставлена строка"
+
+msgid "Add Column"
+msgstr "Добавить столбец"
+
+msgid "Add a column"
+msgstr "Вставлен столбец"
+
+msgid "Remove Row"
+msgstr "Удалить строку"
+
+msgid "Remove a row"
+msgstr "Строка удалена"
+
+msgid "Remove Column"
+msgstr "Удалить столбец"
+
+msgid "Remove a column"
+msgstr "Столбец удалён"
+
+msgid "Redimension"
+msgstr "Указать размер таблицы"
+
+msgid "Change table dimensions"
+msgstr "Изменение размеров таблицы"
+
+msgid "&Bold"
+msgstr "Полу&жирный"
+
+msgid "&Italic"
+msgstr "&Курсив"
+
+msgid "&Underline"
+msgstr "&Подчёркнутый"
+
+msgid "Code complete"
+msgstr ""
+
+msgid "exclude the picture"
+msgstr "исключить изображение"
+
+msgid "latex language: english (frenchb, )"
+msgstr "langage pour latex: english (frenchb, )"
+
+#~ msgid "Code generation failed: missing bindings"
+#~ msgstr "La génération a échoué: le support Python est manquant"
