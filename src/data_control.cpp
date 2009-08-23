@@ -609,7 +609,7 @@ bool data_control::open_file(const QString& i_sUrl)
 	m_sLastSaved = i_sUrl;
 	m_sLastSaved.replace(r, s);
 
-	select_item(-1);
+	select_item(NO_ITEM);
 	set_dirty(false);
 	return true;
 }
