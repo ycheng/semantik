@@ -280,11 +280,8 @@ void box_view::synchro_doc(const hash_params& i_o)
 				{
 					data_item *l_oData = m_oControl->m_oItems.value(l_iOldId);
 					// important, if the parser dies
-					if (l_oData != NULL and l_oData->m_iDataType == view_diag)
-					{
-						// STUPID LOCK
-						if (!m_oControl->m_bLoading)
-							l_oData->m_sDiag = to_string();
+					if (l_oData != NULL and l_oData->m_iDataType == view_diag) {
+						l_oData->m_sDiag = to_string();
 					}
 				}
 				clear_diagram();

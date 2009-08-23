@@ -531,7 +531,6 @@ void data_control::purge_document()
 
 bool data_control::open_file(const QString& i_sUrl)
 {
-	m_bLoading = true;
 	purge_document();
 
 	QFile l_o2(QString(FILTER_DIR)+"/main.py");
@@ -610,7 +609,8 @@ bool data_control::open_file(const QString& i_sUrl)
 	m_sLastSaved = i_sUrl;
 	m_sLastSaved.replace(r, s);
 
-	m_bLoading = false;
+	select_item(-1);
+	set_dirty(false);
 	return true;
 }
 
@@ -1027,12 +1027,15 @@ void data_control::sort_children(int i_iParent, int i_iChild, int i_iNum)
 	emit synchro(l_oCmd);
 }
 
-void data_control::set_dirty()
+void data_control::set_dirty(bool b)
 {
-	if (!m_bDirty && !m_bLoading)
+	if (b != m_bDirty)
 	{
-		m_bDirty = true;
-		emit sig_message(trUtf8("dirty"), 1000);
+		m_bDirty = b;
+		if (b)
+		{
+			emit sig_message(trUtf8("dirty"), 1000);
+		}
 	}
 }
 
@@ -1211,7 +1214,7 @@ data_control::data_control(QObject* i_oParent) : QObject(i_oParent)
 	m_iLastItemSelected = NO_ITEM;
 	m_sOutDir = "";
 	m_iTimerValue = 21 / 4;
-	m_bLoading = false;
+	m_bDirty = false;
 
 	m_oTimer = NULL;
 	m_sOutProject = "";

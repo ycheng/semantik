@@ -41,7 +41,6 @@ canvas_view::canvas_view(QWidget *i_oWidget, data_control *i_oControl) : QGraphi
 	//setCacheMode(CacheBackground);
 	setRenderHint(QPainter::Antialiasing);
 
-	// another bait !!
 #ifndef Q_OS_DARWIN
 
 	setDragMode(QGraphicsView::NoDrag);

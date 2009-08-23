@@ -47,10 +47,7 @@ class data_control: public QObject
 		QString m_sOutProject;
 		QString m_sOutTemplate;
 
-		bool m_bLoading;
-
-
-		void set_dirty();
+		void set_dirty(bool b = true);
 		bool m_bDirty;
 
 		void init_temp_dir();
