@@ -41,6 +41,10 @@ class canvas_view : public QGraphicsView
 		QMenu* m_oColorMenu;
 		QMenu* m_oDataMenu;
 
+
+		QAction* m_oTextType, *m_oDiagramType, *m_oTableType, *m_oImageType;
+
+
 		mode_type m_iMode;
 
 		void keyPressEvent(QKeyEvent *i_oEvent);

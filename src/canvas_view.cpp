@@ -126,14 +126,17 @@ canvas_view::canvas_view(QWidget *i_oWidget, data_control *i_oControl) : QGraphi
 	m_oColorMenu = m_oMenu->addMenu(trUtf8("Colors"));
 	m_oDataMenu = m_oMenu->addMenu(trUtf8("Data type"));
 
-	l_o = new QAction(trUtf8("Text"), this); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_change_data())); addAction(l_o); l_o->setData(QVariant(view_text));
-	m_oDataMenu->addAction(l_o);
-	l_o = new QAction(trUtf8("Diagram"), this); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_change_data())); addAction(l_o); l_o->setData(QVariant(view_diag));
-	m_oDataMenu->addAction(l_o);
-	l_o = new QAction(trUtf8("Table"), this); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_change_data())); addAction(l_o); l_o->setData(QVariant(view_table));
-	m_oDataMenu->addAction(l_o);
-	l_o = new QAction(trUtf8("Image"), this); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_change_data())); addAction(l_o); l_o->setData(QVariant(view_img));
-	m_oDataMenu->addAction(l_o);
+
+#define newAction(s, v, dest)  dest = l_o = new QAction(s, this); \
+	connect(l_o, SIGNAL(triggered()), this, SLOT(slot_change_data())); \
+	addAction(l_o); l_o->setData(QVariant(v)); \
+	m_oDataMenu->addAction(l_o); \
+	l_o->setCheckable(true);
+
+	newAction(trUtf8("Text"), view_text, m_oTextType);
+	newAction(trUtf8("Diagram"), view_diag, m_oDiagramType);
+	newAction(trUtf8("Table"), view_table, m_oTableType);
+	newAction(trUtf8("Image"), view_img, m_oImageType);
 }
 
 void canvas_view::slot_hop()
@@ -806,6 +809,18 @@ void canvas_view::enable_menu_actions()
 	m_oEditAction->setEnabled(m_oSelected.size()==1);
 	m_oColorMenu->setEnabled(m_oSelected.size()>=1);
 	m_oDataMenu->setEnabled(m_oSelected.size()==1);
+
+	if (m_oSelected.size() == 1)
+	{
+		data_item *l_oData = *m_oControl + m_oSelected[0]->Id();
+
+		#define fafa(v, t) v->setChecked(l_oData->m_iDataType == t);
+		fafa(m_oTextType, view_text);
+		fafa(m_oDiagramType, view_diag);
+		fafa(m_oTableType, view_table);
+		fafa(m_oImageType, view_img);
+	}
+
 	foreach (QAction* l_o, m_oDataMenu->actions())
 	{
 		l_o->setEnabled(m_oSelected.size()==1);
