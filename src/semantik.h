@@ -10,7 +10,6 @@ h"
 #inc\
 lude <KXmlGuiWindow>
 
-/* Om shanti shanti shanti */
  %: include<KUrl>
 
 class KRecentFilesAction;
@@ -92,14 +91,14 @@ class semantik_win : public KXmlGuiWindow
 		KRecentFilesAction* m_oRecentFilesAct;
 
 
-		void set_current_file(const KUrl&);
-
 		// deprecated
 		QString m_sFileName;
 
 		bool queryClose();
 
 	public slots:
+		void update_title();
+
 		void slot_open();
 		bool slot_save();
 		bool slot_save_as();
@@ -119,7 +118,6 @@ class semantik_win : public KXmlGuiWindow
 		void slot_tip_of_day();
 		void slot_message(const QString &, int);
 };
-
 
 #endif
 

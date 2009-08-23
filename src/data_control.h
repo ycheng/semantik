@@ -6,6 +6,8 @@
 #include <QObject>
 #include <QXmlDefaultHandler>
 #include <QMutex>
+#include<KUrl> 
+
 
 #include "flag_scheme.h"
 #include "color_scheme.h"
@@ -37,6 +39,8 @@ class data_control: public QObject
 		void synchro(const hash_params&);
 
 		void sig_message(const QString&, int);
+		void dirty(bool);
+		void update_title();
 
 	public:
 		data_control(QObject *i_oParent);
@@ -88,10 +92,13 @@ class data_control: public QObject
 
 		int m_iLastItemSelected;
 
-	//private:
+	private:
 		int m_sCount;
 		QTimer *m_oTimer;
-	//public:
+	public:
+
+		KUrl m_oCurrentUrl;
+
 		QHash<int, data_item*> m_oItems;
 		QList<QPoint> m_oLinks;
 		QList<int> m_oImgs;

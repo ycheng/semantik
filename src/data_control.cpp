@@ -1036,6 +1036,7 @@ void data_control::set_dirty(bool b)
 		{
 			emit sig_message(trUtf8("dirty"), 1000);
 		}
+		emit(update_title());
 	}
 }
 

@@ -134,6 +134,7 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 
 	m_oControl = new data_control(this);
 	connect(m_oControl, SIGNAL(sig_message(const QString&, int)), this, SLOT(slot_message(const QString&, int)));
+	connect(m_oControl, SIGNAL(update_title()), this, SLOT(update_title()));
 
 	QFrame *fr = new QFrame(this);
 	fr->setLineWidth(0);
@@ -283,7 +284,8 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	setXMLFile(notr("semantikui.rc"));
 	setupGUI();
 
-	set_current_file(KUrl());
+	m_oControl->m_oCurrentUrl = KUrl();
+	update_title();
 
 	m_oColorsToolBar = toolBar(notr("colorsToolBar"));
 	m_oFlagsToolBar = toolBar(notr("flagsToolBar"));
@@ -371,9 +373,16 @@ bool semantik_win::slot_save_as()
 	if (m_oControl->save_file(l_o.path()))
 	{
 		statusBar()->showMessage(trUtf8("Saved '%1'").arg(l_o.path()), 2000);
-		set_current_file(l_o);
+		m_oControl->m_oCurrentUrl = l_o;
+		update_title();
 		return true;
 	}
+	else
+	{
+		m_oControl->m_oCurrentUrl = KUrl();
+		update_title();
+	}
+
 	return false;
 }
 
@@ -398,19 +407,27 @@ void semantik_win::slot_open()
 		this, trUtf8("Choose a file name"));
 	if (l_o.isValid() && m_oControl->open_file(l_o.path()))
 	{
-		set_current_file(l_o);
+		m_oControl->m_oCurrentUrl = l_o;
 	}
+	else
+	{
+		m_oControl->m_oCurrentUrl = KUrl();
+	}
+	update_title();
 }
 
-void semantik_win::set_current_file(const KUrl& i_oUrl)
+void semantik_win::update_title()
 {
-	if (i_oUrl.path().isEmpty())
+	if (m_oControl->m_oCurrentUrl.path().isEmpty())
 	{
 		setWindowTitle(trUtf8("Semantik"));
 		return;
 	}
-	setWindowTitle(trUtf8("%1 - Semantik").arg(i_oUrl.path()));
-	m_oRecentFilesAct->addUrl(i_oUrl);
+
+	QString mod;
+	if (m_oControl->m_bDirty) mod = trUtf8(" [Modified] ");
+	setWindowTitle(trUtf8("%1 %2 - Semantik").arg(m_oControl->m_oCurrentUrl.path(), mod));
+	m_oRecentFilesAct->addUrl(m_oControl->m_oCurrentUrl);
 }
 
 void semantik_win::slot_properties()
@@ -506,8 +523,9 @@ void semantik_win::slot_recent(const KUrl& i_oUrl)
 	if (i_oUrl.path().isEmpty()) return;
 	if (m_oControl->open_file(i_oUrl.path()))
 	{
-		set_current_file(i_oUrl);
+		m_oControl->m_oCurrentUrl = i_oUrl;
 	}
+	update_title();
 }
 
 void semantik_win::slot_tip_of_day()
