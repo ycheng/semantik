@@ -36,12 +36,16 @@ int main(int i_iArgc, char **i_iArgv)
 	srandom(l_iSeed);
 	caml_startup(i_iArgv);
 
+	KCmdLineOptions options;
+	options.add("+[url]", ki18n("A file to open on startup"));
+
 	KAboutData l_o("semantik", 0, ki18n("Semantik"), version, ki18n(description),
 			KAboutData::License_GPL_V3, ki18n("(C) 2007-2009 Thomas Nagy"), KLocalizedString(),
 			"tnagyemail-mail@yahoo.fr");
 	l_o.addAuthor(ki18n("Thomas Nagy"), KLocalizedString(), "tnagyemail-mail@yahoo.fr");
 
 	KCmdLineArgs::init(i_iArgc, i_iArgv, &l_o);
+	KCmdLineArgs::addCmdLineOptions(options);
 
 	KApplication l_oApp;
 
@@ -62,6 +66,13 @@ int main(int i_iArgc, char **i_iArgv)
 
 	semantik_win *l_oMainWin = new semantik_win;
 	l_oMainWin->show();
+
+	const KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
+	for (int i = 0; i < args->count(); ++i)
+	{
+		l_oMainWin->slot_recent(args->url(i));
+	}
+
 	return l_oApp.exec();
 }
 
