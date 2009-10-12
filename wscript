@@ -265,7 +265,7 @@ def post_build(bld):
 		except: pass
 	if Options.options.exe:
 		#os.popen('export LD_LIBRARY_PATH=out/default/:$LD_LIBRARY_PATH; PATH=plugins:$PATH out/default/src/semantik')
-		Utils.pproc.Popen('LD_LIBRARY_PATH=out/default/:$LD_LIBRARY_PATH out/default/src/semantik --style plastique').wait()
+		Utils.pproc.Popen('LD_LIBRARY_PATH=out/default/:$LD_LIBRARY_PATH out/default/src/semantik --style plastique', shell=True).wait()
 
 	return
 	# display the graph of header dependencies
