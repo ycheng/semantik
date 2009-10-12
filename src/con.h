@@ -1,4 +1,4 @@
-// Thomas Nagy 2007-2009 GPLV3
+/ Thomas Nagy 2007-2009 GPLV3
 
 #include <QtGlobal>
 
@@ -62,27 +62,7 @@ qreal _min(qreal a, qreal b);
 qreal _max(qreal a, qreal b);
 
 /* TODO: values hardcoded in some places */
-
-#define cmd_add_item 0
-#define cmd_update_item 1
-#define data_root "/"
-#define cmd_remove_item 2
-#define cmd_link 3
-#define cmd_unlink 4
-#define data_outdir "tmp"
-#define cmd_select_item 5
-#define cmd_sort_item 6
-#define cmd_save_data 7
-#define cmd_update_colors 8
-#define cmd_update_flags 9
-#define cmd_open_map 10
-#define cmd_pre_view 11
-#define cmd_change_data 12
-#define cmd_export_item 13
-
-#define NUM_RECENT cmd_open_map
-
-
+#define NUM_RECENT 10
 #define data_parent 0
 #define data_id 1
 #define data_id1 2

@@ -172,7 +172,6 @@ def configure(conf):
 	elif (test('solaris') or test('sunos')):
 		conf.fatal(err % "Sun systems")
 
-
 	kde_config = os.popen("which kde-config").read().strip()
 	if kde_config:
 		icons = os.popen('%s --path icon' % kde_config).read().strip()
@@ -220,6 +219,23 @@ def configure(conf):
 	conf.define('TEMPLATE_DIR', conf.env.KDE4_DATA_INSTALL_DIR + '/semantik/templates/')
 	conf.define('FILTER_DIR', conf.env.KDE4_DATA_INSTALL_DIR +'/semantik/filters/')
 	conf.env.PICDIR = conf.env.KDE4_ICON_INSTALL_DIR #j('share/pixmaps/')
+	conf.define('cmd_add_item', 0)
+	conf.define('cmd_update_item', 1)
+	conf.define('data_root', os.sep)
+	conf.define('cmd_remove_item', 2)
+	conf.define('cmd_link', 3)
+	conf.define('cmd_unlink', 4)
+	conf.define('data_outdir', 'tmp')
+	conf.define('cmd_select_item', 5)
+	conf.define('cmd_sort_item', 6)
+	conf.define('cmd_save_data', 7)
+	conf.define('cmd_update_colors', 8)
+	conf.define('cmd_update_flags', 9)
+	conf.define('cmd_open_map', 10)
+	conf.define('cmd_pre_view', 11)
+	conf.define('cmd_change_data', 12)
+	conf.define('cmd_export_item', 13)
+
 
 	if Options.options.use64:
 		conf.env.shlib_INST_DIR = 'lib64'

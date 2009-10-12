@@ -7,6 +7,7 @@
 #include <QSpinBox>
 #include<QCoreApplication>
 
+#include "con.h"
 #include "table_dialog.h"
 #include "data_item.h"
 #include "data_control.h"

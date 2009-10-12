@@ -8,10 +8,10 @@
 #include <QMutex>
 #include<KUrl> 
 
-
+#include "aux.h"
+#include "con.h"
 #include "flag_scheme.h"
 #include "color_scheme.h"
-#include "con.h"
 
 class QTimer;
 class html_converter : public QXmlDefaultHandler

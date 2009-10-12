@@ -19,6 +19,8 @@
 #include <QHeaderView>
 #include <QAction>
 #include <QStandardItemModel>
+
+#include "aux.h"
 #include "con.h"
 
 #include <math.h>

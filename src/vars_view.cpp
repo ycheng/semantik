@@ -9,10 +9,10 @@
 #include <QHeaderView>
 #include <QAction>
 #include <QStandardItemModel>
+#include "con.h"
 #include "data_item.h"
 #include "data_control.h"
 #include "vars_view.h"
-#include "con.h"
 
 vars_view::vars_view(QWidget *i_oParent, data_control *i_oControl) : QTextEdit(i_oParent)
 {

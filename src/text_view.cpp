@@ -12,7 +12,8 @@
 
 #include <sonnet/speller.h>
 
-#include "con.h"
+//#include "aux.h"
+//#include "con.h"
 #include "data_item.h"
 #include "data_control.h"
 #include "text_view.h"
