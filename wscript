@@ -3,10 +3,10 @@
 # Thomas Nagy, 2007-2009 (pvm)
 
 APPNAME='semantik'
-VERSION='0.7.3'
+VERSION='0.7.4'
 
 srcdir = '.'
-blddir = 'build'
+blddir = 'out'
 
 import os, sys, re
 import Task, Utils, Configure, Options, Logs
@@ -264,8 +264,8 @@ def post_build(bld):
 		try: os.popen('/sbin/ldconfig 2> /dev/null')
 		except: pass
 	if Options.options.exe:
-		#os.popen('export LD_LIBRARY_PATH=build/default/:$LD_LIBRARY_PATH; PATH=plugins:$PATH build/default/src/semantik')
-		os.popen('LD_LIBRARY_PATH=build/default/:$LD_LIBRARY_PATH build/default/src/semantik --style plastique')
+		#os.popen('export LD_LIBRARY_PATH=out/default/:$LD_LIBRARY_PATH; PATH=plugins:$PATH out/default/src/semantik')
+		Utils.pproc.Popen('LD_LIBRARY_PATH=out/default/:$LD_LIBRARY_PATH out/default/src/semantik --style plastique').wait()
 
 	return
 	# display the graph of header dependencies

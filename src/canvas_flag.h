@@ -19,8 +19,7 @@ class canvas_flag: public QGraphicsRectItem
 	public:
 		canvas_flag(canvas_view *i_oGraphWidget, canvas_item *i_oFrom);
 
-		//enum { Type = gratype(797) };
-		int type() const { return gratype(797); }
+		int type() const { return canvas_flag_type; }
 		canvas_view *m_oGraph;
 		canvas_item *m_oItem;
 		void paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *i_oOption, QWidget * i_oW);

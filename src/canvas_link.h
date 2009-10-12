@@ -18,8 +18,7 @@ class canvas_link: public QGraphicsPathItem
 	public:
 		canvas_link(canvas_view *i_oGraphWidget, canvas_item *i_oFrom, canvas_item * i_oTo);
 
-		//enum { Type = gratype(17) };
-		int type() const { return gratype(17); }
+		int type() const { return canvas_link_type; }
 
 		QColor get_color() {return m_oColor;}
 		void set_color(QColor c) {m_oColor=c;}

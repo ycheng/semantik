@@ -26,8 +26,7 @@ class canvas_item: public QGraphicsRectItem
 		canvas_item(canvas_view *i_oGraphWidget, int i_iId);
 		~canvas_item();
 
-		//enum { Type = gratype(7) };
-		int type() const { return gratype(7); }
+		int type() const { return canvas_item_type; }
 
 		void update_flags();
 

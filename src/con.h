@@ -71,6 +71,7 @@ qreal _max(qreal a, qreal b);
 #define data_commande 5
 #define data_type 6 // change the view stuff
 
+
 #define view_canvas 1
 #define view_linear 2
 #define view_text 3
@@ -94,6 +95,12 @@ qreal _max(qreal a, qreal b);
 //while (1) { nono; }
 
 #define errmsg "im sorry dave, im afraid i cant do that"
+
+
+#define canvas_item_type gratype(12301)
+#define canvas_flag_type gratype(12302)
+#define canvas_link_type gratype(12303)
+#define canvas_sort_type gratype(12304)
 
 /* end - con.h */
 #endif
