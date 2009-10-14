@@ -14,6 +14,7 @@ settings = {
 'doc_content':'',
 'doc_class':'article',
 
+'all_latex':'False',
 'header_off':'None',
 'footer_off':'None',
 'header_l':'',
