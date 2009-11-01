@@ -1,0 +1,514 @@
+# This file is put in the public domain.
+#
+# Pavel Fric <pavelfric@seznam.cz>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: http://www.google.com\n"
+"POT-Creation-Date: 2009-04-26 15:50+0200\n"
+"PO-Revision-Date: 2009-10-24 10:14+0200\n"
+"Last-Translator: Pavel Fric <pavelfric@seznam.cz>\n"
+"Language-Team: Czech <kde-i18n-doc@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+msgid "Empty"
+msgstr "Prázdné"
+
+msgid "Toggle edit"
+msgstr "Přepnout úpravy"
+
+msgid "Insert child"
+msgstr "Vložit potomka"
+
+msgid "Delete selection"
+msgstr "Smazat výběr"
+
+msgid "Insert sibling"
+msgstr "Vložit sourozence"
+
+msgid "Move up"
+msgstr "Posunout nahoru"
+
+msgid "Move down"
+msgstr "Posunout dolů"
+
+msgid "Move left"
+msgstr "Posunout doleva"
+
+msgid "Move right"
+msgstr "Posunout doprava"
+
+msgid "Select up"
+msgstr "Vybrat nahoru"
+
+msgid "Select down"
+msgstr "Vybrat dolů"
+
+msgid "Select left"
+msgstr "Vybrat doleva"
+
+msgid "Select right"
+msgstr "Vybrat doprava"
+
+msgid "Next root"
+msgstr "Další kořen"
+
+msgid "Colors"
+msgstr "Barvy"
+
+msgid "Data type"
+msgstr "Datový typ"
+
+msgid "Text"
+msgstr "Text"
+
+msgid "Diagram"
+msgstr "Nákres"
+
+msgid "Table"
+msgstr "Tabulka"
+
+msgid "Image"
+msgstr "Obrázek"
+
+msgid "Flag"
+msgstr "Příznak"
+
+msgid "Color"
+msgstr "Barva"
+
+#, kde-format
+msgid "Click to set Item %1"
+msgstr "Klepněte pro umístění položky %1"
+
+msgid "Reorganization type"
+msgstr "Druh nového uspořádání"
+
+msgid "Connection type"
+msgstr "Druh spojení"
+
+msgid "Save document automatically"
+msgstr "Dokument uložit automaticky"
+
+msgid "Background color"
+msgstr "Barva pozadí"
+
+msgid "Fixed"
+msgstr "Pevné"
+
+msgid "Force-based"
+msgstr "Usazené silou"
+
+msgid "Incremental"
+msgstr "Přírustkové"
+
+msgid "Lines"
+msgstr "Čáry"
+
+msgid "Splines"
+msgstr "Křivky"
+
+msgid " min"
+msgstr " min"
+
+msgid ""
+"Interval in minutes for saving the document automatically, 0 for disabling "
+"this feature"
+msgstr ""
+"Doba v minutách pro automatické ukládání dokumentu, 0 pro zakázání "
+"této funkce"
+
+#, kde-format
+msgid "Automatic save failed for file: %1"
+msgstr "Automatické uložení se nepodařilo u souboru: %1"
+
+#, kde-format
+msgid "%1 saved automatically"
+msgstr "%1 uložen automaticky"
+
+#, kde-format
+msgid "Color %1"
+msgstr "Barva %1"
+
+#, kde-format
+msgid "File saving: missing file %1"
+msgstr "Ukládání souboru: chybí soubor %1"
+
+msgid "Missing bindings for opening files"
+msgstr "Chybí spojení pro otevření souborů"
+
+#, kde-format
+msgid "Missing filter file %1 for opening files"
+msgstr "Chybí soubor s filtrem %1 pro otevření souborů"
+
+msgid "dirty"
+msgstr "špinavý"
+
+#, kde-format
+msgid "Code generation failed: missing file %1"
+msgstr "Vytvoření kódu se nepodařilo: chybí soubor %1"
+
+msgid "<p align='center'>No item selected</p>"
+msgstr "<p align='center'>Nebyla vybrána žádná položka</p>"
+
+msgid "First Name"
+msgstr "Křestní jméno"
+
+msgid "Name"
+msgstr "Příjmení"
+
+msgid "Organization"
+msgstr "Organizace"
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Add Box"
+msgstr "Přidat kolonku"
+
+msgid "Delete"
+msgstr "Smazat"
+
+msgid "Color..."
+msgstr "Barva..."
+
+msgid "Connection width"
+msgstr "Šířka spojení"
+
+msgid "1px"
+msgstr "1px"
+
+msgid "2px"
+msgstr "2px"
+
+msgid "3px"
+msgstr "3px"
+
+msgid "Connection style"
+msgstr "Styl spojení"
+
+msgid "solid line"
+msgstr "Plná čára"
+
+msgid "dot line"
+msgstr "Tečkovaná čára"
+
+msgid "dash line"
+msgstr "Čárkovaná čára"
+
+msgid "Flag item(s) as..."
+msgstr "Označit položku(y) jako..."
+
+msgid "exclude the table"
+msgstr "Vyjmout tabulku"
+
+msgid "fit the item on one slide"
+msgstr "Umístit položku na snímek"
+
+msgid "picture caption"
+msgstr "Popisek obrázku"
+
+msgid "picture dimension in pdf files"
+msgstr "Rozměry obrázku v souborech PDF"
+
+msgid "html div style: style=\"width: 99px;\""
+msgstr "html div style: style=\"width: 99px;\""
+
+msgid "html picture style: style=\"width: 99px;\""
+msgstr "Styl obrázku v html: style=\"width: 99px;\""
+
+msgid "do not use this item for generating slides"
+msgstr "Tuto položku nepoužívejte pro vytváření snímků"
+
+#, c-format
+msgid "command to launch (%s is the resulting file)"
+msgstr "Příkaz ke spuštění (%s je výsledným souborem)"
+
+#, c-format
+msgid "cd `echo %s | sed s/main.tex//` && ./waf configure && waf --view"
+msgstr "cd `echo %s | sed s/main.tex//` && ./waf configure && waf --view"
+
+#, c-format
+msgid "firefox %s"
+msgstr "firefox %s"
+
+#, c-format
+msgid "ooimpress %s"
+msgstr "ooimpress %s"
+
+#, c-format
+msgid "oowriter %s"
+msgstr "oowriter %s"
+
+msgid "document author"
+msgstr "Autor dokumentu"
+
+msgid "turn off the document author (latex)"
+msgstr "Vypnout autora dokumentu (latex)"
+
+msgid "document class (latex: a4, report, book)"
+msgstr "Třída dokumentu (latex: a4, zpráva, kniha)"
+
+msgid "company"
+msgstr "Společnost"
+
+msgid "document date"
+msgstr "Datum vytvoření dokumentu"
+
+msgid "turn of the document date (latex)"
+msgstr "Vypnout datum vytvoření dokumentu (latex)"
+
+msgid "location of the presentation"
+msgstr "Umístění představení"
+
+msgid "document title"
+msgstr "Název dokumentu"
+
+msgid "turn off the document title (latex)"
+msgstr "Vypnout název dokumentu (latex)"
+
+msgid "footer center (pdflatex)"
+msgstr "Zápatí na střed (pdflatex)"
+
+msgid "footer left (pdflatex)"
+msgstr "Zápatí vlevo (pdflatex)"
+
+msgid "turn off the fancy output"
+msgstr "Vypnout vypracovaný výstup"
+
+msgid "footer right"
+msgstr "Zápatí vpravo"
+
+msgid "header center (pdflatex)"
+msgstr "Záhlaví na střed (pdflatex)"
+
+msgid "header left"
+msgstr "Záhlaví vlevo"
+
+msgid "header right"
+msgstr "Záhlaví vpravo"
+
+msgid "openoffice.org language (fr_FR)"
+msgstr "Jazyk v openoffice.org (fr_FR)"
+
+msgid "openoffice.org presentation language"
+msgstr "Jazyk představení v openoffice.org"
+
+msgid "openoffice.org text language"
+msgstr "Jazyk textu v openoffice.org"
+
+msgid "Warsaw (JuanLesPins, Montpellier, )"
+msgstr "Varšava (JuanLesPins, Montpellier, )"
+
+msgid "Generator dialog"
+msgstr "Dialog tvůrce"
+
+msgid "Generators"
+msgstr "Tvůrci"
+
+msgid "Description"
+msgstr "Popis"
+
+msgid "Location"
+msgstr "Umístění"
+
+msgid "&Ok"
+msgstr "&OK"
+
+msgid "&Cancel"
+msgstr "&Zrušit"
+
+msgid "No document generator chosen."
+msgstr "Nebyl vybrán žádný tvůrce dokumentu."
+
+msgid "Missing data"
+msgstr "Chybí data"
+
+#, kde-format
+msgid "Invalid output directory %1"
+msgstr "Neplatný výstupní adresář %1"
+
+msgid "Missing location"
+msgstr "Chybí umístění"
+
+msgid "Change picture"
+msgstr "Změnit obrázek"
+
+msgid "Clear picture"
+msgstr "Smazat obrázek"
+
+msgid "Click to set a picture"
+msgstr "Klepněte pro položení obrázku"
+
+msgid "Select an item on the map"
+msgstr "Vybrat položku na zobrazení"
+
+msgid "Choose a file"
+msgstr "Vybrat soubor"
+
+msgid "Image files (*.png *.jpg *.jpeg *.gif)"
+msgstr "Soubory s obrázky (*.png *.jpg *.jpeg *.gif)"
+
+#, kde-format
+msgid "File %1 does not exist"
+msgstr "Soubor %1 neexistuje"
+
+#, kde-format
+msgid "File %1 could not be opened"
+msgstr "Soubor %1 se nepodařilo otevřít"
+
+msgid "something bad happened"
+msgstr "Stalo se něco nepříjemného"
+
+msgid "something worse happened"
+msgstr "Stalo se něco ještě horšího"
+
+msgid "<p align='center'>No preview available<br/>at this time</p>"
+msgstr "<p align='center'>V této chvíli<br/>není dostupný žádný náhled</p>"
+
+msgid ""
+"The map is empty, Semantik\n"
+"cannot create documents from it"
+msgstr ""
+"Zobrazení je prázdné, Semantik\n"
+"z něj nedokáže vytvářet dokumenty"
+
+msgid "Empty map"
+msgstr "Prázdné zobrazení"
+
+#, kde-format
+msgid "Template folder %1 is not readable"
+msgstr "Složka s předlohami %1 je nečitelná"
+
+msgid "&Reorganize the map"
+msgstr "&Přeuspořádat zobrazení"
+
+msgid "&Generate..."
+msgstr "&Vytvořit..."
+
+msgid "&Select"
+msgstr "&Vybrat"
+
+msgid "&Link"
+msgstr "&Spojit"
+
+msgid "&Sort"
+msgstr "&Třídit"
+
+msgid "&Scroll"
+msgstr "&Projíždět"
+
+msgid "CustomColor"
+msgstr "Vlastní barva"
+
+msgid "Data"
+msgstr "Data"
+
+msgid "Variables"
+msgstr "Proměnné"
+
+msgid "Preview"
+msgstr "Náhled"
+
+msgid "Linear view"
+msgstr "Přímočarý pohled"
+
+msgid "Welcome to Semantik"
+msgstr "Vítejte v Semantiku"
+
+msgid "Ready"
+msgstr "Připraven"
+
+msgid "*.sem|Semantik file (*.sem)"
+msgstr "*.sem|Soubor pro Semantik (*.sem)"
+
+msgid "Choose a file name"
+msgstr "Vybrat název souboru"
+
+#, kde-format
+msgid "Saved '%1'"
+msgstr "Uloženo '%1'"
+
+msgid "*.sem *.kdi *.mm *.vym|All Supported Files (*.sem *.kdi *.mm *.vym)"
+msgstr ""
+"*.sem *.kdi *.mm *.vym|Všechny podporované soubory (*.sem *.kdi *.mm *.vym)"
+
+msgid "Semantik"
+msgstr "Semantik"
+
+#, kde-format
+msgid "%1 - Semantik"
+msgstr "%1 - Semantik"
+
+msgid "Untitled"
+msgstr "Nepojmenovaný"
+
+#, kde-format
+msgid ""
+"The document \"%1\" has been modified.\n"
+"Do you want to save your changes or discard them?"
+msgstr ""
+"Dokument \"%1\" byl změněn.\n"
+"Chcete svoje změny uložit nebo je vyhodit?"
+
+msgid "Close Document"
+msgstr "Zavřít dokument"
+
+msgid "Rows"
+msgstr "Řádky"
+
+msgid "Columns"
+msgstr "Sloupce"
+
+msgid "Add Row"
+msgstr "Přidat řádek"
+
+msgid "Add a row"
+msgstr "Přidat řádek"
+
+msgid "Add Column"
+msgstr "Přidat sloupec"
+
+msgid "Add a column"
+msgstr "Přidat sloupec"
+
+msgid "Remove Row"
+msgstr "Odstranit řádek"
+
+msgid "Remove a row"
+msgstr "Odstranit řádek"
+
+msgid "Remove Column"
+msgstr "Odstranit sloupec"
+
+msgid "Remove a column"
+msgstr "Odstranit sloupec"
+
+msgid "Redimension"
+msgstr "Změnit rozměry"
+
+msgid "Change table dimensions"
+msgstr "Změnit rozměry tabulky"
+
+msgid "&Bold"
+msgstr "&Tučné"
+
+msgid "&Italic"
+msgstr "&Kurzíva"
+
+msgid "&Underline"
+msgstr "&Podtržení"
+
+msgid "Code complete"
+msgstr "Kód dokončen"
+
+msgid "exclude the picture"
+msgstr "Vyjmout obrázek"
+
+msgid "latex language: english (frenchb, )"
+msgstr "Jazyk latexu: english (frenchb, )"
+
