@@ -1,0 +1,509 @@
+# Slovak translations for semantik package
+# Slovenské preklady pre balík semantik.
+msgid ""
+msgstr ""
+"Project-Id-Version: semantik 0.7.3\n"
+"Report-Msgid-Bugs-To: http://www.google.com\n"
+"POT-Creation-Date: 2009-04-26 15:50+0200\n"
+"PO-Revision-Date: 2010-01-26 18:08+0100\n"
+"Last-Translator: Slavko\n"
+"Language-Team: Slovenský <nomail>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: UTF-8\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+msgid "Empty"
+msgstr "Prázdne"
+
+msgid "Toggle edit"
+msgstr "Prepnúť editáciu"
+
+msgid "Insert child"
+msgstr "Vložiť potomka"
+
+msgid "Delete selection"
+msgstr "Zmazať výber"
+
+msgid "Insert sibling"
+msgstr "Vložiť súrodenca"
+
+msgid "Move up"
+msgstr "Posunúť hore"
+
+msgid "Move down"
+msgstr "Posunúť dole"
+
+msgid "Move left"
+msgstr "Posunúť vľavo"
+
+msgid "Move right"
+msgstr "Posunúť vpravo"
+
+msgid "Select up"
+msgstr "Vybrať hore"
+
+msgid "Select down"
+msgstr "Vybrať dole"
+
+msgid "Select left"
+msgstr "Vybrať vľavo"
+
+msgid "Select right"
+msgstr "Vybrať vpravo"
+
+msgid "Next root"
+msgstr "Ďalší koreň"
+
+msgid "Colors"
+msgstr "Farby"
+
+msgid "Data type"
+msgstr "Typ dát"
+
+msgid "Text"
+msgstr "Text"
+
+msgid "Diagram"
+msgstr "Diagram"
+
+msgid "Table"
+msgstr "Tabuľka"
+
+msgid "Image"
+msgstr "Obrázok"
+
+msgid "Flag"
+msgstr "Značka"
+
+msgid "Color"
+msgstr "Farba"
+
+#, kde-format
+msgid "Click to set Item %1"
+msgstr "Kliknite pre výber položky %1"
+
+msgid "Reorganization type"
+msgstr "Typ preusporiadania"
+
+msgid "Connection type"
+msgstr "Typ spojenia"
+
+msgid "Save document automatically"
+msgstr "Ukladať automaticky"
+
+msgid "Background color"
+msgstr "Farba pozadia"
+
+msgid "Fixed"
+msgstr "Pevné"
+
+msgid "Force-based"
+msgstr ""
+
+msgid "Incremental"
+msgstr "Vzostupné"
+
+msgid "Lines"
+msgstr "Čiary"
+
+msgid "Splines"
+msgstr "Krivky"
+
+msgid " min"
+msgstr " min"
+
+msgid ""
+"Interval in minutes for saving the document automatically, 0 for disabling "
+"this feature"
+msgstr "Interval automatického ukladania dokumentu v minútach, 0 pre vypnutie"
+
+#, kde-format
+msgid "Automatic save failed for file: %1"
+msgstr "Zlyhalo automatické uloženie súboru: %1"
+
+#, kde-format
+msgid "%1 saved automatically"
+msgstr "%1 automaticky uložený"
+
+#, kde-format
+msgid "Color %1"
+msgstr "Farba %1"
+
+#, kde-format
+msgid "File saving: missing file %1"
+msgstr "Ukladanie súboru: chýba súbor %1"
+
+msgid "Missing bindings for opening files"
+msgstr "Chýba prepojenie otvorených súborov"
+
+#, kde-format
+msgid "Missing filter file %1 for opening files"
+msgstr "Chýba súbor filtra %1 pre otváranie súborov"
+
+msgid "dirty"
+msgstr ""
+
+#, kde-format
+msgid "Code generation failed: missing file %1"
+msgstr "Zlyhalo generovanie kódu: chýba súbor %1"
+
+msgid "<p align='center'>No item selected</p>"
+msgstr "<p align='center'>Nie je vybratá položka</p>"
+
+msgid "First Name"
+msgstr "Prvé meno"
+
+msgid "Name"
+msgstr "Meno"
+
+msgid "Organization"
+msgstr "Organizácia"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Add Box"
+msgstr "Pridať prvok"
+
+msgid "Delete"
+msgstr "Zmazať"
+
+msgid "Color..."
+msgstr "Farba..."
+
+msgid "Connection width"
+msgstr "Spojenie s"
+
+msgid "1px"
+msgstr "1px"
+
+msgid "2px"
+msgstr "2px"
+
+msgid "3px"
+msgstr "3px"
+
+msgid "Connection style"
+msgstr "Štýl spojenia"
+
+msgid "solid line"
+msgstr "plná čiara"
+
+msgid "dot line"
+msgstr "bodkovaná čiara"
+
+msgid "dash line"
+msgstr "čiarkovaná čiara"
+
+msgid "Flag item(s) as..."
+msgstr "Označiť položku(y) ako..."
+
+msgid "exclude the table"
+msgstr "vylúčiť tabuľku"
+
+msgid "fit the item on one slide"
+msgstr "rozšíriť položku na snímok"
+
+msgid "picture caption"
+msgstr "titulok obrázka"
+
+msgid "picture dimension in pdf files"
+msgstr "rozmery obrázku v súboroch PDF"
+
+msgid "html div style: style=\"width: 99px;\""
+msgstr "štýl html div: style=\"width: 99px;\""
+
+msgid "html picture style: style=\"width: 99px;\""
+msgstr "štýl html picture: style=\"width: 99px;\""
+
+msgid "do not use this item for generating slides"
+msgstr "nepoužiť túto položku pre generovanie snímkov"
+
+#, c-format
+msgid "command to launch (%s is the resulting file)"
+msgstr "príkaz na vykonanie (%s je výsledný súbor)"
+
+#, c-format
+msgid "cd `echo %s | sed s/main.tex//` && ./waf configure && waf --view"
+msgstr "cd `echo %s | sed s/main.tex//` && ./waf configure && waf --view"
+
+#, c-format
+msgid "firefox %s"
+msgstr "firefox %s"
+
+#, c-format
+msgid "ooimpress %s"
+msgstr "ooimpress %s"
+
+#, c-format
+msgid "oowriter %s"
+msgstr "oowriter %s"
+
+msgid "document author"
+msgstr "autor dokumentu"
+
+msgid "turn off the document author (latex)"
+msgstr "vypnúť autora dokumentu (latex)"
+
+msgid "document class (latex: a4, report, book)"
+msgstr "trieda dokumentu (latex: a4, report, kniha)"
+
+msgid "company"
+msgstr "spoločnosť"
+
+msgid "document date"
+msgstr "dátum dokumentu"
+
+msgid "turn of the document date (latex)"
+msgstr "vypnúť dátum dokumentu (latex)"
+
+msgid "location of the presentation"
+msgstr "umiestnenie prezentácie"
+
+msgid "document title"
+msgstr "názov dokumentu"
+
+msgid "turn off the document title (latex)"
+msgstr "vypnúť názov dokumentu (latex)"
+
+msgid "footer center (pdflatex)"
+msgstr "pätka v strede (pdflatex)"
+
+msgid "footer left (pdflatex)"
+msgstr "pätka vľavo (pdflatex)"
+
+msgid "turn off the fancy output"
+msgstr "vypnúť vkusný výstup"
+
+msgid "footer right"
+msgstr "pätka vpravo"
+
+msgid "header center (pdflatex)"
+msgstr "hlavička v strede (pdflatex)"
+
+msgid "header left"
+msgstr "hlavička vľavo"
+
+msgid "header right"
+msgstr "hlavička vpravo"
+
+msgid "openoffice.org language (fr_FR)"
+msgstr "jazyk openoffice.org language (sk_SK)"
+
+msgid "openoffice.org presentation language"
+msgstr "jazyk prezentácie openoffice.org"
+
+msgid "openoffice.org text language"
+msgstr "jazyk textu openoffice.org"
+
+msgid "Warsaw (JuanLesPins, Montpellier, )"
+msgstr ""
+
+msgid "Generator dialog"
+msgstr "Generátor dialógu"
+
+msgid "Generators"
+msgstr "Generátoy"
+
+msgid "Description"
+msgstr "Popis"
+
+msgid "Location"
+msgstr "Umiestnenie"
+
+msgid "&Ok"
+msgstr "&Ok"
+
+msgid "&Cancel"
+msgstr "&Zrušiť"
+
+msgid "No document generator chosen."
+msgstr "Nie je zvolený generátor dokumentu."
+
+msgid "Missing data"
+msgstr "Chýbajúce dáta"
+
+#, kde-format
+msgid "Invalid output directory %1"
+msgstr "Neplatný výstupný adresár %1"
+
+msgid "Missing location"
+msgstr "Chýbajúce umiestnenie"
+
+msgid "Change picture"
+msgstr "Zmeniť obrázok"
+
+msgid "Clear picture"
+msgstr "Zmazať obrázok"
+
+msgid "Click to set a picture"
+msgstr "Kliknite pre nastavenie obrázka"
+
+msgid "Select an item on the map"
+msgstr "Vyberte položku mapy"
+
+msgid "Choose a file"
+msgstr "Vyberte súbor"
+
+msgid "Image files (*.png *.jpg *.jpeg *.gif)"
+msgstr "Súbory obrázkov (*.png *.jpg *.jpeg *.gif)"
+
+#, kde-format
+msgid "File %1 does not exist"
+msgstr "Súbor %1 neexistuje"
+
+#, kde-format
+msgid "File %1 could not be opened"
+msgstr "Súbor %1 nemožno otvoriť"
+
+msgid "something bad happened"
+msgstr "nastalo niečo zlé"
+
+msgid "something worse happened"
+msgstr "nastalo niečo hrozné"
+
+msgid "<p align='center'>No preview available<br/>at this time</p>"
+msgstr "<p align='center'>V tomto okamihu<br/>nie je dostupná ukážka.</p>"
+
+msgid ""
+"The map is empty, Semantik\n"
+"cannot create documents from it"
+msgstr ""
+"mapa je prázdna,\n"
+"Semantik z nej nemôže vytvoriť dokument"
+
+msgid "Empty map"
+msgstr "Prázdna mapa"
+
+#, kde-format
+msgid "Template folder %1 is not readable"
+msgstr "Adresár šablón %1 nie je čitateľný"
+
+msgid "&Reorganize the map"
+msgstr "P&reusporiadať mapu"
+
+msgid "&Generate..."
+msgstr "&Generovať..."
+
+msgid "&Select"
+msgstr "&Vybrať"
+
+msgid "&Link"
+msgstr "&Odkaz"
+
+msgid "&Sort"
+msgstr "&Zoradiť"
+
+msgid "&Scroll"
+msgstr "&Posunúť"
+
+msgid "CustomColor"
+msgstr "VlastnáFarba"
+
+msgid "Data"
+msgstr "Dáta"
+
+msgid "Variables"
+msgstr "Premenné"
+
+msgid "Preview"
+msgstr "Ukážka"
+
+msgid "Linear view"
+msgstr "Lineárne zobrazenie"
+
+msgid "Welcome to Semantik"
+msgstr "Vitajte v Semantiku"
+
+msgid "Ready"
+msgstr "Pripravený"
+
+msgid "*.sem|Semantik file (*.sem)"
+msgstr "*.sem|Súbor Semantik (*.sem)"
+
+msgid "Choose a file name"
+msgstr "Zvoľte meno súboru"
+
+#, kde-format
+msgid "Saved '%1'"
+msgstr "Uložené '%1'"
+
+msgid "*.sem *.kdi *.mm *.vym|All Supported Files (*.sem *.kdi *.mm *.vym)"
+msgstr ""
+"*.sem *.kdi *.mm *.vym|Všetky podporované súbory (*.sem *.kdi *.mm *.vym)"
+
+msgid "Semantik"
+msgstr "Semantik"
+
+#, kde-format
+msgid "%1 - Semantik"
+msgstr "%1 - Semantik"
+
+msgid "Untitled"
+msgstr "Bez mena"
+
+#, kde-format
+msgid ""
+"The document \"%1\" has been modified.\n"
+"Do you want to save your changes or discard them?"
+msgstr ""
+"Dokument \"%1\" bol zmenený.\n"
+"Chcete svoje zmeny uložiť alebo ich zahodiť?"
+
+msgid "Close Document"
+msgstr "Zatvoriť dokument"
+
+msgid "Rows"
+msgstr "Riadky"
+
+msgid "Columns"
+msgstr "Stĺpce"
+
+msgid "Add Row"
+msgstr "Pridať riadok"
+
+msgid "Add a row"
+msgstr "Pridať riadok"
+
+msgid "Add Column"
+msgstr "Pridať stĺpec"
+
+msgid "Add a column"
+msgstr "Pridať stĺpec"
+
+msgid "Remove Row"
+msgstr "Odstrániť riadok"
+
+msgid "Remove a row"
+msgstr "Odstrániť riadok"
+
+msgid "Remove Column"
+msgstr "Odstrániť stĺpec"
+
+msgid "Remove a column"
+msgstr "Odstrániť stĺpec"
+
+msgid "Redimension"
+msgstr "Zmena rozmerov"
+
+msgid "Change table dimensions"
+msgstr "Zmeňte rozmery tabuľky"
+
+msgid "&Bold"
+msgstr "&Bold"
+
+msgid "&Italic"
+msgstr "&Italic"
+
+msgid "&Underline"
+msgstr "&Underline"
+
+msgid "Code complete"
+msgstr "Kód dokončený"
+
+msgid "exclude the picture"
+msgstr "vylúčiť obrázok"
+
+msgid "latex language: english (frenchb, )"
+msgstr "jazyk latex: slovak (english, frenchb, )"
