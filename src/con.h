@@ -28,8 +28,6 @@
 
 #define mix(x, y) {x^=y;y^=x;x^=y;}
 
- #define CONST const
-
 #define moc(x) fu(x, moc)
 
 #incl\

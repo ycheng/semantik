@@ -387,7 +387,7 @@ void box_link::update_ratio()
 	setRect(QRectF(mx1, my1, qAbs(mx2 - mx1), qAbs(my2 - my1)));
 }
 
-bool box_link::contains(const QPointF& i_oP) CONST
+bool box_link::contains(const QPointF& i_oP) const
 {
 	// if the list of segments is not empty
 	if (m_oGood.size() >= 1)

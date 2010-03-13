@@ -39,7 +39,7 @@ class box_link : public QGraphicsRectItem
 
 		void draw_triangle(QPainter *i_oPainter, int i_iPosition, QPointF i_oP);
 
-		bool contains(const QPointF& i_oP) CONST;
+		bool contains(const QPointF& i_oP) const;
 
 		int m_iId;
 
