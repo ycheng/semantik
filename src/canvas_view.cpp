@@ -1169,9 +1169,6 @@ void canvas_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 	}
 }
 
-qreal _min(qreal a, qreal b) { if (a<b) return a; return b; }
-qreal _max(qreal a, qreal b) { if (a<b) return b; return a; }
-
 void canvas_view::check_canvas_size()
 {
 	// using viewport()->rect() was a bad idea

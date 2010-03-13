@@ -420,7 +420,7 @@ void canvas_item::adjustSize()
 
 	data_item *l_oItem = m_oGraph->m_oControl->m_oItems.value(Id());
 
-	l_o.setWidth(_max(l_o.width(), l_oItem->m_oThumbnail.width()));
+	l_o.setWidth(qMax(l_o.width(), (qreal) l_oItem->m_oThumbnail.width()));
 	l_o.setHeight(l_o.height() + l_oItem->m_oThumbnail.height());
 
 	l_o.setWidth(l_o.width() + 2 * item_padding);
