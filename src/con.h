@@ -18,6 +18,24 @@ ude \
 #define CANVAS_LINK_T gratype(12303)
 #define CANVAS_SORT_T gratype(12304)
 
+#define hash_params QHash<int, QVariant>
+
+#define data_parent 0
+#define data_id 1
+#define data_id1 2
+#define data_id2 3
+#define data_orig 4
+#define data_commande 5
+#define data_type 6 // change the view stuff
+
+
+#define VIEW_CANVAS 1
+#define VIEW_LINEAR 2
+#define VIEW_TEXT 3
+#define VIEW_IMG 4
+#define VIEW_DIAG 5
+#define VIEW_TABLE 6
+
 
 #define notr(x) QString(x)
 #define xp(a, b, d) a->setItem(b, 0, new QStandardItem(d));
@@ -39,24 +57,6 @@ ude \
 
 #define NO_ITEM 0
 #define NO_VIEW 0
-
-#define hash_params QHash<int, QVariant>
-
-#define data_parent 0
-#define data_id 1
-#define data_id1 2
-#define data_id2 3
-#define data_orig 4
-#define data_commande 5
-#define data_type 6 // change the view stuff
-
-
-#define view_canvas 1
-#define view_linear 2
-#define view_text 3
-#define view_img 4
-#define view_diag 5
-#define view_table 6
 
 //#define EMPTY_TEXT "Empty"
 

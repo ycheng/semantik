@@ -19,7 +19,7 @@
 
 data_item::data_item(data_control *i_oControl, int i_iId)
 {
-	m_iDataType = view_text;
+	m_iDataType = VIEW_TEXT;
 
 	m_iId = i_iId;
 	m_iColor = 0;

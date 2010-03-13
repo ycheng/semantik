@@ -103,7 +103,7 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		l_oItem->m_sPicComment = i_oAttrs.value(notr("pic_comment"));
 
 		l_oItem->m_iDataType = i_oAttrs.value(notr("data")).toInt();
-		if (l_oItem->m_iDataType == 0) l_oItem->m_iDataType = view_text;
+		if (l_oItem->m_iDataType == 0) l_oItem->m_iDataType = VIEW_TEXT;
 
 		l_oItem->m_sHints = i_oAttrs.value(notr("hints"));
 
@@ -1099,7 +1099,7 @@ void data_control::generate_docs(const QString &i_oFile, const QString &i_sDirNa
 	{
 		data_item *l_oData = m_oItems.value(l_iVal);
 		// the diagram view is the only one for now
-		if (l_oData->m_iDataType != view_diag)
+		if (l_oData->m_iDataType != VIEW_DIAG)
 			continue;
 		hash_params l_oCmd;
 		l_oCmd.insert(data_commande, QVariant(cmd_export_item));

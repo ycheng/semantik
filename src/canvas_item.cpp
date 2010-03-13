@@ -404,7 +404,7 @@ void canvas_item::focus_out(QFocusEvent *i_oEv)
 	QString l_s = m_oDoc->toPlainText();
 	if (l_o->m_sSummary != l_s) m_oGraph->m_oControl->set_dirty();
 	l_o->m_sSummary = l_s;
-	m_oGraph->m_oControl->update_item(Id(), view_canvas);
+	m_oGraph->m_oControl->update_item(Id(), VIEW_CANVAS);
 
 	//QGraphicsTextItem::focusOutEvent(i_oEv);
 	adjustSize();

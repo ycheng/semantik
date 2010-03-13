@@ -136,7 +136,7 @@ void image_view::clear_pic()
 		QFile l_oFile(l_s);
 		l_oFile.remove();
 	}
-	m_oControl->update_item(m_iId, view_img);
+	m_oControl->update_item(m_iId, VIEW_IMG);
 	repaint();
 }
 
@@ -208,7 +208,7 @@ void image_view::do_change_pic(const QString& l_sText)
 		emit sig_message(trUtf8("something bad happened"), 20000);
 		return;
 	}
-	m_oControl->update_item(m_iId, view_img);
+	m_oControl->update_item(m_iId, VIEW_IMG);
 
 	m_oPixmap = l_oData->m_oPix;
 	repaint();

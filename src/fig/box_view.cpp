@@ -282,7 +282,7 @@ void box_view::synchro_doc(const hash_params& i_o)
 				{
 					data_item *l_oData = m_oControl->m_oItems.value(l_iOldId);
 					// important, if the parser dies
-					if (l_oData != NULL and l_oData->m_iDataType == view_diag) {
+					if (l_oData != NULL and l_oData->m_iDataType == VIEW_DIAG) {
 						l_oData->m_sDiag = to_string();
 					}
 				}
@@ -295,7 +295,7 @@ void box_view::synchro_doc(const hash_params& i_o)
 				if (m_iId)
 				{
 					data_item *l_oData = m_oControl->m_oItems.value(m_iId);
-					if (l_oData and l_oData->m_iDataType == view_diag)
+					if (l_oData and l_oData->m_iDataType == VIEW_DIAG)
 						from_string(l_oData->m_sDiag);
 				}
 			}
@@ -304,7 +304,7 @@ void box_view::synchro_doc(const hash_params& i_o)
 			{
 				if (not m_iId) break;
 				data_item *l_oData = m_oControl->m_oItems.value(m_iId);
-				if (l_oData->m_iDataType != view_diag)
+				if (l_oData->m_iDataType != VIEW_DIAG)
 				{
 					//qDebug()<<m_iId<<" is not a diagram";
 					break;

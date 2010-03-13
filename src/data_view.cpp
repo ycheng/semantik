@@ -41,10 +41,10 @@ void data_view::synchro_doc(const hash_params&i_o)
 			{
 				// just to make it really complicated
 				// text image table diagram
-				case view_diag: j++;
-				case view_table: j++;
-				case view_img: j++;
-				case view_text: j++;
+				case VIEW_DIAG: j++;
+				case VIEW_TABLE: j++;
+				case VIEW_IMG: j++;
+				case VIEW_TEXT: j++;
 				default:
 					setCurrentIndex(j);
 					break;

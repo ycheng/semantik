@@ -133,10 +133,10 @@ canvas_view::canvas_view(QWidget *i_oWidget, data_control *i_oControl) : QGraphi
 	m_oDataMenu->addAction(l_o); \
 	l_o->setCheckable(true);
 
-	newAction(trUtf8("Text"), view_text, m_oTextType);
-	newAction(trUtf8("Diagram"), view_diag, m_oDiagramType);
-	newAction(trUtf8("Table"), view_table, m_oTableType);
-	newAction(trUtf8("Image"), view_img, m_oImageType);
+	newAction(trUtf8("Text"), VIEW_TEXT, m_oTextType);
+	newAction(trUtf8("Diagram"), VIEW_DIAG, m_oDiagramType);
+	newAction(trUtf8("Table"), VIEW_TABLE, m_oTableType);
+	newAction(trUtf8("Image"), VIEW_IMG, m_oImageType);
 }
 
 void canvas_view::slot_hop()
@@ -444,7 +444,7 @@ void canvas_view::synchro_doc(const hash_params& i_o)
 			break;
 		case cmd_update_item:
 			{
-				if (i_o[data_orig].toInt() == view_canvas) return;
+				if (i_o[data_orig].toInt() == VIEW_CANVAS) return;
 				int j = i_o[data_id].toInt();
 				m_oItems.value(j)->update_data();
 				m_oItems.value(j)->update();
@@ -452,7 +452,7 @@ void canvas_view::synchro_doc(const hash_params& i_o)
 			break;
 		case cmd_select_item:
 			{
-				if (i_o[data_orig].toInt() == view_canvas)
+				if (i_o[data_orig].toInt() == VIEW_CANVAS)
 				{
 					check_selected();
 					return;
@@ -785,9 +785,9 @@ void canvas_view::notify_select(bool i_oSignal)
 
 	if (!i_oSignal) return;
 	if (m_oSelected.size()==1)
-		m_oControl->select_item(m_oSelected[0]->Id(), view_canvas);
+		m_oControl->select_item(m_oSelected[0]->Id(), VIEW_CANVAS);
 	else
-		m_oControl->select_item(NO_ITEM, view_canvas);
+		m_oControl->select_item(NO_ITEM, VIEW_CANVAS);
 }
 
 void canvas_view::enable_actions()
@@ -812,10 +812,10 @@ void canvas_view::enable_menu_actions()
 		data_item *l_oData = *m_oControl + m_oSelected[0]->Id();
 
 		#define fafa(v, t) v->setChecked(l_oData->m_iDataType == t);
-		fafa(m_oTextType, view_text);
-		fafa(m_oDiagramType, view_diag);
-		fafa(m_oTableType, view_table);
-		fafa(m_oImageType, view_img);
+		fafa(m_oTextType, VIEW_TEXT);
+		fafa(m_oDiagramType, VIEW_DIAG);
+		fafa(m_oTableType, VIEW_TABLE);
+		fafa(m_oImageType, VIEW_IMG);
 	}
 
 	foreach (QAction* l_o, m_oDataMenu->actions())

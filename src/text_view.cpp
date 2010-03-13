@@ -140,7 +140,7 @@ void text_view::update_summary(const QString & i_s)
 
 	bool l_b = (l_oData->m_sSummary != i_s);
 	l_oData->m_sSummary = i_s;
-	if (l_b) m_oControl->update_item(m_iId, view_text);
+	if (l_b) m_oControl->update_item(m_iId, VIEW_TEXT);
 }
 
 void text_view::update_edit()

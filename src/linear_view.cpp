@@ -44,7 +44,7 @@ void linear_view::synchro_doc(const hash_params&i_o)
 			break;
 		case cmd_update_item:
 			{
-				if (i_o[data_orig].toInt() == view_linear) return;
+				if (i_o[data_orig].toInt() == VIEW_LINEAR) return;
 
 				int l_iId = i_o[data_id].toInt();
 				QTreeWidgetItem *l_oItem = m_oItems.value(l_iId);
@@ -58,7 +58,7 @@ void linear_view::synchro_doc(const hash_params&i_o)
 			{
 				m_bLockSelect = true;
 
-				if (i_o[data_orig].toInt() == view_linear)
+				if (i_o[data_orig].toInt() == VIEW_LINEAR)
 				{
 					m_bLockSelect = false;
 					return;
@@ -159,7 +159,7 @@ void linear_view::synchro_doc(const hash_params&i_o)
 			break;
 		case cmd_sort_item:
 			{
-				if (i_o[data_orig].toInt() == view_linear) return;
+				if (i_o[data_orig].toInt() == VIEW_LINEAR) return;
 
 				int l_iId = i_o[data_id].toInt();
 
@@ -213,7 +213,7 @@ void linear_view::selection_changed()
 		{
 			QTreeWidgetItem *l_oItem = l_oItems.at(0);
 			int l_iIdOld = l_oItem->data(0, Qt::UserRole).toInt();
-			m_oControl->select_item(l_iIdOld, view_linear);
+			m_oControl->select_item(l_iIdOld, VIEW_LINEAR);
 		}
 	}
 }
