@@ -16,14 +16,14 @@
 class QTimer;
 class html_converter : public QXmlDefaultHandler
 {
-        public:
-                html_converter();
+	public:
+		html_converter();
 
-                bool startElement(const QString&, const QString&, const QString&, const QXmlAttributes&);
-                bool endElement(const QString&, const QString&, const QString&);
-                bool characters(const QString &i_sStr);
+		bool startElement(const QString&, const QString&, const QString&, const QXmlAttributes&);
+		bool endElement(const QString&, const QString&, const QString&);
+		bool characters(const QString &i_sStr);
 
-                QString m_sBuf;
+		QString m_sBuf;
 		QStringList m_oTotale;
 };
 

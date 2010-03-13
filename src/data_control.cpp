@@ -27,19 +27,19 @@
 
 class semantik_reader : public QXmlDefaultHandler
 {
-        public:
-                semantik_reader(data_control*);
+	public:
+		semantik_reader(data_control*);
 
-        //private:
-                QString m_sBuf;
-                int m_iVersion;
+	//private:
+		QString m_sBuf;
+		int m_iVersion;
 		data_control *m_oControl;
 		int m_iId;
 
 	//public:
-                bool startElement(const QString&, const QString&, const QString&, const QXmlAttributes&);
-                bool endElement(const QString&, const QString&, const QString&);
-                bool characters(const QString &i_sStr);
+		bool startElement(const QString&, const QString&, const QString&, const QXmlAttributes&);
+		bool endElement(const QString&, const QString&, const QString&);
+		bool characters(const QString &i_sStr);
 
 };
 
