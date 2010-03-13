@@ -30,21 +30,6 @@
 
  #define CONST const
 
-#ifdef Q_OS_DARWIN
-#define _TAILLETABLE_ 300
-#define _NBRECT_ 500
-#define _RECTMAXSIZE_ 9999999
-#define _RATIO_GAP_ 10.0
-#define _R_ 120.0
-#define _D_ 4.0
-#define _ROWS_ 300
-#define _LONG_ "long"
-#define _LARG_ "larg"
-#define _POSX_ "posx"
-#define _POSY_ "posy"
-#define _ORI_  "ori"
-#endif
-
 #define moc(x) fu(x, moc)
 
 #incl\
