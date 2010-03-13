@@ -18,7 +18,7 @@ class canvas_sort: public QGraphicsEllipseItem
 	public:
 		canvas_sort(canvas_view *i_oGraphWidget, canvas_item *i_oFrom);
 
-		int type() const { return canvas_sort_type; }
+		int type() const { return CANVAS_SORT_T; }
 	//private:
 		canvas_view *m_oGraph;
 

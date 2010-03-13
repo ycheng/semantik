@@ -233,7 +233,7 @@ void canvas_view::slot_delete()
 	QList<int> l_oLst;
 	foreach (QGraphicsItem *l_oItem, m_oSelected)
 	{
-		if (l_oItem->type() != canvas_item_type) continue;
+		if (l_oItem->type() != CANVAS_ITEM_T) continue;
 		canvas_item *l_oR = (canvas_item*) l_oItem;
 		l_oLst.push_back(l_oR->Id());
 	}
@@ -365,7 +365,7 @@ bool canvas_view::event(QEvent *i_oEvent)
 	{
 		QHelpEvent *l_oEv = static_cast<QHelpEvent*>(i_oEvent);
 		QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(l_oEv->pos()));
-		if (l_oItem && l_oItem->type() == canvas_item_type)
+		if (l_oItem && l_oItem->type() == CANVAS_ITEM_T)
 		{
 			data_item *l_o = *m_oControl + ((canvas_item*) l_oItem)->Id();
 			if (l_o && l_o->m_iTextLength > 1)
@@ -493,7 +493,7 @@ void canvas_view::synchro_doc(const hash_params& i_o)
 
 				foreach (QGraphicsItem *l_oItem, items())
 				{
-					if (l_oItem->type() == canvas_link_type)
+					if (l_oItem->type() == CANVAS_LINK_T)
 					{
 						canvas_link *l_oLink = (canvas_link*) l_oItem;
 						if (
@@ -831,7 +831,7 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 		// select the item under the cursor if available and show the popup menu
 		m_oLastPoint = mapToScene(i_oEv->pos());
 		QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
-		if (l_oItem && l_oItem->type() == canvas_item_type)
+		if (l_oItem && l_oItem->type() == CANVAS_ITEM_T)
 		{
 			if (!m_oSelected.contains((canvas_item*) l_oItem))
 			{
@@ -867,7 +867,7 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 				QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
 				if (m_bPressed)
 				{
-					if (l_oItem && l_oItem->type() == canvas_item_type)
+					if (l_oItem && l_oItem->type() == CANVAS_ITEM_T)
 					{
 						l_oRect = (canvas_item*) l_oItem;
 					}
@@ -914,7 +914,7 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 
 				deselect_all();
 				QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
-				if (l_oItem && l_oItem->type() == canvas_item_type)
+				if (l_oItem && l_oItem->type() == CANVAS_ITEM_T)
 				{
 					l_oRect = (canvas_item*) l_oItem;
 					add_select(l_oRect);
@@ -924,13 +924,13 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 		case sort_mode:
 			{
 				QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
-				if (l_oItem && l_oItem->type() == canvas_item_type)
+				if (l_oItem && l_oItem->type() == CANVAS_ITEM_T)
 				{
 					l_oRect = (canvas_item*) l_oItem;
 					deselect_all();
 					add_select(l_oRect);
 				}
-				else if (l_oItem && l_oItem->type() == canvas_sort_type)
+				else if (l_oItem && l_oItem->type() == CANVAS_SORT_T)
 				{
 					qDebug()<<"sort called"<<endl;
 
@@ -965,7 +965,7 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 			{
 				deselect_all();
 				QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
-				if (l_oItem && l_oItem->type() == canvas_item_type)
+				if (l_oItem && l_oItem->type() == CANVAS_ITEM_T)
 				{
 					l_oRect = (canvas_item*) l_oItem;
 					add_select(l_oRect);
@@ -1083,7 +1083,7 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 
 					foreach (QGraphicsItem *l_oItem, l_oSel)
 					{
-						if (l_oItem->type() == canvas_item_type)
+						if (l_oItem->type() == CANVAS_ITEM_T)
 						{
 							add_select((canvas_item*) l_oItem);
 						}
@@ -1100,7 +1100,7 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 
 				foreach (QGraphicsItem *l_oI1, scene()->items(mapToScene(m_oLastPressPoint)))
 				{
-					if (l_oI1->type() == canvas_item_type)
+					if (l_oI1->type() == CANVAS_ITEM_T)
 					{
 						l_oR1 = (canvas_item*) l_oI1;
 						break;
@@ -1109,7 +1109,7 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 
 				foreach (QGraphicsItem *l_oI1, scene()->items(mapToScene(i_oEv->pos())))
 				{
-					if (l_oI1->type() == canvas_item_type)
+					if (l_oI1->type() == CANVAS_ITEM_T)
 					{
 						l_oR2 = (canvas_item*) l_oI1;
 						break;
@@ -1145,7 +1145,7 @@ void canvas_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 	{
 		if (l_oItem)
 		{
-			if (l_oItem->type() == canvas_item_type)
+			if (l_oItem->type() == CANVAS_ITEM_T)
 			{
 				deselect_all();
 
@@ -1155,7 +1155,7 @@ void canvas_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 				if (m_oSelected.size() == 1) m_oSelected[0]->focus_in();
 				check_canvas_size();
 			}
-			else if (l_oItem->type() == canvas_link_type)
+			else if (l_oItem->type() == CANVAS_LINK_T)
 			{
 				canvas_link *l_oLink = (canvas_link*) l_oItem;
 				m_oControl->unlink_items(l_oLink->m_oTo->Id(), l_oLink->m_oFrom->Id());

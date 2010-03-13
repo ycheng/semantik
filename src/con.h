@@ -47,8 +47,6 @@
 
 #define moc(x) fu(x, moc)
 
-#define gratype(x) (QGraphicsItem::UserType + x)
-
 #incl\
 ude \
 "aux.h"
@@ -94,11 +92,11 @@ qreal _max(qreal a, qreal b);
 
 #define errmsg "im sorry dave, im afraid i cant do that"
 
-
-#define canvas_item_type gratype(12301)
-#define canvas_flag_type gratype(12302)
-#define canvas_link_type gratype(12303)
-#define canvas_sort_type gratype(12304)
+#define gratype(x) (QGraphicsItem::UserType + x)
+#define CANVAS_ITEM_T gratype(12301)
+#define CANVAS_FLAG_T gratype(12302)
+#define CANVAS_LINK_T gratype(12303)
+#define CANVAS_SORT_T gratype(12304)
 
 /* end - con.h */
 #endif

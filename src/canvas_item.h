@@ -26,7 +26,7 @@ class canvas_item: public QGraphicsRectItem
 		canvas_item(canvas_view *i_oGraphWidget, int i_iId);
 		~canvas_item();
 
-		int type() const { return canvas_item_type; }
+		int type() const { return CANVAS_ITEM_T; }
 
 		void update_flags();
 
