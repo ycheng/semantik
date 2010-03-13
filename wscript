@@ -249,7 +249,7 @@ def configure(conf):
 	# the rpath is for end users installing into /usr/local/lib only
 	sur = '/usr/local'
 	if Options.options.prefix[:len(sur)] == sur:
-		conf.env.RPATH_NABLAH = '-Wl,--rpath=/usr/local/lib'
+		conf.env.RPATH_NABLAH = '/usr/local/lib'
 
 def set_options(opt):
 	opt.tool_options('kde4')
