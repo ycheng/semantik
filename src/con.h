@@ -61,8 +61,6 @@ ude \
 qreal _min(qreal a, qreal b);
 qreal _max(qreal a, qreal b);
 
-/* TODO: values hardcoded in some places */
-#define NUM_RECENT 10
 #define data_parent 0
 #define data_id 1
 #define data_id1 2

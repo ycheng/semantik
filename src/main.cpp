@@ -40,9 +40,9 @@ int main(int i_iArgc, char **i_iArgv)
 	options.add("+[url]", ki18n("A file to open on startup"));
 
 	KAboutData l_o("semantik", 0, ki18n("Semantik"), version, ki18n(description),
-			KAboutData::License_GPL_V3, ki18n("(C) 2007-2009 Thomas Nagy"), KLocalizedString(),
-			"tnagyemail-mail@yahoo.fr");
-	l_o.addAuthor(ki18n("Thomas Nagy"), KLocalizedString(), "tnagyemail-mail@yahoo.fr");
+			KAboutData::License_GPL_V3, ki18n("(C) 2007-2010 Thomas Nagy"), KLocalizedString(),
+			"nomail@nomail.com");
+	l_o.addAuthor(ki18n("Thomas Nagy"), KLocalizedString(), "nomail@nomail.com");
 
 	KCmdLineArgs::init(i_iArgc, i_iArgv, &l_o);
 	KCmdLineArgs::addCmdLineOptions(options);
