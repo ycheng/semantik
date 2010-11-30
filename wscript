@@ -184,7 +184,7 @@ def configure(conf):
 	conf.env.LIBPATH_CAML = [conf.env.OCAMLLIB]
 	conf.env.INCLUDES_CAML = [conf.env.OCAMLLIB]
 
-	conf.check(features='cxx cxxprogram', fragment='#include <caml/memory.h>\nint main(){return 0;}', uselib='OCAML',
+	conf.check(features='cxx cxxprogram', fragment='#include <caml/memory.h>\nint main(){return 0;}', use='CAML',
 		errmsg='The objective caml development headers are missing (ocaml-devel?)')
 
 	conf.env.LIB_CAML = "m".split()
