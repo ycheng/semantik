@@ -10,9 +10,6 @@ top = '.'
 import os, sys, re, time
 from waflib import Options, Logs
 
-from waflib.extras import ocaml
-ocaml.open_re = re.compile('open ([a-zA-Z]+)', re.M)
-
 def compile_py(task):
 	outfile = task.m_outputs[0].abspath()
 	f = open(outfile, 'w')
@@ -26,56 +23,24 @@ def compile_py(task):
 	f.close()
 
 def build(bld):
-	bld.options.compile_targets = 'camlprog,util/ocamltwt,nablah,src/semantik'
 
 	os.environ['LD_LIBRARY_PATH'] = ':'.join(bld.env['LIBPATH_KDECORE'] + [os.environ.get('LD_LIBRARY_PATH', '')])
 
-	ibj = bld(features='ocaml')
-	ibj.type = 'native'
-	ibj.includes = 'util'
-	ibj.source = 'util/ocamltwt.ml'
-	ibj.target = 'util/ocamltwt'
-	ibj.are_deps_set=1
-	ibj.uselib='PP'
+	bld(
+		features = 'cxx qt4 cxxshlib',
+		source = bld.path.ant_glob('src/wp/*.cpp'),
+		target = 'nablah',
+		use = 'QTCORE QTGUI QTWEBKIT',
+		includes='. src src/wp',
+		install_path = '${KDE4_LIB_INSTALL_DIR}/')
 
-	bld.add_group()
+	bld(features='cxx qt4 cxxprogram pyembed',
+		source = bld.path.ant_glob('src/*.cpp src/fig/*.cpp'),
+		use = 'QTCORE QTGUI QTXML QTSVG NABLAH KDECORE KIO KDEUI KHTML nablah',
+		target = 'src/semantik',
+		install_path = '${KDE4_BIN_INSTALL_DIR}/',
+		includes = '. src src/fig')
 
-	abj = bld(features='ocaml includes')
-	abj.type = 'c_object'
-	abj.source = bld.path.find_dir('src').ant_glob('*.c *.ml *.mli')
-	abj.includes='. src'
-	abj.target='camlprog'
-	abj.are_deps_set = 1
-	abj.uselib = 'TWT'
-
-	'''
-	ibj = bld(features=['cxx', 'qt4', 'cshlib'], target = 'nablah', uselib='QTCORE QTGUI QTWEBKIT', includes='. src src/wp')
-	ibj.find_sources_in_dirs('src/wp', exts=['.cpp'])
-	ibj.install_path = '${KDE4_LIB_INSTALL_DIR}/'
-	ibj.post()
-	'''
-
-	ibj = bld(features = 'cxx qt4 cxxshlib')
-	ibj.source = bld.path.ant_glob('src/wp/*.cpp')
-	ibj.target = 'nablah'
-	ibj.use = 'QTCORE QTGUI QTWEBKIT'
-	ibj.includes='. src src/wp'
-	ibj.install_path = '${KDE4_LIB_INSTALL_DIR}/'
-
-	obj = bld(features='cxx qt4 cxxprogram pyembed')
-	obj.source = bld.path.ant_glob('src/*.cpp src/fig/*.cpp')
-	#obj.find_sources_in_dirs('src src/fig', excludes=['src/aux.c'], exts=['.cpp'])
-	obj.use = 'QTCORE QTGUI QTXML QTSVG CAML NABLAH KDECORE KIO KDEUI KHTML nablah camlprog'
-	obj.target = 'src/semantik'
-	obj.install_path = '${KDE4_BIN_INSTALL_DIR}/'
-	obj.includes = '. src src/fig'
-	#obj.defines = ['''TT1=\'"%s"\'''' % time.ctime(), '''TT2='"%s"' ''' % time.ctime(), 'foo=2']
-
-	# FIXME
-	#import Task
-	#Task.TaskBase.classes['ocalinkx'].before = 'cxx_link'
-
-	return
 	bld.install_files('${SEMANTIK_DIR}', 'src/sembind.py')
 
 	rt = 'src/templates/'
@@ -96,9 +61,7 @@ def build(bld):
 		k = 'beamer/beamermindist/themes/'
 		bld.install_files('${TEMPLATE_DIR}/' + k+x, rt+k+x+'/*')
 
-	obj = bld.new_task_gen('msgfmt')
-	obj.appname = 'semantik'
-	obj.langs=['src/po/'+x for x in 'fr es'.split()]
+	obj = bld(features='msgfmt', appname = 'semantik', langs=['src/po/'+x for x in 'fr es'.split()])
 
 	bld.install_files('${TEMPLATE_DIR}/beamer/beamermindist/art/', rt+'beamer/beamermindist/art/*')
 	bld.install_files('${TEMPLATE_DIR}/beamer/beamermindist/', rt+'beamer/beamermindist/*.???')
@@ -117,7 +80,7 @@ def build(bld):
 	bld.install_as('${KDE4_ICON_INSTALL_DIR}/hicolor/22x22/apps/semantik.png', 'src/data/hi22-app-semantik.png')
 	bld.install_files('${KDE4_DATA_INSTALL_DIR}/semantik', 'src/data/semantikui.rc src/data/tips')
 
-	if self.cmd in ['install', 'uninstall']:
+	if bld.cmd in ['install', 'uninstall']:
 		lst = os.listdir('src/images')
 		lst = [x for x in lst if (x.rfind('hi')>-1)]
 		for x in lst:
@@ -166,10 +129,7 @@ def configure(conf):
 	conf.check_python_version((2,4,2))
 	conf.check_python_headers()
 	if not conf.env.PYTHON_VERSION in "2.4 2.5 2.6 2.7".split(): Logs.warn('Bad Python version %s ' % str(conf.env.PYTHON_VERSION))
-	conf.load('ocaml')
-	if not conf.env.OCAMLOPT: conf.fatal('Semantik requires ocamlopt (compilation only)')
 	#ret = ctx.cmd_output('python-config --cflags').strip().split()
-	#conf.env.append_value('CXXFLAGS_CAML', ret)
 
 	try:
 		conf.load('kde4')
@@ -179,16 +139,6 @@ def configure(conf):
 		#Logs.pprint('YELLOW', "kde4 is disabled (missing)")
 		conf.fatal('Compiling Semantik requires kde4 -devel')
 
-	conf.env.OCALINKFLAGS_OPT_PP = 'str.cmxa'
-	conf.env.LINKFLAGS_CAML = '-lasmrun -lstr -lnums'.split()
-	conf.env.LIBPATH_CAML = [conf.env.OCAMLLIB]
-	conf.env.INCLUDES_CAML = [conf.env.OCAMLLIB]
-
-	conf.check(features='cxx cxxprogram', fragment='#include <caml/memory.h>\nint main(){return 0;}', use='CAML',
-		errmsg='The objective caml development headers are missing (ocaml-devel?)')
-
-	conf.env.LIB_CAML = "m".split()
-	conf.env.OCAMLFLAGS_TWT = '-pp util/ocamltwt'.split() #-unsafe -noassert -inline 10'
 	conf.env.DEFINES = 'WAF'
 	conf.define('ICONS', icons)
 	conf.define('VERSION', VERSION)
@@ -238,12 +188,12 @@ def options(opt):
 	opt.add_option('--use64', action='store_true', default=False, help='set the installation into lib+64 (configuration)')
 
 def post_build(bld):
-	if Options.commands['install']:
-		try: os.popen('/sbin/ldconfig 2> /dev/null')
+	if bld.cmd == 'install':
+		try: bld.exec_command('/sbin/ldconfig 2> /dev/null')
 		except: pass
 	if Options.options.exe:
 		#os.popen('export LD_LIBRARY_PATH=out/default/:$LD_LIBRARY_PATH; PATH=plugins:$PATH out/default/src/semantik')
-		Utils.subprocess.Popen('LD_LIBRARY_PATH=out/default/:$LD_LIBRARY_PATH out/default/src/semantik --style plastique', shell=True).wait()
+		bld.exec_command('LD_LIBRARY_PATH=build/:$LD_LIBRARY_PATH build/src/semantik --style plastique')
 
 	return
 	# display the graph of header dependencies

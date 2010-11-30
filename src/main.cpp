@@ -2,7 +2,6 @@
 
 #include <fstream>
 #include <Python.h>
-extern "C" { void caml_startup(char**); };
 #include <QCoreApplication>
 #include <QtGui>
 #include  <QX11Info>
@@ -34,7 +33,6 @@ int main(int i_iArgc, char **i_iArgv)
 	l_oInfile.read(reinterpret_cast<char *>(&l_iSeed), sizeof(int));
 	l_oInfile.close();
 	srandom(l_iSeed);
-	caml_startup(i_iArgv);
 
 	KCmdLineOptions options;
 	options.add("+[url]", ki18n("A file to open on startup"));

@@ -153,12 +153,6 @@ bool semantik_reader::characters(const QString &i_s)
     return true;
 }
 
-extern "C" {
-	void cleanup_pb(); void add_cstr(int, int);
-	void add_box(int, double, double, double, double);
-	void iterate_pb(int); double get_x(int); double get_y(int);
-	}
-
 data_control::~data_control()
 {
 	destroy_timer();
@@ -336,17 +330,18 @@ void data_control::do_reorganize()
 	hash_params l_oCmd;
 	l_oCmd.insert(data_commande, QVariant(cmd_save_data));
 	emit synchro(l_oCmd);
+
 	foreach (int l_iVal, m_oItems.keys())
 	{
 		data_item *l_oData = m_oItems.value(l_iVal);
-		add_box(l_iVal, (double) l_oData->m_iXX + l_oData->m_iWW/2,
-			(double) l_oData->m_iYY + l_oData->m_iHH/2,
-			(double) l_oData->m_iWW/2, (double) l_oData->m_iHH/2);
+		//add_ox(l_iVal, (double) l_oData->m_iXX + l_oData->m_iWW/2,
+		//	(double) l_oData->m_iYY + l_oData->m_iHH/2,
+		//	(double) l_oData->m_iWW/2, (double) l_oData->m_iHH/2);
 	}
 	for (int i=0; i<m_oLinks.size(); i++)
 	{
 		QPoint l_oP = m_oLinks.at(i);
-		add_cstr(l_oP.x(), l_oP.y());
+		//add_cstr(l_oP.x(), l_oP.y());
 	}
 
         //struct timeval start_time;
@@ -355,7 +350,7 @@ void data_control::do_reorganize()
         //int m_iSEC_start = start_time.tv_sec;
 
 	// iterate
-	iterate_pb(m_iReorgType);
+	//iterate_pb(m_iReorgType);
 
         //struct timeval stop_time;
         //gettimeofday(&stop_time, NULL);
@@ -370,7 +365,7 @@ void data_control::do_reorganize()
         //l_dTotaltime = (1000000.0*(double)l_iSectime + (double)l_iUsectime)/1000000.0;
 	//qDebug()<<l_dTotaltime;
 
-	foreach (int l_iVal, m_oItems.keys())
+	/*foreach (int l_iVal, m_oItems.keys())
 	{
 		data_item *l_oData = m_oItems.value(l_iVal);
 		l_oData->m_iXX = get_x(l_iVal) - l_oData->m_iWW/2;
@@ -381,7 +376,7 @@ void data_control::do_reorganize()
 
 	hash_params l_oCmd2;
 	l_oCmd2.insert(data_commande, QVariant(cmd_open_map));
-	emit synchro(l_oCmd2);
+	emit synchro(l_oCmd2);*/
 }
 
 QString data_control::doc_to_xml()

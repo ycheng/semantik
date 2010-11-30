@@ -169,10 +169,10 @@ void box_link::draw_triangle(QPainter *i_oPainter, int i_iPos, QPointF i_oP)
 
 extern "C"
 {
-int get_vertex_x(int pos);
-int get_vertex_y(int pos);
-int num_seg();
-void set_rectangles(int ax1, int ax2, int ay1, int ay2, int ap, int bx1, int bx2, int by1, int by2, int bp);
+//int get_vertex_x(int pos);
+//int get_vertex_y(int pos);
+//int num_seg();
+//void set_rectangles(int ax1, int ax2, int ay1, int ay2, int ap, int bx1, int bx2, int by1, int by2, int bp);
 }
 
 int box_link::pos_heuristic(const QRectF & i_oR, int i_iPos, const QPointF & i_oP)
@@ -218,6 +218,7 @@ void box_link::update_pos()
 	//if (!m_oParent || !m_oChild) return;
 	// now we are about certain we can work
 
+	/*
 	QRectF l_oR1, l_oR2;
 	QPointF l_oP = m_oView->m_oLastMovePoint;
 
@@ -317,10 +318,13 @@ void box_link::update_pos()
 	//{
 	//	m_oView->deselect_all();
 	//}
+*/
 }
+
 
 void box_link::update_ratio()
 {
+	/*
 	// here we reset the offsets if necessary
 	int ret = m_oLst.size();
 
@@ -385,6 +389,7 @@ void box_link::update_ratio()
 
 	// now we have the size
 	setRect(QRectF(mx1, my1, qAbs(mx2 - mx1), qAbs(my2 - my1)));
+	*/
 }
 
 bool box_link::contains(const QPointF& i_oP) const
