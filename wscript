@@ -1,40 +1,20 @@
 #! /usr/bin/env python
 # encoding: utf-8
-# Thomas Nagy, 2007-2009 (pvm)
+# Thomas Nagy, 2007-2010 (ita)
 
-APPNAME='semantik'
-VERSION='0.7.4'
+APPNAME = 'semantik'
+VERSION = '0.8.0'
 
-srcdir = '.'
-blddir = 'out'
+top = '.'
 
-import os, sys, re
-import Task, Utils, Configure, Options, Logs
+import os, sys, re, time
+from waflib import Options, Logs
 
-try: import hashlib as md5
-except: import md5
-
-#import Configure
-#Configure.autoconfig = 1
-
-#Params.g_autoconfig=1
-
-def dist():
-	from Scripting import dist
-	filename = dist(APPNAME, VERSION)
-	f = file(filename,'rb')
-	m = md5.md5()
-	readBytes = 100000
-	while (readBytes):
-		readString = f.read(readBytes)
-		m.update(readString)
-		readBytes = len(readString)
-	f.close()
-	print filename, m.hexdigest()
-	sys.exit(0)
+from waflib.extras import ocaml
+ocaml.open_re = re.compile('open ([a-zA-Z]+)', re.M)
 
 def compile_py(task):
-	outfile = task.m_outputs[0].abspath(task.m_env)
+	outfile = task.m_outputs[0].abspath()
 	f = open(outfile, 'w')
 	w = f.write
 	w('<!DOCTYPE RCC><RCC version="1.0">\n<qresource>\n')
@@ -46,62 +26,56 @@ def compile_py(task):
 	f.close()
 
 def build(bld):
-	env = bld.env_of_name('default')
+	bld.options.compile_targets = 'camlprog,util/ocamltwt,nablah,src/semantik'
 
-	Options.options.compile_targets = 'camlprog,util/ocamltwt,nablah,src/semantik'
+	os.environ['LD_LIBRARY_PATH'] = ':'.join(bld.env['LIBPATH_KDECORE'] + [os.environ.get('LD_LIBRARY_PATH', '')])
 
-	os.environ['LD_LIBRARY_PATH'] = env['LIBPATH_KDECORE']+':'+os.environ.get('LD_LIBRARY_PATH', '')
-
-	import ocaml
-	ocaml.open_re = re.compile('open ([a-zA-Z]+)', re.M)
-
-	ibj = bld.new_task_gen('ocaml')
+	ibj = bld(features='ocaml')
 	ibj.type = 'native'
 	ibj.includes = 'util'
-	ibj.find_sources_in_dirs('util')
+	ibj.source = 'util/ocamltwt.ml'
 	ibj.target = 'util/ocamltwt'
 	ibj.are_deps_set=1
 	ibj.uselib='PP'
 
 	bld.add_group()
 
-	abj = bld.new_task_gen('ocaml')
+	abj = bld(features='ocaml includes')
 	abj.type = 'c_object'
-	abj.find_sources_in_dirs('src', exts=['.c', '.ml', '.mli'])
+	abj.source = bld.path.find_dir('src').ant_glob('*.c *.ml *.mli')
 	abj.includes='. src'
 	abj.target='camlprog'
 	abj.are_deps_set = 1
 	abj.uselib = 'TWT'
 
 	'''
-	ibj = bld.new_task_gen(features=['cxx', 'qt4', 'cshlib'], target = 'nablah', uselib='QTCORE QTGUI QTWEBKIT', includes='. src src/wp')
+	ibj = bld(features=['cxx', 'qt4', 'cshlib'], target = 'nablah', uselib='QTCORE QTGUI QTWEBKIT', includes='. src src/wp')
 	ibj.find_sources_in_dirs('src/wp', exts=['.cpp'])
 	ibj.install_path = '${KDE4_LIB_INSTALL_DIR}/'
 	ibj.post()
 	'''
 
-	ibj = bld.new_task_gen(features = 'cxx qt4 cshlib')
-	ibj.find_sources_in_dirs('src/wp', exts=['.cpp'])
+	ibj = bld(features = 'cxx qt4 cxxshlib')
+	ibj.source = bld.path.ant_glob('src/wp/*.cpp')
 	ibj.target = 'nablah'
-	ibj.uselib = 'QTCORE QTGUI QTWEBKIT'
+	ibj.use = 'QTCORE QTGUI QTWEBKIT'
 	ibj.includes='. src src/wp'
 	ibj.install_path = '${KDE4_LIB_INSTALL_DIR}/'
 
-	import time
-	obj = bld.new_task_gen(features='cxx qt4 cprogram pyembed')
-	obj.find_sources_in_dirs('src src/fig', excludes=['src/aux.c'], exts=['.cpp'])
-	obj.uselib = 'QTCORE QTGUI QTXML QTSVG CAML NABLAH KDECORE KIO KDEUI KHTML'
-	obj.uselib_local = 'nablah'
+	obj = bld(features='cxx qt4 cxxprogram pyembed')
+	obj.source = bld.path.ant_glob('src/*.cpp src/fig/*.cpp')
+	#obj.find_sources_in_dirs('src src/fig', excludes=['src/aux.c'], exts=['.cpp'])
+	obj.use = 'QTCORE QTGUI QTXML QTSVG CAML NABLAH KDECORE KIO KDEUI KHTML nablah camlprog'
 	obj.target = 'src/semantik'
 	obj.install_path = '${KDE4_BIN_INSTALL_DIR}/'
+	obj.includes = '. src src/fig'
 	#obj.defines = ['''TT1=\'"%s"\'''' % time.ctime(), '''TT2='"%s"' ''' % time.ctime(), 'foo=2']
 
-	obj.includes = '. src src/fig'
-	obj.add_objects = 'camlprog'
+	# FIXME
+	#import Task
+	#Task.TaskBase.classes['ocalinkx'].before = 'cxx_link'
 
-	import Task
-	Task.TaskBase.classes['ocalinkx'].before = 'cxx_link'
-
+	return
 	bld.install_files('${SEMANTIK_DIR}', 'src/sembind.py')
 
 	rt = 'src/templates/'
@@ -109,8 +83,8 @@ def build(bld):
 	bld.install_files('${SEMANTIK_DIR}/flags', 'src/flags/*.svg')
 	bld.install_files('${TEMPLATE_DIR}', rt+'*.py')
 
-	if Options.is_install:
-		tgt = bld.env_of_name('default')['TEMPLATE_DIR']+'waf'
+	if bld.is_install:
+		tgt = bld.env.TEMPLATE_DIR + 'waf'
 		if env.get_destdir(): tgt = os.path.join(env.get_destdir(), tgt.lstrip(os.sep))
 		bld.do_install(os.path.abspath('waf'), tgt)
 
@@ -143,7 +117,7 @@ def build(bld):
 	bld.install_as('${KDE4_ICON_INSTALL_DIR}/hicolor/22x22/apps/semantik.png', 'src/data/hi22-app-semantik.png')
 	bld.install_files('${KDE4_DATA_INSTALL_DIR}/semantik', 'src/data/semantikui.rc src/data/tips')
 
-	if Options.commands['install'] or Options.commands['uninstall']:
+	if self.cmd in ['install', 'uninstall']:
 		lst = os.listdir('src/images')
 		lst = [x for x in lst if (x.rfind('hi')>-1)]
 		for x in lst:
@@ -162,9 +136,9 @@ def configure(conf):
 
 	err = "Semantik cannot work on %s, please install a Linux system from http://www.opensuse.org"
 	if (test('linux')):
-		Utils.pprint('GREEN', "You are using Linux, that's good (tm)")
+		Logs.pprint('GREEN', "You are using Linux, that's good (tm)")
 	elif (test('bsd')):
-		Utils.pprint('GREEN', "You are using a BSD system, that's good (tm)")
+		Logs.pprint('GREEN', "You are using a BSD system, that's good (tm)")
 	elif (test('win32') or test('cygwin')):
 		conf.fatal(err % "win32")
 	elif (test('darwin')):
@@ -183,35 +157,39 @@ def configure(conf):
 	if Options.options.icons:
 		icons = Options.options.icons
 
-	conf.check_tool('gcc g++ qt4')
+	conf.load('gcc g++ qt4')
 	if not conf.env.CXX: conf.fatal('Semantik requires g++ (compilation only)')
 	if not conf.env.QT_LRELEASE: conf.fatal('Semantik requires the program lrelease (from the Qt linguist package? - compilation only)')
-	conf.check_tool('python')
-	if conf.env.HAVE_QTWEBKIT != 1: conf.fatal('QtWebKit not found - Semantik requires Qt >= 4.4')
+	conf.load('python')
+	if not conf.env.LIB_QTWEBKIT: conf.fatal('QtWebKit not found - Semantik requires Qt >= 4.4')
 	if not conf.env.PYTHON: conf.fatal('Semantik requires Python >= 2.5 (development package for the compilation)')
 	conf.check_python_version((2,4,2))
 	conf.check_python_headers()
 	if not conf.env.PYTHON_VERSION in "2.4 2.5 2.6 2.7".split(): Logs.warn('Bad Python version %s ' % str(conf.env.PYTHON_VERSION))
-	conf.check_tool('ocaml')
+	conf.load('ocaml')
 	if not conf.env.OCAMLOPT: conf.fatal('Semantik requires ocamlopt (compilation only)')
-
-	#ret = Utils.cmd_output('python-config --cflags').strip().split()
+	#ret = ctx.cmd_output('python-config --cflags').strip().split()
 	#conf.env.append_value('CXXFLAGS_CAML', ret)
 
 	try:
-		conf.check_tool('kde4')
-		Utils.pprint('GREEN', "And you even have kde4! we will use it")
+		conf.load('kde4')
+		Logs.pprint('GREEN', "And you even have kde4! we will use it")
 	except Configure.ConfigurationError:
 		raise
-		#Utils.pprint('YELLOW', "kde4 is disabled (missing)")
+		#Logs.pprint('YELLOW', "kde4 is disabled (missing)")
 		conf.fatal('Compiling Semantik requires kde4 -devel')
 
 	conf.env.OCALINKFLAGS_OPT_PP = 'str.cmxa'
 	conf.env.LINKFLAGS_CAML = '-lasmrun -lstr -lnums'.split()
-	conf.env.LIBPATH_CAML = conf.env.OCAMLLIB
+	conf.env.LIBPATH_CAML = [conf.env.OCAMLLIB]
+	conf.env.INCLUDES_CAML = [conf.env.OCAMLLIB]
+
+	conf.check(features='cxx cxxprogram', fragment='#include <caml/memory.h>\nint main(){return 0;}', uselib='OCAML',
+		errmsg='The objective caml development headers are missing (ocaml-devel?)')
+
 	conf.env.LIB_CAML = "m".split()
-	conf.env.OCAMLFLAGS_TWT = '-pp default/util/ocamltwt'.split() #-unsafe -noassert -inline 10'
-	conf.env.CXXDEFINES ='WAF'
+	conf.env.OCAMLFLAGS_TWT = '-pp util/ocamltwt'.split() #-unsafe -noassert -inline 10'
+	conf.env.DEFINES = 'WAF'
 	conf.define('ICONS', icons)
 	conf.define('VERSION', VERSION)
 
@@ -251,10 +229,10 @@ def configure(conf):
 	if Options.options.prefix[:len(sur)] == sur:
 		conf.env.RPATH_NABLAH = '/usr/local/lib'
 
-def set_options(opt):
-	opt.tool_options('kde4')
-	opt.tool_options('qt4')
-	opt.tool_options('python')
+def options(opt):
+	opt.load('kde4')
+	opt.load('qt4')
+	opt.load('python')
 	opt.add_option('--exe', action='store_true', default=False, help='execute after the compilation (developers)')
 	opt.add_option('--icons', action='store', default='', help='icon dirs where to look for kde icons (configuration)')
 	opt.add_option('--use64', action='store_true', default=False, help='set the installation into lib+64 (configuration)')
@@ -265,7 +243,7 @@ def post_build(bld):
 		except: pass
 	if Options.options.exe:
 		#os.popen('export LD_LIBRARY_PATH=out/default/:$LD_LIBRARY_PATH; PATH=plugins:$PATH out/default/src/semantik')
-		Utils.pproc.Popen('LD_LIBRARY_PATH=out/default/:$LD_LIBRARY_PATH out/default/src/semantik --style plastique', shell=True).wait()
+		Utils.subprocess.Popen('LD_LIBRARY_PATH=out/default/:$LD_LIBRARY_PATH out/default/src/semantik --style plastique', shell=True).wait()
 
 	return
 	# display the graph of header dependencies
