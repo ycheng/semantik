@@ -46,33 +46,32 @@ def build(bld):
 
 	rt = 'src/templates/'
 
-	bld.install_files('${SEMANTIK_DIR}/flags', 'src/flags/*.svg')
-	bld.install_files('${TEMPLATE_DIR}', rt+'*.py')
+	glob = bld.path.ant_glob
 
-	if bld.is_install:
-		tgt = bld.env.TEMPLATE_DIR + 'waf'
-		if env.get_destdir(): tgt = os.path.join(env.get_destdir(), tgt.lstrip(os.sep))
-		bld.do_install(os.path.abspath('waf'), tgt)
+	bld.install_files('${SEMANTIK_DIR}/flags', glob('src/flags/*.svg'))
+	bld.install_files('${TEMPLATE_DIR}', glob(rt+'*.py'))
 
-	bld.install_files('${TEMPLATE_DIR}/pdflatex', rt+'pdflatex/*')
+	bld.install_as('${TEMPLATE_DIR}/waf', 'waf')
+
+	bld.install_files('${TEMPLATE_DIR}/pdflatex', glob(rt+'pdflatex/*'))
 	for x in 'html odt odp java'.split():
-		bld.install_files('${TEMPLATE_DIR}/' + x, rt+'%s/*' % x)
+		bld.install_files('${TEMPLATE_DIR}/' + x, glob(rt+'%s/*' % x))
 
 	for x in "color font inner outer theme".split():
 		k = 'beamer/beamermindist/themes/'
-		bld.install_files('${TEMPLATE_DIR}/' + k+x, rt+k+x+'/*')
+		bld.install_files('${TEMPLATE_DIR}/' + k+x, bld.path.ant_glob(rt+k+x+'/*'))
 
 	obj = bld(features='msgfmt', appname = 'semantik', langs=['src/po/'+x for x in 'fr es'.split()])
 
-	bld.install_files('${TEMPLATE_DIR}/beamer/beamermindist/art/', rt+'beamer/beamermindist/art/*')
-	bld.install_files('${TEMPLATE_DIR}/beamer/beamermindist/', rt+'beamer/beamermindist/*.???')
+	bld.install_files('${TEMPLATE_DIR}/beamer/beamermindist/art/', glob(rt+'beamer/beamermindist/art/*'))
+	bld.install_files('${TEMPLATE_DIR}/beamer/beamermindist/', glob(rt+'beamer/beamermindist/*'))
 	bld.install_files('${TEMPLATE_DIR}/beamer/', rt+'beamer/main.tex')
 	bld.install_files('${TEMPLATE_DIR}/beamer/', rt+'beamer/wscript')
 
 	bld.install_files('${TEMPLATE_DIR}/s5', rt+'s5/index.html')
-	bld.install_files('${TEMPLATE_DIR}/s5/ui/default/', rt+'s5/ui/default/*')
-	bld.install_files('${SEMANTIK_DIR}/images', 'src/images/*.svg')
-	bld.install_files('${FILTER_DIR}/', 'src/filters/*')
+	bld.install_files('${TEMPLATE_DIR}/s5/ui/default/', glob(rt+'s5/ui/default/*'))
+	bld.install_files('${SEMANTIK_DIR}/images', glob('src/images/*.svg'))
+	bld.install_files('${FILTER_DIR}/', glob('src/filters/*'))
 
 	bld.install_files('${KDE4_XDG_APPS_INSTALL_DIR}/', 'src/data/semantik.desktop')
 	bld.install_as('${KDE4_ICON_INSTALL_DIR}/hicolor/128x128/apps/semantik.png', 'src/data/hi128-app-semantik.png')
@@ -145,7 +144,9 @@ def configure(conf):
 	conf.define('VERSION', VERSION)
 
 	conf.define('SEMANTIK_DIR', conf.env.KDE4_DATA_INSTALL_DIR + '/semantik')
-	conf.define('TEMPLATE_DIR', conf.env.KDE4_DATA_INSTALL_DIR + '/semantik/templates/')
+
+	conf.env.TEMPLATE_DIR = conf.env.KDE4_DATA_INSTALL_DIR + '/semantik/templates/'
+	conf.define('TEMPLATE_DIR', conf.env.TEMPLATE_DIR)
 	conf.define('FILTER_DIR', conf.env.KDE4_DATA_INSTALL_DIR +'/semantik/filters/')
 	conf.env.PICDIR = conf.env.KDE4_ICON_INSTALL_DIR #j('share/pixmaps/')
 	conf.define('cmd_add_item', 0)
