@@ -25,6 +25,7 @@ def compile_py(task):
 def build(bld):
 
 	os.environ['LD_LIBRARY_PATH'] = ':'.join(bld.env['LIBPATH_KDECORE'] + [os.environ.get('LD_LIBRARY_PATH', '')])
+	bld.targets = '*' # build all targets by default
 
 	bld(
 		features = 'cxx qt4 cxxshlib',
