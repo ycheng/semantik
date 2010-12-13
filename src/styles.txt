@@ -1,7 +1,10 @@
+all_latex	Do not escape the special characters in latex templates (set all_latex=1)
+all_latex.beamer	Same thing, but only for the beamer template
+all_latex.pdflatex	Same thing, but only for the pdflatex template
 
 babel	latex language: english (frenchb, )
-babel.beamer
-babel.pdflatex
+babel.beamer	Same thing, but only for the beamer template
+babel.pdflatex	Same thing, but only for the pdflatex template
 
 theme.beamer	Warsaw (JuanLesPins, Montpellier, )
 
