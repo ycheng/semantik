@@ -1,12 +1,12 @@
 
 
 exclude_pic	exclude the picture
-exclude_pic.html
-exclude_pic.pdflatex
+exclude_pic.html	
+exclude_pic.pdflatex	
 
 exclude_table	exclude the table
-exclude_table.html
-exclude_table.pdflatex
+exclude_table.html	
+exclude_table.pdflatex	
 
 picdim.pdflatex	picture dimension in pdf files
 

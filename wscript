@@ -115,7 +115,7 @@ def configure(conf):
 	else:
 		icons = '/usr/share/icons:/usr:/etc/opt/kde3/share/icons/:/opt/kde3/share/icons/:/var/lib/mandriva/kde-profiles/powerpackplus/share/icons/:/usr/share/icons/'
 		if not Options.options.icons:
-			Logs.warn("For now Semantik uses a few kde icons - if you have problems seeing the icons install kde")
+			Logs.warn("For now Semantik uses a few kde icons - if you have problems seeing the icons install kdebase")
 
 	if Options.options.icons:
 		icons = Options.options.icons
@@ -166,6 +166,22 @@ def configure(conf):
 	conf.define('cmd_pre_view', 11)
 	conf.define('cmd_change_data', 12)
 	conf.define('cmd_export_item', 13)
+
+	lst = [x for x in conf.path.find_node('src/styles.txt').read().splitlines()]
+	buf = []
+	for x in lst:
+		if not x: continue
+		t = x.split('\t')
+		buf.append("""xp(x,%d,"%s");yp(x,%d,trUtf8("%s"));""" % (len(buf), t[0], len(buf), t[1].replace('"', '\\"')))
+	conf.define('fillglo(x)', ''.join(buf), quote=False)
+
+	lst = [x for x in conf.path.find_node('src/styles_local.txt').read().splitlines()]
+	buf = []
+	for x in lst:
+		if not x: continue
+		t = x.split('\t')
+		buf.append("""xp(x,%d,"%s");yp(x,%d,trUtf8("%s"));""" % (len(buf), t[0], len(buf), t[1].replace('"', '\\"')))
+	conf.define('fillloc(x)', ''.join(buf), quote=False)
 
 
 	if Options.options.use64:

@@ -30,7 +30,7 @@ doc_title_off	turn off the document title (latex)
 header_l.pdflatex	header left
 header_c.pdflatex	header center (pdflatex)
 header_r.pdflatex	header right
-header_off.pdflatex
+header_off.pdflatex	
 footer_c.pdflatex	footer center (pdflatex)
 footer_l.pdflatex	footer left (pdflatex)
 footer_r.pdflatex	footer right
