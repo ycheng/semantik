@@ -47,19 +47,6 @@ int main(int i_iArgc, char **i_iArgv)
 
 	KApplication l_oApp;
 
-	//QApplication l_oApp(i_iArgc, i_iArgv);
-	//qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
-	//QResource res(":/src/semantik_"+QLocale::system().name()+".qm");
-	//qDebug()<<"res size "<<res.size();
-
-	//QTranslator t;
-	//t.load(notr(":/src/semantik_%1.qm").arg(QLocale::system().name()));
-	//l_oApp.installTranslator(&t);
-
-	//QCoreApplication::setOrganizationName(notr("semantik"));
-	//QCoreApplication::setOrganizationDomain(notr("freehackers.org"));
-	//QCoreApplication::setApplicationName(notr("semantik"));
-
 	KGlobal::locale()->insertCatalog("libkdeedu");
 
 	semantik_win *l_oMainWin = new semantik_win;

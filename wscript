@@ -143,7 +143,8 @@ def configure(conf):
 	conf.define('ICONS', icons)
 	conf.define('VERSION', VERSION)
 
-	conf.define('SEMANTIK_DIR', conf.env.KDE4_DATA_INSTALL_DIR + '/semantik')
+	conf.env.SEMANTIK_DIR = conf.env.KDE4_DATA_INSTALL_DIR + '/semantik'
+	conf.define('SEMANTIK_DIR', conf.env.SEMANTIK_DIR)
 
 	conf.env.TEMPLATE_DIR = conf.env.KDE4_DATA_INSTALL_DIR + '/semantik/templates/'
 	conf.define('TEMPLATE_DIR', conf.env.TEMPLATE_DIR)
