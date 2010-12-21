@@ -325,6 +325,7 @@ QByteArray new_header(const QString & i_oName, int i_iLen)
 	return l_oBuf;
 }
 
+#if 0
 void data_control::do_reorganize()
 {
 	hash_params l_oCmd;
@@ -378,6 +379,7 @@ void data_control::do_reorganize()
 	l_oCmd2.insert(data_commande, QVariant(cmd_open_map));
 	emit synchro(l_oCmd2);*/
 }
+#endif
 
 QString data_control::doc_to_xml()
 {

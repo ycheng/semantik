@@ -121,6 +121,7 @@ class canvas_view : public QGraphicsView
 		void toggle_fullscreen();
 
 		void slot_change_data();
+		void reorganize();
 
 	signals:
 		void sig_message(const QString &, int);

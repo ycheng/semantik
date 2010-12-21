@@ -160,7 +160,7 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	m_oReorgAct = new KAction(trUtf8("&Reorganize the map"), this);
 	actionCollection()->addAction(notr("reorganize_map"), m_oReorgAct);
 	m_oReorgAct->setShortcut(trUtf8("Ctrl+R"));
-	connect(m_oReorgAct, SIGNAL(triggered(bool)), m_oControl, SLOT(do_reorganize()));
+	connect(m_oReorgAct, SIGNAL(triggered(bool)), m_oCanvas, SLOT(reorganize()));
 
 	KStandardAction::preferences(this, SLOT(slot_properties()), actionCollection());
 

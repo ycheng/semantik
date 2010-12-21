@@ -212,7 +212,7 @@ void canvas_view::slot_add_item()
 	deselect_all();
 
 	m_oControl->add_item(l_iId);
-	m_oControl->do_reorganize();
+	reorganize();
 	if (m_oSelected.size() == 1) m_oSelected[0]->focus_in();
 }
 
@@ -224,7 +224,7 @@ void canvas_view::slot_add_sibling()
 	deselect_all();
 
 	m_oControl->add_item(l_iId);
-	m_oControl->do_reorganize();
+	reorganize();
 	if (m_oSelected.size() == 1) m_oSelected[0]->focus_in();
 }
 
@@ -1272,6 +1272,10 @@ void rubber_line::setGeometry(const QRect& i_o)
 {
 	_direction = i_o.width() * i_o.height();
 	QRubberBand::setGeometry(i_o.normalized());
+}
+
+void canvas_view::reorganize() {
+	qDebug()<<"reorg here";
 }
 
 %: include  	"canvas_view.moc" 

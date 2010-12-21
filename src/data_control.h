@@ -130,7 +130,7 @@ class data_control: public QObject
 		QMutex m_oLock;
 
 	public slots:
-		void do_reorganize();
+		//void do_reorganize();
 		void slot_autosave();
 };
 
