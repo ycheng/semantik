@@ -75,7 +75,7 @@ class canvas_view : public QGraphicsView
 		void notify_select(bool i_oSignal=true);
 		void enable_menu_actions(); // like check_actions, but only for the popup menu
 
-		double compute_sizes(QMap<int, double> &map, int id);
+		double compute_sizes(QMap<int, double> &map, QMap<int, QList<int> >&children, int id);
 
 
 		void check_selected();

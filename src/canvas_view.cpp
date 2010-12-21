@@ -1274,28 +1274,24 @@ void rubber_line::setGeometry(const QRect& i_o)
 	QRubberBand::setGeometry(i_o.normalized());
 }
 
-double canvas_view::compute_sizes(QMap<int, double> &map, int id) {
+#define SPACER 32.
+double canvas_view::compute_sizes(QMap<int, double> &map, QMap<int, QList<int> >&children, int id) {
 	double size = 0;
-	//for (x in self.children) {
-	//	size += compute_sizes(map, x->Id())
-	//}
-	//int def_height = item(id)->height();
-	//size = size < def_height ? def_height : size;
-	int found = 0;
-	for (int i=0; i<m_oControl->m_oLinks.size(); i++)
-	{
-		QPoint l_oP = m_oControl->m_oLinks.at(i);
-		if (l_oP.x() == id) {
-			if (found)
-				size += 32.;
-			found = 1;
 
-			canvas_item *l_oR = m_oItems[l_oP.y()];
-			QRectF l_oRect = l_oR->boundingRect();
-			size += l_oRect.height();
+	QMap<int, QList<int> >::const_iterator it = children.find(id);
+	if (it != children.end()) {
+		QList<int> tmp = it.value();
+		size += (tmp.size() - 1) * SPACER;
+		foreach (int k, tmp) {
+			size += compute_sizes(map, children, k);
 		}
 	}
+
+	double tmp = m_oItems[id]->boundingRect().height();
+	if (size < tmp) size = tmp;
+
 	map[id] = size;
+	//qDebug()<<"size for"<<id<<" "<<size;
 	return size;
 }
 
@@ -1317,10 +1313,30 @@ void canvas_view::reorganize() {
 			children[l_oP.x()] = tmp;
 		}
 	}
-	qDebug()<<children;
 
 	foreach (int k, roots) {
-		compute_sizes(map, k);
+		double ref = compute_sizes(map, children, k);
+		QMap<int, QList<int> >::iterator it = children.find(k);
+		if (it != children.end()) {
+			QList<int> tmp = it.value();
+			int mid = 0;
+			int max = 0;
+			int tot = 0;
+			foreach (int sub, tmp) {
+				tot += map[sub];
+				//qDebug()<<"trying mid"<<sub<<"tot"<<tot;
+				if (tot * (ref - tot) > max) {
+					max = tot * (ref - tot);
+					mid = sub;
+				}
+				else {
+					break;
+				}
+
+
+			}
+			qDebug()<<"found mid "<<mid;
+		}
 	}
 }
 
