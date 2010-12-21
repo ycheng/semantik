@@ -1274,14 +1274,16 @@ void rubber_line::setGeometry(const QRect& i_o)
 	QRubberBand::setGeometry(i_o.normalized());
 }
 
-#define SPACER 32.
+#define HSPACER 32.
+#define WSPACER 32.
+
 double canvas_view::compute_sizes(QMap<int, double> &map, QMap<int, QList<int> >&children, int id) {
 	double size = 0;
 
 	QMap<int, QList<int> >::const_iterator it = children.find(id);
 	if (it != children.end()) {
 		QList<int> tmp = it.value();
-		size += (tmp.size() - 1) * SPACER;
+		size += (tmp.size() - 1) * HSPACER;
 		foreach (int k, tmp) {
 			size += compute_sizes(map, children, k);
 		}
@@ -1293,6 +1295,25 @@ double canvas_view::compute_sizes(QMap<int, double> &map, QMap<int, QList<int> >
 	map[id] = size;
 	//qDebug()<<"size for"<<id<<" "<<size;
 	return size;
+}
+
+void canvas_view::compute_width(QMap<int, double> &map, QMap<int, QList<int> >&children, int id, int level) {
+	double w = m_oItems[id]->boundingRect().width();
+	QMap<int, double>::iterator jt = map.find(level);
+	if (jt != map.end()) {
+		double val = jt.value();
+		map[level] = val > w ? val : w;
+	} else {
+		map[level] = w;
+	}
+
+	QMap<int, QList<int> >::iterator it = children.find(id);
+	if (it != children.end()) {
+		QList<int> tmp = it.value();
+		foreach (int sub, tmp) {
+			compute_width(map, children, sub, level+1);
+		}
+	}
 }
 
 void canvas_view::reorganize() {
@@ -1332,10 +1353,20 @@ void canvas_view::reorganize() {
 				else {
 					break;
 				}
-
-
 			}
-			qDebug()<<"found mid "<<mid;
+
+			QMap<int, double> maxw;
+			compute_width(maxw, children, k, 0);
+
+			int left = 1;
+			foreach (int sub, tmp) {
+				if (sub == mid) left = 0;
+				if (left) {
+
+				} else {
+
+				}
+			}
 		}
 	}
 }
