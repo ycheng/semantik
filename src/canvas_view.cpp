@@ -111,7 +111,7 @@ canvas_view::canvas_view(QWidget *i_oWidget, data_control *i_oControl) : QGraphi
 	l_o = new QAction(trUtf8("Select right"), this); l_o->setShortcut(notr("Right")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_sel())); addAction(l_o); l_o->setData(QVariant(3));
 
 
-	l_o = new QAction(trUtf8("Next root"), this); l_o->setShortcut(notr("PgDown")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_hop())); addAction(l_o); l_o->setData(QVariant(1));
+	l_o = new QAction(trUtf8("Next root"), this); l_o->setShortcut(notr("PgDown")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_next_root())); addAction(l_o); l_o->setData(QVariant(1));
 
 
 	m_oMenu = new QMenu(this);
@@ -139,7 +139,7 @@ canvas_view::canvas_view(QWidget *i_oWidget, data_control *i_oControl) : QGraphi
 	newAction(trUtf8("Image"), VIEW_IMG, m_oImageType);
 }
 
-void canvas_view::slot_hop()
+void canvas_view::slot_next_root()
 {
 	//qDebug()<<"hop";
 	switch (((QAction*) QObject::sender())->data().toInt())
