@@ -1274,8 +1274,54 @@ void rubber_line::setGeometry(const QRect& i_o)
 	QRubberBand::setGeometry(i_o.normalized());
 }
 
+double canvas_view::compute_sizes(QMap<int, double> &map, int id) {
+	double size = 0;
+	//for (x in self.children) {
+	//	size += compute_sizes(map, x->Id())
+	//}
+	//int def_height = item(id)->height();
+	//size = size < def_height ? def_height : size;
+	int found = 0;
+	for (int i=0; i<m_oControl->m_oLinks.size(); i++)
+	{
+		QPoint l_oP = m_oControl->m_oLinks.at(i);
+		if (l_oP.x() == id) {
+			if (found)
+				size += 32.;
+			found = 1;
+
+			canvas_item *l_oR = m_oItems[l_oP.y()];
+			QRectF l_oRect = l_oR->boundingRect();
+			size += l_oRect.height();
+		}
+	}
+	map[id] = size;
+	return size;
+}
+
 void canvas_view::reorganize() {
-	qDebug()<<"reorg here";
+	QList<int> roots = m_oControl->all_roots();
+	QMap<int, double> map;
+
+	QMap<int, QList<int> > children;
+
+	for (int i=0; i < m_oControl->m_oLinks.size(); ++i) {
+		QPoint l_oP = m_oControl->m_oLinks.at(i);
+
+		QMap<int, QList<int> >::iterator it = children.find(l_oP.x());
+		if (it != children.end()) {
+			it.value() << l_oP.y();
+		} else {
+			QList<int> tmp;
+			tmp << l_oP.y();
+			children[l_oP.x()] = tmp;
+		}
+	}
+	qDebug()<<children;
+
+	foreach (int k, roots) {
+		compute_sizes(map, k);
+	}
 }
 
 %: include  	"canvas_view.moc" 
