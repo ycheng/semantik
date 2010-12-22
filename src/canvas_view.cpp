@@ -1370,7 +1370,7 @@ void canvas_view::reorganize() {
 					double x = m_oItems[k]->x() + width[0] + WSPACER;
 					m_oItems[sub]->setX(x);
 				}
-
+				m_oItems[k]->update_links();
 				pack(width, height, children, sub, 1, left);
 			}
 		}
@@ -1392,6 +1392,7 @@ void canvas_view::pack(QMap<int, double> &width, QMap<int, double> &height, QMap
 
 			pack(width, height, children, sub, level+1, left);
 		}
+		m_oItems[id]->update_links();
 	}
 }
 
