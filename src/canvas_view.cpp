@@ -1277,7 +1277,7 @@ void rubber_line::setGeometry(const QRect& i_o)
 #define HSPACER 32.
 #define WSPACER 32.
 
-double canvas_view::compute_sizes(QMap<int, double> &map, QMap<int, QList<int> >&children, int id) {
+double canvas_view::compute_height(QMap<int, double> &map, QMap<int, QList<int> >&children, int id) {
 	double size = 0;
 
 	QMap<int, QList<int> >::const_iterator it = children.find(id);
@@ -1285,11 +1285,11 @@ double canvas_view::compute_sizes(QMap<int, double> &map, QMap<int, QList<int> >
 		QList<int> tmp = it.value();
 		size += (tmp.size() - 1) * HSPACER;
 		foreach (int k, tmp) {
-			size += compute_sizes(map, children, k);
+			size += compute_height(map, children, k);
 		}
 	}
 
-	double tmp = m_oItems[id]->boundingRect().height();
+	double tmp = m_oItems[id]->rect().height();
 	if (size < tmp) size = tmp;
 
 	map[id] = size;
@@ -1298,7 +1298,7 @@ double canvas_view::compute_sizes(QMap<int, double> &map, QMap<int, QList<int> >
 }
 
 void canvas_view::compute_width(QMap<int, double> &map, QMap<int, QList<int> >&children, int id, int level) {
-	double w = m_oItems[id]->boundingRect().width();
+	double w = m_oItems[id]->rect().width();
 	QMap<int, double>::iterator jt = map.find(level);
 	if (jt != map.end()) {
 		double val = jt.value();
@@ -1318,7 +1318,7 @@ void canvas_view::compute_width(QMap<int, double> &map, QMap<int, QList<int> >&c
 
 void canvas_view::reorganize() {
 	QList<int> roots = m_oControl->all_roots();
-	QMap<int, double> map;
+	QMap<int, double> height;
 
 	QMap<int, QList<int> > children;
 
@@ -1336,7 +1336,7 @@ void canvas_view::reorganize() {
 	}
 
 	foreach (int k, roots) {
-		double ref = compute_sizes(map, children, k);
+		double ref = compute_height(height, children, k);
 		QMap<int, QList<int> >::iterator it = children.find(k);
 		if (it != children.end()) {
 			QList<int> tmp = it.value();
@@ -1344,7 +1344,7 @@ void canvas_view::reorganize() {
 			int max = 0;
 			int tot = 0;
 			foreach (int sub, tmp) {
-				tot += map[sub];
+				tot += height[sub];
 				//qDebug()<<"trying mid"<<sub<<"tot"<<tot;
 				if (tot * (ref - tot) > max) {
 					max = tot * (ref - tot);
@@ -1355,18 +1355,42 @@ void canvas_view::reorganize() {
 				}
 			}
 
-			QMap<int, double> maxw;
-			compute_width(maxw, children, k, 0);
+			QMap<int, double> width;
+			compute_width(width, children, k, 0);
 
 			int left = 1;
 			foreach (int sub, tmp) {
 				if (sub == mid) left = 0;
+				// put the element in place, then recurse
+
 				if (left) {
-
+					double x = m_oItems[k]->x() + m_oItems[k]->rect().width() - width[0] - WSPACER;
+					m_oItems[sub]->setX(x - m_oItems[sub]->rect().width());
 				} else {
-
+					double x = m_oItems[k]->x() + width[0] + WSPACER;
+					m_oItems[sub]->setX(x);
 				}
+
+				pack(width, height, children, sub, 1, left);
 			}
+		}
+	}
+}
+
+void canvas_view::pack(QMap<int, double> &width, QMap<int, double> &height, QMap<int, QList<int> >&children, int id, int level, int left) {
+	QMap<int, QList<int> >::iterator it = children.find(id);
+	if (it != children.end()) {
+		QList<int> tmp = it.value();
+		foreach (int sub, tmp) {
+			if (left) {
+				double x = m_oItems[id]->x() + m_oItems[id]->rect().width() - width[0] - WSPACER;
+				m_oItems[sub]->setX(x - m_oItems[sub]->rect().width());
+			} else {
+				double x = m_oItems[id]->x() + width[0] + WSPACER;
+				m_oItems[sub]->setX(x);
+			}
+
+			pack(width, height, children, sub, level+1, left);
 		}
 	}
 }
