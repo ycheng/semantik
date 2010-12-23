@@ -1348,7 +1348,7 @@ void canvas_view::reorganize() {
 			double left_height = 0;
 			foreach (int sub, tmp) {
 				tot += height[sub];
-				if (tot * (ref - tot) > max) {
+				if (tot * (ref - tot) >= max) {
 					max = tot * (ref - tot);
 					mid = sub;
 
