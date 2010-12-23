@@ -1368,17 +1368,14 @@ void canvas_view::reorganize() {
 			foreach (int sub, tmp) {
 
 				// put the element in place, then recurse
+
+				double y = acc_height + height[sub] / 2 - m_oItems[sub]->rect().height() / 2;
 				if (left) {
 					double x = m_oItems[k]->x() + m_oItems[k]->rect().width() - width[0] - WSPACER;
-					m_oItems[sub]->setX(x - m_oItems[sub]->rect().width());
-
-					double y = acc_height + height[sub] / 2 - m_oItems[sub]->rect().height() / 2;
-					m_oItems[sub]->setY(y);
+					m_oItems[sub]->setPos(x - m_oItems[sub]->rect().width(), y);
 				} else {
 					double x = m_oItems[k]->x() + width[0] + WSPACER;
-					m_oItems[sub]->setX(x);
-					double y = acc_height + height[sub] / 2 - m_oItems[sub]->rect().height() / 2;
-					m_oItems[sub]->setY(y);
+					m_oItems[sub]->setPos(x, y);
 				}
 
 				acc_height += height[sub] + HSPACER;
@@ -1402,16 +1399,13 @@ void canvas_view::pack(QMap<int, double> &width, QMap<int, double> &height, QMap
 		QList<int> tmp = it.value();
 		double acc_height = m_oItems[id]->y() + m_oItems[id]->rect().height() / 2 - height[id] / 2;
 		foreach (int sub, tmp) {
+			double y = acc_height + height[sub] / 2 - m_oItems[sub]->rect().height()/2;
 			if (left) {
 				double x = m_oItems[id]->x() + m_oItems[id]->rect().width() - width[0] - WSPACER;
-				m_oItems[sub]->setX(x - m_oItems[sub]->rect().width());
-				double y = acc_height + height[sub] / 2 - m_oItems[sub]->rect().height()/2;
-				 m_oItems[sub]->setY(y);
+				m_oItems[sub]->setPos(x - m_oItems[sub]->rect().width(), y);
 			} else {
 				double x = m_oItems[id]->x() + width[0] + WSPACER;
-				m_oItems[sub]->setX(x);
-				double y = acc_height + height[sub] / 2 - m_oItems[sub]->rect().height()/2;
-				m_oItems[sub]->setY(y);
+				m_oItems[sub]->setPos(x, y);
 			}
 			acc_height += height[sub] + HSPACER;
 			pack(width, height, children, sub, level+1, left);
