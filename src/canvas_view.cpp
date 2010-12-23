@@ -1340,17 +1340,20 @@ void canvas_view::reorganize() {
 		QMap<int, QList<int> >::iterator it = children.find(k);
 		if (it != children.end()) {
 			QList<int> tmp = it.value();
+
+			ref -= (tmp.size() - 1) * HSPACER;
 			int mid = 0;
 			int max = 0;
 			int tot = 0;
+			double left_height = 0;
 			foreach (int sub, tmp) {
 				tot += height[sub];
-				//qDebug()<<"trying mid"<<sub<<"tot"<<tot;
 				if (tot * (ref - tot) > max) {
 					max = tot * (ref - tot);
 					mid = sub;
-				}
-				else {
+
+					left_height += height[sub] + HSPACER;
+				} else {
 					break;
 				}
 			}
@@ -1358,20 +1361,36 @@ void canvas_view::reorganize() {
 			QMap<int, double> width;
 			compute_width(width, children, k, 0);
 
-			int left = 1;
-			foreach (int sub, tmp) {
-				if (sub == mid) left = 0;
-				// put the element in place, then recurse
+			left_height -= HSPACER;
 
+			qDebug()<<"left height"<< left_height << " " << height[k];
+
+			int left = 1;
+			double acc_height = m_oItems[k]->x() + m_oItems[k]->rect().height() / 2 - left_height / 2;
+			foreach (int sub, tmp) {
+				// put the element in place, then recurse
 				if (left) {
 					double x = m_oItems[k]->x() + m_oItems[k]->rect().width() - width[0] - WSPACER;
 					m_oItems[sub]->setX(x - m_oItems[sub]->rect().width());
+					double y = acc_height + height[sub] / 2 - m_oItems[sub]->rect().height() / 2;
+					m_oItems[sub]->setY(y);
 				} else {
 					double x = m_oItems[k]->x() + width[0] + WSPACER;
 					m_oItems[sub]->setX(x);
+					double y = acc_height + height[sub] / 2 - m_oItems[sub]->rect().height() / 2;;
+					m_oItems[sub]->setY(y);
 				}
+
+				acc_height += height[sub] + HSPACER;
+
 				m_oItems[k]->update_links();
 				pack(width, height, children, sub, 1, left);
+
+				// now to the right
+				if (sub == mid) {
+					left = 0;
+					acc_height = m_oItems[k]->x() + m_oItems[k]->rect().height() / 2 - (height[k] - left_height - HSPACER) / 2;
+				}
 			}
 		}
 	}
