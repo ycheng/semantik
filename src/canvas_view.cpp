@@ -1363,21 +1363,21 @@ void canvas_view::reorganize() {
 
 			left_height -= HSPACER;
 
-			qDebug()<<"left height"<< left_height << " " << height[k];
-
 			int left = 1;
-			double acc_height = m_oItems[k]->x() + m_oItems[k]->rect().height() / 2 - left_height / 2;
+			double acc_height = m_oItems[k]->y() + m_oItems[k]->rect().height() / 2 - left_height / 2;
 			foreach (int sub, tmp) {
+
 				// put the element in place, then recurse
 				if (left) {
 					double x = m_oItems[k]->x() + m_oItems[k]->rect().width() - width[0] - WSPACER;
 					m_oItems[sub]->setX(x - m_oItems[sub]->rect().width());
+
 					double y = acc_height + height[sub] / 2 - m_oItems[sub]->rect().height() / 2;
 					m_oItems[sub]->setY(y);
 				} else {
 					double x = m_oItems[k]->x() + width[0] + WSPACER;
 					m_oItems[sub]->setX(x);
-					double y = acc_height + height[sub] / 2 - m_oItems[sub]->rect().height() / 2;;
+					double y = acc_height + height[sub] / 2 - m_oItems[sub]->rect().height() / 2;
 					m_oItems[sub]->setY(y);
 				}
 
@@ -1389,7 +1389,7 @@ void canvas_view::reorganize() {
 				// now to the right
 				if (sub == mid) {
 					left = 0;
-					acc_height = m_oItems[k]->x() + m_oItems[k]->rect().height() / 2 - (height[k] - left_height - HSPACER) / 2;
+					acc_height = m_oItems[k]->y() + m_oItems[k]->rect().height() / 2 - (height[k] - left_height - HSPACER) / 2;
 				}
 			}
 		}
@@ -1400,15 +1400,20 @@ void canvas_view::pack(QMap<int, double> &width, QMap<int, double> &height, QMap
 	QMap<int, QList<int> >::iterator it = children.find(id);
 	if (it != children.end()) {
 		QList<int> tmp = it.value();
+		double acc_height = m_oItems[id]->y() + m_oItems[id]->rect().height() / 2 - height[id] / 2;
 		foreach (int sub, tmp) {
 			if (left) {
 				double x = m_oItems[id]->x() + m_oItems[id]->rect().width() - width[0] - WSPACER;
 				m_oItems[sub]->setX(x - m_oItems[sub]->rect().width());
+				double y = acc_height + height[sub] / 2 - m_oItems[sub]->rect().height()/2;
+				 m_oItems[sub]->setY(y);
 			} else {
 				double x = m_oItems[id]->x() + width[0] + WSPACER;
 				m_oItems[sub]->setX(x);
+				double y = acc_height + height[sub] / 2 - m_oItems[sub]->rect().height()/2;
+				m_oItems[sub]->setY(y);
 			}
-
+			acc_height += height[sub] + HSPACER;
 			pack(width, height, children, sub, level+1, left);
 		}
 		m_oItems[id]->update_links();
