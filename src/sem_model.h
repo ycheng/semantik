@@ -4,12 +4,14 @@
 #define DATA_CONTROL_H
 
 #include <QObject>
+#include <QStack>
 #include <QXmlDefaultHandler>
 #include <QMutex>
 #include<KUrl> 
 
 #include "aux.h"
 #include "con.h"
+#include "mem_command.h"
 #include "flag_scheme.h"
 #include "color_scheme.h"
 
@@ -92,6 +94,10 @@ class sem_model: public QObject
 
 		int m_iLastItemSelected;
 
+
+		QStack<mem_command> m_oUndoStack;
+		QStack<mem_command> m_oRedoStack;
+
 	private:
 		int m_sCount;
 		QTimer *m_oTimer;
@@ -132,6 +138,8 @@ class sem_model: public QObject
 	public slots:
 		//void do_reorganize();
 		void slot_autosave();
+		void slot_undo();
+		void slot_redo();
 };
 
 QIcon fetch_icon(const QString& i_sName, int i_iSize=32);

@@ -154,6 +154,8 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	KStandardAction::open(this, SLOT(slot_open()), actionCollection());
 	KStandardAction::print(this, SLOT(slot_print()), actionCollection());
 	KStandardAction::tipOfDay(this, SLOT(slot_tip_of_day()), actionCollection());
+	m_oUndoAct = KStandardAction::undo(m_oControl, SLOT(slot_undo()), actionCollection());
+	m_oRedoAct = KStandardAction::redo(m_oControl, SLOT(slot_redo()), actionCollection());
 
 	m_oRecentFilesAct = KStandardAction::openRecent(this, SLOT(slot_recent(const KUrl&)), actionCollection());
 

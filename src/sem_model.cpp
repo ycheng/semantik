@@ -1257,5 +1257,13 @@ void sem_model::change_data(int i_iId, int i_iType)
 	emit synchro(l_oCmd);
 }
 
+void sem_model::slot_undo() {
+	qDebug()<<"undo stack"<<m_oUndoStack.size();
+}
+
+void sem_model::slot_redo() {
+	qDebug()<<"redo stack"<<m_oRedoStack.size();
+}
+
 #include "sem_model.moc"
 

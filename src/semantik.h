@@ -71,6 +71,8 @@ class semantik_win : public KXmlGuiWindow
 		KAction *m_oConfPropsAct;
 		KAction *m_oGenerateAct;
 		KAction *m_oCanvasFitZoom;
+		KAction *m_oUndoAct;
+		KAction *m_oRedoAct;
 		KToolBar *m_oEditToolBar;
 		KToolBar *m_oColorsToolBar;
 		KToolBar *m_oFlagsToolBar;
