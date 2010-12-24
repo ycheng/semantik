@@ -10,10 +10,10 @@
 #include "con.h"
 #include "table_dialog.h"
 #include "data_item.h"
-#include "data_control.h"
+#include "sem_model.h"
 #include "table_view.h"
 
-table_view::table_view(QWidget *i_oParent, data_control *i_oControl) : QTableWidget(0, 0, i_oParent)
+table_view::table_view(QWidget *i_oParent, sem_model *i_oControl) : QTableWidget(0, 0, i_oParent)
 {
 	m_oControl = i_oControl;
 	m_bFreeze = 0;

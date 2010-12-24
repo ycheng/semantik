@@ -23,17 +23,17 @@
         #include <stdlib.h> 
  #include "sembind.h"  	
   #include "data_item.h"	
-  %: include "data_control.h" 
+  %: include "sem_model.h" 
 
 class semantik_reader : public QXmlDefaultHandler
 {
 	public:
-		semantik_reader(data_control*);
+		semantik_reader(sem_model*);
 
 	//private:
 		QString m_sBuf;
 		int m_iVersion;
-		data_control *m_oControl;
+		sem_model *m_oControl;
 		int m_iId;
 
 	//public:
@@ -43,7 +43,7 @@ class semantik_reader : public QXmlDefaultHandler
 
 };
 
-semantik_reader::semantik_reader(data_control *i_oControl)
+semantik_reader::semantik_reader(sem_model *i_oControl)
 {
 	m_oControl = i_oControl;
 }
@@ -153,7 +153,7 @@ bool semantik_reader::characters(const QString &i_s)
     return true;
 }
 
-data_control::~data_control()
+sem_model::~sem_model()
 {
 	destroy_timer();
 	clean_temp_dir();
@@ -163,7 +163,7 @@ data_control::~data_control()
 	}
 }
 
-void data_control::init_timer()
+void sem_model::init_timer()
 {
 	destroy_timer();
 	if (m_iTimerValue<1) return;
@@ -173,14 +173,14 @@ void data_control::init_timer()
 	m_oTimer->start();
 }
 
-void data_control::destroy_timer()
+void sem_model::destroy_timer()
 {
 	if (m_oTimer) m_oTimer->stop();
 	delete m_oTimer;
 	m_oTimer = NULL;
 }
 
-void data_control::slot_autosave()
+void sem_model::slot_autosave()
 {
 	m_oLock.lock();
 	// autosave for the last used save name
@@ -197,7 +197,7 @@ void data_control::slot_autosave()
 	m_oLock.unlock();
 }
 
-void data_control::init_colors()
+void sem_model::init_colors()
 {
 	m_oColorSchemes.clear();
 
@@ -228,7 +228,7 @@ void data_control::init_colors()
 	emit synchro(l_oCmd);
 }
 
-void data_control::init_flags()
+void sem_model::init_flags()
 {
 	while (!m_oFlagSchemes.empty())
 	{
@@ -246,7 +246,7 @@ void data_control::init_flags()
 	emit synchro(l_oCmd);
 }
 
-void data_control::init_temp_dir()
+void sem_model::init_temp_dir()
 {
 	char sfn[16] = "";
 	strcpy(sfn, "/tmp/sem.XXXXXX");
@@ -257,9 +257,9 @@ void data_control::init_temp_dir()
 	Q_ASSERT(QFile::exists(m_sTempDir));
 }
 
-void data_control::clean_temp_dir()
+void sem_model::clean_temp_dir()
 {
-	//qDebug()<<"data_control::clean_temp_dir";
+	//qDebug()<<"sem_model::clean_temp_dir";
 	QProcess l_oP;
 	QStringList l_oArgs;
 	l_oArgs<<notr("-rf")<<m_sTempDir;
@@ -326,7 +326,7 @@ QByteArray new_header(const QString & i_oName, int i_iLen)
 }
 
 #if 0
-void data_control::do_reorganize()
+void sem_model::do_reorganize()
 {
 	hash_params l_oCmd;
 	l_oCmd.insert(data_commande, QVariant(cmd_save_data));
@@ -381,7 +381,7 @@ void data_control::do_reorganize()
 }
 #endif
 
-QString data_control::doc_to_xml()
+QString sem_model::doc_to_xml()
 {
 	QStringList l_oS;
 
@@ -478,7 +478,7 @@ QString data_control::doc_to_xml()
 	return l_oS.join("");
 }
 
-bool data_control::save_file(QString i_sUrl)
+bool sem_model::save_file(QString i_sUrl)
 {
 	Q_ASSERT(i_sUrl.endsWith(".sem"));
 
@@ -515,7 +515,7 @@ bool data_control::save_file(QString i_sUrl)
 	return true;
 }
 
-void data_control::purge_document()
+void sem_model::purge_document()
 {
 	QList<int> k = m_oItems.keys();
 	foreach(int i, k)
@@ -526,7 +526,7 @@ void data_control::purge_document()
 	m_sCount = 1;
 }
 
-bool data_control::open_file(const QString& i_sUrl)
+bool sem_model::open_file(const QString& i_sUrl)
 {
 	purge_document();
 
@@ -611,7 +611,7 @@ bool data_control::open_file(const QString& i_sUrl)
 	return true;
 }
 
-bool data_control::read_xml_file(const QString &l_oBa)
+bool sem_model::read_xml_file(const QString &l_oBa)
 {
 	semantik_reader l_oHandler(this);
 	QXmlInputSource l_oSource;
@@ -628,7 +628,7 @@ bool data_control::read_xml_file(const QString &l_oBa)
 	return true;
 }
 
-int data_control::add_item(int i_oAdd, int i_iIdx, bool i_iCopy)
+int sem_model::add_item(int i_oAdd, int i_iIdx, bool i_iCopy)
 {
 	Q_ASSERT(!m_oItems.contains(i_iIdx));
 
@@ -662,7 +662,7 @@ int data_control::add_item(int i_oAdd, int i_iIdx, bool i_iCopy)
 	return l_iNext;
 }
 
-void data_control::unlink_items(int i_iId1, int i_iId2)
+void sem_model::unlink_items(int i_iId1, int i_iId2)
 {
 	Q_ASSERT(m_oItems.contains(i_iId1) && m_oItems.contains(i_iId2));
 
@@ -676,7 +676,7 @@ void data_control::unlink_items(int i_iId1, int i_iId2)
 	emit synchro(l_oCmd);
 }
 
-bool data_control::link_items(int i_iParent, int i_iChild)
+bool sem_model::link_items(int i_iParent, int i_iChild)
 {
 	Q_ASSERT(m_oItems.contains(i_iParent) && m_oItems.contains(i_iChild));
 
@@ -719,7 +719,7 @@ bool data_control::link_items(int i_iParent, int i_iChild)
 	return true;
 }
 
-void data_control::remove_item(int i_iId)
+void sem_model::remove_item(int i_iId)
 {
 	Q_ASSERT(m_oItems.contains(i_iId));
 
@@ -732,7 +732,7 @@ void data_control::remove_item(int i_iId)
 	m_oItems.remove(i_iId);
 }
 
-void data_control::dis_connect(int i_oId)
+void sem_model::dis_connect(int i_oId)
 {
 	for (int i=0; i<m_oLinks.size(); i++)
 	{
@@ -745,7 +745,7 @@ void data_control::dis_connect(int i_oId)
 	}
 }
 
-void data_control::select_item(int i_iId, int i_iView)
+void sem_model::select_item(int i_iId, int i_iView)
 {
 	m_iLastItemSelected = i_iId;
 	hash_params l_oCmd;
@@ -755,7 +755,7 @@ void data_control::select_item(int i_iId, int i_iView)
 	emit synchro(l_oCmd);
 }
 
-QList<int> data_control::all_roots()
+QList<int> sem_model::all_roots()
 {
 	QList<int> l_o = QList<int> ();
 	foreach (int l_iVal, m_oItems.keys())
@@ -772,7 +772,7 @@ QList<int> data_control::all_roots()
 	return l_o;
 }
 
-int data_control::root_of(int i_iId)
+int sem_model::root_of(int i_iId)
 {
 	if (i_iId==NO_ITEM) return NO_ITEM;
 	for (int i=0; i<m_oLinks.size(); i++)
@@ -783,7 +783,7 @@ int data_control::root_of(int i_iId)
 	return i_iId;
 }
 
-void data_control::next_root()
+void sem_model::next_root()
 {
 	QList<int> l_o = all_roots();
 	if (l_o.size() == 0) return;
@@ -802,7 +802,7 @@ void data_control::next_root()
 	}
 }
 
-void data_control::prev_root()
+void sem_model::prev_root()
 {
 	QList<int> l_o = all_roots();
 	if (l_o.size() == 0) return;
@@ -821,7 +821,7 @@ void data_control::prev_root()
 	}
 }
 
-void data_control::select_root_item(int i_iId)
+void sem_model::select_root_item(int i_iId)
 {
 	if (i_iId == NO_ITEM)
 	{
@@ -835,7 +835,7 @@ void data_control::select_root_item(int i_iId)
 	}
 }
 
-void data_control::select_item_keyboard(int l_iId, int l_iDirection)
+void sem_model::select_item_keyboard(int l_iId, int l_iDirection)
 {
 	if (l_iId == NO_ITEM)
 	{
@@ -957,7 +957,7 @@ void data_control::select_item_keyboard(int l_iId, int l_iDirection)
 	};
 }
 
-int data_control::get_next()
+int sem_model::get_next()
 {
 	int l_iRet = m_sCount;
 	while (m_oItems.contains(l_iRet))
@@ -968,7 +968,7 @@ int data_control::get_next()
 	return l_iRet;
 }
 
-void data_control::update_item(int i_iId, int i_iView)
+void sem_model::update_item(int i_iId, int i_iView)
 {
 	if (!m_oItems.contains(i_iId)) return;
 
@@ -979,7 +979,7 @@ void data_control::update_item(int i_iId, int i_iView)
 	emit synchro(l_oCmd);
 }
 
-void data_control::sort_children(int i_iParent, int i_iChild, int i_iNum)
+void sem_model::sort_children(int i_iParent, int i_iChild, int i_iNum)
 {
 	int i_iVal1 = -17;
 	int i_iVal2 = -19;
@@ -1024,7 +1024,7 @@ void data_control::sort_children(int i_iParent, int i_iChild, int i_iNum)
 	emit synchro(l_oCmd);
 }
 
-void data_control::set_dirty(bool b)
+void sem_model::set_dirty(bool b)
 {
 	if (b != m_bDirty)
 	{
@@ -1037,7 +1037,7 @@ void data_control::set_dirty(bool b)
 	}
 }
 
-int data_control::parent_of(int i_oId)
+int sem_model::parent_of(int i_oId)
 {
         for (int i=0; i<m_oLinks.size(); i++)
         {
@@ -1048,7 +1048,7 @@ int data_control::parent_of(int i_oId)
 	return NO_ITEM;
 }
 
-int data_control::num_children(int i_iParent)
+int sem_model::num_children(int i_iParent)
 {
 	int l_iCnt = 0;
 	for (int i=0; i<m_oLinks.size(); i++)
@@ -1060,7 +1060,7 @@ int data_control::num_children(int i_iParent)
 	return l_iCnt;
 }
 
-void data_control::generate_docs(const QString &i_oFile, const QString &i_sDirName, const QString &i_sLocation)
+void sem_model::generate_docs(const QString &i_oFile, const QString &i_sDirName, const QString &i_sLocation)
 {
 	int l_iRoot = choose_root();
 	if (l_iRoot == NO_ITEM)
@@ -1119,7 +1119,7 @@ void data_control::generate_docs(const QString &i_oFile, const QString &i_sDirNa
 	emit synchro(l_oCmd);
 }
 
-bind_node* data_control::create_tree(int i_i)
+bind_node* sem_model::create_tree(int i_i)
 {
 	Q_ASSERT(i_i!=0);
 	bind_node * l_oNode = new bind_node();
@@ -1139,7 +1139,7 @@ bind_node* data_control::create_tree(int i_i)
 	return l_oNode;
 }
 
-int data_control::choose_root()
+int sem_model::choose_root()
 {
 	int l_oCand = NO_ITEM;
 	int l_oCandSize = 0;
@@ -1162,7 +1162,7 @@ int data_control::choose_root()
 	return l_oCand;
 }
 
-int data_control::size_of(int i_i)
+int sem_model::size_of(int i_i)
 {
 	// warning, recursive
 	int l_i = 0;
@@ -1206,7 +1206,7 @@ bool html_converter::startElement(const QString&, const QString&, const QString&
 	return true;
 }
 
-data_control::data_control(QObject* i_oParent) : QObject(i_oParent)
+sem_model::sem_model(QObject* i_oParent) : QObject(i_oParent)
 {
 	m_sCount = 1;
 	m_iLastItemSelected = NO_ITEM;
@@ -1239,12 +1239,12 @@ bool html_converter::characters(const QString &i_s)
         return true;
 }
 
-data_item* data_control::operator+(const int y)
+data_item* sem_model::operator+(const int y)
 {
 	return m_oItems.value(y);
 }
 
-void data_control::change_data(int i_iId, int i_iType)
+void sem_model::change_data(int i_iId, int i_iType)
 {
 	if (i_iId <= NO_ITEM) return;
 	Q_ASSERT(m_oItems.value(i_iId) != NULL);
@@ -1257,5 +1257,5 @@ void data_control::change_data(int i_iId, int i_iType)
 	emit synchro(l_oCmd);
 }
 
-#include "data_control.moc"
+#include "sem_model.moc"
 

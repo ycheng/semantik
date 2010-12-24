@@ -14,10 +14,10 @@
 #include <QStandardItemModel>
 #include "con.h"
 
-#include "data_control.h"
+#include "sem_model.h"
 #include "data_item.h"
 
-data_item::data_item(data_control *i_oControl, int i_iId)
+data_item::data_item(sem_model *i_oControl, int i_iId)
 {
 	m_iDataType = VIEW_TEXT;
 

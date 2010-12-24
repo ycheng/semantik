@@ -12,8 +12,8 @@ class table_view : public QTableWidget
 {
 	Q_OBJECT
 	public:
-		table_view(QWidget *i_oParent, data_control *i_oControl);
-		data_control *m_oControl;
+		table_view(QWidget *i_oParent, sem_model *i_oControl);
+		sem_model *m_oControl;
 
 		void mousePressEvent(QMouseEvent *i_oEv);
 

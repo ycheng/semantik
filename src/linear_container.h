@@ -8,15 +8,15 @@
 #include "con.h"
 
 class QWidget;
-class data_control;
+class sem_model;
 class linear_view;
 class linear_container : public QWidget
 {
 	Q_OBJECT
 	public:
-		linear_container(QWidget *i_oParent, data_control *i_oControl);
+		linear_container(QWidget *i_oParent, sem_model *i_oControl);
 
-		data_control *m_oControl;
+		sem_model *m_oControl;
 		linear_view *m_oView;
 
 	public slots:

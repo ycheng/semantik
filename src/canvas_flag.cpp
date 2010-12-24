@@ -14,7 +14,7 @@
 #include <math.h>
 
 #include "data_item.h"
-#include "data_control.h"
+#include "sem_model.h"
 #include "con.h"
 #include "canvas_item.h"
 #include "canvas_flag.h"

@@ -22,7 +22,7 @@
 #include  "sembind.h"
 #include "semantik.h"
 #include  "canvas_view.h"
-#include   "data_control.h"
+#include   "sem_model.h"
 #include    "image_view.h"
 #include "config_dialog.h"
 #include   "text_view.h"
@@ -132,7 +132,7 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 
 	//setWindowIcon(QIcon(notr(":images/semantik-32.png")));
 
-	m_oControl = new data_control(this);
+	m_oControl = new sem_model(this);
 	connect(m_oControl, SIGNAL(sig_message(const QString&, int)), this, SLOT(slot_message(const QString&, int)));
 	connect(m_oControl, SIGNAL(update_title()), this, SLOT(update_title()));
 

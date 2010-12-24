@@ -24,7 +24,7 @@
 #include "con.h"
 
 #include <math.h>
-#include "data_control.h"
+#include "sem_model.h"
 #include "box_item.h"
 #include "box_link.h"
 #include "data_item.h"
@@ -140,7 +140,7 @@ int box_view::next_id()
 	return ++m_iIdCounter;
 }
 
-box_view::box_view(QWidget *i_oWidget, data_control *i_oControl) : QGraphicsView(i_oWidget)
+box_view::box_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsView(i_oWidget)
 {
 	m_oControl = i_oControl;
 	m_iIdCounter = 0; // hidden

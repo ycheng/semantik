@@ -8,12 +8,12 @@
 #include <QLineEdit>
 #include <QSizePolicy>
 
-#include  "data_control.h"
+#include  "sem_model.h"
 #include  "linear_container.h"
 #include  "linear_view.h"
 #include  "con.h"
 
-linear_container::linear_container(QWidget *i_oParent, data_control *i_oControl) : QWidget(i_oParent)
+linear_container::linear_container(QWidget *i_oParent, sem_model *i_oControl) : QWidget(i_oParent)
 {
 	m_oControl = i_oControl;
 	QGridLayout *l_oLayout = new QGridLayout();

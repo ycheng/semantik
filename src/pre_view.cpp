@@ -9,13 +9,13 @@
 #include <QCoreApplication>
 #include <QWebView>
 #include "data_item.h"
-#include "data_control.h"
+#include "sem_model.h"
 #include "pre_view.h"
 #include "con.h" 
 #include "sembind.h" 
 #include "browser.h"
 
-pre_view::pre_view(QWidget *i_oParent, data_control *i_oControl) : QStackedWidget(i_oParent)
+pre_view::pre_view(QWidget *i_oParent, sem_model *i_oControl) : QStackedWidget(i_oParent)
 {
 	m_oControl = i_oControl;
 

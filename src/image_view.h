@@ -13,8 +13,8 @@ class image_view : public QWidget
 {
 	Q_OBJECT
 	public:
-		image_view(QWidget*, data_control*);
-		data_control *m_oControl;
+		image_view(QWidget*, sem_model*);
+		sem_model *m_oControl;
 		QPixmap m_oPixmap;
 		int m_iId;
 

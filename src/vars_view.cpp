@@ -11,10 +11,10 @@
 #include <QStandardItemModel>
 #include "con.h"
 #include "data_item.h"
-#include "data_control.h"
+#include "sem_model.h"
 #include "vars_view.h"
 
-vars_view::vars_view(QWidget *i_oParent, data_control *i_oControl) : QTextEdit(i_oParent)
+vars_view::vars_view(QWidget *i_oParent, sem_model *i_oControl) : QTextEdit(i_oParent)
 {
 	m_oControl = i_oControl;
 	/*vars_highlighter *l_o =*/ new vars_highlighter(document());

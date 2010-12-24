@@ -29,7 +29,7 @@ class html_converter : public QXmlDefaultHandler
 
 class data_item;
 class bind_node;
-class data_control: public QObject
+class sem_model: public QObject
 {
 	Q_OBJECT
 
@@ -43,8 +43,8 @@ class data_control: public QObject
 		void update_title();
 
 	public:
-		data_control(QObject *i_oParent);
-		~data_control();
+		sem_model(QObject *i_oParent);
+		~sem_model();
 
 		QString m_sTempDir;
 		QString m_sOutDir;

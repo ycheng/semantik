@@ -7,11 +7,11 @@
 #include <QDropEvent>
 
 #include "data_item.h"
-#include "data_control.h"
+#include "sem_model.h"
 #include "linear_view.h"
 #include "con.h" 
 
-linear_view::linear_view(QWidget *i_oParent, data_control *i_oControl) : QTreeWidget(i_oParent)
+linear_view::linear_view(QWidget *i_oParent, sem_model *i_oControl) : QTreeWidget(i_oParent)
 {
 	setDragEnabled(true);
 	setAcceptDrops(true);

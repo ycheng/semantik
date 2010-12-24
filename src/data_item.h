@@ -12,7 +12,7 @@
 #include "color_scheme.h"
 #include "con.h"
 
-class data_control;
+class sem_model;
 
 class data_table_item //:
 {
@@ -32,8 +32,8 @@ class data_link //:
 class data_item //:
 {
 	public:
-		data_item(data_control *i_oControl, int i_iId);
-		data_control* m_oControl;
+		data_item(sem_model *i_oControl, int i_iId);
+		sem_model* m_oControl;
 
 		QString m_sSummary;
 		QString m_sText;

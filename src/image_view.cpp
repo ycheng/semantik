@@ -18,10 +18,10 @@
 
 #include "con.h"
 #include "data_item.h"
-#include "data_control.h"
+#include "sem_model.h"
 #include "image_view.h"
 
-image_view::image_view(QWidget *i_oParent, data_control *i_oControl) : QWidget(i_oParent)
+image_view::image_view(QWidget *i_oParent, sem_model *i_oControl) : QWidget(i_oParent)
 {
 	setCursor(Qt::PointingHandCursor);
 	m_oControl = i_oControl;

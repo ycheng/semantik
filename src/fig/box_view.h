@@ -12,12 +12,12 @@
 class QActionGroup;
 class box_item;
 class box_link;
-class data_control;
+class sem_model;
 class box_view : public QGraphicsView
 {
 	Q_OBJECT
 	public:
-		box_view(QWidget*, data_control *);
+		box_view(QWidget*, sem_model *);
 		~box_view();
 
 		void mousePressEvent(QMouseEvent *);
@@ -75,7 +75,7 @@ class box_view : public QGraphicsView
 		QString to_string();
 		void from_string(const QString &);
 
-		data_control *m_oControl;
+		sem_model *m_oControl;
 
 		box_link *m_oCurrent;
 

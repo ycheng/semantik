@@ -33,7 +33,7 @@ class text_view;
 class data_view;
 class pre_view;
 class linear_container;
-class data_control;
+class sem_model;
 
 // THE DOC PROPERTIES HAVE BEEN MOVED INTO THE VARS VIEW (when no item is selected)
 
@@ -55,7 +55,7 @@ class semantik_win : public KXmlGuiWindow
 		box_view *m_oDiagramView;
 
 		linear_container *m_oTree;
-		data_control *m_oControl;
+		sem_model *m_oControl;
 
 		vars_view *m_oVarsView;
 		pre_view *m_oPreView;

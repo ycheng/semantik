@@ -20,7 +20,7 @@
 
 #include "canvas_flag.h"
 #include "color_scheme.h"
-#include "data_control.h"
+#include "sem_model.h"
 #include "con.h" 
 #include "data_item.h"
 #include "canvas_sort.h"
