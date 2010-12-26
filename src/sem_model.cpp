@@ -523,7 +523,7 @@ void sem_model::purge_document()
 		remove_item(i);
 	}
 	Q_ASSERT(m_oItems.keys().size()==0);
-	m_sCount = 1;
+	num_seq = 1;
 }
 
 bool sem_model::open_file(const QString& i_sUrl)
@@ -635,7 +635,7 @@ int sem_model::add_item(int i_oAdd, int i_iIdx, bool i_iCopy)
 	int l_iNext = NO_ITEM;
 
 	if (i_iIdx > NO_ITEM) l_iNext = i_iIdx;
-	else l_iNext = get_next();
+	else l_iNext = next_seq();
 
 	data_item *l_oItem = new data_item(this, l_iNext);
 	m_oItems[l_iNext] = l_oItem;
@@ -957,15 +957,12 @@ void sem_model::select_item_keyboard(int l_iId, int l_iDirection)
 	};
 }
 
-int sem_model::get_next()
+int sem_model::next_seq()
 {
-	int l_iRet = m_sCount;
-	while (m_oItems.contains(l_iRet))
-	{
-		++m_sCount;
-		l_iRet = m_sCount;
-	}
-	return l_iRet;
+	do {
+		++num_seq;
+	} while (m_oItems.contains(num_seq));
+	return num_seq;
 }
 
 void sem_model::update_item(int i_iId, int i_iView)
@@ -1208,7 +1205,8 @@ bool html_converter::startElement(const QString&, const QString&, const QString&
 
 sem_model::sem_model(QObject* i_oParent) : QObject(i_oParent)
 {
-	m_sCount = 1;
+	num_seq = 1;
+	num_seq = 1;
 	m_iLastItemSelected = NO_ITEM;
 	m_sOutDir = "";
 	m_iTimerValue = 21 / 4;

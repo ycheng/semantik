@@ -48,6 +48,8 @@ class sem_model: public QObject
 		sem_model(QObject *i_oParent);
 		~sem_model();
 
+		int seq();
+
 		QString m_sTempDir;
 		QString m_sOutDir;
 		QString m_sOutProject;
@@ -98,9 +100,6 @@ class sem_model: public QObject
 		QStack<mem_command> m_oUndoStack;
 		QStack<mem_command> m_oRedoStack;
 
-	private:
-		int m_sCount;
-		QTimer *m_oTimer;
 	public:
 
 		KUrl m_oCurrentUrl;
@@ -112,7 +111,7 @@ class sem_model: public QObject
 		QList<color_scheme> m_oColorSchemes;
 		QList<flag_scheme*> m_oFlagSchemes;
 
-		int get_next();
+		int next_seq();
 
 		void generate_docs(const QString &i_oFile, const QString &i_sName, const QString &i_sLocation);
 
@@ -134,6 +133,10 @@ class sem_model: public QObject
 
 		void change_data(int i_iId, int i_iType);
 		QMutex m_oLock;
+
+	private:
+		int num_seq;
+		QTimer *m_oTimer;
 
 	public slots:
 		//void do_reorganize();
