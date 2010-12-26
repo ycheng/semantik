@@ -47,15 +47,15 @@ class canvas_view : public QGraphicsView
 
 		mode_type m_iMode;
 
-		void keyPressEvent(QKeyEvent *i_oEvent);
-		void keyReleaseEvent(QKeyEvent *i_oEvent);
-		void focusOutEvent(QFocusEvent *i_oEv);
+		//void keyPressEvent(QKeyEvent *i_oEvent);
+		//void keyReleaseEvent(QKeyEvent *i_oEvent);
+		//void focusOutEvent(QFocusEvent *i_oEv);
+		//void focusInEvent(QFocusEvent *i_oEv);
 		void wheelEvent(QWheelEvent *i_oEvent);
 		void mouseDoubleClickEvent(QMouseEvent *i_oEv);
-		void mousePressEvent(QMouseEvent *i_oEv);
-		void mouseMoveEvent(QMouseEvent *i_oEv);
-		void mouseReleaseEvent(QMouseEvent *i_oEv);
-		void focusInEvent(QFocusEvent *i_oEv);
+		//void mousePressEvent(QMouseEvent *i_oEv);
+		//void mouseMoveEvent(QMouseEvent *i_oEv);
+		//void mouseReleaseEvent(QMouseEvent *i_oEv);
 
 
 		bool m_bPressed;
@@ -66,7 +66,7 @@ class canvas_view : public QGraphicsView
 
 		QRubberBand* m_oRubbery;
 		rubber_line * m_oRubberLine;
-		QList<canvas_item*> m_oSelected;
+		QList<canvas_item*> selection();
 
 		void deselect_all(bool i_oSignal=true);
 		void show_sort(int i_iId, bool i_b);
@@ -97,7 +97,7 @@ class canvas_view : public QGraphicsView
 
 		void check_canvas_size();
 
-		bool event(QEvent *i_oEvent);
+		//bool event(QEvent *i_oEvent);
 
 		void enable_all(bool);
 

@@ -25,14 +25,16 @@
 #include  <QMatrix>
 #include <QPointF>
 
+ #include <QGraphicsTextItem>
+
 #include <math.h>
 
 canvas_view::canvas_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsView(i_oWidget)
 {
 	m_oSemantikWindow = i_oWidget;
 
-	m_oRubbery = new QRubberBand(QRubberBand::Rectangle, this);
-	m_oRubbery->setGeometry(QRect(0, 0, 0, 0));
+	//m_oRubbery = new QRubberBand(QRubberBand::Rectangle, this);
+	//m_oRubbery->setGeometry(QRect(0, 0, 0, 0));
 
 	QGraphicsScene *l_oScene = new QGraphicsScene(this);
 	l_oScene->setSceneRect(-400, -400, 400, 400);
@@ -42,8 +44,6 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsV
 	setRenderHint(QPainter::Antialiasing);
 
 #ifndef Q_OS_DARWIN
-
-	setDragMode(QGraphicsView::NoDrag);
 
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
@@ -68,7 +68,6 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsV
 	m_bPressed = false;
 
 	m_oRubberLine = new rubber_line(QRubberBand::Line, this);
-
 
 	QBrush l_oBrush = QBrush();
 	//QColor l_oColor = QColor("#000077");
@@ -137,48 +136,61 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsV
 	newAction(trUtf8("Diagram"), VIEW_DIAG, m_oDiagramType);
 	newAction(trUtf8("Table"), VIEW_TABLE, m_oTableType);
 	newAction(trUtf8("Image"), VIEW_IMG, m_oImageType);
+
+	set_mode(scroll_mode);
 }
 
 void canvas_view::slot_next_root()
 {
-	//qDebug()<<"hop";
+	QList<canvas_item*> sel = selection();
 	switch (((QAction*) QObject::sender())->data().toInt())
 	{
 		case 0:
-			if (m_oSelected.size()>1) deselect_all();
+			if (sel.size()>1) deselect_all();
 			m_oControl->prev_root();
 			break;
 		case 1:
-			if (m_oSelected.size()>1) deselect_all();
+			if (sel.size()>1) deselect_all();
 			m_oControl->next_root();
 			break;
 		default:
 			break;
 	}
-	if (m_oSelected.size()==1) ensureVisible(m_oSelected[0]);
+	if (sel.size()==1) ensureVisible(sel[0]);
 }
+
 
 void canvas_view::slot_edit()
 {
-	if (m_oSelected.size() == 1)
-	{
-		if (m_oSelected[0]->m_bEdit)
-		{
-			QFocusEvent l_oEv = QFocusEvent(QEvent::FocusOut);
-			m_oSelected[0]->focus_out(&l_oEv);
-			m_oSelected[0]->update();
+	canvas_item* sel = NULL;
+	foreach (QGraphicsItem *tmp, items()) {
+		if (tmp->type() == CANVAS_ITEM_T && tmp->isSelected()) {
+			if (sel) {
+				sel = NULL;
+				break;
+			} else {
+				sel = (canvas_item*) tmp;
+			}
 		}
-		else
-		{
-			m_oSelected[0]->focus_in();
-			m_oSelected[0]->update();
+	}
+
+	if (sel) {
+		if (sel->textInteractionFlags() & Qt::TextEditorInteraction) {
+			sel->setTextInteractionFlags(Qt::NoTextInteraction);
+			if (sel->toPlainText() == QObject::trUtf8("")) sel->setPlainText(QObject::trUtf8("Empty"));
+		} else {
+			sel->setTextInteractionFlags(Qt::TextEditorInteraction);
+			if (sel->toPlainText() == QObject::trUtf8("Empty")) sel->setPlainText("");
+			sel->setFocus();
 		}
 	}
 }
 
+
 void canvas_view::slot_move()
 {
-	if (m_oSelected.size() < 1) return;
+	QList<canvas_item*> sel = selection();
+	if (sel.size() < 1) return;
 	switch (((QAction*) QObject::sender())->data().toInt())
 	{
 		case 0: move_sel(0, -20); break;
@@ -191,8 +203,9 @@ void canvas_view::slot_move()
 
 void canvas_view::slot_sel()
 {
-	if (m_oSelected.size() != 1) return;
-	int l_iId = m_oSelected[0]->Id();
+	QList<canvas_item*> sel = selection();
+	if (sel.size() != 1) return;
+	int l_iId = sel[0]->Id();
 	switch (((QAction*) QObject::sender())->data().toInt())
 	{
 		case 0: m_oControl->select_item_keyboard(l_iId, 3); break;
@@ -201,41 +214,40 @@ void canvas_view::slot_sel()
 		case 3: m_oControl->select_item_keyboard(l_iId, 2); break;
 		default: break;
 	}
-	if (m_oSelected.size()==1) ensureVisible(m_oSelected[0]);
+	if (sel.size()==1) ensureVisible(sel[0]);
 }
 
 void canvas_view::slot_add_item()
 {
-	//if (m_oSelected.size() != 1) return;
+	QList<canvas_item*> sel = selection();
 	int l_iId = 0;
-	if (m_oSelected.size()==1) l_iId = m_oSelected[0]->Id();
+	if (sel.size() == 1) l_iId = sel[0]->Id();
 	deselect_all();
 
 	m_oControl->add_item(l_iId);
 	reorganize();
-	if (m_oSelected.size() == 1) m_oSelected[0]->focus_in();
+	if (sel.size() == 1) sel[0]->setFocus();
 }
 
 void canvas_view::slot_add_sibling()
 {
-	if (m_oSelected.size() != 1) return;
-	int l_iId = m_oControl->parent_of(m_oSelected[0]->Id());
+	QList<canvas_item*> sel = selection();
+	if (sel.size() != 1) return;
+	int l_iId = m_oControl->parent_of(sel[0]->Id());
 	if (l_iId == NO_ITEM) return;
 	deselect_all();
 
 	m_oControl->add_item(l_iId);
 	reorganize();
-	if (m_oSelected.size() == 1) m_oSelected[0]->focus_in();
+	if (sel.size() == 1) sel[0]->setFocus();
 }
 
 void canvas_view::slot_delete()
 {
 	QList<int> l_oLst;
-	foreach (QGraphicsItem *l_oItem, m_oSelected)
+	foreach (canvas_item *l_oItem, selection())
 	{
-		if (l_oItem->type() != CANVAS_ITEM_T) continue;
-		canvas_item *l_oR = (canvas_item*) l_oItem;
-		l_oLst.push_back(l_oR->Id());
+		l_oLst.push_back(l_oItem->Id());
 	}
 	foreach (int i_i, l_oLst)
 	{
@@ -268,9 +280,10 @@ void canvas_view::show_sort(int i_iId, bool i_b)
 
 void canvas_view::move_sel(int i_iX, int i_iY)
 {
+	QList<canvas_item*> sel = selection();
 	check_canvas_size();
-	foreach (canvas_item *l_oItem, m_oSelected) { l_oItem->moveBy(i_iX, i_iY); }
-	foreach (canvas_item *l_oItem, m_oSelected) { l_oItem->update_links(); ensureVisible(l_oItem); }
+	foreach (canvas_item *l_oItem, sel) { l_oItem->moveBy(i_iX, i_iY); }
+	foreach (canvas_item *l_oItem, sel) { l_oItem->update_links(); ensureVisible(l_oItem); }
 }
 
 void canvas_view::set_mode(mode_type i_iMode)
@@ -280,16 +293,18 @@ void canvas_view::set_mode(mode_type i_iMode)
 	switch (i_iMode)
 	{
 		case select_mode:
-			viewport()->setCursor(Qt::ArrowCursor);
+			setDragMode(QGraphicsView::RubberBandDrag);
 			break;
 		case link_mode:
+			setDragMode(QGraphicsView::NoDrag);
 			viewport()->setCursor(Qt::CrossCursor);
 			break;
 		case sort_mode:
+			setDragMode(QGraphicsView::NoDrag);
 			viewport()->setCursor(Qt::ArrowCursor);
 			break;
 		case scroll_mode:
-			viewport()->setCursor(Qt::OpenHandCursor);
+			setDragMode(QGraphicsView::ScrollHandDrag);
 			break;
 		default:
 			qDebug()<<"unknown mode"<<i_iMode;
@@ -300,10 +315,12 @@ void canvas_view::set_mode(mode_type i_iMode)
 	// reset
 	m_bPressed = false;
 	// unneeded statements
-	m_oRubbery->hide();
+	//m_oRubbery->hide();
 	m_oRubberLine->hide();
 }
 
+
+#if 0
 void canvas_view::keyReleaseEvent(QKeyEvent *i_oEvent)
 {
 #if 0
@@ -329,6 +346,7 @@ void canvas_view::keyPressEvent(QKeyEvent *i_oEvent)
 		}
 	}
 }
+#endif
 
 void canvas_view::zoom_in()
 {
@@ -358,6 +376,7 @@ void canvas_view::wheelEvent(QWheelEvent *i_oEvent)
 	centerOn(l_o + mapToScene(viewport()->rect().center()) - mapToScene(i_oEvent->pos()));
 }
 
+#if 0
 bool canvas_view::event(QEvent *i_oEvent)
 {
 	//qDebug()<<"event type "<<i_oEvent->type();
@@ -405,6 +424,11 @@ bool canvas_view::event(QEvent *i_oEvent)
 	return QGraphicsView::event(i_oEvent);
 }
 
+void canvas_view::focusInEvent(QFocusEvent *i_oEv)
+{
+	enable_actions();
+}
+
 void canvas_view::focusOutEvent(QFocusEvent *i_oEv)
 {
 	foreach (canvas_item *l_oItem, m_oSelected)
@@ -417,6 +441,7 @@ void canvas_view::focusOutEvent(QFocusEvent *i_oEv)
 	}
 	if (m_oMenu->isVisible()) enable_menu_actions();
 }
+#endif
 
 void canvas_view::synchro_doc(const hash_params& i_o)
 {
@@ -452,6 +477,7 @@ void canvas_view::synchro_doc(const hash_params& i_o)
 			break;
 		case cmd_select_item:
 			{
+				QList<canvas_item*> sel = selection();
 				if (i_o[data_orig].toInt() == VIEW_CANVAS)
 				{
 					check_selected();
@@ -462,11 +488,11 @@ void canvas_view::synchro_doc(const hash_params& i_o)
 				{
 					deselect_all(false);
 				}
-				else if (m_oSelected.size() == 1)
+				else if (sel.size() == 1)
 				{
-					if (m_oSelected[0]->Id() != l_iId)
+					if (sel[0]->Id() != l_iId)
 					{
-						rm_select(m_oSelected[0], false);
+						rm_select(sel[0], false);
 						add_select(m_oItems.value(l_iId), false);
 					}
 				}
@@ -520,7 +546,6 @@ void canvas_view::synchro_doc(const hash_params& i_o)
 
 				Q_ASSERT(l_oR1!=NULL);
 
-				m_oSelected.removeAll(l_oR1);
 				m_oItems.remove(l_iId);
 
 				//l_oR1->hide();
@@ -530,7 +555,8 @@ void canvas_view::synchro_doc(const hash_params& i_o)
 			break;
 		case cmd_sort_item:
 			{
-				show_sort(m_oSelected[0]->Id(), m_iMode == sort_mode);
+				QList<canvas_item*>sel = selection();
+				show_sort(sel[0]->Id(), m_iMode == sort_mode);
 			}
 			break;
 		case cmd_save_data:
@@ -657,9 +683,8 @@ void canvas_view::change_colors(QAction* i_oAct)
 		}
 	}
 
-	for (int i=0; i<m_oSelected.size(); ++i)
+	foreach (canvas_item *l_oItem, selection())
 	{
-		canvas_item *l_oItem = m_oSelected[i];
 		int l_oId = l_oItem->Id();
 		data_item *l_oData = *m_oControl + l_oId;
 		l_oData->m_oCustom.m_oInnerColor = l_oColor;
@@ -681,8 +706,8 @@ void canvas_view::change_flags(QAction* i_oAction)
 		if (l_oAct == i_oAction) l_iIndex = i;
 	}
 	QString l_sName = m_oControl->m_oFlagSchemes[l_iIndex]->m_sId;
-	canvas_item *l_oItem = m_oSelected[0];
-	data_item *l_oData = *m_oControl + m_oSelected[0]->Id();
+	canvas_item *l_oItem = selection()[0];
+	data_item *l_oData = *m_oControl + l_oItem->Id();
 
 	if (i_oAction->isChecked()) l_oData->m_oFlags.push_back(l_sName);
 	else l_oData->m_oFlags.removeAll(l_sName);
@@ -691,12 +716,12 @@ void canvas_view::change_flags(QAction* i_oAction)
 
 void canvas_view::check_selected()
 {
+	QList <canvas_item*> sel = selection();
 	semantik_win *l_o = (semantik_win*) m_oSemantikWindow;
-	bool l_bItemsAreSelected = (m_oSelected.size()==1);
 	data_item *l_oData = NULL;
-	if (l_bItemsAreSelected)
+	if (sel.size() == 1)
 	{
-		l_oData = *m_oControl + m_oSelected[0]->Id();
+		l_oData = *m_oControl + sel[0]->Id();
 	}
 
 	//foreach(QAction* l_oAct, l_o->m_oFlagGroup->actions())
@@ -704,27 +729,27 @@ void canvas_view::check_selected()
 	{
 		QAction *l_oAct = l_o->m_oFlagGroup->actions()[i];
 
-		if (!l_bItemsAreSelected) l_oAct->setChecked(false);
+		if (sel.size() != 1) l_oAct->setChecked(false);
 		else
 		{
 			QString l_sName = m_oControl->m_oFlagSchemes[i]->m_sId;
 			l_oAct->setChecked(l_oData->m_oFlags.contains(l_sName));
 		}
-		l_oAct->setEnabled(l_bItemsAreSelected);
+		l_oAct->setEnabled(sel.size());
 	}
-	l_bItemsAreSelected = (m_oSelected.size()>=1);
 	foreach(QAction* l_oAct, l_o->m_oColorGroup->actions())
 	{
-		l_oAct->setEnabled(l_bItemsAreSelected);
+		l_oAct->setEnabled(sel.size() >= 1);
 	}
 }
 
 void canvas_view::deselect_all(bool i_oSignal)
 {
+	/*
 	if (m_oSelected.size() == 1)
 	{
 		QFocusEvent l_oEv = QFocusEvent(QEvent::FocusOut);
-		m_oSelected[0]->focus_out(&l_oEv);
+		//m_oSelected[0]->focus_out(&l_oEv);
 	}
 
 	foreach (canvas_item *l_oItem, m_oSelected)
@@ -741,16 +766,18 @@ void canvas_view::deselect_all(bool i_oSignal)
 	m_oSelected.clear();
 
 	notify_select(i_oSignal);
+	*/
 }
 
 void canvas_view::add_select(canvas_item* i_oItem, bool i_oSignal)
 {
+	/*
 	Q_ASSERT(i_oItem != NULL);
 
 	if (m_oSelected.size() == 1)
 	{
 		QFocusEvent l_oEv = QFocusEvent(QEvent::FocusOut);
-		m_oSelected[0]->focus_out(&l_oEv);
+		//m_oSelected[0]->focus_out(&l_oEv);
 	}
 
 	m_iSortCursor = 0;
@@ -765,10 +792,12 @@ void canvas_view::add_select(canvas_item* i_oItem, bool i_oSignal)
 	i_oItem->update();
 
 	notify_select(i_oSignal);
+	*/
 }
 
 void canvas_view::rm_select(canvas_item* i_oItem, bool i_oSignal)
 {
+	/*
 	Q_ASSERT(i_oItem != NULL);
 	i_oItem->set_selected(false);
 	i_oItem->setZValue(99);
@@ -777,10 +806,12 @@ void canvas_view::rm_select(canvas_item* i_oItem, bool i_oSignal)
 	m_oSelected.removeAll(i_oItem);
 
 	notify_select(i_oSignal);
+	*/
 }
 
 void canvas_view::notify_select(bool i_oSignal)
 {
+	/*
 	enable_actions();
 
 	if (!i_oSignal) return;
@@ -788,6 +819,7 @@ void canvas_view::notify_select(bool i_oSignal)
 		m_oControl->select_item(m_oSelected[0]->Id(), VIEW_CANVAS);
 	else
 		m_oControl->select_item(NO_ITEM, VIEW_CANVAS);
+	*/
 }
 
 void canvas_view::enable_actions()
@@ -801,15 +833,16 @@ void canvas_view::enable_actions()
 
 void canvas_view::enable_menu_actions()
 {
-	m_oAddItemAction->setEnabled(m_oSelected.size()<=1);
-	m_oDeleteAction->setEnabled(m_oSelected.size()>0);
-	m_oEditAction->setEnabled(m_oSelected.size()==1);
-	m_oColorMenu->setEnabled(m_oSelected.size()>=1);
-	m_oDataMenu->setEnabled(m_oSelected.size()==1);
+	QList<canvas_item*> sel = selection();
+	m_oAddItemAction->setEnabled(sel.size()<=1);
+	m_oDeleteAction->setEnabled(sel.size()>0);
+	m_oEditAction->setEnabled(sel.size()==1);
+	m_oColorMenu->setEnabled(sel.size()>=1);
+	m_oDataMenu->setEnabled(sel.size()==1);
 
-	if (m_oSelected.size() == 1)
+	if (sel.size() == 1)
 	{
-		data_item *l_oData = *m_oControl + m_oSelected[0]->Id();
+		data_item *l_oData = *m_oControl + sel[0]->Id();
 
 		#define fafa(v, t) v->setChecked(l_oData->m_iDataType == t);
 		fafa(m_oTextType, VIEW_TEXT);
@@ -820,10 +853,11 @@ void canvas_view::enable_menu_actions()
 
 	foreach (QAction* l_o, m_oDataMenu->actions())
 	{
-		l_o->setEnabled(m_oSelected.size()==1);
+		l_o->setEnabled(sel.size()==1);
 	}
 }
 
+#if 0
 void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 {
 	if (i_oEv->button() == Qt::RightButton)
@@ -1134,9 +1168,20 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 			break;
 	}
 }
+#endif
 
 void canvas_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 {
+	/*QGraphicsTextItem *tit = new QGraphicsTextItem();
+	tit->setPlainText("This is a stupidly long test to see if the text wraps");
+	scene()->addItem(tit);
+	tit->adjustSize();
+	tit->setTabChangesFocus(true);
+	tit->setTextInteractionFlags(Qt::TextEditable);
+	tit->setPos(mapToScene(i_oEv->pos()));
+	tit->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+	return;
+	*/
 	if (i_oEv->button() != Qt::LeftButton) return;
 	m_oLastPoint = mapToScene(i_oEv->pos());
 	QGraphicsItem *l_oItem = itemAt(i_oEv->pos());
@@ -1152,7 +1197,8 @@ void canvas_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 				canvas_item *l_oR = (canvas_item*) l_oItem;
 				l_oR->setSelected(false);
 				l_iAdded = m_oControl->add_item(l_oR->Id(), NO_ITEM, true);
-				if (m_oSelected.size() == 1) m_oSelected[0]->focus_in();
+				QList<canvas_item*> sel = selection();
+				if (sel.size() == 1) sel[0]->setFocus();
 				check_canvas_size();
 			}
 			else if (l_oItem->type() == CANVAS_LINK_T)
@@ -1164,7 +1210,8 @@ void canvas_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 		else if (i_oEv->modifiers() != Qt::ControlModifier)
 		{
 			l_iAdded = m_oControl->add_item();
-			if (m_oSelected.size() == 1) m_oSelected[0]->focus_in();
+			QList<canvas_item*> sel = selection();
+			if (sel.size() == 1) sel[0]->setFocus();
 		}
 	}
 }
@@ -1218,14 +1265,9 @@ void canvas_view::fit_zoom()
 	fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
 }
 
-void canvas_view::focusInEvent(QFocusEvent *i_oEv)
-{
-	enable_actions();
-}
-
 void canvas_view::slot_change_data()
 {
-	m_oControl->change_data(m_oSelected[0]->Id(), ((QAction*) QObject::sender())->data().toInt());
+	m_oControl->change_data(selection()[0]->Id(), ((QAction*) QObject::sender())->data().toInt());
 }
 
 void canvas_view::toggle_fullscreen()
@@ -1412,6 +1454,17 @@ void canvas_view::pack(QMap<int, double> &width, QMap<int, double> &height, QMap
 		}
 		m_oItems[id]->update_links();
 	}
+}
+
+QList<canvas_item*> canvas_view::selection() {
+	QList<canvas_item*> ret;
+
+	foreach (QGraphicsItem *tmp, items()) {
+		if (tmp->type() == CANVAS_ITEM_T && tmp->isSelected()) {
+			ret.append((canvas_item*) tmp);
+		}
+	}
+	return ret;
 }
 
 %: include  	"canvas_view.moc" 

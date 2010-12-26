@@ -20,13 +20,14 @@ class canvas_link;
 class canvas_sort;
 class canvas_flag;
 
-class canvas_item: public QGraphicsRectItem
+class canvas_item: public QGraphicsTextItem
 {
 	public:
 		canvas_item(canvas_view *i_oGraphWidget, int i_iId);
 		~canvas_item();
 
 		int type() const { return CANVAS_ITEM_T; }
+		QRectF rect() { return boundingRect(); }
 
 		void update_flags();
 
@@ -45,16 +46,13 @@ class canvas_item: public QGraphicsRectItem
 		QColor get_color() {return m_oColor;}
 		void set_color(QColor c) {m_oColor=c;}
 
-		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
+		//void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
 
 
 		void set_parent(canvas_item *);
-		void adjustSize();
+		//void adjustSize();
 
 		int Id() const {return m_iId;};
-
-		QTextDocument *m_oDoc;
-		QTextCursor *m_oCursor;
 
 		bool m_bSel;
 		bool m_bEdit;
@@ -64,13 +62,13 @@ class canvas_item: public QGraphicsRectItem
 
 		bool hasFocus() const;
 
-		void keyPressEvent(QKeyEvent* i_oEv);
-		bool moveKey(QKeyEvent* i_oEv);
-		void keyReleaseEvent(QKeyEvent *i_oEv);
-		void focus_out(QFocusEvent *i_oEv);
-		void inputMethodEvent(QInputMethodEvent *);
+		//void keyPressEvent(QKeyEvent* i_oEv);
+		//bool moveKey(QKeyEvent* i_oEv);
+		//void keyReleaseEvent(QKeyEvent *i_oEv);
+		//void focus_out(QFocusEvent *i_oEv);
+		//void inputMethodEvent(QInputMethodEvent *);
 
-		void focus_in();
+		//void focus_in();
 
 		static QColor s_oColorRect;
 		static QColor s_oColorRoot;
