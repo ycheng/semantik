@@ -165,11 +165,6 @@ canvas_item::~canvas_item()
 {
 }
 
-void canvas_item::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
-	QGraphicsTextItem::mouseMoveEvent(e);
-	update_links();
-}
-
 void canvas_item::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 	setZValue(100);
 	QGraphicsTextItem::mousePressEvent(e);

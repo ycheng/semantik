@@ -54,7 +54,7 @@ class canvas_view : public QGraphicsView
 		void wheelEvent(QWheelEvent *i_oEvent);
 		void mouseDoubleClickEvent(QMouseEvent *i_oEv);
 		void mousePressEvent(QMouseEvent *i_oEv);
-		//void mouseMoveEvent(QMouseEvent *i_oEv);
+		void mouseMoveEvent(QMouseEvent *i_oEv);
 		//void mouseReleaseEvent(QMouseEvent *i_oEv);
 
 

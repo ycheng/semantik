@@ -1377,5 +1377,14 @@ QList<canvas_item*> canvas_view::selection() {
 	return ret;
 }
 
+void canvas_view::mouseMoveEvent(QMouseEvent *i_oEv) {
+	QGraphicsView::mouseMoveEvent(i_oEv);
+	foreach (QGraphicsItem*tmp, scene()->selectedItems()) {
+		if (tmp->type() == CANVAS_ITEM_T && tmp->isSelected()) {
+			((canvas_item*) tmp)->update_links();
+		}
+	}
+}
+
 %: include  	"canvas_view.moc" 
 
