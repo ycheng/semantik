@@ -320,34 +320,6 @@ void canvas_view::set_mode(mode_type i_iMode)
 }
 
 
-#if 0
-void canvas_view::keyReleaseEvent(QKeyEvent *i_oEvent)
-{
-#if 0
-	if (m_oSelected.size() == 1)
-	{
-		m_oSelected[0]->keyReleaseEvent(i_oEvent);
-		return;
-	}
-	QApplication::sendEvent(scene(), i_oEvent);
-#endif
-	i_oEvent->accept();
-}
-
-void canvas_view::keyPressEvent(QKeyEvent *i_oEvent)
-{
-	if (m_oSelected.size() == 1)
-	{
-		canvas_item * l_oItem = m_oSelected[0];
-		if (l_oItem->m_bEdit && i_oEvent->type() == QEvent::KeyPress)
-		{
-			l_oItem->keyPressEvent(i_oEvent);
-			i_oEvent->accept();
-		}
-	}
-}
-#endif
-
 void canvas_view::zoom_in()
 {
 	double i_iScaleFactor = 1.05;
@@ -375,73 +347,6 @@ void canvas_view::wheelEvent(QWheelEvent *i_oEvent)
 	scale(i_iScaleFactor, i_iScaleFactor);
 	centerOn(l_o + mapToScene(viewport()->rect().center()) - mapToScene(i_oEvent->pos()));
 }
-
-#if 0
-bool canvas_view::event(QEvent *i_oEvent)
-{
-	//qDebug()<<"event type "<<i_oEvent->type();
-	if (i_oEvent->type() == QEvent::ToolTip)
-	{
-		QHelpEvent *l_oEv = static_cast<QHelpEvent*>(i_oEvent);
-		QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(l_oEv->pos()));
-		if (l_oItem && l_oItem->type() == CANVAS_ITEM_T)
-		{
-			data_item *l_o = *m_oControl + ((canvas_item*) l_oItem)->Id();
-			if (l_o && l_o->m_iTextLength > 1)
-			{
-				QToolTip::showText(l_oEv->globalPos(), l_o->m_sText);
-			}
-		}
-	}
-	else if (i_oEvent->type() == QEvent::InputMethod)
-	{
-		if (m_oSelected.size() == 1)
-		{
-			canvas_item * l_oItem = m_oSelected[0];
-			if (l_oItem->m_bEdit)
-			{
-				l_oItem->inputMethodEvent((QInputMethodEvent*) i_oEvent);
-			}
-		}
-	}
-	else if (i_oEvent->type() == QEvent::KeyPress
-			|| i_oEvent->type() == QEvent::ShortcutOverride
-			|| i_oEvent->type() == QEvent::Shortcut)
-	{
-		if (m_oSelected.size() == 1 && m_oSelected[0]->m_bEdit)
-		{
-			QKeyEvent *l_o = (QKeyEvent*) i_oEvent;
-			if (m_oEditAction->shortcut().matches(l_o->key()))
-			{
-				//qDebug()<<"matches"<<l_o->key();
-				return QGraphicsView::event(i_oEvent);
-			}
-
-			keyPressEvent(l_o);
-			return true;
-		}
-	}
-	return QGraphicsView::event(i_oEvent);
-}
-
-void canvas_view::focusInEvent(QFocusEvent *i_oEv)
-{
-	enable_actions();
-}
-
-void canvas_view::focusOutEvent(QFocusEvent *i_oEv)
-{
-	foreach (canvas_item *l_oItem, m_oSelected)
-	{
-		l_oItem->focus_out(i_oEv);
-	}
-	foreach (QAction* l_o, actions())
-	{
-		l_o->setEnabled(false);
-	}
-	if (m_oMenu->isVisible()) enable_menu_actions();
-}
-#endif
 
 void canvas_view::synchro_doc(const hash_params& i_o)
 {
@@ -492,8 +397,8 @@ void canvas_view::synchro_doc(const hash_params& i_o)
 				{
 					if (sel[0]->Id() != l_iId)
 					{
-						rm_select(sel[0], false);
-						add_select(m_oItems.value(l_iId), false);
+						sel[0]->setSelected(false);
+						m_oItems.value(l_iId)->setSelected(true);
 					}
 				}
 				else
@@ -857,7 +762,6 @@ void canvas_view::enable_menu_actions()
 	}
 }
 
-#if 0
 void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 {
 	if (i_oEv->button() == Qt::RightButton)
@@ -867,10 +771,10 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 		QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
 		if (l_oItem && l_oItem->type() == CANVAS_ITEM_T)
 		{
-			if (!m_oSelected.contains((canvas_item*) l_oItem))
+			if (!l_oItem->isSelected())
 			{
 				deselect_all();
-				add_select((canvas_item*) l_oItem);
+				l_oItem->setSelected(true);
 			}
 		}
 		else
@@ -878,15 +782,24 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 			deselect_all();
 		}
 		m_oMenu->popup(i_oEv->globalPos());
+		i_oEv->accept();
 		return;
 	}
 
+	/*
+	//FIXME navigate with the middle button
 	if (i_oEv->button() == Qt::MidButton)
 	{
 		m_iLastMode = m_iMode;
 		m_iMode = scroll_mode;
 	}
+	*/
 
+	QGraphicsView::mousePressEvent(i_oEv);
+}
+
+
+#if 0
 	canvas_item *l_oRect = NULL;
 	switch (m_iMode)
 	{
@@ -1457,6 +1370,7 @@ void canvas_view::pack(QMap<int, double> &width, QMap<int, double> &height, QMap
 }
 
 QList<canvas_item*> canvas_view::selection() {
+	// FIXME use scene()->selectedItems()
 	QList<canvas_item*> ret;
 
 	foreach (QGraphicsItem *tmp, items()) {
