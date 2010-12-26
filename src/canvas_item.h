@@ -42,12 +42,10 @@ class canvas_item: public QGraphicsTextItem
 		 */
 
 		QVariant itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue);
+		QPainterPath opaqueArea() const;
 
 		QColor get_color() {return m_oColor;}
 		void set_color(QColor c) {m_oColor=c;}
-
-		//void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
-
 
 		void set_parent(canvas_item *);
 		//void adjustSize();
@@ -58,13 +56,12 @@ class canvas_item: public QGraphicsTextItem
 		bool m_bEdit;
 		QString m_sNum;
 
-		void set_selected(bool);
-
-		//bool hasFocus() const;
-
+		void mousePressEvent(QGraphicsSceneMouseEvent* e);
+		void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
 		void mouseMoveEvent(QGraphicsSceneMouseEvent*);
 		void keyPressEvent(QKeyEvent*);
 		void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
+		//void setSelected(bool yes);
 
 		static QColor s_oColorRect;
 		static QColor s_oColorRoot;

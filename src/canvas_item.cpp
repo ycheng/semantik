@@ -170,6 +170,16 @@ void canvas_item::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
 	update_links();
 }
 
+void canvas_item::mousePressEvent(QGraphicsSceneMouseEvent* e) {
+	setZValue(100);
+	QGraphicsTextItem::mousePressEvent(e);
+}
+
+void canvas_item::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
+	setZValue(99);
+	QGraphicsTextItem::mouseReleaseEvent(e);
+}
+
 void canvas_item::keyPressEvent(QKeyEvent* e) {
 	QGraphicsTextItem::keyPressEvent(e);
 	adjustSize();
@@ -183,6 +193,7 @@ void canvas_item::paint(QPainter* painter, const QStyleOptionGraphicsItem* optio
 	data_item *l_oItem = m_oGraph->m_oControl->m_oItems.value(Id());
 	color_scheme l_oColorScheme = l_oItem->get_color_scheme();
 
+	/*
 	QPen l_oPen = QPen(Qt::SolidLine);
 
 	l_oPen.setColor(l_oColorScheme.m_oBorderColor);
@@ -190,13 +201,15 @@ void canvas_item::paint(QPainter* painter, const QStyleOptionGraphicsItem* optio
 	else l_oPen.setWidth(1);
 
 	painter->setPen(l_oPen);
-
+	*/
 
 	//m_oRenderer = new QSvgRenderer(QLatin1String("/home/waf/truc.svg"));
 
-	QRectF l_oB = boundingRect();
-	qreal w = l_oPen.width()/2.;
-	QRectF l_oRect = l_oB.adjusted(w, w, -w, -w);
+	//QRectF l_oB = boundingRect();
+	//qreal w = l_oPen.width()/2.;
+	//QRectF l_oRect = l_oB.adjusted(w, w, -w, -w);
+
+	QRectF l_oRect = boundingRect().adjusted(0.5, 0.5, -0.5, -0.5);
 
 	if (m_oGraph->m_oControl->parent_of(Id()) <= 0 && l_oItem->m_iColor > 1)
 	{
@@ -212,10 +225,10 @@ void canvas_item::paint(QPainter* painter, const QStyleOptionGraphicsItem* optio
 		painter->setBrush(l_oColorScheme.m_oInnerColor);
 	}
 
-	if (m_bEdit) painter->setBrush(QColor(255, 255, 255));
+	//if (m_bEdit) painter->setBrush(QColor(255, 255, 255));
 
-	//painter->drawRect(l_oRect);
-	painter->drawRoundRect(l_oRect, 40, 40);
+	painter->drawRect(l_oRect);
+	//painter->drawRoundRect(l_oRect, 40, 40);
 
 
 	//painter->drawRoundRect(boundingRect(), 2, 2);
@@ -237,4 +250,10 @@ void canvas_item::paint(QPainter* painter, const QStyleOptionGraphicsItem* optio
 	painter->restore();
 	QGraphicsTextItem::paint(painter, option, widget);
 }
+
+QPainterPath canvas_item::opaqueArea() const
+{
+	return shape();
+}
+
 
