@@ -165,8 +165,8 @@ canvas_item::~canvas_item()
 {
 }
 
-void canvas_item::set_selected(bool) {
-
+void canvas_item::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
+	QGraphicsTextItem::mouseMoveEvent(e);
+	update_links();
 }
-
 

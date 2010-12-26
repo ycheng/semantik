@@ -68,6 +68,8 @@ class canvas_item: public QGraphicsTextItem
 		//void focus_out(QFocusEvent *i_oEv);
 		//void inputMethodEvent(QInputMethodEvent *);
 
+		void mouseMoveEvent(QGraphicsSceneMouseEvent*);
+
 		//void focus_in();
 
 		static QColor s_oColorRect;
