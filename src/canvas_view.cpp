@@ -657,13 +657,18 @@ void canvas_view::check_selected()
 
 void canvas_view::deselect_all(bool i_oSignal)
 {
-	/*
-	if (m_oSelected.size() == 1)
-	{
-		QFocusEvent l_oEv = QFocusEvent(QEvent::FocusOut);
-		//m_oSelected[0]->focus_out(&l_oEv);
+	QList<QGraphicsItem*> lst = scene()->selectedItems();
+	foreach (QGraphicsItem *tmp, lst) {
+		tmp->setSelected(false);
+
+		if (tmp->type() == CANVAS_ITEM_T) {
+			canvas_item *sel = (canvas_item*) tmp;
+			sel->setZValue(99);
+			sel->setTextInteractionFlags(Qt::NoTextInteraction);
+		}
 	}
 
+	/*
 	foreach (canvas_item *l_oItem, m_oSelected)
 	{
 		l_oItem->set_selected(false);

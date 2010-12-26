@@ -53,8 +53,6 @@ canvas_item::canvas_item(canvas_view *i_oGraphWidget, int i_iId) : QGraphicsText
 
 	m_oSort = new canvas_sort(i_oGraphWidget, this);
 
-	//setFlags(ItemIsMovable | ItemIsSelectable | ItemIsFocusable);
-	//setFlags(ItemIsMovable | ItemIsSelectable);
 	setFlags(ItemIsMovable | ItemIsSelectable);
 
 	setZValue(100);
