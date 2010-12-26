@@ -137,7 +137,7 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsV
 	newAction(trUtf8("Table"), VIEW_TABLE, m_oTableType);
 	newAction(trUtf8("Image"), VIEW_IMG, m_oImageType);
 
-	set_mode(scroll_mode);
+	set_mode(select_mode);
 }
 
 void canvas_view::slot_next_root()
@@ -300,6 +300,7 @@ void canvas_view::set_mode(mode_type i_iMode)
 	{
 		case select_mode:
 			setDragMode(QGraphicsView::RubberBandDrag);
+			viewport()->setCursor(Qt::ArrowCursor);
 			break;
 		case link_mode:
 			setDragMode(QGraphicsView::NoDrag);
