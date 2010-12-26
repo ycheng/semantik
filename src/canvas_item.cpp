@@ -170,3 +170,8 @@ void canvas_item::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
 	update_links();
 }
 
+void canvas_item::keyPressEvent(QKeyEvent* e) {
+	QGraphicsTextItem::keyPressEvent(e);
+	adjustSize();
+}
+

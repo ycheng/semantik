@@ -60,17 +60,10 @@ class canvas_item: public QGraphicsTextItem
 
 		void set_selected(bool);
 
-		bool hasFocus() const;
-
-		//void keyPressEvent(QKeyEvent* i_oEv);
-		//bool moveKey(QKeyEvent* i_oEv);
-		//void keyReleaseEvent(QKeyEvent *i_oEv);
-		//void focus_out(QFocusEvent *i_oEv);
-		//void inputMethodEvent(QInputMethodEvent *);
+		//bool hasFocus() const;
 
 		void mouseMoveEvent(QGraphicsSceneMouseEvent*);
-
-		//void focus_in();
+		void keyPressEvent(QKeyEvent*);
 
 		static QColor s_oColorRect;
 		static QColor s_oColorRoot;
