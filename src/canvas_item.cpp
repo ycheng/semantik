@@ -173,5 +173,68 @@ void canvas_item::mouseMoveEvent(QGraphicsSceneMouseEvent* e) {
 void canvas_item::keyPressEvent(QKeyEvent* e) {
 	QGraphicsTextItem::keyPressEvent(e);
 	adjustSize();
+	update_links();
+}
+
+void canvas_item::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+{
+	painter->save();
+
+	data_item *l_oItem = m_oGraph->m_oControl->m_oItems.value(Id());
+	color_scheme l_oColorScheme = l_oItem->get_color_scheme();
+
+	QPen l_oPen = QPen(Qt::SolidLine);
+
+	l_oPen.setColor(l_oColorScheme.m_oBorderColor);
+	if (m_bSel) l_oPen.setWidth(2);
+	else l_oPen.setWidth(1);
+
+	painter->setPen(l_oPen);
+
+
+	//m_oRenderer = new QSvgRenderer(QLatin1String("/home/waf/truc.svg"));
+
+	QRectF l_oB = boundingRect();
+	qreal w = l_oPen.width()/2.;
+	QRectF l_oRect = l_oB.adjusted(w, w, -w, -w);
+
+	if (m_oGraph->m_oControl->parent_of(Id()) <= 0 && l_oItem->m_iColor > 1)
+	{
+		QLinearGradient l_oGradient(l_oRect.right()-40, 0, l_oRect.right()-10, 0);
+		l_oGradient.setColorAt(0., l_oColorScheme.m_oInnerColor);
+		l_oGradient.setColorAt(1., l_oItem->get_color_scheme_raw().m_oInnerColor);
+
+		QBrush l_oBrush(l_oGradient);
+		painter->setBrush(l_oBrush);
+	}
+	else
+	{
+		painter->setBrush(l_oColorScheme.m_oInnerColor);
+	}
+
+	if (m_bEdit) painter->setBrush(QColor(255, 255, 255));
+
+	//painter->drawRect(l_oRect);
+	painter->drawRoundRect(l_oRect, 40, 40);
+
+
+	//painter->drawRoundRect(boundingRect(), 2, 2);
+
+	// if there is text, draw a triangle on the top-right corner
+	if (l_oItem->m_iTextLength > 0)
+	{
+		const QPointF points[4] =
+		{
+			l_oRect.topRight(),
+			l_oRect.topRight()-QPointF(5, 0),
+			l_oRect.topRight()+QPointF(0, 5),
+		};
+		painter->setBrush(l_oColorScheme.m_oBorderColor);
+		painter->drawPolygon(points, 3);
+		painter->setBrush(l_oColorScheme.m_oInnerColor);
+	}
+
+	painter->restore();
+	QGraphicsTextItem::paint(painter, option, widget);
 }
 

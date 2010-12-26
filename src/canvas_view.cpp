@@ -177,10 +177,16 @@ void canvas_view::slot_edit()
 	if (sel) {
 		if (sel->textInteractionFlags() & Qt::TextEditorInteraction) {
 			sel->setTextInteractionFlags(Qt::NoTextInteraction);
-			if (sel->toPlainText() == QObject::trUtf8("")) sel->setPlainText(QObject::trUtf8("Empty"));
+			if (sel->toPlainText() == QObject::trUtf8("")) {
+				sel->setPlainText(QObject::trUtf8("Empty"));
+				sel->update_links();
+			}
 		} else {
 			sel->setTextInteractionFlags(Qt::TextEditorInteraction);
-			if (sel->toPlainText() == QObject::trUtf8("Empty")) sel->setPlainText("");
+			if (sel->toPlainText() == QObject::trUtf8("Empty")) {
+				sel->setPlainText("");
+				sel->update_links();
+			}
 			sel->setFocus();
 		}
 	}
@@ -1085,16 +1091,6 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 
 void canvas_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 {
-	/*QGraphicsTextItem *tit = new QGraphicsTextItem();
-	tit->setPlainText("This is a stupidly long test to see if the text wraps");
-	scene()->addItem(tit);
-	tit->adjustSize();
-	tit->setTabChangesFocus(true);
-	tit->setTextInteractionFlags(Qt::TextEditable);
-	tit->setPos(mapToScene(i_oEv->pos()));
-	tit->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
-	return;
-	*/
 	if (i_oEv->button() != Qt::LeftButton) return;
 	m_oLastPoint = mapToScene(i_oEv->pos());
 	QGraphicsItem *l_oItem = itemAt(i_oEv->pos());

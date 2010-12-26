@@ -64,6 +64,7 @@ class canvas_item: public QGraphicsTextItem
 
 		void mouseMoveEvent(QGraphicsSceneMouseEvent*);
 		void keyPressEvent(QKeyEvent*);
+		void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
 
 		static QColor s_oColorRect;
 		static QColor s_oColorRoot;
