@@ -41,5 +41,25 @@ class mem_add : public mem_command {
 		int parent;
 };
 
+class mem_link : public mem_command {
+	public:
+		mem_link(sem_model*);
+		void undo();
+		void redo();
+
+		int parent;
+		int child;
+};
+
+class mem_unlink : public mem_command {
+	public:
+		mem_unlink(sem_model*);
+		void undo();
+		void redo();
+
+		int parent;
+		int child;
+};
+
 #endif
 

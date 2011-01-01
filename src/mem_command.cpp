@@ -83,3 +83,33 @@ void mem_add::undo() {
 	model->remove_item(item->m_iId);
 }
 
+///////////////////////////////////////////////////////////////////
+
+mem_link::mem_link(sem_model* mod) : mem_command(mod) {
+
+}
+
+void mem_link::redo() {
+	model->m_oLinks.append(QPoint(parent, child));
+	model->notify_link_items(parent, child);
+}
+
+void mem_link::undo() {
+	model->unlink_items(parent, child);
+}
+
+///////////////////////////////////////////////////////////////////
+
+mem_unlink::mem_unlink(sem_model* mod) : mem_command(mod) {
+
+}
+
+void mem_unlink::redo() {
+	model->unlink_items(parent, child);
+}
+
+void mem_unlink::undo() {
+	model->m_oLinks.append(QPoint(parent, child));
+	model->notify_link_items(parent, child);
+}
+

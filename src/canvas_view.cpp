@@ -1141,7 +1141,11 @@ void canvas_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 			else if (l_oItem->type() == CANVAS_LINK_T)
 			{
 				canvas_link *l_oLink = (canvas_link*) l_oItem;
-				m_oControl->unlink_items(l_oLink->m_oTo->Id(), l_oLink->m_oFrom->Id());
+				//m_oControl->unlink_items(l_oLink->m_oTo->Id(), l_oLink->m_oFrom->Id());
+				mem_unlink *link = new mem_unlink(m_oControl);
+				link->parent = l_oLink->m_oTo->Id();
+				link->child = l_oLink->m_oFrom->Id();
+				link->apply();
 			}
 		}
 		else if (i_oEv->modifiers() != Qt::ControlModifier)
