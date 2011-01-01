@@ -1396,7 +1396,6 @@ void canvas_view::mouseMoveEvent(QMouseEvent *i_oEv) {
 
 void canvas_view::notify_add_item(int id) {
 	Q_ASSERT(! m_oItems.contains(id));
-	qDebug()<<"adding item"<<id;
 	canvas_item* l_oR = new canvas_item(this, id);
 	m_oItems[id] = l_oR;
 	l_oR->update_data();
@@ -1415,7 +1414,11 @@ void canvas_view::notify_add_item(int id) {
 }
 
 void canvas_view::notify_link_items(int id1, int id2) {
-	qDebug()<<"notify link";
+	canvas_item *l_oR1 = m_oItems.value(id1);
+	canvas_item *l_oR2 = m_oItems.value(id2);
+	canvas_link * l_oLink = new canvas_link(this, l_oR2, l_oR1);
+	l_oLink->update_pos();
+	l_oR1->update();
 }
 
 %: include  	"canvas_view.moc" 

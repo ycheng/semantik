@@ -1272,7 +1272,6 @@ void sem_model::slot_redo() {
 }
 
 void sem_model::notify_add_item(int id) {
-	qDebug()<<"sig_add_item"<<id;
 	emit sig_add_item(id);
 }
 
