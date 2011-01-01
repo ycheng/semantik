@@ -30,5 +30,15 @@ class mem_delete : public mem_command {
 		QSet<QPoint> links;
 };
 
+class mem_add : public mem_command {
+	public:
+		mem_add(sem_model*);
+		void init();
+		void undo();
+		void redo();
+
+		data_item* item;
+};
+
 #endif
 

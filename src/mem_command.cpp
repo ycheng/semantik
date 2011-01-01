@@ -55,3 +55,20 @@ void mem_delete::undo() {
 	}
 }
 
+mem_add::mem_add(sem_model* mod) : mem_command(mod) {
+
+}
+
+void mem_add::init() {
+	item = new data_item(model, model->next_seq());
+}
+
+void mem_add::redo() {
+	model->m_oItems[item->m_iId] = item;
+	model->notify_add_item(item->m_iId);
+}
+
+void mem_add::undo() {
+	model->remove_item(item->m_iId);
+}
+
