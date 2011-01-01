@@ -1125,9 +1125,17 @@ void canvas_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 
 				canvas_item *l_oR = (canvas_item*) l_oItem;
 				l_oR->setSelected(false);
-				l_iAdded = m_oControl->add_item(l_oR->Id(), NO_ITEM, true);
-				QList<canvas_item*> sel = selection();
-				if (sel.size() == 1) sel[0]->setFocus();
+
+				mem_add *add = new mem_add(m_oControl);
+				add->init();
+				add->item->m_iXX = m_oLastPoint.x();
+				add->item->m_iYY = m_oLastPoint.y();
+				add->parent = l_oR->Id();
+				add->apply();
+
+				//l_iAdded = m_oControl->add_item(l_oR->Id(), NO_ITEM, true);
+				//QList<canvas_item*> sel = selection();
+				//if (sel.size() == 1) sel[0]->setFocus();
 				check_canvas_size();
 			}
 			else if (l_oItem->type() == CANVAS_LINK_T)
@@ -1138,9 +1146,15 @@ void canvas_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 		}
 		else if (i_oEv->modifiers() != Qt::ControlModifier)
 		{
-			l_iAdded = m_oControl->add_item();
-			QList<canvas_item*> sel = selection();
-			if (sel.size() == 1) sel[0]->setFocus();
+			//l_iAdded = m_oControl->add_item();
+			//QList<canvas_item*> sel = selection();
+			//if (sel.size() == 1) sel[0]->setFocus();
+
+			mem_add *add = new mem_add(m_oControl);
+			add->init();
+			add->item->m_iXX = m_oLastPoint.x();
+			add->item->m_iYY = m_oLastPoint.y();
+			add->apply();
 		}
 	}
 }
