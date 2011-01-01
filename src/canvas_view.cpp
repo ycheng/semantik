@@ -251,15 +251,17 @@ void canvas_view::slot_add_sibling()
 void canvas_view::slot_delete()
 {
 	QList<int> l_oLst;
-	foreach (canvas_item *l_oItem, selection())
-	{
+	foreach (canvas_item *l_oItem, selection()) {
 		l_oLst.push_back(l_oItem->Id());
 	}
-	foreach (int i_i, l_oLst)
-	{
-		m_oControl->remove_item(i_i);
+
+	if (l_oLst.isEmpty()) {
+		return;
 	}
-	m_oControl->select_item(NO_ITEM);
+
+	mem_delete *del = new mem_delete();
+	del->init(m_oControl, l_oLst);
+	m_oControl->remove_items(del);
 }
 
 void canvas_view::show_sort(int i_iId, bool i_b)

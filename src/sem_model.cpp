@@ -1263,5 +1263,14 @@ void sem_model::slot_redo() {
 	qDebug()<<"redo stack"<<m_oRedoStack.size();
 }
 
+void sem_model::remove_items(mem_delete* del) {
+	foreach (QPoint p, del->links) {
+		unlink_items(p.x(), p.y());
+	}
+	foreach (data_item* d, del->items) {
+		remove_item(d->m_iId);
+	}
+}
+
 #include "sem_model.moc"
 

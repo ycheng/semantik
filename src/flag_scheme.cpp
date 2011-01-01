@@ -1,5 +1,8 @@
 // Thomas Nagy 2007-2011 GPLV3
 
+#include <QIcon>
+#include <QSvgRenderer>
+
 #include <QtDebug>
 #	include <QPainter>
  #include	"con.h"

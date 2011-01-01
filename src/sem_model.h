@@ -80,6 +80,9 @@ class sem_model: public QObject
 		void select_item(int i_oId, int i_iView=NO_VIEW);
 		void update_item(int i_oId, int i_iView=NO_VIEW);
 
+
+		void remove_items(mem_delete*);
+
 		void sort_children(int i_iParent, int i_iChild, int i_iNum);
 		int num_children(int i_iParent);
 		int m_iConnType;

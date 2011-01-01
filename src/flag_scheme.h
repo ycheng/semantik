@@ -3,8 +3,10 @@
 #ifndef FLAG_SCHEME_H
 #define FLAG_SCHEME_H
 
-#include <QIcon>
-#include <QSvgRenderer>
+//#include <QIcon>
+class QIcon;
+//#include <QSvgRenderer>
+class QSvgRenderer;
 #include <QString>
 #include <con.h>
 
