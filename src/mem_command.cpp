@@ -72,13 +72,13 @@ void mem_add::redo() {
 	model->notify_add_item(item->m_iId);
 	if (parent) {
 		model->m_oLinks.append(QPoint(parent, item->m_iId));
-		model->notify_link_items(item->m_iId, parent);
+		model->notify_link_items(parent, item->m_iId);
 	}
 }
 
 void mem_add::undo() {
 	if (parent) {
-		model->unlink_items(item->m_iId, parent);
+		model->unlink_items(parent, item->m_iId);
 	}
 	model->remove_item(item->m_iId);
 }

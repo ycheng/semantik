@@ -1426,7 +1426,7 @@ void canvas_view::notify_add_item(int id) {
 void canvas_view::notify_link_items(int id1, int id2) {
 	canvas_item *l_oR1 = m_oItems.value(id1);
 	canvas_item *l_oR2 = m_oItems.value(id2);
-	canvas_link * l_oLink = new canvas_link(this, l_oR2, l_oR1);
+	canvas_link * l_oLink = new canvas_link(this, l_oR1, l_oR2);
 	l_oLink->update_pos();
 	l_oR1->update();
 }
