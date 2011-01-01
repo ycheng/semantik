@@ -19,6 +19,8 @@ void mem_command::apply() {
 	model->m_oUndoStack.push(this);
 }
 
+///////////////////////////////////////////////////////////////////
+
 mem_delete::mem_delete(sem_model* mod) : mem_command(mod) {
 
 }
@@ -55,8 +57,10 @@ void mem_delete::undo() {
 	}
 }
 
-mem_add::mem_add(sem_model* mod) : mem_command(mod) {
+///////////////////////////////////////////////////////////////////
 
+mem_add::mem_add(sem_model* mod) : mem_command(mod) {
+	parent = NO_ITEM;
 }
 
 void mem_add::init() {
@@ -66,9 +70,16 @@ void mem_add::init() {
 void mem_add::redo() {
 	model->m_oItems[item->m_iId] = item;
 	model->notify_add_item(item->m_iId);
+	if (parent) {
+		model->m_oLinks.append(QPoint(parent, item->m_iId));
+		model->notify_link_items(item->m_iId, parent);
+	}
 }
 
 void mem_add::undo() {
+	if (parent) {
+		model->unlink_items(item->m_iId, parent);
+	}
 	model->remove_item(item->m_iId);
 }
 

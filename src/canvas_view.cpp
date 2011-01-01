@@ -226,7 +226,7 @@ void canvas_view::slot_sel()
 void canvas_view::slot_add_item()
 {
 	QList<canvas_item*> sel = selection();
-	int l_iId = 0;
+	int l_iId = NO_ITEM;
 	if (sel.size() == 1) {
 		l_iId = sel[0]->Id();
 	}
@@ -235,6 +235,7 @@ void canvas_view::slot_add_item()
 	add->init();
 	add->item->m_iXX = m_oLastPoint.x();
 	add->item->m_iYY = m_oLastPoint.y();
+	add->parent = l_iId;
 	add->apply();
 
 

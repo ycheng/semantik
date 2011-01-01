@@ -38,6 +38,7 @@ class mem_add : public mem_command {
 		void redo();
 
 		data_item* item;
+		int parent;
 };
 
 #endif
