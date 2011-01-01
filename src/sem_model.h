@@ -81,8 +81,6 @@ class sem_model: public QObject
 		void update_item(int i_oId, int i_iView=NO_VIEW);
 
 
-		void remove_items(mem_delete*);
-
 		void sort_children(int i_iParent, int i_iChild, int i_iNum);
 		int num_children(int i_iParent);
 		int m_iConnType;
@@ -100,8 +98,8 @@ class sem_model: public QObject
 		int m_iLastItemSelected;
 
 
-		QStack<mem_command> m_oUndoStack;
-		QStack<mem_command> m_oRedoStack;
+		QStack<mem_command*> m_oUndoStack;
+		QStack<mem_command*> m_oRedoStack;
 
 	public:
 

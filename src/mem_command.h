@@ -12,13 +12,19 @@ class sem_model;
 
 class mem_command {
 	public:
-		mem_command();
+		mem_command(sem_model*);
+		sem_model *model;
+		virtual void undo() = 0;
+		virtual void redo() = 0;
+		void apply();
 };
 
 class mem_delete : public mem_command {
 	public:
-		mem_delete();
-		void init(sem_model* mod, QList<int> ids);
+		mem_delete(sem_model*);
+		void init(QList<int> ids);
+		void undo();
+		void redo();
 
 		QList<data_item*> items;
 		QSet<QPoint> links;

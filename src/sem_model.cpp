@@ -1256,19 +1256,18 @@ void sem_model::change_data(int i_iId, int i_iType)
 }
 
 void sem_model::slot_undo() {
-	qDebug()<<"undo stack"<<m_oUndoStack.size();
+	if (!m_oUndoStack.isEmpty()) {
+		mem_command *t = m_oUndoStack.pop();
+		t->undo();
+		m_oRedoStack.push(t);
+	}
 }
 
 void sem_model::slot_redo() {
-	qDebug()<<"redo stack"<<m_oRedoStack.size();
-}
-
-void sem_model::remove_items(mem_delete* del) {
-	foreach (QPoint p, del->links) {
-		unlink_items(p.x(), p.y());
-	}
-	foreach (data_item* d, del->items) {
-		remove_item(d->m_iId);
+	if (!m_oRedoStack.isEmpty()) {
+		mem_command *t = m_oRedoStack.pop();
+		t->redo();
+		m_oUndoStack.push(t);
 	}
 }
 

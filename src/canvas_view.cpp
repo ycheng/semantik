@@ -259,9 +259,9 @@ void canvas_view::slot_delete()
 		return;
 	}
 
-	mem_delete *del = new mem_delete();
-	del->init(m_oControl, l_oLst);
-	m_oControl->remove_items(del);
+	mem_delete *del = new mem_delete(m_oControl);
+	del->init(l_oLst);
+	del->apply();
 }
 
 void canvas_view::show_sort(int i_iId, bool i_b)
