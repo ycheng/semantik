@@ -1271,5 +1271,14 @@ void sem_model::slot_redo() {
 	}
 }
 
+void sem_model::notify_add_item(int id) {
+	qDebug()<<"sig_add_item"<<id;
+	emit sig_add_item(id);
+}
+
+void sem_model::notify_link_items(int id1, int id2) {
+	emit sig_link_items(id1, id2);
+}
+
 #include "sem_model.moc"
 

@@ -44,6 +44,9 @@ class sem_model: public QObject
 		void dirty(bool);
 		void update_title();
 
+		void sig_add_item(int id);
+		void sig_link_items(int id1, int id2);
+
 	public:
 		sem_model(QObject *i_oParent);
 		~sem_model();
@@ -100,6 +103,9 @@ class sem_model: public QObject
 
 		QStack<mem_command*> m_oUndoStack;
 		QStack<mem_command*> m_oRedoStack;
+
+		void notify_add_item(int id);
+		void notify_link_items(int id1, int id2);
 
 	public:
 

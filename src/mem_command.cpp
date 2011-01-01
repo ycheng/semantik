@@ -42,6 +42,7 @@ void mem_delete::redo() {
 	}
 	foreach (data_item* d, items) {
 		model->remove_item(d->m_iId);
+		qDebug()<<"removing item"<<d->m_iId;
 	}
 }
 
@@ -49,10 +50,11 @@ void mem_delete::undo() {
 	qDebug()<<"revert delete";
 	foreach (data_item* d, items) {
 		model->m_oItems[d->m_iId] = d;
-		//add_item(d->m_iId);
+		model->notify_add_item(d->m_iId);
 	}
 	foreach (QPoint p, links) {
 		model->m_oLinks.append(p);
+		//model->notify_link_items(p.x(), p.y());
 		/*
 		model->link_items(p.x(), p.y());
 

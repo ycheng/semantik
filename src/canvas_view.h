@@ -122,6 +122,10 @@ class canvas_view : public QGraphicsView
 		void zoom_out();
 		void toggle_fullscreen();
 
+
+		void notify_add_item(int id);
+		void notify_link_items(int id1, int id2);
+
 		void slot_change_data();
 		void reorganize();
 

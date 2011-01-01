@@ -1394,5 +1394,29 @@ void canvas_view::mouseMoveEvent(QMouseEvent *i_oEv) {
 	}
 }
 
+void canvas_view::notify_add_item(int id) {
+	Q_ASSERT(! m_oItems.contains(id));
+	qDebug()<<"adding item"<<id;
+	canvas_item* l_oR = new canvas_item(this, id);
+	m_oItems[id] = l_oR;
+	l_oR->update_data();
+
+	//l_oR->setSelected(true);
+
+	/*QRectF l_oRect = l_oR->boundingRect();
+	l_oR->setPos(m_oLastPoint - QPointF(l_oRect.width()/2, l_oRect.height()/2));
+
+	data_item *l_oData = *m_oControl + l_iId;
+	l_oData->m_iXX = l_oR->pos().x();
+	l_oData->m_iYY = l_oR->pos().y();
+
+	m_oItems[l_iId] = l_oR;
+	*/
+}
+
+void canvas_view::notify_link_items(int id1, int id2) {
+	qDebug()<<"notify link";
+}
+
 %: include  	"canvas_view.moc" 
 

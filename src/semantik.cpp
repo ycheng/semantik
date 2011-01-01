@@ -302,6 +302,10 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oPreView, SLOT(synchro_doc(const hash_params&)));
 	connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oDiagramView, SLOT(synchro_doc(const hash_params&)));
 
+
+	connect(m_oControl, SIGNAL(sig_add_item(int)), m_oCanvas, SLOT(notify_add_item(int)));
+	connect(m_oControl, SIGNAL(sig_link_items(int, int)), m_oCanvas, SLOT(notify_link_items(int, int)));
+
 	connect(m_oImageView, SIGNAL(sig_message(const QString&, int)), this, SLOT(slot_message(const QString&, int)));
 
 	//qDebug()<<"instance is "<<l_oInst<<endl;
