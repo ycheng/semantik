@@ -237,14 +237,8 @@ void canvas_view::slot_add_item()
 	add->item->m_iYY = m_oLastPoint.y();
 	add->parent = l_iId;
 	add->apply();
-
-
-	//deselect_all();
-	//m_oControl->add_item(l_iId);
-	//reorganize();
-	//if (sel.size() == 1) {
-	//	sel[0]->setFocus();
-	//}
+	reorganize(); // this was here before
+	if (sel.size() == 1) sel[0]->setFocus();
 }
 
 void canvas_view::slot_add_sibling()
@@ -255,8 +249,13 @@ void canvas_view::slot_add_sibling()
 	if (l_iId == NO_ITEM) return;
 	deselect_all();
 
-	m_oControl->add_item(l_iId);
-	reorganize();
+	mem_add *add = new mem_add(m_oControl);
+	add->init();
+	add->item->m_iXX = m_oLastPoint.x();
+	add->item->m_iYY = m_oLastPoint.y();
+	add->parent = l_iId;
+	add->apply();
+	reorganize(); // this was here before
 	if (sel.size() == 1) sel[0]->setFocus();
 }
 
@@ -1429,7 +1428,7 @@ void canvas_view::notify_add_item(int id) {
 	canvas_item* l_oR = new canvas_item(this, id);
 	m_oItems[id] = l_oR;
 	l_oR->update_data();
-	//l_oR->setSelected(true);
+	l_oR->setSelected(true);
 	/*QRectF l_oRect = l_oR->boundingRect();
 	l_oR->setPos(m_oLastPoint - QPointF(l_oRect.width()/2, l_oRect.height()/2));
 
