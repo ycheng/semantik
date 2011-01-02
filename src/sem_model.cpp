@@ -517,12 +517,21 @@ bool sem_model::save_file(QString i_sUrl)
 
 void sem_model::purge_document()
 {
-	foreach (QPoint p, m_oLinks) {
-		notify_unlink_items(p.x(), p.y());
+	m_oUndoStack.clear();
+	m_oRedoStack.clear();
+	mem_delete* del = new mem_delete(this);
+	del->init(m_oItems.keys());
+	del->apply();
+}
+
+void sem_model::undo_purge() {
+	m_oItems.clear();
+	m_oLinks.clear();
+	while (!m_oUndoStack.isEmpty()) {
+		mem_command* c = m_oUndoStack.pop();
+		c->undo();
 	}
-	foreach (int k, m_oItems.keys()) {
-		notify_delete_item(k);
-	}
+	m_oRedoStack.clear();
 }
 
 bool sem_model::open_file(const QString& i_sUrl)
@@ -533,6 +542,7 @@ bool sem_model::open_file(const QString& i_sUrl)
 	if (!l_o2.open(QIODevice::ReadOnly))
 	{
 		emit sig_message(trUtf8("Missing filter file %1 for opening files").arg(l_o2.fileName()), 5000);
+		undo_purge();
 		return false;
 	}
 	QByteArray l_oBa = l_o2.readAll();
@@ -547,6 +557,7 @@ bool sem_model::open_file(const QString& i_sUrl)
 	if (!init_py())
 	{
 		emit sig_message(trUtf8("Missing bindings for opening files"), 5000);
+		undo_purge();
 		return false;
 	}
 	PyRun_SimpleString(l_oBa.constData());
@@ -557,9 +568,8 @@ bool sem_model::open_file(const QString& i_sUrl)
 	//qDebug()<<"full text "<<bind_node::fulldoc()<<endl;
 
 	bool l_bResult = read_xml_file(bind_node::get_var(notr("fulldoc")));
-	if (!l_bResult)
-	{
-		purge_document();
+	if (!l_bResult) {
+		undo_purge();
 		return false;
 	}
 
@@ -581,11 +591,10 @@ bool sem_model::open_file(const QString& i_sUrl)
 		l_oData->load_from_path(l_sNew);
 	}
 
-	// now update all items created ITA
+	// now update all items created
 	foreach (int i, m_oItems.keys()) {
 		notify_add_item(i);
 	}
-
 	foreach (QPoint p, m_oLinks) {
 		notify_link_items(p.x(), p.y());
 	}

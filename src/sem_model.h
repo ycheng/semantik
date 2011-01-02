@@ -56,6 +56,8 @@ class sem_model: public QObject
 
 		int seq();
 
+		void undo_purge();
+
 		QString m_sTempDir;
 		QString m_sOutDir;
 		QString m_sOutProject;
