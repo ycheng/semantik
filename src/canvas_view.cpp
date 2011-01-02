@@ -439,43 +439,10 @@ void canvas_view::synchro_doc(const hash_params& i_o)
 			break;
 		case cmd_unlink:
 			{
-				canvas_item *l_oR1 = m_oItems.value(i_o[data_id1].toInt());
-				canvas_item *l_oR2 = m_oItems.value(i_o[data_id2].toInt());
-
-				foreach (QGraphicsItem *l_oItem, items())
-				{
-					if (l_oItem->type() == CANVAS_LINK_T)
-					{
-						canvas_link *l_oLink = (canvas_link*) l_oItem;
-						if (
-								(l_oLink->m_oFrom == l_oR1 && l_oLink->m_oTo == l_oR2)
-								||
-								(l_oLink->m_oFrom == l_oR2 && l_oLink->m_oTo == l_oR1)
-						   )
-						{
-							l_oLink->hide();
-							l_oLink->rm_link();
-							delete l_oLink;
-							break;
-						}
-					}
-				}
-				l_oR1->update();
-				l_oR2->update();
 			}
 			break;
 		case cmd_remove_item:
 			{
-				int l_iId = i_o[data_id].toInt();
-				canvas_item *l_oR1 = m_oItems.value(l_iId);
-
-				Q_ASSERT(l_oR1!=NULL);
-
-				m_oItems.remove(l_iId);
-
-				//l_oR1->hide();
-				scene()->removeItem(l_oR1);
-				delete l_oR1;
 			}
 			break;
 		case cmd_sort_item:
@@ -1431,13 +1398,19 @@ void canvas_view::notify_add_item(int id) {
 	l_oR->setSelected(true);
 	/*QRectF l_oRect = l_oR->boundingRect();
 	l_oR->setPos(m_oLastPoint - QPointF(l_oRect.width()/2, l_oRect.height()/2));
-
 	data_item *l_oData = *m_oControl + l_iId;
 	l_oData->m_iXX = l_oR->pos().x();
 	l_oData->m_iYY = l_oR->pos().y();
-
 	m_oItems[l_iId] = l_oR;
 	*/
+}
+
+void canvas_view::notify_delete_item(int id) {
+	canvas_item *l_oR1 = m_oItems.value(id);
+	Q_ASSERT(l_oR1!=NULL);
+	m_oItems.remove(id);
+	scene()->removeItem(l_oR1);
+	delete l_oR1;
 }
 
 void canvas_view::notify_link_items(int id1, int id2) {
@@ -1446,6 +1419,32 @@ void canvas_view::notify_link_items(int id1, int id2) {
 	canvas_link * l_oLink = new canvas_link(this, l_oR1, l_oR2);
 	l_oLink->update_pos();
 	l_oR1->update();
+}
+
+void canvas_view::notify_unlink_items(int id1, int id2) {
+	canvas_item *l_oR1 = m_oItems.value(id1);
+	canvas_item *l_oR2 = m_oItems.value(id2);
+
+	foreach (QGraphicsItem *l_oItem, items())
+	{
+		if (l_oItem->type() == CANVAS_LINK_T)
+		{
+			canvas_link *l_oLink = (canvas_link*) l_oItem;
+			if (
+				(l_oLink->m_oFrom == l_oR1 && l_oLink->m_oTo == l_oR2)
+				||
+				(l_oLink->m_oFrom == l_oR2 && l_oLink->m_oTo == l_oR1)
+			   )
+			{
+				l_oLink->hide();
+				l_oLink->rm_link();
+				delete l_oLink;
+				break;
+			}
+		}
+	}
+	l_oR1->update();
+	l_oR2->update();
 }
 
 %: include  	"canvas_view.moc" 

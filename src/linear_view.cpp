@@ -26,22 +26,74 @@ linear_view::linear_view(QWidget *i_oParent, sem_model *i_oControl) : QTreeWidge
 	m_bLockSelect = false;
 }
 
+void linear_view::notify_add_item(int id) {
+	QTreeWidgetItem *l_oItem = new QTreeWidgetItem(this);
+	l_oItem->setText(0, m_oControl->m_oItems.value(id)->m_sSummary);
+	l_oItem->setData(0, Qt::UserRole, id);
+	//l_oItem->setFlags(Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsDropEnabled);
+	addTopLevelItem(l_oItem);
+	m_oItems[id] = l_oItem;
+}
+
+void linear_view::notify_delete_item(int id) {
+	QTreeWidgetItem *l_oItem = m_oItems.value(id);
+
+	QTreeWidgetItem *l_oChild = NULL;
+	while ( (l_oChild = l_oItem->takeChild(0)) != NULL) {
+		addTopLevelItem(l_oChild);
+	}
+	if (l_oItem->parent())
+		l_oItem->parent()->takeChild(l_oItem->parent()->indexOfChild(l_oItem));
+	else
+		takeTopLevelItem(indexOfTopLevelItem(l_oItem));
+	delete l_oItem;
+}
+
+void linear_view::notify_link_items(int id1, int id2) {
+	QTreeWidgetItem *l_oItem1 = m_oItems.value(id1);
+	QTreeWidgetItem *l_oItem2 = m_oItems.value(id2);
+	QTreeWidgetItem *l_oRet = takeTopLevelItem(indexOfTopLevelItem(l_oItem1));
+	Q_ASSERT(l_oRet != NULL);
+	l_oItem2->insertChild(l_oItem2->childCount(), l_oItem1);
+	l_oItem2->setExpanded(true);
+
+	data_item *l_o = m_oControl->m_oItems.value(id2);
+	l_oItem1->setBackgroundColor(0, l_o->get_color_scheme().m_oInnerColor);
+}
+
+void linear_view::notify_unlink_items(int id1, int id2) {
+	QTreeWidgetItem *l_oItem1 = m_oItems.value(id1);
+	QTreeWidgetItem *l_oItem2 = m_oItems.value(id2);
+	if (l_oItem1->parent() == l_oItem2)
+	{
+		l_oItem2->takeChild(l_oItem2->indexOfChild(l_oItem1));
+		l_oItem2->setExpanded(true);
+		addTopLevelItem(l_oItem1);
+
+		data_item *l_o = m_oControl->m_oItems.value(id1);
+		l_oItem1->setBackgroundColor(0, l_o->get_color_scheme().m_oInnerColor);
+	}
+	else if (l_oItem2->parent() == l_oItem1)
+	{
+		l_oItem1->takeChild(l_oItem1->indexOfChild(l_oItem2));
+		l_oItem1->setExpanded(true);
+		addTopLevelItem(l_oItem2);
+
+		data_item *l_o = m_oControl->m_oItems.value(id2);
+		l_oItem2->setBackgroundColor(0, l_o->get_color_scheme().m_oInnerColor);
+	}
+	else
+	{
+		Q_ASSERT(1>1);
+	}
+}
+
 void linear_view::synchro_doc(const hash_params&i_o)
 {
+#if 0
 	int l_iCmd = i_o[data_commande].toInt();
 	switch (l_iCmd)
 	{
-		case cmd_add_item:
-			{
-				QTreeWidgetItem *l_oItem = new QTreeWidgetItem(this);
-				int l_iId = i_o[data_id].toInt();
-				l_oItem->setText(0, m_oControl->m_oItems.value(l_iId)->m_sSummary);
-				l_oItem->setData(0, Qt::UserRole, i_o[data_id]);
-				//l_oItem->setFlags(Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsDropEnabled);
-				addTopLevelItem(l_oItem);
-				m_oItems[l_iId] = l_oItem;
-			}
-			break;
 		case cmd_update_item:
 			{
 				if (i_o[data_orig].toInt() == VIEW_LINEAR) return;
@@ -115,46 +167,10 @@ void linear_view::synchro_doc(const hash_params&i_o)
 			break;
 		case cmd_unlink:
 			{
-				QTreeWidgetItem *l_oItem1 = m_oItems.value(i_o[data_id1].toInt());
-				QTreeWidgetItem *l_oItem2 = m_oItems.value(i_o[data_id2].toInt());
-				if (l_oItem1->parent() == l_oItem2)
-				{
-					l_oItem2->takeChild(l_oItem2->indexOfChild(l_oItem1));
-					l_oItem2->setExpanded(true);
-					addTopLevelItem(l_oItem1);
-
-					data_item *l_o = m_oControl->m_oItems.value(i_o[data_id1].toInt());
-					l_oItem1->setBackgroundColor(0, l_o->get_color_scheme().m_oInnerColor);
-				}
-				else if (l_oItem2->parent() == l_oItem1)
-				{
-					l_oItem1->takeChild(l_oItem1->indexOfChild(l_oItem2));
-					l_oItem1->setExpanded(true);
-					addTopLevelItem(l_oItem2);
-
-					data_item *l_o = m_oControl->m_oItems.value(i_o[data_id2].toInt());
-					l_oItem2->setBackgroundColor(0, l_o->get_color_scheme().m_oInnerColor);
-				}
-				else
-				{
-					Q_ASSERT(1>1);
-				}
 			}
 			break;
 		case cmd_remove_item:
 			{
-				QTreeWidgetItem *l_oItem = m_oItems.value(i_o[data_id].toInt());
-
-				QTreeWidgetItem *l_oChild = NULL;
-				while ( (l_oChild = l_oItem->takeChild(0)) != NULL)
-				{
-					addTopLevelItem(l_oChild);
-				}
-				if (l_oItem->parent())
-					l_oItem->parent()->takeChild(l_oItem->parent()->indexOfChild(l_oItem));
-				else
-					takeTopLevelItem(indexOfTopLevelItem(l_oItem));
-				delete l_oItem;
 			}
 			break;
 		case cmd_sort_item:
@@ -185,6 +201,7 @@ void linear_view::synchro_doc(const hash_params&i_o)
 		default:
 			break;
 	}
+#endif
 }
 
 #if 0

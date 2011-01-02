@@ -1275,8 +1275,16 @@ void sem_model::notify_add_item(int id) {
 	emit sig_add_item(id);
 }
 
+void sem_model::notify_delete_item(int id) {
+	emit sig_delete_item(id);
+}
+
 void sem_model::notify_link_items(int id1, int id2) {
 	emit sig_link_items(id1, id2);
+}
+
+void sem_model::notify_unlink_items(int id1, int id2) {
+    emit sig_unlink_items(id1, id2);
 }
 
 #include "sem_model.moc"

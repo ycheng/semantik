@@ -39,10 +39,10 @@ void mem_delete::init(QList<int> lst) {
 
 void mem_delete::redo() {
 	foreach (QPoint p, links) {
-		model->unlink_items(p.x(), p.y());
+		model->notify_unlink_items(p.x(), p.y());
 	}
 	foreach (data_item* d, items) {
-		model->remove_item(d->m_iId);
+		model->notify_delete_item(d->m_iId);
 	}
 }
 
@@ -78,9 +78,9 @@ void mem_add::redo() {
 
 void mem_add::undo() {
 	if (parent) {
-		model->unlink_items(parent, item->m_iId);
+		model->notify_unlink_items(parent, item->m_iId);
 	}
-	model->remove_item(item->m_iId);
+	model->notify_delete_item(item->m_iId);
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -95,7 +95,7 @@ void mem_link::redo() {
 }
 
 void mem_link::undo() {
-	model->unlink_items(parent, child);
+	model->notify_unlink_items(parent, child);
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -105,7 +105,7 @@ mem_unlink::mem_unlink(sem_model* mod) : mem_command(mod) {
 }
 
 void mem_unlink::redo() {
-	model->unlink_items(parent, child);
+	model->notify_unlink_items(parent, child);
 }
 
 void mem_unlink::undo() {

@@ -292,19 +292,26 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	m_oColorsToolBar = toolBar(notr("colorsToolBar"));
 	m_oFlagsToolBar = toolBar(notr("flagsToolBar"));
 
-	connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oCanvas, SLOT(synchro_doc(const hash_params&)));
+	//connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oCanvas, SLOT(synchro_doc(const hash_params&)));
+	//connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oTree, SLOT(synchro_doc(const hash_params&)));
+
 	connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oTableView, SLOT(synchro_doc(const hash_params&)));
 	connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oImageView, SLOT(synchro_doc(const hash_params&)));
 	connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oTextView, SLOT(synchro_doc(const hash_params&)));
 	connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oDataView, SLOT(synchro_doc(const hash_params&)));
-	//connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oTree, SLOT(synchro_doc(const hash_params&)));
 	connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oVarsView, SLOT(synchro_doc(const hash_params&)));
 	connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oPreView, SLOT(synchro_doc(const hash_params&)));
 	connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oDiagramView, SLOT(synchro_doc(const hash_params&)));
 
 
 	connect(m_oControl, SIGNAL(sig_add_item(int)), m_oCanvas, SLOT(notify_add_item(int)));
+	connect(m_oControl, SIGNAL(sig_add_item(int)), m_oTree, SLOT(notify_add_item(int)));
+	connect(m_oControl, SIGNAL(sig_delete_item(int)), m_oCanvas, SLOT(notify_delete_item(int)));
+	connect(m_oControl, SIGNAL(sig_delete_item(int)), m_oTree, SLOT(notify_delete_item(int)));
 	connect(m_oControl, SIGNAL(sig_link_items(int, int)), m_oCanvas, SLOT(notify_link_items(int, int)));
+	connect(m_oControl, SIGNAL(sig_link_items(int, int)), m_oTree, SLOT(notify_link_items(int, int)));
+	connect(m_oControl, SIGNAL(sig_unlink_items(int, int)), m_oCanvas, SLOT(notify_unlink_items(int, int)));
+	connect(m_oControl, SIGNAL(sig_unlink_items(int, int)), m_oTree, SLOT(notify_unlink_items(int, int)));
 
 	connect(m_oImageView, SIGNAL(sig_message(const QString&, int)), this, SLOT(slot_message(const QString&, int)));
 
