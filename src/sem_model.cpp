@@ -24,6 +24,7 @@
  #include "sembind.h"  	
   #include "data_item.h"	
   %: include "sem_model.h" 
+#include <KMessageBox>
 
 class semantik_reader : public QXmlDefaultHandler
 {
@@ -541,7 +542,7 @@ bool sem_model::open_file(const QString& i_sUrl)
 	QFile l_o2(QString(FILTER_DIR)+"/main.py");
 	if (!l_o2.open(QIODevice::ReadOnly))
 	{
-		emit sig_message(trUtf8("Missing filter file %1 for opening files").arg(l_o2.fileName()), 5000);
+		KMessageBox::sorry(NULL, trUtf8("Missing filter file %1 for opening files").arg(l_o2.fileName()), trUtf8("Broken installation"));
 		undo_purge();
 		return false;
 	}
@@ -556,7 +557,7 @@ bool sem_model::open_file(const QString& i_sUrl)
 
 	if (!init_py())
 	{
-		emit sig_message(trUtf8("Missing bindings for opening files"), 5000);
+		KMessageBox::sorry(NULL, trUtf8("Missing python bindings for opening files"), trUtf8("Broken installation"));
 		undo_purge();
 		return false;
 	}
@@ -570,6 +571,7 @@ bool sem_model::open_file(const QString& i_sUrl)
 	bool l_bResult = read_xml_file(bind_node::get_var(notr("fulldoc")));
 	if (!l_bResult) {
 		undo_purge();
+		KMessageBox::sorry(NULL, trUtf8("Could not load the document %1").arg(bind_node::get_var(notr("fulldoc"))), trUtf8("Broken document"));
 		return false;
 	}
 
