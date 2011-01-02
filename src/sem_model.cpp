@@ -68,7 +68,7 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		int b = i_oAttrs.value(notr("v")).toInt();
 		if (!m_oControl->m_oItems.contains(a)) return false;
 		if (!m_oControl->m_oItems.contains(b)) return false;
-		m_oControl->link_items(a, b);
+		m_oControl->m_oLinks.append(QPoint(a, b));
 	}
 	else if (i_sName == notr("tblsettings"))
 	{
@@ -88,11 +88,11 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 	else if (i_sName == notr("item"))
 	{
 		m_iId = i_oAttrs.value(notr("id")).toInt();
-		if (m_iId <= NO_ITEM) return false;
+		if (!m_iId) return false;
 
-		m_oControl->add_item(NO_ITEM, m_iId);
+		data_item *l_oItem = new data_item(m_oControl, m_iId);
+		m_oControl->m_oItems[m_iId] = l_oItem;
 
-		data_item *l_oItem = m_oControl->m_oItems.value(m_iId);
 		l_oItem->m_sSummary = i_oAttrs.value(notr("summary"));
 		l_oItem->m_sText = i_oAttrs.value(notr("text"));
 		l_oItem->m_iTextLength = i_oAttrs.value(notr("len")).toInt();
@@ -517,13 +517,12 @@ bool sem_model::save_file(QString i_sUrl)
 
 void sem_model::purge_document()
 {
-	QList<int> k = m_oItems.keys();
-	foreach(int i, k)
-	{
-		remove_item(i);
+	foreach (QPoint p, m_oLinks) {
+		notify_unlink_items(p.x(), p.y());
 	}
-	Q_ASSERT(m_oItems.keys().size()==0);
-	num_seq = 1;
+	foreach (int k, m_oItems.keys()) {
+		notify_delete_item(k);
+	}
 }
 
 bool sem_model::open_file(const QString& i_sUrl)
@@ -582,10 +581,13 @@ bool sem_model::open_file(const QString& i_sUrl)
 		l_oData->load_from_path(l_sNew);
 	}
 
-	// now update all items created
-	for (int i=0; i<m_oItems.keys().size(); i++)
-	{
-		update_item(m_oItems.keys().at(i));
+	// now update all items created ITA
+	foreach (int i, m_oItems.keys()) {
+		notify_add_item(i);
+	}
+
+	foreach (QPoint p, m_oLinks) {
+		notify_link_items(p.x(), p.y());
 	}
 
 	select_item(NO_ITEM);
@@ -630,6 +632,8 @@ bool sem_model::read_xml_file(const QString &l_oBa)
 
 int sem_model::add_item(int i_oAdd, int i_iIdx, bool i_iCopy)
 {
+	Q_ASSERT(false);
+	/*
 	Q_ASSERT(!m_oItems.contains(i_iIdx));
 
 	int l_iNext = NO_ITEM;
@@ -659,11 +663,14 @@ int sem_model::add_item(int i_oAdd, int i_iIdx, bool i_iCopy)
 	}
 
 	select_item(l_iNext);
-	return l_iNext;
+	return l_iNext; */
+	return NO_ITEM;
 }
 
 void sem_model::unlink_items(int i_iId1, int i_iId2)
 {
+	Q_ASSERT(false);
+	/*
 	Q_ASSERT(m_oItems.contains(i_iId1) && m_oItems.contains(i_iId2));
 
 	m_oLinks.removeAll(QPoint(i_iId1, i_iId2));
@@ -674,10 +681,13 @@ void sem_model::unlink_items(int i_iId1, int i_iId2)
 	l_oCmd.insert(data_id1, QVariant(i_iId1));
 	l_oCmd.insert(data_id2, QVariant(i_iId2));
 	emit synchro(l_oCmd);
+	*/
 }
 
 bool sem_model::link_items(int i_iParent, int i_iChild)
 {
+	Q_ASSERT(false);
+	/*
 	Q_ASSERT(m_oItems.contains(i_iParent) && m_oItems.contains(i_iChild));
 
 	if (i_iParent == i_iChild) return false;
@@ -717,6 +727,7 @@ bool sem_model::link_items(int i_iParent, int i_iChild)
 	emit synchro(l_oCmd);
 
 	return true;
+	*/
 }
 
 void sem_model::remove_item(int i_iId)
@@ -1276,20 +1287,14 @@ void sem_model::notify_add_item(int id) {
 }
 
 void sem_model::notify_delete_item(int id) {
-	Q_ASSERT(m_oItems.contains(id));
-	m_oItems.remove(id);
 	emit sig_delete_item(id);
 }
 
 void sem_model::notify_link_items(int id1, int id2) {
-	Q_ASSERT(!m_oLinks.contains(QPoint(id1, id2)));
-	m_oLinks.append(QPoint(id1, id2));
 	emit sig_link_items(id1, id2);
 }
 
 void sem_model::notify_unlink_items(int id1, int id2) {
-	Q_ASSERT(m_oLinks.contains(QPoint(id1, id2)));
-	m_oLinks.removeAll(QPoint(id1, id2));
 	emit sig_unlink_items(id1, id2);
 }
 
