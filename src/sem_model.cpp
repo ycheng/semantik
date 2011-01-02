@@ -1276,15 +1276,21 @@ void sem_model::notify_add_item(int id) {
 }
 
 void sem_model::notify_delete_item(int id) {
+	Q_ASSERT(m_oItems.contains(id));
+	m_oItems.remove(id);
 	emit sig_delete_item(id);
 }
 
 void sem_model::notify_link_items(int id1, int id2) {
+	Q_ASSERT(!m_oLinks.contains(QPoint(id1, id2)));
+	m_oLinks.append(QPoint(id1, id2));
 	emit sig_link_items(id1, id2);
 }
 
 void sem_model::notify_unlink_items(int id1, int id2) {
-    emit sig_unlink_items(id1, id2);
+	Q_ASSERT(m_oLinks.contains(QPoint(id1, id2)));
+	m_oLinks.removeAll(QPoint(id1, id2));
+	emit sig_unlink_items(id1, id2);
 }
 
 #include "sem_model.moc"

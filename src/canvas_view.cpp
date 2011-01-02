@@ -235,6 +235,7 @@ void canvas_view::slot_add_item()
 	add->init();
 	add->item->m_iXX = m_oLastPoint.x();
 	add->item->m_iYY = m_oLastPoint.y();
+	add->item->m_sSummary = QString("abc %1").arg((long) add->item);
 	add->parent = l_iId;
 	add->apply();
 	reorganize(); // this was here before
@@ -1081,12 +1082,9 @@ void canvas_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 	m_oLastPoint = mapToScene(i_oEv->pos());
 	QGraphicsItem *l_oItem = itemAt(i_oEv->pos());
 	int l_iAdded = NO_ITEM;
-	if (m_iMode == select_mode || m_iMode == link_mode)
-	{
-		if (l_oItem)
-		{
-			if (l_oItem->type() == CANVAS_ITEM_T)
-			{
+	if (m_iMode == select_mode || m_iMode == link_mode) {
+		if (l_oItem) {
+			if (l_oItem->type() == CANVAS_ITEM_T) {
 				deselect_all();
 
 				canvas_item *l_oR = (canvas_item*) l_oItem;
@@ -1103,19 +1101,14 @@ void canvas_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 				//QList<canvas_item*> sel = selection();
 				//if (sel.size() == 1) sel[0]->setFocus();
 				check_canvas_size();
-			}
-			else if (l_oItem->type() == CANVAS_LINK_T)
-			{
+			} else if (l_oItem->type() == CANVAS_LINK_T) {
 				canvas_link *l_oLink = (canvas_link*) l_oItem;
-				//m_oControl->unlink_items(l_oLink->m_oTo->Id(), l_oLink->m_oFrom->Id());
 				mem_unlink *link = new mem_unlink(m_oControl);
-				link->parent = l_oLink->m_oTo->Id();
-				link->child = l_oLink->m_oFrom->Id();
+				link->child = l_oLink->m_oTo->Id();
+				link->parent = l_oLink->m_oFrom->Id();
 				link->apply();
 			}
-		}
-		else if (i_oEv->modifiers() != Qt::ControlModifier)
-		{
+		} else if (i_oEv->modifiers() != Qt::ControlModifier) {
 			//l_iAdded = m_oControl->add_item();
 			//QList<canvas_item*> sel = selection();
 			//if (sel.size() == 1) sel[0]->setFocus();

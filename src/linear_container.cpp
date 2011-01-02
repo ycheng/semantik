@@ -40,13 +40,3 @@ linear_container::linear_container(QWidget *i_oParent, sem_model *i_oControl) : 
 	setLayout(l_oLayout);
 }
 
-void linear_container::synchro_doc(const hash_params& i_oParams)
-{
-	m_oView->synchro_doc(i_oParams);
-}
-
-#ifdef WAF
-#include "linear_container.moc"
-#endif
-
-

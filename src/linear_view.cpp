@@ -50,8 +50,8 @@ void linear_view::notify_delete_item(int id) {
 }
 
 void linear_view::notify_link_items(int id1, int id2) {
-	QTreeWidgetItem *l_oItem1 = m_oItems.value(id1);
-	QTreeWidgetItem *l_oItem2 = m_oItems.value(id2);
+	QTreeWidgetItem *l_oItem1 = m_oItems.value(id2);
+	QTreeWidgetItem *l_oItem2 = m_oItems.value(id1);
 	QTreeWidgetItem *l_oRet = takeTopLevelItem(indexOfTopLevelItem(l_oItem1));
 	Q_ASSERT(l_oRet != NULL);
 	l_oItem2->insertChild(l_oItem2->childCount(), l_oItem1);

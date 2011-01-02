@@ -12,15 +12,11 @@ class sem_model;
 class linear_view;
 class linear_container : public QWidget
 {
-	Q_OBJECT
 	public:
 		linear_container(QWidget *i_oParent, sem_model *i_oControl);
 
 		sem_model *m_oControl;
 		linear_view *m_oView;
-
-	public slots:
-		void synchro_doc(const hash_params&);
 };
 
 #endif

@@ -52,7 +52,6 @@ void mem_delete::undo() {
 		model->notify_add_item(d->m_iId);
 	}
 	foreach (QPoint p, links) {
-		model->m_oLinks.append(p);
 		model->notify_link_items(p.x(), p.y());
 	}
 }
@@ -71,7 +70,6 @@ void mem_add::redo() {
 	model->m_oItems[item->m_iId] = item;
 	model->notify_add_item(item->m_iId);
 	if (parent) {
-		model->m_oLinks.append(QPoint(parent, item->m_iId));
 		model->notify_link_items(parent, item->m_iId);
 	}
 }
@@ -90,7 +88,6 @@ mem_link::mem_link(sem_model* mod) : mem_command(mod) {
 }
 
 void mem_link::redo() {
-	model->m_oLinks.append(QPoint(parent, child));
 	model->notify_link_items(parent, child);
 }
 
@@ -109,7 +106,6 @@ void mem_unlink::redo() {
 }
 
 void mem_unlink::undo() {
-	model->m_oLinks.append(QPoint(parent, child));
 	model->notify_link_items(parent, child);
 }
 
