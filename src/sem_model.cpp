@@ -242,9 +242,7 @@ void sem_model::init_flags()
 		m_oFlagSchemes.push_back(new flag_scheme(this, l_s, l_s));
 	}
 
-	hash_params l_oCmd;
-	l_oCmd.insert(data_commande, QVariant(cmd_update_flags));
-	emit synchro(l_oCmd);
+	emit sync_flags();
 }
 
 void sem_model::init_temp_dir()

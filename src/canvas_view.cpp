@@ -467,38 +467,6 @@ void canvas_view::synchro_doc(const hash_params& i_o)
 				}
 			}
 			break;
-		case cmd_update_flags:
-			{
-				semantik_win *l_o = (semantik_win*) m_oSemantikWindow;
-				l_o->m_oFlagsToolBar->clear();
-
-				while (l_o->m_oFlagGroup->actions().size() > m_oControl->m_oFlagSchemes.size())
-				{
-					QAction* l_oA = l_o->m_oFlagGroup->actions().takeFirst();
-					delete l_oA;
-				}
-
-				while (l_o->m_oFlagGroup->actions().size() < m_oControl->m_oFlagSchemes.size())
-				{
-					new QAction(QIcon(), trUtf8("Flag"), l_o->m_oFlagGroup);
-				}
-
-				for (int i=0; i<m_oControl->m_oFlagSchemes.size(); ++i)
-				{
-					flag_scheme* l_oScheme = m_oControl->m_oFlagSchemes[i];
-					QAction *l_oAction = l_o->m_oFlagGroup->actions()[i];
-
-					l_oAction->setText(l_oScheme->m_sName);
-					l_oAction->setIcon(l_oScheme->_icon());
-				}
-
-				foreach(QAction* l_oAct, l_o->m_oFlagGroup->actions())
-				{
-					l_o->m_oFlagsToolBar->addAction(l_oAct);
-					l_oAct->setCheckable(true);
-				}
-			}
-			break;
 		case cmd_update_colors:
 			{
 				semantik_win *l_o = (semantik_win*) m_oSemantikWindow;
@@ -555,6 +523,37 @@ void canvas_view::synchro_doc(const hash_params& i_o)
 			break;
 		default:
 			break;
+	}
+}
+
+void canvas_view::sync_flags() {
+	semantik_win *l_o = (semantik_win*) m_oSemantikWindow;
+	l_o->m_oFlagsToolBar->clear();
+
+	while (l_o->m_oFlagGroup->actions().size() > m_oControl->m_oFlagSchemes.size())
+	{
+		QAction* l_oA = l_o->m_oFlagGroup->actions().takeFirst();
+		delete l_oA;
+	}
+
+	while (l_o->m_oFlagGroup->actions().size() < m_oControl->m_oFlagSchemes.size())
+	{
+		new QAction(QIcon(), trUtf8("Flag"), l_o->m_oFlagGroup);
+	}
+
+	for (int i=0; i<m_oControl->m_oFlagSchemes.size(); ++i)
+	{
+		flag_scheme* l_oScheme = m_oControl->m_oFlagSchemes[i];
+		QAction *l_oAction = l_o->m_oFlagGroup->actions()[i];
+
+		l_oAction->setText(l_oScheme->m_sName);
+		l_oAction->setIcon(l_oScheme->_icon());
+	}
+
+	foreach(QAction* l_oAct, l_o->m_oFlagGroup->actions())
+	{
+		l_o->m_oFlagsToolBar->addAction(l_oAct);
+		l_oAct->setCheckable(true);
 	}
 }
 

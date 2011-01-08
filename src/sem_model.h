@@ -48,6 +48,7 @@ class sem_model: public QObject
 		void sig_delete_item(int id);
 		void sig_link_items(int id1, int id2);
 		void sig_unlink_items(int id1, int id2);
+		void sync_flags();
 
 
 	public:
