@@ -467,54 +467,6 @@ void canvas_view::synchro_doc(const hash_params& i_o)
 				}
 			}
 			break;
-		case cmd_update_colors:
-			{
-				semantik_win *l_o = (semantik_win*) m_oSemantikWindow;
-				l_o->m_oColorsToolBar->clear();
-
-				while (l_o->m_oColorGroup->actions().size() > m_oControl->m_oColorSchemes.size()+1)
-				{
-					QAction* l_oA = l_o->m_oColorGroup->actions().takeFirst();
-					l_o->m_oColorsToolBar->removeAction(l_oA);
-					m_oColorMenu->removeAction(l_oA);
-					delete l_oA;
-				}
-
-				while (l_o->m_oColorGroup->actions().size() < m_oControl->m_oColorSchemes.size()+1)
-				{
-					new QAction(QIcon(), trUtf8("Color"), l_o->m_oColorGroup);
-				}
-
-				l_o->m_oColorGroup->removeAction(l_o->m_oCustomColorAct);
-				l_o->m_oColorGroup->addAction(l_o->m_oCustomColorAct);
-				m_oColorMenu->removeAction(l_o->m_oCustomColorAct);
-				m_oColorMenu->addAction(l_o->m_oCustomColorAct);
-
-				for (int i=0; i<m_oControl->m_oColorSchemes.size(); ++i)
-				{
-					color_scheme l_oScheme = m_oControl->m_oColorSchemes[i];
-					QAction *l_oAction = l_o->m_oColorGroup->actions()[i];
-
-					QPixmap l_oPix(22, 22);
-					QPainter l_oP(&l_oPix);
-
-					l_oAction->setText(l_oScheme.m_sName);
-
-					l_oPix.fill(l_oScheme.m_oInnerColor);
-					//TODO pen ?
-					l_oP.drawRect(0, 0, 21, 21);
-					l_oAction->setIcon(QIcon(l_oPix));
-				}
-
-				// la première action est pour la couleur de la racine
-				for (int i=1; i<l_o->m_oColorGroup->actions().size(); ++i)
-				{
-					QAction *l_oAct = l_o->m_oColorGroup->actions()[i];
-					l_o->m_oColorsToolBar->addAction(l_oAct);
-					m_oColorMenu->addAction(l_oAct);
-				}
-			}
-			break;
 		case cmd_open_map:
 			{
 				check_canvas_size();
@@ -523,6 +475,53 @@ void canvas_view::synchro_doc(const hash_params& i_o)
 			break;
 		default:
 			break;
+	}
+}
+
+void canvas_view::sync_colors() {
+	semantik_win *l_o = (semantik_win*) m_oSemantikWindow;
+	l_o->m_oColorsToolBar->clear();
+
+	while (l_o->m_oColorGroup->actions().size() > m_oControl->m_oColorSchemes.size()+1)
+	{
+		QAction* l_oA = l_o->m_oColorGroup->actions().takeFirst();
+		l_o->m_oColorsToolBar->removeAction(l_oA);
+		m_oColorMenu->removeAction(l_oA);
+		delete l_oA;
+	}
+
+	while (l_o->m_oColorGroup->actions().size() < m_oControl->m_oColorSchemes.size()+1)
+	{
+		new QAction(QIcon(), trUtf8("Color"), l_o->m_oColorGroup);
+	}
+
+	l_o->m_oColorGroup->removeAction(l_o->m_oCustomColorAct);
+	l_o->m_oColorGroup->addAction(l_o->m_oCustomColorAct);
+	m_oColorMenu->removeAction(l_o->m_oCustomColorAct);
+	m_oColorMenu->addAction(l_o->m_oCustomColorAct);
+
+	for (int i=0; i<m_oControl->m_oColorSchemes.size(); ++i)
+	{
+		color_scheme l_oScheme = m_oControl->m_oColorSchemes[i];
+		QAction *l_oAction = l_o->m_oColorGroup->actions()[i];
+
+		QPixmap l_oPix(22, 22);
+		QPainter l_oP(&l_oPix);
+
+		l_oAction->setText(l_oScheme.m_sName);
+
+		l_oPix.fill(l_oScheme.m_oInnerColor);
+		//TODO pen ?
+		l_oP.drawRect(0, 0, 21, 21);
+		l_oAction->setIcon(QIcon(l_oPix));
+	}
+
+	// la première action est pour la couleur de la racine
+	for (int i=1; i<l_o->m_oColorGroup->actions().size(); ++i)
+	{
+		QAction *l_oAct = l_o->m_oColorGroup->actions()[i];
+		l_o->m_oColorsToolBar->addAction(l_oAct);
+		m_oColorMenu->addAction(l_oAct);
 	}
 }
 

@@ -224,9 +224,7 @@ void sem_model::init_colors()
 
 	init_timer();
 
-	hash_params l_oCmd;
-	l_oCmd.insert(data_commande, QVariant(cmd_update_colors));
-	emit synchro(l_oCmd);
+	emit sync_colors();
 }
 
 void sem_model::init_flags()
@@ -606,10 +604,7 @@ bool sem_model::open_file(const QString& i_sUrl)
 	l_oCmd.insert(data_commande, QVariant(cmd_open_map));
 	emit synchro(l_oCmd);
 
-
-	hash_params l_oCmd2;
-	l_oCmd2.insert(data_commande, QVariant(cmd_update_colors));
-	emit synchro(l_oCmd2);
+	emit sync_colors();
 
 	QRegExp r(notr(".kdi$"));
 	QString s(notr(".sem"));

@@ -128,6 +128,7 @@ class canvas_view : public QGraphicsView
 		void notify_link_items(int id1, int id2);
 		void notify_unlink_items(int id1, int id2);
 		void sync_flags();
+		void sync_colors();
 
 		void slot_change_data();
 		void reorganize();
