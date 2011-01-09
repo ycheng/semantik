@@ -141,6 +141,25 @@ mem_sel::mem_sel(sem_model* mod) : mem_command(mod) {
 void mem_sel::apply() {
 	while (!model->m_oRedoStack.isEmpty())
 		delete model->m_oRedoStack.pop();
+
+	while (!model->m_oUndoStack.empty()) {
+		mem_command *me = model->m_oUndoStack.pop();
+		if (me->type() == SELECT) {
+			mem_sel *sal = (mem_sel*) me;
+			foreach (int i, sal->sel) {
+				if (!sel.contains(i) && !unsel.contains(i))
+					sel.append(i);
+			}
+			foreach (int i, sal->unsel) {
+				if (!sel.contains(i) && !unsel.contains(i))
+					unsel.append(i);
+			}
+			delete sal;
+		} else {
+			model->m_oUndoStack.push(me);
+			break;
+		}
+	}
 	redo();
 	model->m_oUndoStack.push(this);
 }
