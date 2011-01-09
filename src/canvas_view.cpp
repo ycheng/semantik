@@ -138,6 +138,14 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsV
 	newAction(trUtf8("Image"), VIEW_IMG, m_oImageType);
 
 	set_mode(select_mode);
+
+	connect(scene(), SIGNAL(selectionChanged()), this, SLOT(selection_changed()));
+}
+
+void canvas_view::selection_changed() {
+	// notify everybody that the selection changed :-/
+
+	qDebug()<<scene()->selectedItems();
 }
 
 void canvas_view::slot_next_root()

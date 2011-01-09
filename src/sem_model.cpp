@@ -514,8 +514,10 @@ bool sem_model::save_file(QString i_sUrl)
 
 void sem_model::purge_document()
 {
-	m_oUndoStack.clear();
-	m_oRedoStack.clear();
+	while (!m_oUndoStack.isEmpty())
+		delete m_oUndoStack.pop();
+	while (!m_oRedoStack.isEmpty())
+		delete m_oRedoStack.pop();
 	mem_delete* del = new mem_delete(this);
 	del->init(m_oItems.keys());
 	del->apply();
@@ -528,7 +530,8 @@ void sem_model::undo_purge() {
 		mem_command* c = m_oUndoStack.pop();
 		c->undo();
 	}
-	m_oRedoStack.clear();
+	while (!m_oRedoStack.isEmpty())
+		delete m_oRedoStack.pop();
 }
 
 bool sem_model::open_file(const QString& i_sUrl)

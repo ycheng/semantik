@@ -16,7 +16,10 @@ class mem_command {
 		sem_model *model;
 		virtual void undo() = 0;
 		virtual void redo() = 0;
-		void apply();
+		virtual void apply();
+
+		enum IType {DELETE, ADD, LINK, UNLINK, SELECT};
+		virtual IType type() = 0;
 };
 
 class mem_delete : public mem_command {
@@ -28,6 +31,8 @@ class mem_delete : public mem_command {
 
 		QList<data_item*> items;
 		QSet<QPoint> links;
+
+		IType type() { return DELETE; }
 };
 
 class mem_add : public mem_command {
@@ -39,6 +44,8 @@ class mem_add : public mem_command {
 
 		data_item* item;
 		int parent;
+
+		IType type() { return ADD; }
 };
 
 class mem_link : public mem_command {
@@ -49,6 +56,8 @@ class mem_link : public mem_command {
 
 		int parent;
 		int child;
+
+		IType type() { return LINK; }
 };
 
 class mem_unlink : public mem_command {
@@ -59,6 +68,18 @@ class mem_unlink : public mem_command {
 
 		int parent;
 		int child;
+		IType type() { return UNLINK; }
+};
+
+class mem_sel : public mem_command {
+	public:
+		mem_sel(sem_model*);
+		void undo();
+		void redo();
+		void apply();
+		QList<int> unsel;
+		QList<int> sel;
+		IType type() { return SELECT; }
 };
 
 #endif

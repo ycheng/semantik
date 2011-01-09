@@ -14,7 +14,8 @@ mem_command::mem_command(sem_model* mod) {
 }
 
 void mem_command::apply() {
-	model->m_oRedoStack.clear();
+	while (!model->m_oRedoStack.isEmpty())
+		delete model->m_oRedoStack.pop();
 	redo();
 	model->m_oUndoStack.push(this);
 }
@@ -129,5 +130,24 @@ void mem_unlink::undo() {
 	Q_ASSERT(!model->m_oLinks.contains(QPoint(parent, child)));
 	model->m_oLinks.append(QPoint(parent, child));
 	model->notify_link_items(parent, child);
+}
+
+///////////////////////////////////////////////////////////////////
+
+mem_sel::mem_sel(sem_model* mod) : mem_command(mod) {
+
+}
+
+void mem_sel::apply() {
+	while (!model->m_oRedoStack.isEmpty())
+		delete model->m_oRedoStack.pop();
+	redo();
+	model->m_oUndoStack.push(this);
+}
+
+void mem_sel::redo() {
+}
+
+void mem_sel::undo() {
 }
 
