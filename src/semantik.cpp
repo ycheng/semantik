@@ -311,6 +311,8 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	connect(m_oControl, SIGNAL(sig_link_items(int, int)), ln, SLOT(notify_link_items(int, int)));
 	connect(m_oControl, SIGNAL(sig_unlink_items(int, int)), m_oCanvas, SLOT(notify_unlink_items(int, int)));
 	connect(m_oControl, SIGNAL(sig_unlink_items(int, int)), ln, SLOT(notify_unlink_items(int, int)));
+	connect(m_oControl, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), m_oCanvas, SLOT(notify_select(const QList<int>&, const QList<int>&)));
+	connect(m_oControl, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), ln, SLOT(notify_select(const QList<int>&, const QList<int>&)));
 
 	connect(m_oControl, SIGNAL(sync_flags()), m_oCanvas, SLOT(sync_flags()));
 	connect(m_oControl, SIGNAL(sync_colors()), m_oCanvas, SLOT(sync_colors()));

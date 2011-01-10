@@ -144,8 +144,15 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsV
 
 void canvas_view::selection_changed() {
 	// notify everybody that the selection changed :-/
-
-	qDebug()<<scene()->selectedItems();
+	//qDebug()<<scene()->selectedItems();
+	QList<int> lst;
+	foreach (QGraphicsItem* k, scene()->selectedItems()) {
+		canvas_item* t = (canvas_item*) k;
+		lst.append(t->Id());
+	}
+	mem_sel *sel = new mem_sel(m_oControl);
+	sel->sel = lst;
+	sel->apply();
 }
 
 void canvas_view::slot_next_root()
@@ -413,30 +420,6 @@ void canvas_view::synchro_doc(const hash_params& i_o)
 			break;
 		case cmd_select_item:
 			{
-				QList<canvas_item*> sel = selection();
-				if (i_o[data_orig].toInt() == VIEW_CANVAS)
-				{
-					check_selected();
-					return;
-				}
-				int l_iId = i_o[data_id].toInt();
-				if (l_iId == NO_ITEM)
-				{
-					deselect_all(false);
-				}
-				else if (sel.size() == 1)
-				{
-					if (sel[0]->Id() != l_iId)
-					{
-						sel[0]->setSelected(false);
-						m_oItems.value(l_iId)->setSelected(true);
-					}
-				}
-				else
-				{
-					add_select(m_oItems.value(l_iId), false);
-				}
-				check_selected();
 			}
 			break;
 		case cmd_link:
@@ -484,6 +467,46 @@ void canvas_view::synchro_doc(const hash_params& i_o)
 		default:
 			break;
 	}
+}
+
+void canvas_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
+
+	foreach (int k, sel) {
+		if (!m_oItems[k]->isSelected())
+			m_oItems[k]->setSelected(true);
+	}
+
+	foreach (int k, unsel) {
+		if (m_oItems[k]->isSelected())
+			m_oItems[k]->setSelected(false);
+	}
+
+
+	/*
+	QList<canvas_item*> sel = selection();
+	if (i_o[data_orig].toInt() == VIEW_CANVAS)
+	{
+	check_selected();
+		return;
+	}
+	int l_iId = i_o[data_id].toInt();
+	if (l_iId == NO_ITEM)
+	{
+		deselect_all(false);
+	}
+	else if (sel.size() == 1)
+	{
+		if (sel[0]->Id() != l_iId)
+		{
+			sel[0]->setSelected(false);
+			m_oItems.value(l_iId)->setSelected(true);
+		}
+	}
+	else
+	{
+		add_select(m_oItems.value(l_iId), false);
+	}
+	check_selected();*/
 }
 
 void canvas_view::sync_colors() {

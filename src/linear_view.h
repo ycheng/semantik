@@ -37,6 +37,7 @@ class linear_view : public QTreeWidget
 		void notify_delete_item(int id);
 		void notify_link_items(int id1, int id2);
 		void notify_unlink_items(int id1, int id2);
+		void notify_select(const QList<int>& unsel, const QList<int>& sel);
 };
 
 #endif

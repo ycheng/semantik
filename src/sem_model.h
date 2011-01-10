@@ -50,6 +50,7 @@ class sem_model: public QObject
 		void sig_unlink_items(int id1, int id2);
 		void sync_flags();
 		void sync_colors();
+		void sig_select(const QList<int>& unsel, const QList<int>& sel);
 
 
 	public:
@@ -115,6 +116,7 @@ class sem_model: public QObject
 		void notify_delete_item(int id);
 		void notify_link_items(int id1, int id2);
 		void notify_unlink_items(int id1, int id2);
+		void notify_select(const QList<int>& unsel, const QList<int>& sel);
 
 	public:
 

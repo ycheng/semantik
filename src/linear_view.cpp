@@ -329,5 +329,9 @@ void linear_view::dropEvent(QDropEvent *i_oEv)
 	i_oEv->setDropAction(Qt::CopyAction);
 }
 
+void linear_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
+	qDebug()<<"linear_view::notify_select";
+}
+
 #include "linear_view.moc"
 

@@ -49,6 +49,7 @@ class data_item //:
 		QPixmap m_oThumbnail;
 
 		int m_iId;
+		bool m_bSelected;
 		double m_iXX;
 		double m_iYY;
 		double m_iWW;

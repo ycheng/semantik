@@ -135,13 +135,18 @@ void mem_unlink::undo() {
 ///////////////////////////////////////////////////////////////////
 
 mem_sel::mem_sel(sem_model* mod) : mem_command(mod) {
-
+	foreach (data_item* t, model->m_oItems.values()) {
+		if (t->m_bSelected) {
+			unsel.append(t->m_iId);
+		}
+	}
 }
 
 void mem_sel::apply() {
 	while (!model->m_oRedoStack.isEmpty())
 		delete model->m_oRedoStack.pop();
 
+	// merge a previous selection if possible
 	while (!model->m_oUndoStack.empty()) {
 		mem_command *me = model->m_oUndoStack.pop();
 		if (me->type() == SELECT) {
@@ -160,13 +165,33 @@ void mem_sel::apply() {
 			break;
 		}
 	}
+
+	foreach (int k, sel) {
+		unsel.removeAll(k);
+	}
+
+	// normal processing
 	redo();
 	model->m_oUndoStack.push(this);
 }
 
 void mem_sel::redo() {
+	foreach (int k, unsel) {
+		model->m_oItems[k]->m_bSelected = false;
+	}
+	foreach (int k, sel) {
+		model->m_oItems[k]->m_bSelected = true;
+	}
+	model->notify_select(unsel, sel);
 }
 
 void mem_sel::undo() {
+	foreach (int k, sel) {
+		model->m_oItems[k]->m_bSelected = false;
+	}
+	foreach (int k, unsel) {
+		model->m_oItems[k]->m_bSelected = true;
+	}
+	model->notify_select(sel, unsel);
 }
 

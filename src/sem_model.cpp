@@ -1305,5 +1305,9 @@ void sem_model::notify_unlink_items(int id1, int id2) {
 	emit sig_unlink_items(id1, id2);
 }
 
+void sem_model::notify_select(const QList<int>& unsel, const QList<int>& sel) {
+	emit sig_select(unsel, sel);
+}
+
 #include "sem_model.moc"
 
