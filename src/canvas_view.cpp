@@ -253,6 +253,8 @@ void canvas_view::slot_add_item()
 	add->item->m_sSummary = QString("abc %1").arg((long) add->item);
 	add->parent = l_iId;
 	add->apply();
+
+	// FIXME probably
 	reorganize(); // this was here before
 	deselect_all();
 	m_oItems.value(add->item->m_iId)->setSelected(true);
@@ -478,11 +480,14 @@ void canvas_view::synchro_doc(const hash_params& i_o)
 void canvas_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 
 	foreach (int k, sel) {
+		Q_ASSERT(m_oItems[k] != NULL);
 		if (!m_oItems[k]->isSelected())
 			m_oItems[k]->setSelected(true);
 	}
 
 	foreach (int k, unsel) {
+		qDebug()<<"unselect "<<k;
+		Q_ASSERT(m_oItems[k] != NULL);
 		if (m_oItems[k]->isSelected())
 			m_oItems[k]->setSelected(false);
 	}
@@ -1135,14 +1140,16 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 					canvas_item* t = (canvas_item*) k;
 					lst.append(t->Id());
 				}
-				mem_move *mv = new mem_move(m_oControl);
-				mv->sel = lst;
-				for (int i = 0; i < lst.size(); ++i) {
-					data_item *it = m_oControl->m_oItems[lst[i]];
-					mv->oldPos.append(QPointF(it->m_iXX, it->m_iYY));
-					mv->newPos.append(m_oItems[lst[i]]->pos());
+				if (lst.size()) {
+					mem_move *mv = new mem_move(m_oControl);
+					mv->sel = lst;
+					for (int i = 0; i < lst.size(); ++i) {
+						data_item *it = m_oControl->m_oItems[lst[i]];
+						mv->oldPos.append(QPointF(it->m_iXX, it->m_iYY));
+						mv->newPos.append(m_oItems[lst[i]]->pos());
+					}
+					mv->apply();
 				}
-				mv->apply();
 			}
 	}
 }
@@ -1459,7 +1466,7 @@ void canvas_view::notify_add_item(int id) {
 	canvas_item* l_oR = new canvas_item(this, id);
 	m_oItems[id] = l_oR;
 	l_oR->update_data();
-	l_oR->setSelected(true);
+	//l_oR->setSelected(true); // NOTE: do not call methods that create events here
 }
 
 void canvas_view::notify_delete_item(int id) {
