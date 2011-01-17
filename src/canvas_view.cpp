@@ -288,6 +288,11 @@ void canvas_view::slot_delete()
 		return;
 	}
 
+	mem_sel *sel = new mem_sel(m_oControl);
+	sel->sel;
+	sel->unsel = l_oLst;
+	sel->apply();
+
 	mem_delete *del = new mem_delete(m_oControl);
 	del->init(l_oLst);
 	del->apply();
