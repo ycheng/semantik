@@ -1309,5 +1309,9 @@ void sem_model::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 	emit sig_select(unsel, sel);
 }
 
+void sem_model::notify_move(const QList<int>&sel, const QList<QPointF>&pos) {
+	emit sig_move(sel, pos);
+}
+
 #include "sem_model.moc"
 

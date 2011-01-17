@@ -288,6 +288,7 @@ void canvas_view::slot_delete()
 		return;
 	}
 
+	// TODO compose?
 	mem_sel *sel = new mem_sel(m_oControl);
 	sel->sel;
 	sel->unsel = l_oLst;
@@ -1111,6 +1112,33 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 	}
 }
 #endif
+
+void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
+{
+	QGraphicsView::mouseReleaseEvent(i_oEv);
+	if (i_oEv->button() == Qt::RightButton) return;
+
+	if (m_iLastMode != no_mode)
+	{
+		m_iMode = m_iLastMode;
+		m_iLastMode = no_mode;
+		viewport()->setCursor(m_iMode==link_mode?Qt::CrossCursor:Qt::ArrowCursor);
+	}
+
+	switch (m_iMode)
+	{
+		case select_mode:
+			{
+				QList<int> lst;
+				foreach (QGraphicsItem* k, scene()->selectedItems()) {
+					canvas_item* t = (canvas_item*) k;
+					lst.append(t->Id());
+				}
+				mem_move *sel = new mem_move(m_oControl);
+				sel->sel = lst;
+			}
+	}
+}
 
 void canvas_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 {

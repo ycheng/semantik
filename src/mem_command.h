@@ -18,7 +18,7 @@ class mem_command {
 		virtual void redo() = 0;
 		virtual void apply();
 
-		enum IType {DELETE, ADD, LINK, UNLINK, SELECT};
+		enum IType {DELETE, ADD, LINK, UNLINK, SELECT, MOVE};
 		virtual IType type() = 0;
 };
 
@@ -80,6 +80,17 @@ class mem_sel : public mem_command {
 		QList<int> unsel;
 		QList<int> sel;
 		IType type() { return SELECT; }
+};
+
+class mem_move : public mem_command {
+	public:
+		mem_move(sem_model*);
+		void undo();
+		void redo();
+		QList<int> sel;
+		QList<QPointF> oldPos;
+		QList<QPointF> newPos;
+		IType type() { return MOVE; }
 };
 
 #endif

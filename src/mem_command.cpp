@@ -195,3 +195,21 @@ void mem_sel::undo() {
 	model->notify_select(sel, unsel);
 }
 
+///////////////////////////////////////////////////////////////////
+
+mem_move::mem_move(sem_model* mod) : mem_command(mod) {
+	foreach (data_item* t, model->m_oItems.values()) {
+		if (t->m_bSelected) {
+			sel.append(t->m_iId);
+		}
+	}
+}
+
+void mem_move::redo() {
+	model->notify_move(sel, newPos);
+}
+
+void mem_move::undo() {
+	model->notify_move(sel, oldPos);
+}
+
