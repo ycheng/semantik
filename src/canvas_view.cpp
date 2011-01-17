@@ -139,20 +139,24 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsV
 
 	set_mode(select_mode);
 
+	m_bDeleting = false;
 	connect(scene(), SIGNAL(selectionChanged()), this, SLOT(selection_changed()));
 }
 
 void canvas_view::selection_changed() {
 	// notify everybody that the selection changed :-/
 	//qDebug()<<scene()->selectedItems();
-	QList<int> lst;
-	foreach (QGraphicsItem* k, scene()->selectedItems()) {
-		canvas_item* t = (canvas_item*) k;
-		lst.append(t->Id());
+
+	if (!m_bDeleting) {
+		QList<int> lst;
+		foreach (QGraphicsItem* k, scene()->selectedItems()) {
+			canvas_item* t = (canvas_item*) k;
+			lst.append(t->Id());
+		}
+		mem_sel *sel = new mem_sel(m_oControl);
+		sel->sel = lst;
+		sel->apply();
 	}
-	mem_sel *sel = new mem_sel(m_oControl);
-	sel->sel = lst;
-	sel->apply();
 }
 
 void canvas_view::slot_next_root()
@@ -1474,11 +1478,13 @@ void canvas_view::notify_add_item(int id) {
 }
 
 void canvas_view::notify_delete_item(int id) {
+	m_bDeleting = true;
 	canvas_item *l_oR1 = m_oItems.value(id);
 	Q_ASSERT(l_oR1!=NULL);
 	scene()->removeItem(l_oR1);
 	m_oItems.remove(id);
 	delete l_oR1;
+	m_bDeleting = false;
 }
 
 void canvas_view::notify_link_items(int id1, int id2) {

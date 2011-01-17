@@ -45,6 +45,7 @@ class canvas_view : public QGraphicsView
 		QAction* m_oTextType, *m_oDiagramType, *m_oTableType, *m_oImageType;
 
 
+		bool m_bDeleting;
 		mode_type m_iMode;
 
 		//void keyPressEvent(QKeyEvent *i_oEvent);
