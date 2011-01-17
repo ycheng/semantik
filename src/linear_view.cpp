@@ -330,7 +330,7 @@ void linear_view::dropEvent(QDropEvent *i_oEv)
 }
 
 void linear_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
-	qDebug()<<"linear_view::notify_select";
+	//qDebug()<<"linear_view::notify_select";
 }
 
 #include "linear_view.moc"

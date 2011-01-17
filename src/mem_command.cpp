@@ -14,10 +14,12 @@ mem_command::mem_command(sem_model* mod) {
 }
 
 void mem_command::apply() {
+	qDebug()<<"apply begin"<<model->m_oUndoStack.size()<<model->m_oRedoStack.size();
 	while (!model->m_oRedoStack.isEmpty())
 		delete model->m_oRedoStack.pop();
 	redo();
 	model->m_oUndoStack.push(this);
+	qDebug()<<"apply end"<<model->m_oUndoStack.size()<<model->m_oRedoStack.size();
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -143,6 +145,8 @@ mem_sel::mem_sel(sem_model* mod) : mem_command(mod) {
 }
 
 void mem_sel::apply() {
+	qDebug()<<"apply sel begin"<<model->m_oUndoStack.size()<<model->m_oRedoStack.size();
+
 	while (!model->m_oRedoStack.isEmpty())
 		delete model->m_oRedoStack.pop();
 
@@ -173,6 +177,7 @@ void mem_sel::apply() {
 	// normal processing
 	redo();
 	model->m_oUndoStack.push(this);
+	qDebug()<<"apply sel end"<<model->m_oUndoStack.size()<<model->m_oRedoStack.size();
 }
 
 void mem_sel::redo() {
@@ -206,10 +211,20 @@ mem_move::mem_move(sem_model* mod) : mem_command(mod) {
 }
 
 void mem_move::redo() {
+	for (int i = 0; i < sel.size(); ++i) {
+		data_item *it = model->m_oItems[sel[i]];
+		it->m_iXX = newPos[i].x();
+		it->m_iYY = newPos[i].y();
+	}
 	model->notify_move(sel, newPos);
 }
 
 void mem_move::undo() {
+	for (int i = 0; i < sel.size(); ++i) {
+		data_item *it = model->m_oItems[sel[i]];
+		it->m_iXX = oldPos[i].x();
+		it->m_iYY = oldPos[i].y();
+	}
 	model->notify_move(sel, oldPos);
 }
 
