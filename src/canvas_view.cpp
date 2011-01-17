@@ -1141,14 +1141,18 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 					lst.append(t->Id());
 				}
 				if (lst.size()) {
-					mem_move *mv = new mem_move(m_oControl);
-					mv->sel = lst;
-					for (int i = 0; i < lst.size(); ++i) {
-						data_item *it = m_oControl->m_oItems[lst[i]];
-						mv->oldPos.append(QPointF(it->m_iXX, it->m_iYY));
-						mv->newPos.append(m_oItems[lst[i]]->pos());
-					}
-					mv->apply();
+					data_item *p = m_oControl->m_oItems[lst[0]];
+					canvas_item *v = m_oItems[lst[0]];
+					if (qAbs(p->m_iXX - v->pos().x()) + qAbs(p->m_iYY - v->pos().y()) > 0.1) {
+						mem_move *mv = new mem_move(m_oControl);
+						mv->sel = lst;
+						for (int i = 0; i < lst.size(); ++i) {
+							data_item *it = m_oControl->m_oItems[lst[i]];
+							mv->oldPos.append(QPointF(it->m_iXX, it->m_iYY));
+							mv->newPos.append(m_oItems[lst[i]]->pos());
+						}
+						mv->apply();
+					} else { qDebug()<<"move too small"; }
 				}
 			}
 	}

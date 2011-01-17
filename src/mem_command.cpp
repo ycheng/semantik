@@ -153,11 +153,11 @@ mem_sel::mem_sel(sem_model* mod) : mem_command(mod) {
 void mem_sel::apply() {
 	qDebug()<<"apply sel begin"<<model->m_oUndoStack.size()<<model->m_oRedoStack.size();
 
-	while (!model->m_oRedoStack.isEmpty())
-		delete model->m_oRedoStack.pop();
+	//while (!model->m_oRedoStack.isEmpty())
+	//	delete model->m_oRedoStack.pop();
 
 	// merge a previous selection if possible
-	while (!model->m_oUndoStack.empty()) {
+	/*while (!model->m_oUndoStack.empty()) {
 		mem_command *me = model->m_oUndoStack.pop();
 		if (me->type() == SELECT) {
 			mem_sel *sal = (mem_sel*) me;
@@ -178,12 +178,12 @@ void mem_sel::apply() {
 
 	foreach (int k, sel) {
 		unsel.removeAll(k);
-	}
+	}*/
 
 	// normal processing
 	redo();
-	model->m_oUndoStack.push(this);
-	qDebug()<<"apply sel end"<<model->m_oUndoStack.size()<<model->m_oRedoStack.size();
+	//model->m_oUndoStack.push(this);
+	//qDebug()<<"apply sel end"<<model->m_oUndoStack.size()<<model->m_oRedoStack.size();
 }
 
 void mem_sel::redo() {
