@@ -1118,24 +1118,31 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 	QGraphicsView::mouseReleaseEvent(i_oEv);
 	if (i_oEv->button() == Qt::RightButton) return;
 
-	if (m_iLastMode != no_mode)
+	/*if (m_iLastMode != no_mode)
 	{
 		m_iMode = m_iLastMode;
 		m_iLastMode = no_mode;
 		viewport()->setCursor(m_iMode==link_mode?Qt::CrossCursor:Qt::ArrowCursor);
-	}
+	}*/
 
 	switch (m_iMode)
 	{
 		case select_mode:
 			{
+				qDebug()<<"mouse release event!";
 				QList<int> lst;
 				foreach (QGraphicsItem* k, scene()->selectedItems()) {
 					canvas_item* t = (canvas_item*) k;
 					lst.append(t->Id());
 				}
-				mem_move *sel = new mem_move(m_oControl);
-				sel->sel = lst;
+				mem_move *mv = new mem_move(m_oControl);
+				mv->sel = lst;
+				for (int i = 0; i < lst.size(); ++i) {
+					data_item *it = m_oControl->m_oItems[lst[i]];
+					mv->oldPos.append(QPointF(it->m_iXX, it->m_iYY));
+					mv->newPos.append(m_oItems[lst[i]]->pos());
+				}
+				mv->apply();
 			}
 	}
 }
@@ -1495,6 +1502,12 @@ void canvas_view::notify_unlink_items(int id1, int id2) {
 	}
 	l_oR1->update();
 	l_oR2->update();
+}
+
+void canvas_view::notify_move(const QList<int>&sel, const QList<QPointF>&pos) {
+	for (int i = 0; i < sel.size(); ++i) {
+		m_oItems[sel[i]]->setPos(pos[i]);
+	}
 }
 
 %: include  	"canvas_view.moc" 
