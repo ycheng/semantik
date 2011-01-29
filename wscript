@@ -61,7 +61,7 @@ def build(bld):
 		k = 'beamer/beamermindist/themes/'
 		bld.install_files('${TEMPLATE_DIR}/' + k+x, bld.path.ant_glob(rt+k+x+'/*'))
 
-	obj = bld(features='msgfmt', appname = 'semantik', langs=['src/po/'+x for x in 'fr es'.split()])
+	obj = bld(features='msgfmt', appname = 'semantik', langs=[x.path_from(bld.path).replace('.po', '') for x in bld.path.ant_glob('src/po/*.po')])
 
 	bld.install_files('${TEMPLATE_DIR}/beamer/beamermindist/art/', glob(rt+'beamer/beamermindist/art/*'))
 	bld.install_files('${TEMPLATE_DIR}/beamer/beamermindist/', glob(rt+'beamer/beamermindist/*'))
@@ -190,6 +190,7 @@ def configure(conf):
 	conf.env.CXXFLAGS_PYEMBED = [x for x in conf.env.CXXFLAGS_PYEMBED if x != '-g']
 
 	conf.env.CXXFLAGS = '-O2 -pipe -Wall'.split()# -DDEBUG=1 -g'
+	conf.env.CXXFLAGS = ['-g']
 	conf.write_config_header('aux.h')
 
 	# the Debian packagers compile with --prefix=/usr and set /etc/ld.so.conf accordingly
