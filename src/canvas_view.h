@@ -136,7 +136,8 @@ class canvas_view : public QGraphicsView
 		void slot_change_data();
 		void reorganize();
 
-		void selection_changed();
+		//void selection_changed();
+		void check_selection();
 
 	signals:
 		void sig_message(const QString &, int);
