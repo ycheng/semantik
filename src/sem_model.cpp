@@ -765,12 +765,13 @@ void sem_model::dis_connect(int i_oId)
 
 void sem_model::select_item(int i_iId, int i_iView)
 {
-	m_iLastItemSelected = i_iId;
+	/*m_iLastItemSelected = i_iId;
 	hash_params l_oCmd;
 	l_oCmd.insert(data_commande, QVariant(cmd_select_item));
 	l_oCmd.insert(data_id, QVariant(i_iId));
 	l_oCmd.insert(data_orig, QVariant(i_iView));
 	emit synchro(l_oCmd);
+	*/
 }
 
 QList<int> sem_model::all_roots()
@@ -807,14 +808,14 @@ void sem_model::next_root()
 	if (l_o.size() == 0) return;
 
 	int l_i = root_of(m_iLastItemSelected);
-	if (l_i == NO_ITEM) select_item(l_o[0]);
+	if (l_i == NO_ITEM) private_select_item(l_o[0]);
 
 	for (int i=0; i<l_o.size(); i++)
 	{
 		if (l_o[i] == l_i)
 		{
-			if (i==l_o.size()-1) select_item(l_o[0]);
-			else select_item(l_o[i+1]);
+			if (i==l_o.size()-1) private_select_item(l_o[0]);
+			else private_select_item(l_o[i+1]);
 			return;
 		}
 	}
@@ -826,14 +827,14 @@ void sem_model::prev_root()
 	if (l_o.size() == 0) return;
 
 	int l_i = root_of(m_iLastItemSelected);
-	if (l_i == NO_ITEM) select_item(l_o[0]);
+	if (l_i == NO_ITEM) private_select_item(l_o[0]);
 
 	for (int i=0; i<l_o.size(); i++)
 	{
 		if (l_o[i] == l_i)
 		{
-			if (i==0) select_item(l_o[l_o.size()-1]);
-			else select_item(l_o[i-1]);
+			if (i==0) private_select_item(l_o[l_o.size()-1]);
+			else private_select_item(l_o[i-1]);
 			return;
 		}
 	}
@@ -844,12 +845,12 @@ void sem_model::select_root_item(int i_iId)
 	if (i_iId == NO_ITEM)
 	{
 		QList<int> l_o = all_roots();
-		if (l_o.size() > 0) select_item(l_o[0]);
+		if (l_o.size() > 0) private_select_item(l_o[0]);
 	}
 	else
 	{
 		int l_iId = root_of(i_iId);
-		select_item(l_iId);
+		private_select_item(l_iId);
 	}
 }
 
@@ -888,7 +889,7 @@ void sem_model::select_item_keyboard(int l_iId, int l_iDirection)
 					QPoint l_oP = m_oLinks.at(i);
 					if (l_oP.x() == l_iParent)
 					{
-						select_item(l_oP.y());
+						private_select_item(l_oP.y());
 						break;
 					}
 				}
@@ -919,7 +920,7 @@ void sem_model::select_item_keyboard(int l_iId, int l_iDirection)
 					QPoint l_oP = m_oLinks.at(i);
 					if (l_oP.x() == l_iParent)
 					{
-						select_item(l_oP.y());
+						private_select_item(l_oP.y());
 						break;
 					}
 				}
@@ -935,7 +936,7 @@ void sem_model::select_item_keyboard(int l_iId, int l_iDirection)
 						data_item *l_oItem = m_oItems.value(l_oP.x());
 						// update the cache
 						l_oItem->m_iDown = l_iId;
-						select_item(l_oP.x());
+						private_select_item(l_oP.x());
 						return;
 					}
 				}
@@ -953,7 +954,7 @@ void sem_model::select_item_keyboard(int l_iId, int l_iDirection)
 					QPoint l_oP = m_oLinks.at(i);
 					if (l_oP.x() == l_iId && l_oP.y() == l_iDown)
 					{
-						select_item(l_oP.y());
+						private_select_item(l_oP.y());
 						return;
 					}
 				}
@@ -964,7 +965,7 @@ void sem_model::select_item_keyboard(int l_iId, int l_iDirection)
 					QPoint l_oP = m_oLinks.at(i);
 					if (l_oP.x() == l_iId)
 					{
-						select_item(l_oP.y());
+						private_select_item(l_oP.y());
 						return;
 					}
 				}
@@ -1287,6 +1288,12 @@ void sem_model::slot_redo() {
 		t->redo();
 		m_oUndoStack.push(t);
 	}
+}
+
+void sem_model::private_select_item(int id) {
+	mem_sel *sel = new mem_sel(this);
+	sel->sel.append(id);
+	sel->apply();
 }
 
 void sem_model::notify_add_item(int id) {

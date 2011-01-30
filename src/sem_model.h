@@ -150,6 +150,7 @@ class sem_model: public QObject
 		data_item* operator+(const int x);
 
 		void select_item_keyboard(int, int);
+		void private_select_item(int i_oId);
 
 		void change_data(int i_iId, int i_iType);
 		QMutex m_oLock;
