@@ -1548,6 +1548,7 @@ void canvas_view::notify_unlink_items(int id1, int id2) {
 void canvas_view::notify_move(const QList<int>&sel, const QList<QPointF>&pos) {
 	for (int i = 0; i < sel.size(); ++i) {
 		m_oItems[sel[i]]->setPos(pos[i]);
+		m_oItems[sel[i]]->update_links();
 	}
 }
 
