@@ -74,6 +74,7 @@ mem_add::mem_add(sem_model* mod) : mem_command(mod) {
 
 void mem_add::init() {
 	item = new data_item(model, model->next_seq());
+	sel = new mem_sel(model);
 }
 
 void mem_add::redo() {
@@ -86,10 +87,17 @@ void mem_add::redo() {
 		model->m_oLinks.append(QPoint(parent, item->m_iId));
 		model->notify_link_items(parent, item->m_iId);
 	}
+
+	if (sel->sel.size() != 1) {
+		sel->sel.append(item->m_iId);
+	}
+	sel->redo();
 }
 
 void mem_add::undo() {
 	qDebug()<<"undo mem_add"<<item->m_iId;
+	sel->undo();
+
 	if (parent) {
 		Q_ASSERT(model->m_oLinks.contains(QPoint(parent, item->m_iId)));
 		model->m_oLinks.removeAll(QPoint(parent, item->m_iId));

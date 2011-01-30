@@ -10,6 +10,8 @@
 class data_item;
 class sem_model;
 
+class mem_sel;
+
 class mem_command {
 	public:
 		mem_command(sem_model*);
@@ -44,6 +46,8 @@ class mem_add : public mem_command {
 
 		data_item* item;
 		int parent;
+
+		mem_sel *sel;
 
 		IType type() { return ADD; }
 };
