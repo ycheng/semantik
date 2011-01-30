@@ -140,23 +140,45 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsV
 	set_mode(select_mode);
 
 	m_bDeleting = false;
-	connect(scene(), SIGNAL(selectionChanged()), this, SLOT(selection_changed()));
+	//connect(scene(), SIGNAL(selectionChanged()), this, SLOT(selection_changed())); // grave mistake
 }
 
-void canvas_view::selection_changed() {
-	// notify everybody that the selection changed :-/
-	//qDebug()<<scene()->selectedItems();
+void canvas_view::check_selection() {
 
-	if (!m_bDeleting) {
-		QList<int> lst;
-		foreach (QGraphicsItem* k, scene()->selectedItems()) {
-			canvas_item* t = (canvas_item*) k;
-			lst.append(t->Id());
+	if (m_bDeleting) return;
+
+	QList<int> lst;
+	foreach(canvas_item* k, selection()) {
+		lst.append(k->Id());
+	}
+
+	// stupid set intersection
+	QList<int> unlst;
+	foreach(data_item* x, m_oControl->m_oItems.values()) {
+		if (x->m_bSelected) {
+			unlst.append(x->m_iId);
 		}
-		mem_sel *sel = new mem_sel(m_oControl);
+	}
+
+	foreach(int i, lst) {
+		if (!unlst.contains(i))
+			goto undo;
+	}
+
+	foreach (int i, unlst) {
+		if (!lst.contains(i))
+			goto undo;
+	}
+
+	mem_sel *sel;
+	goto end;
+	undo:
+		sel = new mem_sel(m_oControl);
 		sel->sel = lst;
 		sel->apply();
-	}
+		qDebug()<<"selected"<<lst<<"unselected"<<unlst;
+	end:
+		;
 }
 
 void canvas_view::slot_next_root()
@@ -835,6 +857,8 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 	*/
 
 	QGraphicsView::mousePressEvent(i_oEv);
+
+	check_selection();
 }
 
 
@@ -1138,7 +1162,7 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 	{
 		case select_mode:
 			{
-				qDebug()<<"mouse release event!";
+				//qDebug()<<"mouse release event!";
 				QList<int> lst;
 				foreach (QGraphicsItem* k, scene()->selectedItems()) {
 					canvas_item* t = (canvas_item*) k;
