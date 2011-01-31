@@ -35,7 +35,7 @@ class canvas_view : public QGraphicsView
 			scroll_mode = 4,
 		};
 
-		void set_mode(mode_type i_o);
+		void set_mode(mode_type i_o, mode_type i_oSave = no_mode);
 
 		QMenu* m_oMenu;
 		QMenu* m_oColorMenu;

@@ -62,8 +62,7 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsV
 	  scale(0.8, 0.8);*/
 #endif
 
-	m_iMode = select_mode;
-	m_iLastMode = no_mode;
+	m_iLastMode = m_iMode = select_mode;
 
 	m_bPressed = false;
 
@@ -357,8 +356,12 @@ void canvas_view::move_sel(int i_iX, int i_iY)
 	foreach (canvas_item *l_oItem, sel) { l_oItem->update_links(); ensureVisible(l_oItem); }
 }
 
-void canvas_view::set_mode(mode_type i_iMode)
+void canvas_view::set_mode(mode_type i_iMode, mode_type i_iSaveMode)
 {
+	if (i_iMode == m_iMode) {
+		return;
+	}
+
 	deselect_all();
 
 	switch (i_iMode)
@@ -376,6 +379,7 @@ void canvas_view::set_mode(mode_type i_iMode)
 			viewport()->setCursor(Qt::ArrowCursor);
 			break;
 		case scroll_mode:
+			qDebug()<<"set the mode to scroll!";
 			setDragMode(QGraphicsView::ScrollHandDrag);
 			break;
 		default:
@@ -383,6 +387,7 @@ void canvas_view::set_mode(mode_type i_iMode)
 			break;
 	}
 	m_iMode = i_iMode;
+	m_iLastMode = (i_iSaveMode != no_mode) ? i_iSaveMode : m_iMode;
 
 	// reset
 	m_bPressed = false;
@@ -848,14 +853,10 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 		return;
 	}
 
-	/*
-	//FIXME navigate with the middle button
-	if (i_oEv->button() == Qt::MidButton)
-	{
-		m_iLastMode = m_iMode;
-		m_iMode = scroll_mode;
+	if (i_oEv->button() == Qt::MidButton) {
+		set_mode(scroll_mode, m_iMode);
 	}
-	*/
+
 	m_bPressed = (i_oEv->button() == Qt::LeftButton);
 
 	// link items on click sequences
@@ -876,8 +877,10 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 
 void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 {
-
 	QGraphicsView::mouseReleaseEvent(i_oEv);
+
+	set_mode(m_iLastMode);
+	m_iLastMode = m_iMode;
 
 	if (i_oEv->button() == Qt::RightButton) return;
 	m_bPressed = false;
@@ -1274,6 +1277,9 @@ void canvas_view::mouseMoveEvent(QMouseEvent *i_oEv) {
 				}
 				m_oRubberLine->setVisible(c1);
 			}
+			break;
+		case scroll_mode:
+			QGraphicsView::mouseMoveEvent(i_oEv);
 			break;
 	}
 }

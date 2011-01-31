@@ -14,12 +14,12 @@ mem_command::mem_command(sem_model* mod) {
 }
 
 void mem_command::apply() {
-	qDebug()<<"apply begin"<<model->m_oUndoStack.size()<<model->m_oRedoStack.size();
+	//qDebug()<<"apply begin"<<model->m_oUndoStack.size()<<model->m_oRedoStack.size();
 	while (!model->m_oRedoStack.isEmpty())
 		delete model->m_oRedoStack.pop();
 	redo();
 	model->m_oUndoStack.push(this);
-	qDebug()<<"apply end"<<model->m_oUndoStack.size()<<model->m_oRedoStack.size();
+	//qDebug()<<"apply end"<<model->m_oUndoStack.size()<<model->m_oRedoStack.size();
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -78,7 +78,7 @@ void mem_add::init() {
 }
 
 void mem_add::redo() {
-	qDebug()<<"redo mem_add"<<item->m_iId;
+	//qDebug()<<"redo mem_add"<<item->m_iId;
 	Q_ASSERT(!model->m_oItems.contains(item->m_iId));
 	model->m_oItems[item->m_iId] = item;
 	model->notify_add_item(item->m_iId);
@@ -95,7 +95,7 @@ void mem_add::redo() {
 }
 
 void mem_add::undo() {
-	qDebug()<<"undo mem_add"<<item->m_iId;
+	//qDebug()<<"undo mem_add"<<item->m_iId;
 	sel->undo();
 
 	if (parent) {
@@ -115,14 +115,14 @@ mem_link::mem_link(sem_model* mod) : mem_command(mod) {
 }
 
 void mem_link::redo() {
-	qDebug()<<"redo mem_link"<<parent<<child;
+	//qDebug()<<"redo mem_link"<<parent<<child;
 	Q_ASSERT(!model->m_oLinks.contains(QPoint(parent, child)));
 	model->m_oLinks.append(QPoint(parent, child));
 	model->notify_link_items(parent, child);
 }
 
 void mem_link::undo() {
-	qDebug()<<"undo mem_link"<<parent<<child;
+	//qDebug()<<"undo mem_link"<<parent<<child;
 	Q_ASSERT(model->m_oLinks.contains(QPoint(parent, child)));
 	model->m_oLinks.removeAll(QPoint(parent, child));
 	model->notify_unlink_items(parent, child);
@@ -135,14 +135,14 @@ mem_unlink::mem_unlink(sem_model* mod) : mem_command(mod) {
 }
 
 void mem_unlink::redo() {
-	qDebug()<<"redo mem_link"<<parent<<child;
+	//qDebug()<<"redo mem_link"<<parent<<child;
 	Q_ASSERT(model->m_oLinks.contains(QPoint(parent, child)));
 	model->m_oLinks.removeAll(QPoint(parent, child));
 	model->notify_unlink_items(parent, child);
 }
 
 void mem_unlink::undo() {
-	qDebug()<<"undo mem_link"<<parent<<child;
+	//qDebug()<<"undo mem_link"<<parent<<child;
 	Q_ASSERT(!model->m_oLinks.contains(QPoint(parent, child)));
 	model->m_oLinks.append(QPoint(parent, child));
 	model->notify_link_items(parent, child);
@@ -159,7 +159,7 @@ mem_sel::mem_sel(sem_model* mod) : mem_command(mod) {
 }
 
 void mem_sel::apply() {
-	qDebug()<<"apply sel begin"<<model->m_oUndoStack.size()<<model->m_oRedoStack.size();
+	//qDebug()<<"apply sel begin"<<model->m_oUndoStack.size()<<model->m_oRedoStack.size();
 
 	while (!model->m_oRedoStack.isEmpty())
 		delete model->m_oRedoStack.pop();
@@ -191,11 +191,11 @@ void mem_sel::apply() {
 	// normal processing
 	redo();
 	model->m_oUndoStack.push(this);
-	qDebug()<<"apply sel end"<<model->m_oUndoStack.size()<<model->m_oRedoStack.size();
+	//qDebug()<<"apply sel end"<<model->m_oUndoStack.size()<<model->m_oRedoStack.size();
 }
 
 void mem_sel::redo() {
-	qDebug()<<"redo mem_sel"<<sel<<unsel;
+	//qDebug()<<"redo mem_sel"<<sel<<unsel;
 	foreach (int k, unsel) {
 		model->m_oItems[k]->m_bSelected = false;
 	}
@@ -206,7 +206,7 @@ void mem_sel::redo() {
 }
 
 void mem_sel::undo() {
-	qDebug()<<"undo mem_sel"<<sel<<unsel;
+	//qDebug()<<"undo mem_sel"<<sel<<unsel;
 	foreach (int k, sel) {
 		model->m_oItems[k]->m_bSelected = false;
 	}
@@ -227,7 +227,7 @@ mem_move::mem_move(sem_model* mod) : mem_command(mod) {
 }
 
 void mem_move::redo() {
-	qDebug()<<"redo mem_move"<<sel;
+	//qDebug()<<"redo mem_move"<<sel;
 	for (int i = 0; i < sel.size(); ++i) {
 		data_item *it = model->m_oItems[sel[i]];
 		it->m_iXX = newPos[i].x();
@@ -237,7 +237,7 @@ void mem_move::redo() {
 }
 
 void mem_move::undo() {
-	qDebug()<<"undo mem_move"<<sel;
+	//qDebug()<<"undo mem_move"<<sel;
 	for (int i = 0; i < sel.size(); ++i) {
 		data_item *it = model->m_oItems[sel[i]];
 		it->m_iXX = oldPos[i].x();
