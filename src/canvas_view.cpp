@@ -140,7 +140,7 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsV
 	set_mode(select_mode);
 
 	m_bDeleting = false;
-	//connect(scene(), SIGNAL(selectionChanged()), this, SLOT(selection_changed())); // grave mistake
+	//connect(scene(), SIGNAL(selectionChanged()), this, SLOT(selection_changed())); // TODO check with m_bPressed
 }
 
 void canvas_view::check_selection() {
@@ -176,7 +176,7 @@ void canvas_view::check_selection() {
 		sel = new mem_sel(m_oControl);
 		sel->sel = lst;
 		sel->apply();
-		qDebug()<<"selected"<<lst<<"unselected"<<unlst;
+		//qDebug()<<"selected"<<lst<<"unselected"<<unlst;
 	end:
 		;
 }
@@ -512,7 +512,7 @@ void canvas_view::notify_select(const QList<int>& unsel, const QList<int>& sel) 
 	}
 
 	foreach (int k, unsel) {
-		qDebug()<<"unselect "<<k;
+		//qDebug()<<"unselect "<<k;
 		Q_ASSERT(m_oItems[k] != NULL);
 		if (m_oItems[k]->isSelected())
 			m_oItems[k]->setSelected(false);
@@ -858,299 +858,27 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 	*/
 	m_bPressed = (i_oEv->button() == Qt::LeftButton);
 
+	// link items on click sequences
+	QList<canvas_item*> sel = selection();
+	if (sel.size() == 1 && QApplication::keyboardModifiers() & Qt::ShiftModifier) {
+
+		QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
+		if (l_oItem && l_oItem->type() == CANVAS_ITEM_T) {
+			m_oControl->link_items(sel.at(0)->Id(), ((canvas_item*) l_oItem)->Id());
+			deselect_all();
+			return;
+		}
+	}
+
 	QGraphicsView::mousePressEvent(i_oEv);
-
-	check_selection();
 }
 
-
-#if 0
-	canvas_item *l_oRect = NULL;
-	switch (m_iMode)
-	{
-		case select_mode:
-			{
-				m_oLastPressPoint = i_oEv->pos();
-				m_oLastMovePoint = mapToScene(m_oLastPressPoint);
-
-
-				m_bPressed = (i_oEv->button() == Qt::LeftButton);
-
-				QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
-				if (m_bPressed)
-				{
-					if (l_oItem && l_oItem->type() == CANVAS_ITEM_T)
-					{
-						l_oRect = (canvas_item*) l_oItem;
-					}
-					else
-					{
-						l_oItem = NULL;
-					}
-
-					if (l_oItem)
-					{
-						switch (i_oEv->modifiers())
-						{
-							case Qt::ShiftModifier:
-								if (m_oSelected.contains(l_oRect))
-									rm_select(l_oRect);
-								else
-									add_select(l_oRect);
-								break;
-							default:
-								if (!m_oSelected.contains(l_oRect))
-								{
-									if (m_oSelected.size() == 1 && !m_oControl->parent_of(l_oRect->Id()))
-									{
-										if (QApplication::keyboardModifiers() & Qt::ControlModifier)
-											m_oControl->link_items(m_oSelected[0]->Id(), l_oRect->Id());
-									}
-									deselect_all();
-									add_select(l_oRect);
-								}
-						}
-					}
-					else
-					{
-						deselect_all();
-					}
-				}
-
-			}
-			break;
-		case link_mode:
-			{
-				m_oLastPressPoint = i_oEv->pos();
-				m_bPressed = (i_oEv->button() == Qt::LeftButton);
-
-				deselect_all();
-				QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
-				if (l_oItem && l_oItem->type() == CANVAS_ITEM_T)
-				{
-					l_oRect = (canvas_item*) l_oItem;
-					add_select(l_oRect);
-				}
-			}
-			break;
-		case sort_mode:
-			{
-				QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
-				if (l_oItem && l_oItem->type() == CANVAS_ITEM_T)
-				{
-					l_oRect = (canvas_item*) l_oItem;
-					deselect_all();
-					add_select(l_oRect);
-				}
-				else if (l_oItem && l_oItem->type() == CANVAS_SORT_T)
-				{
-					qDebug()<<"sort called"<<endl;
-
-					canvas_sort * l_oSort = (canvas_sort*) l_oItem;
-					int l_iId = l_oSort->m_oFrom->Id();
-					l_oRect = l_oSort->m_oFrom;
-
-					qDebug()<<"sort_children("<<m_oSelected[0]->Id()<<" "<<l_iId<<" "<<m_iSortCursor;
-
-					m_oControl->sort_children(m_oSelected[0]->Id(), l_iId, m_iSortCursor);
-					show_sort(m_oSelected[0]->Id(), true);
-
-					m_iSortCursor++;
-					if (m_iSortCursor >= m_oControl->num_children(m_oSelected[0]->Id()))
-						m_iSortCursor=0;
-
-					emit sig_message(trUtf8("Click to set Item %1").arg(QString::number(m_iSortCursor+1)), -1);
-					//qDebug();
-				}
-				else
-				{
-					deselect_all();
-				}
-			}
-			break;
-		case scroll_mode:
-			viewport()->setCursor(Qt::ClosedHandCursor);
-			m_oLastPressPoint = i_oEv->pos();
-			m_bPressed = (i_oEv->button() == Qt::LeftButton || i_oEv->button() == Qt::MidButton);
-
-			if (m_bPressed)
-			{
-				deselect_all();
-				QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
-				if (l_oItem && l_oItem->type() == CANVAS_ITEM_T)
-				{
-					l_oRect = (canvas_item*) l_oItem;
-					add_select(l_oRect);
-				}
-			}
-
-			break;
-		default:
-			break;
-	}
-}
-
-void canvas_view::mouseMoveEvent(QMouseEvent *i_oEv)
-{
-	switch (m_iMode)
-	{
-		case select_mode:
-			if (m_bPressed && m_oSelected.size() == 0)
-			{
-				bool c1 = ((m_oLastPressPoint - i_oEv->pos()).manhattanLength() >= QApplication::startDragDistance());
-				if (m_oRubbery->isVisible() || c1)
-				{
-					QRect l_oSel = QRect(m_oLastPressPoint, i_oEv->pos()).normalized();
-					m_oRubbery->setGeometry(l_oSel);
-				}
-
-				if (c1) m_oRubbery->show();
-			}
-			else if (m_bPressed)
-			{
-				// ugly, but it works
-
-				QRectF l_oRect;
-				l_oRect.setTopLeft(m_oLastMovePoint);
-				m_oLastMovePoint = mapToScene(i_oEv->pos());
-				l_oRect.setBottomRight(m_oLastMovePoint);
-				m_oControl->set_dirty();
-				foreach (canvas_item *l_oItem, m_oSelected)
-				{
-					l_oItem->moveBy(l_oRect.width(), l_oRect.height());
-				}
-				// FIXME
-				foreach (canvas_item *l_oItem, m_oSelected)
-				{
-					l_oItem->update_links();
-				}
-				check_canvas_size();
-			}
-			break;
-		case link_mode:
-			if (m_bPressed)
-			{
-				bool c1 = ((m_oLastPressPoint - i_oEv->pos()).manhattanLength() >= QApplication::startDragDistance());
-				if (m_oRubberLine->isVisible() || c1)
-				{
-					QRect l_oSel = QRect(m_oLastPressPoint, i_oEv->pos());
-					m_oRubberLine->setGeometry(l_oSel);
-				}
-
-				if (c1)
-				{
-					m_oRubberLine->show();
-				}
-			}
-			break;
-		case sort_mode:
-			break;
-		case scroll_mode:
-			if (m_bPressed)
-			{
-				QScrollBar *hBar = horizontalScrollBar();
-				QScrollBar *vBar = verticalScrollBar();
-
-				QPoint delta = i_oEv->pos() - m_oLastPressPoint;
-
-				hBar->setValue(hBar->value() + (isRightToLeft() ? delta.x() : -delta.x()));
-				vBar->setValue(vBar->value() - delta.y());
-
-				m_oLastPressPoint = i_oEv->pos();
-
-				//viewport()->setCursor(Qt::ClosedHandCursor);
-			}
-			else
-			{
-				//viewport()->setCursor(Qt::OpenHandCursor);
-			}
-		default:
-			break;
-	}
-}
 
 void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 {
-	if (i_oEv->button() == Qt::RightButton) return;
 
-	if (m_iLastMode != no_mode)
-	{
-		m_iMode = m_iLastMode;
-		m_iLastMode = no_mode;
-		viewport()->setCursor(m_iMode==link_mode?Qt::CrossCursor:Qt::ArrowCursor);
-	}
-
-	switch (m_iMode)
-	{
-		case select_mode:
-			{
-				m_bPressed = false;
-				if (m_oRubbery->isVisible())
-				{
-					m_oRubbery->hide();
-					QRect l_oRect = m_oRubbery->geometry();
-					QList<QGraphicsItem *> l_oSel = scene()->items(QRectF(mapToScene(l_oRect.topLeft()), mapToScene(l_oRect.bottomRight())));
-
-					//ITA
-
-					foreach (QGraphicsItem *l_oItem, l_oSel)
-					{
-						if (l_oItem->type() == CANVAS_ITEM_T)
-						{
-							add_select((canvas_item*) l_oItem);
-						}
-					}
-				}
-			}
-			break;
-		case link_mode:
-			{
-				m_bPressed = false;
-
-				canvas_item *l_oR1 = NULL;
-				canvas_item *l_oR2 = NULL;
-
-				foreach (QGraphicsItem *l_oI1, scene()->items(mapToScene(m_oLastPressPoint)))
-				{
-					if (l_oI1->type() == CANVAS_ITEM_T)
-					{
-						l_oR1 = (canvas_item*) l_oI1;
-						break;
-					}
-				}
-
-				foreach (QGraphicsItem *l_oI1, scene()->items(mapToScene(i_oEv->pos())))
-				{
-					if (l_oI1->type() == CANVAS_ITEM_T)
-					{
-						l_oR2 = (canvas_item*) l_oI1;
-						break;
-					}
-				}
-
-				if (l_oR1 && l_oR2 && l_oR1 != l_oR2)
-				{
-					m_oControl->link_items(l_oR1->Id(), l_oR2->Id());
-					deselect_all();
-				}
-				m_oRubberLine->hide();
-			}
-			break;
-		case sort_mode:
-			break;
-		case scroll_mode:
-			viewport()->setCursor(Qt::OpenHandCursor);
-			m_bPressed = false;
-			break;
-		default:
-			break;
-	}
-}
-#endif
-
-void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
-{
 	QGraphicsView::mouseReleaseEvent(i_oEv);
+
 	if (i_oEv->button() == Qt::RightButton) return;
 	m_bPressed = false;
 
@@ -1166,6 +894,8 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 	{
 		case select_mode:
 			{
+				check_selection();
+
 				//qDebug()<<"mouse release event!";
 				QList<int> lst;
 				foreach (QGraphicsItem* k, scene()->selectedItems()) {
@@ -1608,4 +1338,295 @@ void canvas_view::notify_move(const QList<int>&sel, const QList<QPointF>&pos) {
 }
 
 %: include  	"canvas_view.moc" 
+
+
+
+
+
+
+
+
+
+#if 0
+	canvas_item *l_oRect = NULL;
+	switch (m_iMode)
+	{
+		case select_mode:
+			{
+				m_oLastPressPoint = i_oEv->pos();
+				m_oLastMovePoint = mapToScene(m_oLastPressPoint);
+
+
+				m_bPressed = (i_oEv->button() == Qt::LeftButton);
+
+				QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
+				if (m_bPressed)
+				{
+					if (l_oItem && l_oItem->type() == CANVAS_ITEM_T)
+					{
+						l_oRect = (canvas_item*) l_oItem;
+					}
+					else
+					{
+						l_oItem = NULL;
+					}
+
+					if (l_oItem)
+					{
+						switch (i_oEv->modifiers())
+						{
+							case Qt::ShiftModifier:
+								if (m_oSelected.contains(l_oRect))
+									rm_select(l_oRect);
+								else
+									add_select(l_oRect);
+								break;
+							default:
+								if (!m_oSelected.contains(l_oRect))
+								{
+									if (m_oSelected.size() == 1 && !m_oControl->parent_of(l_oRect->Id()))
+									{
+										if (QApplication::keyboardModifiers() & Qt::ControlModifier)
+											m_oControl->link_items(m_oSelected[0]->Id(), l_oRect->Id());
+									}
+									deselect_all();
+									add_select(l_oRect);
+								}
+						}
+					}
+					else
+					{
+						deselect_all();
+					}
+				}
+
+			}
+			break;
+		case link_mode:
+			{
+				m_oLastPressPoint = i_oEv->pos();
+				m_bPressed = (i_oEv->button() == Qt::LeftButton);
+
+				deselect_all();
+				QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
+				if (l_oItem && l_oItem->type() == CANVAS_ITEM_T)
+				{
+					l_oRect = (canvas_item*) l_oItem;
+					add_select(l_oRect);
+				}
+			}
+			break;
+		case sort_mode:
+			{
+				QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
+				if (l_oItem && l_oItem->type() == CANVAS_ITEM_T)
+				{
+					l_oRect = (canvas_item*) l_oItem;
+					deselect_all();
+					add_select(l_oRect);
+				}
+				else if (l_oItem && l_oItem->type() == CANVAS_SORT_T)
+				{
+					qDebug()<<"sort called"<<endl;
+
+					canvas_sort * l_oSort = (canvas_sort*) l_oItem;
+					int l_iId = l_oSort->m_oFrom->Id();
+					l_oRect = l_oSort->m_oFrom;
+
+					qDebug()<<"sort_children("<<m_oSelected[0]->Id()<<" "<<l_iId<<" "<<m_iSortCursor;
+
+					m_oControl->sort_children(m_oSelected[0]->Id(), l_iId, m_iSortCursor);
+					show_sort(m_oSelected[0]->Id(), true);
+
+					m_iSortCursor++;
+					if (m_iSortCursor >= m_oControl->num_children(m_oSelected[0]->Id()))
+						m_iSortCursor=0;
+
+					emit sig_message(trUtf8("Click to set Item %1").arg(QString::number(m_iSortCursor+1)), -1);
+					//qDebug();
+				}
+				else
+				{
+					deselect_all();
+				}
+			}
+			break;
+		case scroll_mode:
+			viewport()->setCursor(Qt::ClosedHandCursor);
+			m_oLastPressPoint = i_oEv->pos();
+			m_bPressed = (i_oEv->button() == Qt::LeftButton || i_oEv->button() == Qt::MidButton);
+
+			if (m_bPressed)
+			{
+				deselect_all();
+				QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
+				if (l_oItem && l_oItem->type() == CANVAS_ITEM_T)
+				{
+					l_oRect = (canvas_item*) l_oItem;
+					add_select(l_oRect);
+				}
+			}
+
+			break;
+		default:
+			break;
+	}
+}
+
+void canvas_view::mouseMoveEvent(QMouseEvent *i_oEv)
+{
+	switch (m_iMode)
+	{
+		case select_mode:
+			if (m_bPressed && m_oSelected.size() == 0)
+			{
+				bool c1 = ((m_oLastPressPoint - i_oEv->pos()).manhattanLength() >= QApplication::startDragDistance());
+				if (m_oRubbery->isVisible() || c1)
+				{
+					QRect l_oSel = QRect(m_oLastPressPoint, i_oEv->pos()).normalized();
+					m_oRubbery->setGeometry(l_oSel);
+				}
+
+				if (c1) m_oRubbery->show();
+			}
+			else if (m_bPressed)
+			{
+				// ugly, but it works
+
+				QRectF l_oRect;
+				l_oRect.setTopLeft(m_oLastMovePoint);
+				m_oLastMovePoint = mapToScene(i_oEv->pos());
+				l_oRect.setBottomRight(m_oLastMovePoint);
+				m_oControl->set_dirty();
+				foreach (canvas_item *l_oItem, m_oSelected)
+				{
+					l_oItem->moveBy(l_oRect.width(), l_oRect.height());
+				}
+				// FIXME
+				foreach (canvas_item *l_oItem, m_oSelected)
+				{
+					l_oItem->update_links();
+				}
+				check_canvas_size();
+			}
+			break;
+		case link_mode:
+			if (m_bPressed)
+			{
+				bool c1 = ((m_oLastPressPoint - i_oEv->pos()).manhattanLength() >= QApplication::startDragDistance());
+				if (m_oRubberLine->isVisible() || c1)
+				{
+					QRect l_oSel = QRect(m_oLastPressPoint, i_oEv->pos());
+					m_oRubberLine->setGeometry(l_oSel);
+				}
+
+				if (c1)
+				{
+					m_oRubberLine->show();
+				}
+			}
+			break;
+		case sort_mode:
+			break;
+		case scroll_mode:
+			if (m_bPressed)
+			{
+				QScrollBar *hBar = horizontalScrollBar();
+				QScrollBar *vBar = verticalScrollBar();
+
+				QPoint delta = i_oEv->pos() - m_oLastPressPoint;
+
+				hBar->setValue(hBar->value() + (isRightToLeft() ? delta.x() : -delta.x()));
+				vBar->setValue(vBar->value() - delta.y());
+
+				m_oLastPressPoint = i_oEv->pos();
+
+				//viewport()->setCursor(Qt::ClosedHandCursor);
+			}
+			else
+			{
+				//viewport()->setCursor(Qt::OpenHandCursor);
+			}
+		default:
+			break;
+	}
+}
+
+void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
+{
+	if (i_oEv->button() == Qt::RightButton) return;
+
+	if (m_iLastMode != no_mode)
+	{
+		m_iMode = m_iLastMode;
+		m_iLastMode = no_mode;
+		viewport()->setCursor(m_iMode==link_mode?Qt::CrossCursor:Qt::ArrowCursor);
+	}
+
+	switch (m_iMode)
+	{
+		case select_mode:
+			{
+				m_bPressed = false;
+				if (m_oRubbery->isVisible())
+				{
+					m_oRubbery->hide();
+					QRect l_oRect = m_oRubbery->geometry();
+					QList<QGraphicsItem *> l_oSel = scene()->items(QRectF(mapToScene(l_oRect.topLeft()), mapToScene(l_oRect.bottomRight())));
+
+					foreach (QGraphicsItem *l_oItem, l_oSel)
+					{
+						if (l_oItem->type() == CANVAS_ITEM_T)
+						{
+							add_select((canvas_item*) l_oItem);
+						}
+					}
+				}
+			}
+			break;
+		case link_mode:
+			{
+				m_bPressed = false;
+
+				canvas_item *l_oR1 = NULL;
+				canvas_item *l_oR2 = NULL;
+
+				foreach (QGraphicsItem *l_oI1, scene()->items(mapToScene(m_oLastPressPoint)))
+				{
+					if (l_oI1->type() == CANVAS_ITEM_T)
+					{
+						l_oR1 = (canvas_item*) l_oI1;
+						break;
+					}
+				}
+
+				foreach (QGraphicsItem *l_oI1, scene()->items(mapToScene(i_oEv->pos())))
+				{
+					if (l_oI1->type() == CANVAS_ITEM_T)
+					{
+						l_oR2 = (canvas_item*) l_oI1;
+						break;
+					}
+				}
+
+				if (l_oR1 && l_oR2 && l_oR1 != l_oR2)
+				{
+					m_oControl->link_items(l_oR1->Id(), l_oR2->Id());
+					deselect_all();
+				}
+				m_oRubberLine->hide();
+			}
+			break;
+		case sort_mode:
+			break;
+		case scroll_mode:
+			viewport()->setCursor(Qt::OpenHandCursor);
+			m_bPressed = false;
+			break;
+		default:
+			break;
+	}
+}
+#endif
+
 
