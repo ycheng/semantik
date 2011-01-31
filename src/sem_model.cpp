@@ -693,8 +693,6 @@ void sem_model::unlink_items(int i_iId1, int i_iId2)
 
 bool sem_model::link_items(int i_iParent, int i_iChild)
 {
-	Q_ASSERT(false);
-	/*
 	Q_ASSERT(m_oItems.contains(i_iParent) && m_oItems.contains(i_iChild));
 
 	if (i_iParent == i_iChild) return false;
@@ -725,16 +723,19 @@ bool sem_model::link_items(int i_iParent, int i_iChild)
 		l_iIdChild = l_iNew;
 	}
 
-	m_oLinks.append(QPoint(i_iParent, i_iChild));
+	mem_link *lnk = new mem_link(this);
+	lnk->parent = i_iParent;
+	lnk->child = i_iChild;
+	lnk->apply();
 
-	hash_params l_oCmd;
+	//m_oLinks.append(QPoint(i_iParent, i_iChild));
+	/*hash_params l_oCmd;
 	l_oCmd.insert(data_commande, QVariant(cmd_link));
 	l_oCmd.insert(data_id, QVariant(i_iChild));
 	l_oCmd.insert(data_parent, QVariant(i_iParent));
-	emit synchro(l_oCmd);
+	emit synchro(l_oCmd);*/
 
 	return true;
-	*/
 }
 
 void sem_model::remove_item(int i_iId)

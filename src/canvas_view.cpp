@@ -74,7 +74,7 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsV
 	//l_oColor.setAlpha(200);
 
 	QColor l_oColor = QColor(0, 0, 150, 100);
-	//l_oBrush.setColor(l_oColor);
+	l_oBrush.setColor(l_oColor);
 	//m_oRubber->setBrush(l_oBrush);
 
 	QAction *l_o = NULL;
@@ -825,6 +825,7 @@ void canvas_view::enable_menu_actions()
 
 void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 {
+	m_oLastPressPoint = i_oEv->pos();
 	if (i_oEv->button() == Qt::RightButton)
 	{
 		// select the item under the cursor if available and show the popup menu
@@ -855,6 +856,7 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 		m_iMode = scroll_mode;
 	}
 	*/
+	m_bPressed = (i_oEv->button() == Qt::LeftButton);
 
 	QGraphicsView::mousePressEvent(i_oEv);
 
@@ -1150,6 +1152,7 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 {
 	QGraphicsView::mouseReleaseEvent(i_oEv);
 	if (i_oEv->button() == Qt::RightButton) return;
+	m_bPressed = false;
 
 	/*if (m_iLastMode != no_mode)
 	{
@@ -1158,6 +1161,7 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 		viewport()->setCursor(m_iMode==link_mode?Qt::CrossCursor:Qt::ArrowCursor);
 	}*/
 
+	m_oRubberLine->setVisible(false);
 	switch (m_iMode)
 	{
 		case select_mode:
@@ -1183,6 +1187,39 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 					} else { qDebug()<<"move too small"; }
 				}
 			}
+			break;
+		case link_mode:
+			{
+				canvas_item *l_oR1 = NULL;
+				canvas_item *l_oR2 = NULL;
+
+				foreach (QGraphicsItem *l_oI1, scene()->items(mapToScene(m_oLastPressPoint)))
+				{
+					if (l_oI1->type() == CANVAS_ITEM_T)
+					{
+						l_oR1 = (canvas_item*) l_oI1;
+						break;
+					}
+				}
+
+				foreach (QGraphicsItem *l_oI1, scene()->items(mapToScene(i_oEv->pos())))
+				{
+					if (l_oI1->type() == CANVAS_ITEM_T)
+					{
+						l_oR2 = (canvas_item*) l_oI1;
+						break;
+					}
+				}
+
+				if (l_oR1 && l_oR2 && l_oR1 != l_oR2)
+				{
+					m_oControl->link_items(l_oR1->Id(), l_oR2->Id());
+					// TODO
+					deselect_all();
+				}
+				m_oRubberLine->hide();
+			}
+			break;
 	}
 }
 
@@ -1485,11 +1522,29 @@ QList<canvas_item*> canvas_view::selection() {
 }
 
 void canvas_view::mouseMoveEvent(QMouseEvent *i_oEv) {
-	QGraphicsView::mouseMoveEvent(i_oEv);
-	foreach (QGraphicsItem*tmp, scene()->selectedItems()) {
-		if (tmp->type() == CANVAS_ITEM_T && tmp->isSelected()) {
-			((canvas_item*) tmp)->update_links();
-		}
+	switch (m_iMode) {
+		case select_mode:
+			{
+				QGraphicsView::mouseMoveEvent(i_oEv);
+				foreach (QGraphicsItem*tmp, scene()->selectedItems()) {
+					if (tmp->type() == CANVAS_ITEM_T && tmp->isSelected()) {
+						((canvas_item*) tmp)->update_links();
+					}
+				}
+			}
+			break;
+
+		case link_mode:
+			if (m_bPressed) {
+				bool c1 = ((m_oLastPoint - i_oEv->pos()).manhattanLength() >= QApplication::startDragDistance());
+				if (c1)
+				{
+					QRect l_oSel = QRect(m_oLastPressPoint, i_oEv->pos());
+					m_oRubberLine->setGeometry(l_oSel);
+				}
+				m_oRubberLine->setVisible(c1);
+			}
+			break;
 	}
 }
 
