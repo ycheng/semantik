@@ -379,7 +379,6 @@ void canvas_view::set_mode(mode_type i_iMode, mode_type i_iSaveMode)
 			viewport()->setCursor(Qt::ArrowCursor);
 			break;
 		case scroll_mode:
-			qDebug()<<"set the mode to scroll!";
 			setDragMode(QGraphicsView::ScrollHandDrag);
 			break;
 		default:
@@ -857,7 +856,7 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 		set_mode(scroll_mode, m_iMode);
 	}
 
-	m_bPressed = (i_oEv->button() == Qt::LeftButton);
+	m_bPressed = (i_oEv->button() != Qt::RightButton);
 
 	// link items on click sequences
 	QList<canvas_item*> sel = selection();
@@ -1279,7 +1278,14 @@ void canvas_view::mouseMoveEvent(QMouseEvent *i_oEv) {
 			}
 			break;
 		case scroll_mode:
-			QGraphicsView::mouseMoveEvent(i_oEv);
+			if (m_bPressed) {
+				QScrollBar *h = horizontalScrollBar();
+				QScrollBar *v = verticalScrollBar();
+				QPoint d = i_oEv->pos() - m_oLastPressPoint;
+				h->setValue(h->value() - d.x());
+				v->setValue(v->value() - d.y());
+				m_oLastPressPoint = i_oEv->pos();
+			}
 			break;
 	}
 }
