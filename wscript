@@ -148,7 +148,8 @@ def configure(conf):
 
 	conf.env.TEMPLATE_DIR = conf.env.KDE4_DATA_INSTALL_DIR + '/semantik/templates/'
 	conf.define('TEMPLATE_DIR', conf.env.TEMPLATE_DIR)
-	conf.define('FILTER_DIR', conf.env.KDE4_DATA_INSTALL_DIR +'/semantik/filters/')
+	conf.env.FILTER_DIR = conf.env.KDE4_DATA_INSTALL_DIR +'/semantik/filters/'
+	conf.define('FILTER_DIR', conf.env.FILTER_DIR)
 	conf.env.PICDIR = conf.env.KDE4_ICON_INSTALL_DIR #j('share/pixmaps/')
 	conf.define('cmd_add_item', 0)
 	conf.define('cmd_update_item', 1)
