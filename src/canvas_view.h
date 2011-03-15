@@ -106,12 +106,25 @@ class canvas_view : public QGraphicsView
 		QAction *m_oEditAction;
 		QAction *m_oDeleteAction;
 
+		QAction *m_oMoveUpAction;
+		QAction *m_oMoveDownAction;
+		QAction *m_oMoveLeftAction;
+		QAction *m_oMoveRightAction;
+		QAction *m_oSelectUpAction;
+		QAction *m_oSelectDownAction;
+		QAction *m_oSelectLeftAction;
+		QAction *m_oSelectRightAction;
+
+		QAction *m_oInsertSiblingAction;
+		QAction *m_oNextRootAction;
+
+
 	public slots:
 		void synchro_doc(const hash_params&);
 		void change_colors(QAction*);
 		void fit_zoom();
 		void change_flags(QAction*);
-		void slot_edit();
+		void slot_toggle_edit();
 		void slot_add_item();
 		void enable_actions(); // used on focus in
 		void slot_add_sibling();

@@ -78,11 +78,6 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsV
 
 	QAction *l_o = NULL;
 
-	m_oEditAction = new QAction(trUtf8("Toggle edit"), this);
-	m_oEditAction->setShortcut(notr("Return"));
-	connect(m_oEditAction, SIGNAL(triggered()), this, SLOT(slot_edit()));
-	addAction(m_oEditAction);
-
 	m_oAddItemAction = new QAction(trUtf8("Insert child"), this);
 	m_oAddItemAction->setShortcut(notr("Ctrl+Return"));
 	connect(m_oAddItemAction, SIGNAL(triggered()), this, SLOT(slot_add_item()));
@@ -93,24 +88,29 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsV
 	connect(m_oDeleteAction, SIGNAL(triggered()), this, SLOT(slot_delete()));
 	addAction(m_oDeleteAction);
 
-	l_o = new QAction(trUtf8("Insert sibling"), this);
+	m_oInsertSiblingAction = l_o = new QAction(trUtf8("Insert sibling"), this);
 	l_o->setShortcut(notr("Shift+Return"));
 	connect(l_o, SIGNAL(triggered()), this, SLOT(slot_add_sibling()));
 	addAction(l_o);
 
-	l_o = new QAction(trUtf8("Move up"), this); l_o->setShortcut(notr("Alt+Up")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_move())); addAction(l_o); l_o->setData(QVariant(0));
-	l_o = new QAction(trUtf8("Move down"), this); l_o->setShortcut(notr("Alt+Down")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_move())); addAction(l_o); l_o->setData(QVariant(1));
-	l_o = new QAction(trUtf8("Move left"), this); l_o->setShortcut(notr("Alt+Left")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_move())); addAction(l_o); l_o->setData(QVariant(2));
-	l_o = new QAction(trUtf8("Move right"), this); l_o->setShortcut(notr("Alt+Right")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_move())); addAction(l_o); l_o->setData(QVariant(3));
+	m_oMoveUpAction = l_o = new QAction(trUtf8("Move up"), this); l_o->setShortcut(notr("Alt+Up")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_move())); addAction(l_o); l_o->setData(QVariant(0));
+	m_oMoveDownAction = l_o = new QAction(trUtf8("Move down"), this); l_o->setShortcut(notr("Alt+Down")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_move())); addAction(l_o); l_o->setData(QVariant(1));
+	m_oMoveLeftAction = l_o = new QAction(trUtf8("Move left"), this); l_o->setShortcut(notr("Alt+Left")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_move())); addAction(l_o); l_o->setData(QVariant(2));
+	m_oMoveRightAction = l_o = new QAction(trUtf8("Move right"), this); l_o->setShortcut(notr("Alt+Right")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_move())); addAction(l_o); l_o->setData(QVariant(3));
 
-	l_o = new QAction(trUtf8("Select up"), this); l_o->setShortcut(notr("Up")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_sel())); addAction(l_o); l_o->setData(QVariant(0));
-	l_o = new QAction(trUtf8("Select down"), this); l_o->setShortcut(notr("Down")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_sel())); addAction(l_o); l_o->setData(QVariant(1));
-	l_o = new QAction(trUtf8("Select left"), this); l_o->setShortcut(notr("Left")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_sel())); addAction(l_o); l_o->setData(QVariant(2));
-	l_o = new QAction(trUtf8("Select right"), this); l_o->setShortcut(notr("Right")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_sel())); addAction(l_o); l_o->setData(QVariant(3));
+	m_oSelectUpAction = l_o = new QAction(trUtf8("Select up"), this); l_o->setShortcut(notr("Up")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_sel())); addAction(l_o); l_o->setData(QVariant(0));
+	m_oSelectDownAction = l_o = new QAction(trUtf8("Select down"), this); l_o->setShortcut(notr("Down")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_sel())); addAction(l_o); l_o->setData(QVariant(1));
+	m_oSelectLeftAction = l_o = new QAction(trUtf8("Select left"), this); l_o->setShortcut(notr("Left")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_sel())); addAction(l_o); l_o->setData(QVariant(2));
+	m_oSelectRightAction = l_o = new QAction(trUtf8("Select right"), this); l_o->setShortcut(notr("Right")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_sel())); addAction(l_o); l_o->setData(QVariant(3));
 
 
-	l_o = new QAction(trUtf8("Next root"), this); l_o->setShortcut(notr("PgDown")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_next_root())); addAction(l_o); l_o->setData(QVariant(1));
+	m_oNextRootAction = l_o = new QAction(trUtf8("Next root"), this); l_o->setShortcut(notr("PgDown")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_next_root())); addAction(l_o); l_o->setData(QVariant(1));
 
+
+	m_oEditAction = new QAction(trUtf8("Toggle edit"), this);
+	m_oEditAction->setShortcut(notr("Return"));
+	addAction(m_oEditAction);
+	connect(m_oEditAction, SIGNAL(triggered()), this, SLOT(slot_toggle_edit()));
 
 	m_oMenu = new QMenu(this);
 	m_oMenu->addAction(m_oAddItemAction);
@@ -200,7 +200,7 @@ void canvas_view::slot_next_root()
 }
 
 
-void canvas_view::slot_edit()
+void canvas_view::slot_toggle_edit()
 {
 	canvas_item* sel = NULL;
 	foreach (QGraphicsItem *tmp, items()) {
@@ -228,8 +228,37 @@ void canvas_view::slot_edit()
 				sel->update_links();
 			}
 			sel->setFocus();
+
+			m_oAddItemAction->setEnabled(false);
+			m_oInsertSiblingAction->setEnabled(false);
+			m_oDeleteAction->setEnabled(false);
+			m_oNextRootAction->setEnabled(false);
+
+			m_oMoveUpAction->setEnabled(false);
+			m_oMoveDownAction->setEnabled(false);
+			m_oMoveLeftAction->setEnabled(false);
+			m_oMoveRightAction->setEnabled(false);
+			m_oSelectUpAction->setEnabled(false);
+			m_oSelectDownAction->setEnabled(false);
+			m_oSelectLeftAction->setEnabled(false);
+			m_oSelectRightAction->setEnabled(false);
+			return;
 		}
 	}
+
+	m_oAddItemAction->setEnabled(true);
+	m_oInsertSiblingAction->setEnabled(true);
+	m_oDeleteAction->setEnabled(true);
+	m_oNextRootAction->setEnabled(true);
+
+	m_oMoveUpAction->setEnabled(true);
+	m_oMoveDownAction->setEnabled(true);
+	m_oMoveLeftAction->setEnabled(true);
+	m_oMoveRightAction->setEnabled(true);
+	m_oSelectUpAction->setEnabled(true);
+	m_oSelectDownAction->setEnabled(true);
+	m_oSelectLeftAction->setEnabled(true);
+	m_oSelectRightAction->setEnabled(true);
 }
 
 
