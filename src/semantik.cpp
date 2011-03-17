@@ -156,7 +156,9 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	KStandardAction::print(this, SLOT(slot_print()), actionCollection());
 	KStandardAction::tipOfDay(this, SLOT(slot_tip_of_day()), actionCollection());
 	m_oUndoAct = KStandardAction::undo(m_oControl, SLOT(slot_undo()), actionCollection());
+	m_oUndoAct->setEnabled(false);
 	m_oRedoAct = KStandardAction::redo(m_oControl, SLOT(slot_redo()), actionCollection());
+	m_oRedoAct->setEnabled(false);
 
 	m_oRecentFilesAct = KStandardAction::openRecent(this, SLOT(slot_recent(const KUrl&)), actionCollection());
 
@@ -332,7 +334,7 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	statusBar()->showMessage(trUtf8("Welcome to Semantik"), 2000);
 	setAutoSaveSettings();
 
-
+	connect(m_oControl, SIGNAL(enable_undo(bool, bool)), this, SLOT(slot_enable_undo(bool, bool)));
 	KTipDialog::showTip(this, notr("semantik/tips"));
 }
 
@@ -550,6 +552,11 @@ void semantik_win::slot_recent(const KUrl& i_oUrl)
 void semantik_win::slot_tip_of_day()
 {
 	KTipDialog::showTip(this, notr("semantik/tips"), true);
+}
+
+void semantik_win::slot_enable_undo(bool undo, bool redo) {
+	m_oUndoAct->setEnabled(undo);
+	m_oRedoAct->setEnabled(redo);
 }
 
 #include "semantik.moc"

@@ -534,6 +534,14 @@ void sem_model::undo_purge() {
 		delete m_oRedoStack.pop();
 }
 
+void sem_model::check_undo(bool enable) {
+	if (!enable) {
+		emit enable_undo(false, false);
+	} else {
+		emit enable_undo(!m_oUndoStack.isEmpty(), !m_oRedoStack.isEmpty());
+	}
+}
+
 bool sem_model::open_file(const QString& i_sUrl)
 {
 	purge_document();
@@ -1281,6 +1289,7 @@ void sem_model::slot_undo() {
 		t->undo();
 		m_oRedoStack.push(t);
 	}
+	check_undo(true);
 }
 
 void sem_model::slot_redo() {
@@ -1289,6 +1298,7 @@ void sem_model::slot_redo() {
 		t->redo();
 		m_oUndoStack.push(t);
 	}
+	check_undo(true);
 }
 
 void sem_model::private_select_item(int id) {

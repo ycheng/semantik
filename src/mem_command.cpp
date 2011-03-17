@@ -20,6 +20,7 @@ void mem_command::apply() {
 	redo();
 	model->m_oUndoStack.push(this);
 	//qDebug()<<"apply end"<<model->m_oUndoStack.size()<<model->m_oRedoStack.size();
+	model->check_undo(true);
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -192,6 +193,7 @@ void mem_sel::apply() {
 	redo();
 	model->m_oUndoStack.push(this);
 	//qDebug()<<"apply sel end"<<model->m_oUndoStack.size()<<model->m_oRedoStack.size();
+	model->check_undo(true);
 }
 
 void mem_sel::redo() {

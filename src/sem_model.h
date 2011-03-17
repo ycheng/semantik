@@ -53,6 +53,7 @@ class sem_model: public QObject
 		void sig_select(const QList<int>& unsel, const QList<int>& sel);
 		void sig_move(const QList<int>&sel, const QList<QPointF>&pos);
 
+		void enable_undo(bool, bool);
 
 	public:
 		sem_model(QObject *i_oParent);
@@ -153,6 +154,9 @@ class sem_model: public QObject
 		void private_select_item(int i_oId);
 
 		void change_data(int i_iId, int i_iType);
+
+		void check_undo(bool); // check if the undo/redo actions can be enabled
+
 		QMutex m_oLock;
 
 	private:

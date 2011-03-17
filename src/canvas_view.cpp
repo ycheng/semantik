@@ -242,6 +242,7 @@ void canvas_view::slot_toggle_edit()
 			m_oSelectDownAction->setEnabled(false);
 			m_oSelectLeftAction->setEnabled(false);
 			m_oSelectRightAction->setEnabled(false);
+			m_oControl->check_undo(false);
 			return;
 		}
 	}
@@ -259,6 +260,7 @@ void canvas_view::slot_toggle_edit()
 	m_oSelectDownAction->setEnabled(true);
 	m_oSelectLeftAction->setEnabled(true);
 	m_oSelectRightAction->setEnabled(true);
+	m_oControl->check_undo(true);
 }
 
 
