@@ -899,8 +899,24 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 
 		QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
 		if (l_oItem && l_oItem->type() == CANVAS_ITEM_T) {
-			m_oControl->link_items(sel.at(0)->Id(), ((canvas_item*) l_oItem)->Id());
-			deselect_all();
+
+			int id1 = sel.at(0)->Id();
+			int id2 = ((canvas_item*) l_oItem)->Id();
+			m_oControl->link_items(id1, id2);
+
+			if (m_iMode != link_mode) {
+				QList<int> unlst;
+				unlst.append(id1);
+				QList<int> lst;
+				lst.append(id2);
+
+				mem_sel *sel = new mem_sel(m_oControl);
+				sel->sel = lst;
+				sel->unsel = unlst;
+				sel->apply();
+			} else {
+				deselect_all();
+			}
 			return;
 		}
 	}
@@ -983,6 +999,17 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 					m_oControl->link_items(l_oR1->Id(), l_oR2->Id());
 					// TODO
 					deselect_all();
+					/*
+					QList<int> unlst;
+					unlst.append(l_oR1->m_iId);
+					QList<int> lst;
+					lst.append(l_oR2->m_iId);
+
+					mem_sel *sel = new mem_sel(m_oControl);
+					sel->sel = lst;
+					sel->unsel = unlst;
+					sel->apply();
+					*/
 				}
 				m_oRubberLine->hide();
 			}
@@ -1521,7 +1548,7 @@ void canvas_view::notify_move(const QList<int>&sel, const QList<QPointF>&pos) {
 	}
 }
 
-void canvas_view::mouseMoveEvent(QMouseEvent *i_oEv)
+void canvas_view::mouseMoveEvent___________________________(QMouseEvent *i_oEv)
 {
 	switch (m_iMode)
 	{
@@ -1600,7 +1627,7 @@ void canvas_view::mouseMoveEvent(QMouseEvent *i_oEv)
 	}
 }
 
-void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
+void canvas_view::mouseReleaseEvent______________________________________(QMouseEvent *i_oEv)
 {
 	if (i_oEv->button() == Qt::RightButton) return;
 
