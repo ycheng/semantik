@@ -41,7 +41,7 @@ msgid "Select up"
 msgstr "Sélectionner au dessus"
 
 msgid "Select down"
-msgstr "Sélectionner en bas"
+msgstr "Sélectionner en dessous"
 
 msgid "Select left"
 msgstr "Sélectionner à gauche"
@@ -358,10 +358,10 @@ msgid "File %1 could not be opened"
 msgstr "Le fichier %1 ne peut être ouvert"
 
 msgid "something bad happened"
-msgstr "quelquechose de mal s'est produit"
+msgstr "une erreur s'est produite"
 
 msgid "something worse happened"
-msgstr "quelquechose de pire s'est produit"
+msgstr "une grave erreur s'est produite"
 
 #, fuzzy
 msgid "<p align='center'>No preview available<br/>at this time</p>"
