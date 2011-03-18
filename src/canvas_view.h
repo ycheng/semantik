@@ -135,6 +135,7 @@ class canvas_view : public QGraphicsView
 		void zoom_in();
 		void zoom_out();
 		void toggle_fullscreen();
+		void update_cursor();
 
 
 		void notify_add_item(int id);

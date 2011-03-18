@@ -387,15 +387,8 @@ void canvas_view::move_sel(int i_iX, int i_iY)
 	foreach (canvas_item *l_oItem, sel) { l_oItem->update_links(); ensureVisible(l_oItem); }
 }
 
-void canvas_view::set_mode(mode_type i_iMode, mode_type i_iSaveMode)
-{
-	if (i_iMode == m_iMode) {
-		return;
-	}
-
-	deselect_all();
-
-	switch (i_iMode)
+void canvas_view::update_cursor() {
+	switch (m_iMode)
 	{
 		case select_mode:
 			setDragMode(QGraphicsView::RubberBandDrag);
@@ -413,10 +406,21 @@ void canvas_view::set_mode(mode_type i_iMode, mode_type i_iSaveMode)
 			setDragMode(QGraphicsView::ScrollHandDrag);
 			break;
 		default:
-			qDebug()<<"unknown mode"<<i_iMode;
+			qDebug()<<"unknown mode"<<m_iMode;
 			break;
 	}
+}
+
+void canvas_view::set_mode(mode_type i_iMode, mode_type i_iSaveMode)
+{
+	if (i_iMode == m_iMode) {
+		return;
+	}
+
+	deselect_all();
+
 	m_iMode = i_iMode;
+	update_cursor();
 	m_iLastMode = (i_iSaveMode != no_mode) ? i_iSaveMode : m_iMode;
 
 	// reset
@@ -984,6 +988,7 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 			}
 			break;
 	}
+	update_cursor();
 }
 
 void canvas_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
@@ -1603,7 +1608,6 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 	{
 		m_iMode = m_iLastMode;
 		m_iLastMode = no_mode;
-		viewport()->setCursor(m_iMode==link_mode?Qt::CrossCursor:Qt::ArrowCursor);
 	}
 
 	switch (m_iMode)
@@ -1669,6 +1673,7 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 		default:
 			break;
 	}
+	update_cursor();
 }
 #endif
 
