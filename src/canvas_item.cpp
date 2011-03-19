@@ -182,7 +182,7 @@ void canvas_item::keyPressEvent(QKeyEvent* e) {
 QRectF canvas_item::boundingRect() const {
 	QTextDocument *doc = document();
 	QRectF rect(QPointF(0, 0), doc->size());
-	return rect.adjusted(-5, -5, 5, 5);
+	return rect.adjusted(-OFF, -OFF, OFF, OFF);
 }
 
 QPainterPath canvas_item::opaqueArea() const
@@ -194,7 +194,7 @@ void canvas_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 {
 	painter->save();
 
-	QRectF l_oRect = boundingRect().adjusted(1.5, 1.5, -1.5, -1.5);
+	QRectF l_oRect = boundingRect().adjusted(PAD, PAD, -PAD, -PAD);
 	data_item *l_oItem = m_oGraph->m_oControl->m_oItems.value(Id());
 	color_scheme l_oColorScheme = l_oItem->get_color_scheme();
 

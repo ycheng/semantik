@@ -10,6 +10,9 @@
 #include <QGraphicsItem>
 #include <QList>
 
+#define OFF 3
+#define PAD 1
+
 class QTextDocument;
 class QColor;
 class QString;
