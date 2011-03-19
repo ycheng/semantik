@@ -704,6 +704,12 @@ void canvas_view::change_flags(QAction* i_oAction)
 	if (i_oAction->isChecked()) l_oData->m_oFlags.push_back(l_sName);
 	else l_oData->m_oFlags.removeAll(l_sName);
 	l_oItem->update_flags();
+
+	/*
+	mem_flag* flag = new mem_flag(m_oControl),
+	flag->newFlags = ;
+	flag->apply();
+	*/
 }
 
 void canvas_view::check_selected()
