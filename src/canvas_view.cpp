@@ -1079,8 +1079,8 @@ void canvas_view::check_canvas_size()
 	qreal x, y, z, t;
 	canvas_item *l_o = m_oItems.values()[0];
 
-	x = z = l_o->x() + l_o->rect().width()/2;
-	y = t = l_o->y() + l_o->rect().height()/2;
+	x = z = l_o->x() + l_o->boundingRect().width()/2;
+	y = t = l_o->y() + l_o->boundingRect().height()/2;
 
 	QList<canvas_item*> l_oList = m_oItems.values();
 	foreach (canvas_item *l_oItem, l_oList)
@@ -1179,7 +1179,7 @@ double canvas_view::compute_height(QMap<int, double> &map, QMap<int, QList<int> 
 		}
 	}
 
-	double tmp = m_oItems[id]->rect().height();
+	double tmp = m_oItems[id]->boundingRect().height();
 	if (size < tmp) size = tmp;
 
 	map[id] = size;
@@ -1188,7 +1188,7 @@ double canvas_view::compute_height(QMap<int, double> &map, QMap<int, QList<int> 
 }
 
 void canvas_view::compute_width(QMap<int, double> &map, QMap<int, QList<int> >&children, int id, int level) {
-	double w = m_oItems[id]->rect().width();
+	double w = m_oItems[id]->boundingRect().width();
 	QMap<int, double>::iterator jt = map.find(level);
 	if (jt != map.end()) {
 		double val = jt.value();
@@ -1254,15 +1254,15 @@ void canvas_view::reorganize() {
 			left_height -= HSPACER;
 
 			int left = 1;
-			double acc_height = m_oItems[k]->y() + m_oItems[k]->rect().height() / 2 - left_height / 2;
+			double acc_height = m_oItems[k]->y() + m_oItems[k]->boundingRect().height() / 2 - left_height / 2;
 			foreach (int sub, tmp) {
 
 				// put the element in place, then recurse
 
-				double y = acc_height + height[sub] / 2 - m_oItems[sub]->rect().height() / 2;
+				double y = acc_height + height[sub] / 2 - m_oItems[sub]->boundingRect().height() / 2;
 				if (left) {
-					double x = m_oItems[k]->x() + m_oItems[k]->rect().width() - width[0] - WSPACER;
-					m_oItems[sub]->setPos(x - m_oItems[sub]->rect().width(), y);
+					double x = m_oItems[k]->x() + m_oItems[k]->boundingRect().width() - width[0] - WSPACER;
+					m_oItems[sub]->setPos(x - m_oItems[sub]->boundingRect().width(), y);
 				} else {
 					double x = m_oItems[k]->x() + width[0] + WSPACER;
 					m_oItems[sub]->setPos(x, y);
@@ -1276,7 +1276,7 @@ void canvas_view::reorganize() {
 				// now to the right
 				if (sub == mid) {
 					left = 0;
-					acc_height = m_oItems[k]->y() + m_oItems[k]->rect().height() / 2 - (height[k] - left_height - HSPACER) / 2;
+					acc_height = m_oItems[k]->y() + m_oItems[k]->boundingRect().height() / 2 - (height[k] - left_height - HSPACER) / 2;
 				}
 			}
 		}
@@ -1287,12 +1287,12 @@ void canvas_view::pack(QMap<int, double> &width, QMap<int, double> &height, QMap
 	QMap<int, QList<int> >::iterator it = children.find(id);
 	if (it != children.end()) {
 		QList<int> tmp = it.value();
-		double acc_height = m_oItems[id]->y() + m_oItems[id]->rect().height() / 2 - height[id] / 2;
+		double acc_height = m_oItems[id]->y() + m_oItems[id]->boundingRect().height() / 2 - height[id] / 2;
 		foreach (int sub, tmp) {
-			double y = acc_height + height[sub] / 2 - m_oItems[sub]->rect().height()/2;
+			double y = acc_height + height[sub] / 2 - m_oItems[sub]->boundingRect().height()/2;
 			if (left) {
-				double x = m_oItems[id]->x() + m_oItems[id]->rect().width() - width[0] - WSPACER;
-				m_oItems[sub]->setPos(x - m_oItems[sub]->rect().width(), y);
+				double x = m_oItems[id]->x() + m_oItems[id]->boundingRect().width() - width[0] - WSPACER;
+				m_oItems[sub]->setPos(x - m_oItems[sub]->boundingRect().width(), y);
 			} else {
 				double x = m_oItems[id]->x() + width[0] + WSPACER;
 				m_oItems[sub]->setPos(x, y);

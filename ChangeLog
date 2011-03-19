@@ -1,8 +1,7 @@
 Semantik 0.7.4
 --------------
 
-* minor bugfixes
-* make the project slightly easier to compile
+* implement the undo/redo actions
 
 Semantik 0.7.3
 --------------

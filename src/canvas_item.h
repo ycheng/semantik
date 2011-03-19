@@ -27,7 +27,7 @@ class canvas_item: public QGraphicsTextItem
 		~canvas_item();
 
 		int type() const { return CANVAS_ITEM_T; }
-		QRectF rect() { return boundingRect(); }
+		QRectF boundingRect() const;
 
 		void update_flags();
 
@@ -73,8 +73,8 @@ class canvas_item: public QGraphicsTextItem
 
 		QList<canvas_flag*> m_oFlags;
 
-		inline qreal const x2() {return x() + rect().width();}
-		inline qreal const y2() {return y() + rect().height();}
+		inline qreal const x2() {return x() + boundingRect().width();}
+		inline qreal const y2() {return y() + boundingRect().height();}
 
 		canvas_view *m_oGraph;
 		canvas_item *m_oParent;
