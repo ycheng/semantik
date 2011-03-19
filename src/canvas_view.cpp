@@ -671,9 +671,9 @@ void canvas_view::change_colors(QAction* i_oAct)
 	semantik_win *l_o = (semantik_win*) m_oSemantikWindow;
 	for (int i=1; i<l_o->m_oColorGroup->actions().size(); ++i)
 	{
-		// attention hat trick, il y a une assignation
-		if (l_o->m_oColorGroup->actions()[i]==i_oAct && (l_iIdx = i))
+		if (l_o->m_oColorGroup->actions()[i]==i_oAct)
 		{
+			l_iIdx = i;
 			if (i==l_o->m_oColorGroup->actions().size()-1)
 			{
 				l_oColor = QColorDialog::getColor(l_oColor, this);
@@ -683,17 +683,9 @@ void canvas_view::change_colors(QAction* i_oAct)
 		}
 	}
 
-	foreach (canvas_item *l_oItem, selection())
-	{
-		int l_oId = l_oItem->Id();
-		data_item *l_oData = *m_oControl + l_oId;
-		l_oData->m_oCustom.m_oInnerColor = l_oColor;
-		l_oData->m_oCustom.m_oBorderColor = l_oColor.dark();
-		l_oData->m_iXX = l_oItem->pos().x();
-		l_oData->m_iYY = l_oItem->pos().y();
-		l_oData->m_iColor = l_iIdx;
-		m_oControl->update_item(l_oId);
-	}
+	mem_color* col = new mem_color(m_oControl);
+	col->newColor = l_iIdx;
+	col->apply();
 }
 
 void canvas_view::change_flags(QAction* i_oAction)
@@ -1410,6 +1402,10 @@ void canvas_view::notify_move(const QList<int>&sel, const QList<QPointF>&pos) {
 		m_oItems[sel[i]]->setPos(pos[i]);
 		m_oItems[sel[i]]->update_links();
 	}
+}
+
+void canvas_view::notify_repaint(int id) {
+	m_oItems[id]->update();
 }
 
 %: include  	"canvas_view.moc" 

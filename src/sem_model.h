@@ -52,6 +52,7 @@ class sem_model: public QObject
 		void sync_colors();
 		void sig_select(const QList<int>& unsel, const QList<int>& sel);
 		void sig_move(const QList<int>&sel, const QList<QPointF>&pos);
+		void sig_repaint(int id);
 
 		void enable_undo(bool, bool);
 
@@ -120,6 +121,7 @@ class sem_model: public QObject
 		void notify_unlink_items(int id1, int id2);
 		void notify_select(const QList<int>& unsel, const QList<int>& sel);
 		void notify_move(const QList<int>&sel, const QList<QPointF>&pos);
+		void notify_repaint(int id);
 
 	public:
 

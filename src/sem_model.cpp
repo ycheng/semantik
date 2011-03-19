@@ -995,6 +995,7 @@ int sem_model::next_seq()
 
 void sem_model::update_item(int i_iId, int i_iView)
 {
+	qDebug()<<"update item called, remove";
 	if (!m_oItems.contains(i_iId)) return;
 
 	hash_params l_oCmd;
@@ -1329,6 +1330,10 @@ void sem_model::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 
 void sem_model::notify_move(const QList<int>&sel, const QList<QPointF>&pos) {
 	emit sig_move(sel, pos);
+}
+
+void sem_model::notify_repaint(int id) {
+	emit sig_repaint(id);
 }
 
 #include "sem_model.moc"

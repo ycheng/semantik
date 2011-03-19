@@ -20,7 +20,7 @@ class mem_command {
 		virtual void redo() = 0;
 		virtual void apply();
 
-		enum IType {DELETE, ADD, LINK, UNLINK, SELECT, MOVE};
+		enum IType {DELETE, ADD, LINK, UNLINK, SELECT, MOVE, COLOR};
 		virtual IType type() = 0;
 };
 
@@ -95,6 +95,16 @@ class mem_move : public mem_command {
 		QList<QPointF> oldPos;
 		QList<QPointF> newPos;
 		IType type() { return MOVE; }
+};
+
+class mem_color : public mem_command {
+	public:
+		mem_color(sem_model*);
+		void undo();
+		void redo();
+		QMap<int, int> prevColors;
+		int newColor;
+		IType type() { return COLOR; }
 };
 
 #endif

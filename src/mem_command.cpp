@@ -248,3 +248,33 @@ void mem_move::undo() {
 	model->notify_move(sel, oldPos);
 }
 
+///////////////////////////////////////////////////////////////////
+
+mem_color::mem_color(sem_model* mod) : mem_command(mod) {
+	foreach (data_item* t, model->m_oItems.values()) {
+		if (t->m_bSelected) {
+			prevColors[t->m_iId] = t->m_iColor;
+		}
+	}
+}
+
+void mem_color::redo() {
+	QMap<int, int>::iterator i;
+ 	for (i = prevColors.begin(); i != prevColors.end(); ++i)
+	{
+		data_item *t = model->m_oItems[i.key()];
+		t->m_iColor = newColor;
+		model->notify_repaint(i.key());
+	}
+}
+
+void mem_color::undo() {
+	QMap<int, int>::iterator i;
+ 	for (i = prevColors.begin(); i != prevColors.end(); ++i)
+	{
+		data_item *t = model->m_oItems[i.key()];
+		t->m_iColor = i.value();
+		model->notify_repaint(i.key());
+	}
+}
+
