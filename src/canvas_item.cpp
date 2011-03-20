@@ -230,7 +230,7 @@ void canvas_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	painter->drawRoundRect(l_oRect, 20, 20);
 
 	// if there is text, draw a triangle on the top-right corner
-	if (l_oItem->m_iTextLength > 0)
+	if (m_oGraph->m_oControl->m_oItems.value(Id())->m_sText.length() > 0)
 	{
 		const QPointF points[4] =
 		{
