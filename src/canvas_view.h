@@ -81,6 +81,7 @@ class canvas_view : public QGraphicsView
 		void pack(QMap<int, double> &width, QMap<int, double> &height, QMap<int, QList<int> >&children, int id, int level, int left);
 
 		void check_selected();
+		void edit_off(); // if the editing was on, turn it off
 
 		//void scaleView(qreal i_oScaleFactor);
 

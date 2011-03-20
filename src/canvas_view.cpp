@@ -199,6 +199,35 @@ void canvas_view::slot_next_root()
 	if (sel.size()==1) ensureVisible(sel[0]);
 }
 
+void canvas_view::edit_off() {
+	canvas_item* sel = NULL;
+	foreach (QGraphicsItem *tmp, items()) {
+		if (tmp->type() == CANVAS_ITEM_T) {
+			sel = (canvas_item*) tmp;
+
+			sel->setTextInteractionFlags(Qt::NoTextInteraction);
+			if (sel->toPlainText() == QObject::trUtf8("")) {
+				sel->setPlainText(QObject::trUtf8("Empty"));
+				sel->update_links();
+			}
+
+			m_oAddItemAction->setEnabled(true);
+			m_oInsertSiblingAction->setEnabled(true);
+			m_oDeleteAction->setEnabled(true);
+			m_oNextRootAction->setEnabled(true);
+
+			m_oMoveUpAction->setEnabled(true);
+			m_oMoveDownAction->setEnabled(true);
+			m_oMoveLeftAction->setEnabled(true);
+			m_oMoveRightAction->setEnabled(true);
+			m_oSelectUpAction->setEnabled(true);
+			m_oSelectDownAction->setEnabled(true);
+			m_oSelectLeftAction->setEnabled(true);
+			m_oSelectRightAction->setEnabled(true);
+			m_oControl->check_undo(true);
+		}
+	}
+}
 
 void canvas_view::slot_toggle_edit()
 {
@@ -306,7 +335,6 @@ void canvas_view::slot_add_item()
 	add->init();
 	add->item->m_iXX = m_oLastPoint.x();
 	add->item->m_iYY = m_oLastPoint.y();
-	add->item->m_sSummary = QString("abc %1").arg((long) add->item);
 	add->parent = l_iId;
 	add->apply();
 
@@ -865,6 +893,9 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 	m_oLastPressPoint = i_oEv->pos();
 	if (i_oEv->button() == Qt::RightButton)
 	{
+		// first, we cannot edit an item when right-click is selected
+		edit_off();
+
 		// select the item under the cursor if available and show the popup menu
 		m_oLastPoint = mapToScene(i_oEv->pos());
 		QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
