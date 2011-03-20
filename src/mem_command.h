@@ -6,6 +6,7 @@
 #include <QPoint>
 #include <QSet>
 #include <QList>
+#include <QString>
 
 class data_item;
 class sem_model;
@@ -20,7 +21,7 @@ class mem_command {
 		virtual void redo() = 0;
 		virtual void apply();
 
-		enum IType {DELETE, ADD, LINK, UNLINK, SELECT, MOVE, COLOR, FLAG};
+		enum IType {DELETE, ADD, LINK, UNLINK, SELECT, MOVE, COLOR, FLAG, EDIT};
 		virtual IType type() = 0;
 };
 
@@ -115,6 +116,17 @@ class mem_flag : public mem_command {
 		QMap<int, QList<QString> > prevFlags;
 		QList<QString> newFlag;
 		IType type() { return FLAG; }
+};
+
+class mem_edit: public mem_command {
+	public:
+		mem_edit(sem_model*);
+		void undo();
+		void redo();
+		data_item *sel;
+		QString oldSummary;
+		QString newSummary;
+		IType type() { return EDIT; }
 };
 
 #endif

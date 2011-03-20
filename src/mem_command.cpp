@@ -308,5 +308,22 @@ void mem_flag::undo() {
 	}
 }
 
+///////////////////////////////////////////////////////////////////
 
+mem_edit::mem_edit(sem_model* mod) : mem_command(mod) {
+	foreach (data_item* t, model->m_oItems.values()) {
+		if (t->m_bSelected) {
+			sel = t;
+		}
+	}
+	oldSummary = sel->m_sSummary;
+}
+
+void mem_edit::redo() {
+	sel->m_sSummary = newSummary;
+}
+
+void mem_edit::undo() {
+	sel->m_sSummary = oldSummary;
+}
 
