@@ -572,6 +572,7 @@ void canvas_view::synchro_doc(const hash_params& i_o)
 
 void canvas_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 
+	edit_off();
 	foreach (int k, sel) {
 		Q_ASSERT(m_oItems[k] != NULL);
 		if (!m_oItems[k]->isSelected())
