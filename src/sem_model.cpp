@@ -1336,5 +1336,9 @@ void sem_model::notify_repaint(int id) {
 	emit sig_repaint(id);
 }
 
+void sem_model::notify_edit(int id) {
+	emit sig_edit(id);
+}
+
 #include "sem_model.moc"
 

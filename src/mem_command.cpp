@@ -321,9 +321,11 @@ mem_edit::mem_edit(sem_model* mod) : mem_command(mod) {
 
 void mem_edit::redo() {
 	sel->m_sSummary = newSummary;
+	model->notify_edit(sel->m_iId);
 }
 
 void mem_edit::undo() {
 	sel->m_sSummary = oldSummary;
+	model->notify_edit(sel->m_iId);
 }
 

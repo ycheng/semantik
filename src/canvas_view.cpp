@@ -205,26 +205,35 @@ void canvas_view::edit_off() {
 		if (tmp->type() == CANVAS_ITEM_T) {
 			sel = (canvas_item*) tmp;
 
-			sel->setTextInteractionFlags(Qt::NoTextInteraction);
-			if (sel->toPlainText() == QObject::trUtf8("")) {
-				sel->setPlainText(QObject::trUtf8("Empty"));
-				sel->update_links();
+			if (sel->textInteractionFlags() & Qt::TextEditorInteraction) {
+
+				sel->setTextInteractionFlags(Qt::NoTextInteraction);
+				if (sel->toPlainText() == QObject::trUtf8("")) {
+					sel->setPlainText(QObject::trUtf8("Empty"));
+					sel->update_links();
+				}
+
+				if (sel->toPlainText() != (*m_oControl + sel->Id())->m_sSummary) {
+					mem_edit *ed = new mem_edit(m_oControl);
+					ed->newSummary = sel->toPlainText();
+					ed->apply();
+				}
+
+				m_oAddItemAction->setEnabled(true);
+				m_oInsertSiblingAction->setEnabled(true);
+				m_oDeleteAction->setEnabled(true);
+				m_oNextRootAction->setEnabled(true);
+
+				m_oMoveUpAction->setEnabled(true);
+				m_oMoveDownAction->setEnabled(true);
+				m_oMoveLeftAction->setEnabled(true);
+				m_oMoveRightAction->setEnabled(true);
+				m_oSelectUpAction->setEnabled(true);
+				m_oSelectDownAction->setEnabled(true);
+				m_oSelectLeftAction->setEnabled(true);
+				m_oSelectRightAction->setEnabled(true);
+				m_oControl->check_undo(true);
 			}
-
-			m_oAddItemAction->setEnabled(true);
-			m_oInsertSiblingAction->setEnabled(true);
-			m_oDeleteAction->setEnabled(true);
-			m_oNextRootAction->setEnabled(true);
-
-			m_oMoveUpAction->setEnabled(true);
-			m_oMoveDownAction->setEnabled(true);
-			m_oMoveLeftAction->setEnabled(true);
-			m_oMoveRightAction->setEnabled(true);
-			m_oSelectUpAction->setEnabled(true);
-			m_oSelectDownAction->setEnabled(true);
-			m_oSelectLeftAction->setEnabled(true);
-			m_oSelectRightAction->setEnabled(true);
-			m_oControl->check_undo(true);
 		}
 	}
 }
@@ -250,6 +259,12 @@ void canvas_view::slot_toggle_edit()
 				sel->setPlainText(QObject::trUtf8("Empty"));
 				sel->update(); // seems to update faster
 				sel->update_links();
+
+			}
+			if (sel->toPlainText() != (*m_oControl + sel->Id())->m_sSummary) {
+				mem_edit *ed = new mem_edit(m_oControl);
+				ed->newSummary = sel->toPlainText();
+				ed->apply();
 			}
 		} else {
 			sel->setTextInteractionFlags(Qt::TextEditorInteraction);
@@ -443,6 +458,7 @@ void canvas_view::update_cursor() {
 
 void canvas_view::set_mode(mode_type i_iMode, mode_type i_iSaveMode)
 {
+	edit_off();
 	if (i_iMode == m_iMode) {
 		return;
 	}
@@ -961,6 +977,8 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 {
 	QGraphicsView::mouseReleaseEvent(i_oEv);
 
+	edit_off();
+
 	set_mode(m_iLastMode);
 	m_iLastMode = m_iMode;
 
@@ -1445,6 +1463,16 @@ void canvas_view::notify_move(const QList<int>&sel, const QList<QPointF>&pos) {
 }
 
 void canvas_view::notify_repaint(int id) {
+	m_oItems[id]->update();
+}
+
+void canvas_view::notify_edit(int id) {
+	data_item *sel = *m_oControl + id;
+	if (m_oItems[id]->toPlainText() != sel->m_sSummary) {
+		m_oItems[id]->setPlainText(sel->m_sSummary);
+		m_oItems[id]->adjustSize();
+		m_oItems[id]->update_links();
+	}
 	m_oItems[id]->update();
 }
 
