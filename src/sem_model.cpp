@@ -1344,5 +1344,9 @@ void sem_model::notify_flag(int id) {
 	emit sig_flag(id);
 }
 
+void sem_model::notify_datatype(int id) {
+	emit sig_datatype(id);
+}
+
 #include "sem_model.moc"
 

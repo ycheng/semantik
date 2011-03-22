@@ -298,7 +298,6 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oTableView, SLOT(synchro_doc(const hash_params&)));
 	connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oImageView, SLOT(synchro_doc(const hash_params&)));
 	connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oTextView, SLOT(synchro_doc(const hash_params&)));
-	connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oDataView, SLOT(synchro_doc(const hash_params&)));
 	connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oVarsView, SLOT(synchro_doc(const hash_params&)));
 	connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oPreView, SLOT(synchro_doc(const hash_params&)));
 	connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oDiagramView, SLOT(synchro_doc(const hash_params&)));
@@ -318,6 +317,10 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	connect(m_oControl, SIGNAL(sig_flag(int)), m_oCanvas, SLOT(notify_flag(int)));
 	connect(m_oControl, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), m_oCanvas, SLOT(notify_select(const QList<int>&, const QList<int>&)));
 	connect(m_oControl, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), ln, SLOT(notify_select(const QList<int>&, const QList<int>&)));
+	connect(m_oControl, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), m_oDataView, SLOT(notify_select(const QList<int>&, const QList<int>&)));
+
+	connect(m_oControl, SIGNAL(sig_datatype(int)), m_oDataView, SLOT(notify_datatype(int)));
+
 	connect(m_oControl, SIGNAL(sig_move(const QList<int>&, const QList<QPointF>&)), m_oCanvas, SLOT(notify_move(const QList<int>&, const QList<QPointF>&)));
 
 	connect(m_oControl, SIGNAL(sync_flags()), m_oCanvas, SLOT(sync_flags()));

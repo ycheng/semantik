@@ -337,3 +337,26 @@ void mem_edit::undo() {
 	model->notify_edit(sel->m_iId);
 }
 
+///////////////////////////////////////////////////////////////////
+
+mem_datatype::mem_datatype(sem_model* mod) : mem_command(mod) {
+	sel = NULL;
+	foreach (data_item* t, model->m_oItems.values()) {
+		if (t->m_bSelected) {
+			sel = t;
+			oldDataType = sel->m_iDataType;
+			break;
+		}
+	}
+}
+
+void mem_datatype::redo() {
+	sel->m_iDataType = newDataType;
+	model->notify_datatype(sel->m_iId);
+}
+
+void mem_datatype::undo() {
+	sel->m_iDataType = oldDataType;
+	model->notify_datatype(sel->m_iId);
+}
+

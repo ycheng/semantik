@@ -16,7 +16,8 @@ class data_view : public QStackedWidget
 		QLabel *m_oLabel;
 
 	public slots:
-		void synchro_doc(const hash_params&);
+		void notify_select(const QList<int>& unsel, const QList<int>& sel);
+		void notify_datatype(int id);
 };
 
 #endif

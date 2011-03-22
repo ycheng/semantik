@@ -18,40 +18,29 @@ data_view::data_view(QWidget *i_oParent, sem_model *i_oControl) : QStackedWidget
 	addWidget(m_oLabel);
 }
 
-void data_view::synchro_doc(const hash_params&i_o)
-{
-	int l_iCmd = i_o[data_commande].toInt();
-	switch (l_iCmd)
+void data_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
+	if (sel.size() != 1) {
+		setCurrentIndex(0);
+	}
+	else
 	{
-		case cmd_select_item:
-			{
-			int l_iId = i_o[data_id].toInt();
-			if (l_iId == NO_ITEM)
-			{
-				setCurrentIndex(0);
-				break;
-			}
-			}
-			// else fall through
-		case cmd_change_data:
-			{
-			data_item *l_oItem = *m_oControl + i_o[data_id].toInt();
-			int j = 0;
-			switch (l_oItem->m_iDataType)
-			{
-				// just to make it really complicated
-				// text image table diagram
-				case VIEW_DIAG: j++;
-				case VIEW_TABLE: j++;
-				case VIEW_IMG: j++;
-				case VIEW_TEXT: j++;
-				default:
-					setCurrentIndex(j);
-					break;
-			}
-			break;
-			}
+		notify_datatype(sel.at(0));
+	}
+}
+
+void data_view::notify_datatype(int id) {
+	data_item *l_oItem = *m_oControl + id;
+	int j = 0;
+	switch (l_oItem->m_iDataType)
+	{
+		// just to make it really complicated
+		// text image table diagram
+		case VIEW_DIAG: j++;
+		case VIEW_TABLE: j++;
+		case VIEW_IMG: j++;
+		case VIEW_TEXT: j++;
 		default:
+			setCurrentIndex(j);
 			break;
 	}
 }

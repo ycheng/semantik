@@ -923,6 +923,7 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 		{
 			if (!l_oItem->isSelected())
 			{
+				// TODO FIXME ITA reselect the appropriate item here
 				deselect_all();
 				l_oItem->setSelected(true);
 			}
@@ -931,6 +932,7 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 		{
 			deselect_all();
 		}
+		enable_menu_actions();
 		m_oMenu->popup(i_oEv->globalPos());
 		i_oEv->accept();
 		return;
@@ -1166,7 +1168,10 @@ void canvas_view::fit_zoom()
 
 void canvas_view::slot_change_data()
 {
-	m_oControl->change_data(selection()[0]->Id(), ((QAction*) QObject::sender())->data().toInt());
+	mem_datatype* t = new mem_datatype(m_oControl);
+	t->newDataType = ((QAction*) QObject::sender())->data().toInt();
+	if (t->sel != NULL && t->newDataType != t->oldDataType) t->apply();
+	else delete(t);
 }
 
 void canvas_view::toggle_fullscreen()
