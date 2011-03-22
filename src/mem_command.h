@@ -113,8 +113,9 @@ class mem_flag : public mem_command {
 		mem_flag(sem_model*);
 		void undo();
 		void redo();
+		bool add;
+		QString flag;
 		QMap<int, QList<QString> > prevFlags;
-		QList<QString> newFlag;
 		IType type() { return FLAG; }
 };
 

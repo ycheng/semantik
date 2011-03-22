@@ -281,6 +281,7 @@ void mem_color::undo() {
 ///////////////////////////////////////////////////////////////////
 
 mem_flag::mem_flag(sem_model* mod) : mem_command(mod) {
+	add = true;
 	foreach (data_item* t, model->m_oItems.values()) {
 		if (t->m_bSelected) {
 			prevFlags[t->m_iId] = t->m_oFlags;
@@ -293,8 +294,15 @@ void mem_flag::redo() {
  	for (i = prevFlags.begin(); i != prevFlags.end(); ++i)
 	{
 		data_item *t = model->m_oItems[i.key()];
-		t->m_oFlags = newFlag;
-		model->notify_repaint(i.key());
+		t->m_oFlags = QList<QString>(i.value());
+		if (add) {
+			if (!t->m_oFlags.contains(flag)) {
+				t->m_oFlags.append(flag);
+			}
+		} else {
+			t->m_oFlags.removeAll(flag);
+		}
+		model->notify_flag(i.key());
 	}
 }
 
@@ -304,7 +312,7 @@ void mem_flag::undo() {
 	{
 		data_item *t = model->m_oItems[i.key()];
 		t->m_oFlags = i.value();
-		model->notify_repaint(i.key());
+		model->notify_flag(i.key());
 	}
 }
 

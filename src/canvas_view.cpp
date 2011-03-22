@@ -745,18 +745,19 @@ void canvas_view::change_flags(QAction* i_oAction)
 		if (l_oAct == i_oAction) l_iIndex = i;
 	}
 	QString l_sName = m_oControl->m_oFlagSchemes[l_iIndex]->m_sId;
+
+	/*
 	canvas_item *l_oItem = selection()[0];
 	data_item *l_oData = *m_oControl + l_oItem->Id();
 
 	if (i_oAction->isChecked()) l_oData->m_oFlags.push_back(l_sName);
 	else l_oData->m_oFlags.removeAll(l_sName);
-	l_oItem->update_flags();
+	l_oItem->update_flags(); */
 
-	/*
-	mem_flag* flag = new mem_flag(m_oControl),
-	flag->newFlags = ;
-	flag->apply();
-	*/
+	mem_flag* tmp = new mem_flag(m_oControl);
+	tmp->flag = l_sName;
+	tmp->add = i_oAction->isChecked();
+	tmp->apply();
 }
 
 void canvas_view::check_selected()
@@ -1474,6 +1475,10 @@ void canvas_view::notify_edit(int id) {
 		m_oItems[id]->update_links();
 	}
 	m_oItems[id]->update();
+}
+
+void canvas_view::notify_flag(int id) {
+	m_oItems[id]->update_flags();
 }
 
 %: include  	"canvas_view.moc" 

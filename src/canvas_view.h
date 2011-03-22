@@ -147,6 +147,7 @@ class canvas_view : public QGraphicsView
 		void notify_move(const QList<int>&sel, const QList<QPointF>&pos);
 		void notify_repaint(int id);
 		void notify_edit(int id);
+		void notify_flag(int id);
 		void sync_flags();
 		void sync_colors();
 

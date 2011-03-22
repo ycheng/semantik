@@ -1340,5 +1340,9 @@ void sem_model::notify_edit(int id) {
 	emit sig_edit(id);
 }
 
+void sem_model::notify_flag(int id) {
+	emit sig_flag(id);
+}
+
 #include "sem_model.moc"
 
