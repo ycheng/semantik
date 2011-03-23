@@ -811,13 +811,25 @@ int sem_model::root_of(int i_iId)
 	return i_iId;
 }
 
+int sem_model::itemSelected() {
+	foreach (int l_iVal, m_oItems.keys())
+	{
+		if (m_oItems[l_iVal]->m_bSelected)
+			return l_iVal;
+	}
+	return NO_ITEM;
+}
+
 void sem_model::next_root()
 {
 	QList<int> l_o = all_roots();
 	if (l_o.size() == 0) return;
 
-	int l_i = root_of(m_iLastItemSelected);
-	if (l_i == NO_ITEM) private_select_item(l_o[0]);
+	int l_i = itemSelected();
+	if (l_i == NO_ITEM && !l_o.empty())
+	{
+		private_select_item(l_o[0]);
+	}
 
 	for (int i=0; i<l_o.size(); i++)
 	{
@@ -833,10 +845,12 @@ void sem_model::next_root()
 void sem_model::prev_root()
 {
 	QList<int> l_o = all_roots();
-	if (l_o.size() == 0) return;
 
-	int l_i = root_of(m_iLastItemSelected);
-	if (l_i == NO_ITEM) private_select_item(l_o[0]);
+	int l_i = itemSelected();
+	if (l_i == NO_ITEM && !l_o.empty())
+	{
+		private_select_item(l_o[0]);
+	}
 
 	for (int i=0; i<l_o.size(); i++)
 	{
@@ -1236,7 +1250,6 @@ sem_model::sem_model(QObject* i_oParent) : QObject(i_oParent)
 {
 	num_seq = 1;
 	num_seq = 1;
-	m_iLastItemSelected = NO_ITEM;
 	m_sOutDir = "";
 	m_iTimerValue = 21 / 4;
 	m_bDirty = false;

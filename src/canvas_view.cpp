@@ -182,20 +182,18 @@ void canvas_view::check_selection() {
 
 void canvas_view::slot_next_root()
 {
-	QList<canvas_item*> sel = selection();
 	switch (((QAction*) QObject::sender())->data().toInt())
 	{
 		case 0:
-			if (sel.size()>1) deselect_all();
 			m_oControl->prev_root();
 			break;
 		case 1:
-			if (sel.size()>1) deselect_all();
 			m_oControl->next_root();
 			break;
 		default:
 			break;
 	}
+	QList<canvas_item*> sel = selection();
 	if (sel.size()==1) ensureVisible(sel[0]);
 }
 
@@ -791,33 +789,16 @@ void canvas_view::check_selected()
 
 void canvas_view::deselect_all(bool i_oSignal)
 {
-	QList<QGraphicsItem*> lst = scene()->selectedItems();
-	foreach (QGraphicsItem *tmp, lst) {
-		tmp->setSelected(false);
-
-		if (tmp->type() == CANVAS_ITEM_T) {
-			canvas_item *sel = (canvas_item*) tmp;
-			sel->setZValue(99);
-			sel->setTextInteractionFlags(Qt::NoTextInteraction);
-		}
-	}
-
-	/*
-	foreach (canvas_item *l_oItem, m_oSelected)
+	edit_off();
+	mem_sel *sel = new mem_sel(m_oControl);
+	if (sel->unsel.empty())
 	{
-		l_oItem->set_selected(false);
-		l_oItem->setZValue(99);
-		if (m_iMode == sort_mode || m_iLastMode == sort_mode)
-		{
-			show_sort(l_oItem->Id(), false);
-			emit sig_message("", -1);
-		}
-		l_oItem->update();
+		delete sel;
 	}
-	m_oSelected.clear();
-
-	notify_select(i_oSignal);
-	*/
+	else
+	{
+		sel->apply();
+	}
 }
 
 void canvas_view::add_select(canvas_item* i_oItem, bool i_oSignal)
@@ -923,9 +904,12 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 		{
 			if (!l_oItem->isSelected())
 			{
-				// TODO FIXME ITA reselect the appropriate item here
-				deselect_all();
-				l_oItem->setSelected(true);
+				QList<int> lst;
+				lst.append(((canvas_item*) l_oItem)->Id());
+
+				mem_sel *sel = new mem_sel(m_oControl);
+				sel->sel = lst;
+				sel->apply();
 			}
 		}
 		else

@@ -112,9 +112,6 @@ class sem_model: public QObject
 		QColor m_oColor;
 		QString m_sHints;
 
-		int m_iLastItemSelected;
-
-
 		QStack<mem_command*> m_oUndoStack;
 		QStack<mem_command*> m_oRedoStack;
 
@@ -164,6 +161,7 @@ class sem_model: public QObject
 		void change_data(int i_iId, int i_iType);
 
 		void check_undo(bool); // check if the undo/redo actions can be enabled
+		int itemSelected();
 
 		QMutex m_oLock;
 
