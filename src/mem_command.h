@@ -21,7 +21,7 @@ class mem_command {
 		virtual void redo() = 0;
 		virtual void apply();
 
-		enum IType {DELETE, ADD, LINK, UNLINK, SELECT, MOVE, COLOR, FLAG, EDIT, DATATYPE};
+		enum IType {DELETE, ADD, LINK, UNLINK, SELECT, MOVE, COLOR, FLAG, EDIT, DATATYPE, TEXT};
 		virtual IType type() = 0;
 };
 
@@ -139,6 +139,17 @@ class mem_datatype: public mem_command {
 		int oldDataType;
 		int newDataType;
 		IType type() { return DATATYPE; }
+};
+
+class mem_text: public mem_command {
+	public:
+		mem_text(sem_model*);
+		void undo();
+		void redo();
+		data_item *sel;
+		QString oldText;
+		QString newText;
+		IType type() { return TEXT; }
 };
 
 #endif

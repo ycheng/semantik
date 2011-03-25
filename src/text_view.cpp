@@ -23,13 +23,13 @@ text_view::text_view(QWidget *i_oParent, sem_model *i_oControl) : QWidget(i_oPar
 {
 	QGridLayout *l_oLayout = new QGridLayout();
 	setLayout(l_oLayout);
-	m_oLineEdit = new QLineEdit(this);
+	//m_oLineEdit = new QLineEdit(this);
 
 	m_oControl = i_oControl;
 
 	m_oEdit = new KTextEdit(this);
 	m_oEdit->setCheckSpellingEnabled(true);
-	l_oLayout->addWidget(m_oLineEdit, 0, 0);
+	//l_oLayout->addWidget(m_oLineEdit, 0, 0);
 	l_oLayout->addWidget(m_oEdit, 1, 0, 1, 4);
 	l_oLayout->setMargin(0);
 	setMinimumHeight(30);
@@ -42,10 +42,9 @@ text_view::text_view(QWidget *i_oParent, sem_model *i_oControl) : QWidget(i_oPar
 	m_oLineEdit->setPalette(l_oPalette);
 	m_oEdit->setPalette(l_oPalette);*/
 
-	connect(m_oLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(update_summary(const QString &)));
+	//connect(m_oLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(update_summary(const QString &)));
 	connect(m_oEdit, SIGNAL(textChanged()), this, SLOT(update_edit()));
-	connect(m_oEdit, SIGNAL(currentCharFormatChanged(const QTextCharFormat &)),
-            this, SLOT(char_format_changed(const QTextCharFormat &)));
+	connect(m_oEdit, SIGNAL(currentCharFormatChanged(const QTextCharFormat &)), this, SLOT(char_format_changed(const QTextCharFormat &)));
 
 	m_oBoldAct = new QAction(fetch_icon(notr("text_bold")), trUtf8("&Bold"), this);
 	m_oBoldAct->setShortcut(trUtf8("Ctrl+B"));
@@ -78,7 +77,7 @@ text_view::text_view(QWidget *i_oParent, sem_model *i_oControl) : QWidget(i_oPar
 }
 
 void text_view::synchro_doc(const hash_params& i_o)
-{
+{ /*
 	int l_iCmd = i_o[data_commande].toInt();
 	switch (l_iCmd)
 	{
@@ -122,7 +121,7 @@ void text_view::synchro_doc(const hash_params& i_o)
 					data_item *l_oData = m_oControl->m_oItems.value(m_iId);
 					if (l_oId == m_iId)
 					{
-						m_oLineEdit->setText(l_oData->m_sSummary);
+						//m_oLineEdit->setText(l_oData->m_sSummary);
 					}
 				}
 				m_iId = l_oId;
@@ -131,6 +130,7 @@ void text_view::synchro_doc(const hash_params& i_o)
 		default:
 			break;
 	}
+	*/
 }
 
 void text_view::update_summary(const QString & i_s)
@@ -145,11 +145,36 @@ void text_view::update_summary(const QString & i_s)
 
 void text_view::update_edit()
 {
+	//qDebug()<<m_oControl->m_oUndoStack.size();
 	if (!m_iId) return;
 	data_item *l_oData = m_oControl->m_oItems.value(m_iId);
-	l_oData->m_sText = m_oEdit->toHtml();
-	l_oData->m_iTextLength = m_oEdit->toPlainText().length();
-	// no need to update here
+
+	mem_text* tmp = NULL;
+
+	mem_command *c = NULL;
+	if (!m_oControl->m_oUndoStack.empty())
+	{
+		c = m_oControl->m_oUndoStack.pop();
+		m_oControl->m_oUndoStack.push(c);
+		if (c->type() != mem_command::TEXT)
+		{
+			c = NULL;
+		}
+	}
+
+	tmp = (mem_text*) c;
+	if (!c) {
+		tmp = new mem_text(m_oControl);
+		tmp->sel = l_oData;
+		tmp->oldText = l_oData->m_sText;
+		while (!m_oControl->m_oRedoStack.isEmpty())
+			delete m_oControl->m_oRedoStack.pop();
+		m_oControl->m_oUndoStack.push(tmp);
+		m_oControl->check_undo(true);
+	}
+	tmp->newText = tmp->sel->m_sText = m_oEdit->toHtml();
+	tmp->sel->m_iTextLength = m_oEdit->toPlainText().length();
+	//qDebug()<<m_oControl->m_oUndoStack.size();
 }
 
 void text_view::text_bold()
@@ -194,7 +219,33 @@ void text_view::char_format_changed(const QTextCharFormat &i_oFormat)
 	m_oUnderLineAct->setChecked(l_oF.underline());
 }
 
+void text_view::notify_text(int id) {
+	if (id == m_iId) {
+		data_item *sel = *m_oControl + id;
+		m_oEdit->setHtml(sel->m_sText);
+	}
+}
 
+void text_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
+	bool one = (sel.size() == 1);
+	m_iId = NO_ITEM;
+
+	m_oEdit->setReadOnly(!one);
+	m_oEdit->setEnabled(one);
+	m_oEdit->setCheckSpellingEnabled(one);
+
+	m_oBoldAct->setEnabled(one);
+	m_oItalicAct->setEnabled(one);
+	m_oUnderLineAct->setEnabled(one);
+
+	if (one) {
+		data_item *l_oData = m_oControl->m_oItems.value(sel.at(0));
+		m_oEdit->setHtml(l_oData->m_sText);
+		m_iId = sel.at(0);
+	} else {
+		m_oEdit->clear();
+	}
+}
 
 #include "text_view.moc"
 

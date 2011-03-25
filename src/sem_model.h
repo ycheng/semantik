@@ -55,6 +55,7 @@ class sem_model: public QObject
 		void sig_repaint(int id);
 		void sig_flag(int id);
 		void sig_edit(int id);
+		void sig_text(int id);
 		void sig_datatype(int id);
 
 		void enable_undo(bool, bool);
@@ -123,6 +124,7 @@ class sem_model: public QObject
 		void notify_move(const QList<int>&sel, const QList<QPointF>&pos);
 		void notify_repaint(int id);
 		void notify_edit(int id);
+		void notify_text(int id);
 		void notify_flag(int id);
 		void notify_datatype(int id);
 

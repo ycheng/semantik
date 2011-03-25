@@ -9,6 +9,8 @@
 n.h"
 
 #include <QToolBar>
+#include <QList>
+
 class KTextEdit;
 class semantik_win;
 class text_view : public QWidget
@@ -42,6 +44,8 @@ class text_view : public QWidget
 		void text_underLine();
 
 		void char_format_changed(const QTextCharFormat&);
+		void notify_select(const QList<int>& unsel, const QList<int>& sel);
+		void notify_text(int id);
 };
 
 #endif

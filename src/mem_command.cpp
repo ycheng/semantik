@@ -360,3 +360,20 @@ void mem_datatype::undo() {
 	model->notify_datatype(sel->m_iId);
 }
 
+///////////////////////////////////////////////////////////////////
+
+mem_text::mem_text(sem_model* mod) : mem_command(mod) {
+}
+
+void mem_text::redo() {
+	sel->m_sText = newText;
+	model->notify_text(sel->m_iId);
+}
+
+void mem_text::undo() {
+	sel->m_sText = oldText;
+	model->notify_text(sel->m_iId);
+}
+
+
+
