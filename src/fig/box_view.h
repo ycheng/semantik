@@ -97,6 +97,8 @@ class box_view : public QGraphicsView
 
 		void slot_penstyle();
 		void slot_penwidth();
+
+		void notify_add_item(int);
 };
 
 #endif

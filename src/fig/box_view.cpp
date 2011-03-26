@@ -263,18 +263,17 @@ void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 	check_canvas_size();
 }
 
+void box_view::notify_add_item(int id)
+{
+	m_iId = id;
+	setEnabled(true);
+}
+
 void box_view::synchro_doc(const hash_params& i_o)
 {
 	int l_iCmd = i_o[data_commande].toInt();
 	switch (l_iCmd)
 	{
-		case cmd_add_item:
-			{
-				m_iId = i_o[data_id].toInt();
-				setEnabled(true);
-			}
-			break;
-
 		case cmd_select_item:
 			{
 				int l_iOldId = m_iId;
