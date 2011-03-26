@@ -57,6 +57,7 @@ class sem_model: public QObject
 		void sig_edit(int id);
 		void sig_text(int id);
 		void sig_datatype(int id);
+		void sig_preview();
 
 		void enable_undo(bool, bool);
 

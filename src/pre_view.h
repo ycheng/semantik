@@ -21,7 +21,7 @@ class pre_view : public QStackedWidget
 
 
 	public slots:
-		void synchro_doc(const hash_params&);
+		void notify_preview();
 };
 
 #endif

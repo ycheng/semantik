@@ -297,11 +297,11 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 
 	connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oImageView, SLOT(synchro_doc(const hash_params&)));
 	connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oVarsView, SLOT(synchro_doc(const hash_params&)));
-	connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oPreView, SLOT(synchro_doc(const hash_params&)));
 	connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oDiagramView, SLOT(synchro_doc(const hash_params&)));
 
 
 	linear_view* ln = m_oTree->m_oView;
+	connect(m_oControl, SIGNAL(sig_preview()), m_oPreView, SLOT(notify_preview()));
 	connect(m_oControl, SIGNAL(sig_add_item(int)), m_oCanvas, SLOT(notify_add_item(int)));
 	connect(m_oControl, SIGNAL(sig_add_item(int)), ln, SLOT(notify_add_item(int)));
 	connect(m_oControl, SIGNAL(sig_delete_item(int)), m_oCanvas, SLOT(notify_delete_item(int)));

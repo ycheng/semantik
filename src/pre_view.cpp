@@ -24,50 +24,38 @@ pre_view::pre_view(QWidget *i_oParent, sem_model *i_oControl) : QStackedWidget(i
 	addWidget(m_oLabel);
 
 	/*m_oBrowserObject = new KHTMLPart(this, this);
-	m_oBrowser = m_oBrowserObject->widget(); //new QTextBrowser(this);
-	addWidget(m_oBrowser);*/
+	  m_oBrowser = m_oBrowserObject->widget(); //new QTextBrowser(this);
+	  addWidget(m_oBrowser);*/
 	m_oBrowser = new browser(this);
 	addWidget(m_oBrowser);
 }
 
-void pre_view::synchro_doc(const hash_params&i_o)
+void pre_view::notify_preview()
 {
-	int l_iCmd = i_o[data_commande].toInt();
-	switch (l_iCmd)
+	QString l_s = bind_node::get_var(notr("preview"));
+	if (l_s.endsWith(notr(".html")))
 	{
-		case cmd_pre_view:
-			{
-				QString l_s = bind_node::get_var(notr("preview"));
-				if (l_s.endsWith(notr(".html")))
-				{
-					if (m_oBrowser->url() == QUrl(l_s))
-					{
-						m_oBrowser->reload();
-					}
-					else
-					{
-						m_oBrowser->load(QUrl(l_s));
-						m_oBrowser->show();
-					}
-					setCurrentWidget(m_oBrowser);
-				}
-				else if (l_s.endsWith(notr(".tex")))
-				{
-					//m_oBrowser->openUrl(KUrl(l_s));
-					//setCurrentWidget(m_oBrowser);
-				}
-				else
-				{
-					setCurrentWidget(m_oLabel);
-				}
-			}
-			break;
-		case cmd_open_map:
-			setCurrentWidget(m_oLabel);
-			break;
-		default:
-			break;
+		if (m_oBrowser->url() == QUrl(l_s))
+		{
+			m_oBrowser->reload();
+		}
+		else
+		{
+			m_oBrowser->load(QUrl(l_s));
+			m_oBrowser->show();
+		}
+		setCurrentWidget(m_oBrowser);
 	}
+	else if (l_s.endsWith(notr(".tex")))
+	{
+		//m_oBrowser->openUrl(KUrl(l_s));
+		//setCurrentWidget(m_oBrowser);
+	}
+	else
+	{
+		setCurrentWidget(m_oLabel);
+	}
+
 }
 
 #include "pre_view.moc"

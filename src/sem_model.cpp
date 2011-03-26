@@ -1154,9 +1154,7 @@ void sem_model::generate_docs(const QString &i_oFile, const QString &i_sDirName,
 	delete bind_node::_root;
 	bind_node::_root = NULL;
 
-	hash_params l_oCmd;
-	l_oCmd.insert(data_commande, QVariant(cmd_pre_view));
-	emit synchro(l_oCmd);
+	emit sig_preview();
 }
 
 bind_node* sem_model::create_tree(int i_i)
