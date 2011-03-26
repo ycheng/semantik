@@ -27,7 +27,7 @@ class table_view : public QTableWidget
 		bool m_bFreeze;
 
 	public slots:
-		void synchro_doc(const hash_params&);
+		//void synchro_doc(const hash_params&);
 		void rm_row();
 		void rm_column();
 		void add_row();

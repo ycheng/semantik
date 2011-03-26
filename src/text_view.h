@@ -35,8 +35,6 @@ class text_view : public QWidget
 		QAction *m_oUnderLineAct;
 
 	public slots:
-		void synchro_doc(const hash_params&);
-		void update_summary(const QString &);
 		void update_edit();
 
 		void text_bold();

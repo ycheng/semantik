@@ -53,6 +53,7 @@ table_view::table_view(QWidget *i_oParent, sem_model *i_oControl) : QTableWidget
 	connect(this, SIGNAL(cellChanged(int, int)), this, SLOT(cell_changed(int, int)));
 }
 
+/*
 void table_view::synchro_doc(const hash_params& i_o)
 {
 	int l_iCmd = i_o[data_commande].toInt();
@@ -92,6 +93,7 @@ void table_view::synchro_doc(const hash_params& i_o)
 			break;
 	}
 }
+*/
 
 void table_view::mousePressEvent(QMouseEvent *i_oEv)
 {

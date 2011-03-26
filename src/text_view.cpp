@@ -76,76 +76,8 @@ text_view::text_view(QWidget *i_oParent, sem_model *i_oControl) : QWidget(i_oPar
 	connect(m_oUnderLineAct, SIGNAL(triggered()), this, SLOT(text_underLine()));
 }
 
-void text_view::synchro_doc(const hash_params& i_o)
-{ /*
-	int l_iCmd = i_o[data_commande].toInt();
-	switch (l_iCmd)
-	{
-		case cmd_add_item:
-			m_iId = i_o[data_id].toInt();
-			break;
-
-		case cmd_select_item:
-			{
-				m_iId = i_o[data_id].toInt();
-				bool l_bCond = !m_iId;
-				if (l_bCond)
-				{
-					m_oEdit->clear();
-					m_oLineEdit->clear();
-				}
-				else
-				{
-					data_item *l_oData = m_oControl->m_oItems.value(m_iId);
-					m_oLineEdit->setText(l_oData->m_sSummary);
-					m_oEdit->setHtml(l_oData->m_sText);
-				}
-
-				m_oEdit->setReadOnly(l_bCond);
-				m_oLineEdit->setReadOnly(l_bCond);
-
-				m_oLineEdit->setEnabled(!l_bCond);
-				m_oEdit->setEnabled(!l_bCond);
-				m_oEdit->setCheckSpellingEnabled(!l_bCond);
-
-				m_oBoldAct->setEnabled(!l_bCond);
-				m_oItalicAct->setEnabled(!l_bCond);
-				m_oUnderLineAct->setEnabled(!l_bCond);
-			}
-			break;
-		case cmd_update_item:
-			{
-				int l_oId = i_o[data_id].toInt();
-				if (m_iId)
-				{
-					data_item *l_oData = m_oControl->m_oItems.value(m_iId);
-					if (l_oId == m_iId)
-					{
-						//m_oLineEdit->setText(l_oData->m_sSummary);
-					}
-				}
-				m_iId = l_oId;
-			}
-			break;
-		default:
-			break;
-	}
-	*/
-}
-
-void text_view::update_summary(const QString & i_s)
-{
-	if (!m_iId) return;
-	data_item *l_oData = m_oControl->m_oItems.value(m_iId);
-
-	bool l_b = (l_oData->m_sSummary != i_s);
-	l_oData->m_sSummary = i_s;
-	if (l_b) m_oControl->update_item(m_iId, VIEW_TEXT);
-}
-
 void text_view::update_edit()
 {
-	//qDebug()<<m_oControl->m_oUndoStack.size();
 	if (!m_iId) return;
 	data_item *l_oData = m_oControl->m_oItems.value(m_iId);
 
@@ -171,7 +103,6 @@ void text_view::update_edit()
 	}
 	tmp->newText = tmp->sel->m_sText = m_oEdit->toHtml();
 	tmp->sel->m_iTextLength = m_oEdit->toPlainText().length();
-	//qDebug()<<m_oControl->m_oUndoStack.size();
 }
 
 void text_view::text_bold()
