@@ -20,6 +20,7 @@ class mem_command {
 		virtual void undo() = 0;
 		virtual void redo() = 0;
 		virtual void apply();
+		void add();
 
 		enum IType {DELETE, ADD, LINK, UNLINK, SELECT, MOVE, COLOR, FLAG, EDIT, DATATYPE, TEXT};
 		virtual IType type() = 0;

@@ -14,12 +14,17 @@ mem_command::mem_command(sem_model* mod) {
 }
 
 void mem_command::apply() {
-	//qDebug()<<"apply begin"<<model->m_oUndoStack.size()<<model->m_oRedoStack.size();
 	while (!model->m_oRedoStack.isEmpty())
 		delete model->m_oRedoStack.pop();
 	redo();
 	model->m_oUndoStack.push(this);
-	//qDebug()<<"apply end"<<model->m_oUndoStack.size()<<model->m_oRedoStack.size();
+	model->check_undo(true);
+}
+
+void mem_command::add() {
+	while (!model->m_oRedoStack.isEmpty())
+		delete model->m_oRedoStack.pop();
+	model->m_oUndoStack.push(this);
 	model->check_undo(true);
 }
 

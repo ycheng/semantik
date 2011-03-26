@@ -167,10 +167,7 @@ void text_view::update_edit()
 		tmp = new mem_text(m_oControl);
 		tmp->sel = l_oData;
 		tmp->oldText = l_oData->m_sText;
-		while (!m_oControl->m_oRedoStack.isEmpty())
-			delete m_oControl->m_oRedoStack.pop();
-		m_oControl->m_oUndoStack.push(tmp);
-		m_oControl->check_undo(true);
+		tmp->add();
 	}
 	tmp->newText = tmp->sel->m_sText = m_oEdit->toHtml();
 	tmp->sel->m_iTextLength = m_oEdit->toPlainText().length();
