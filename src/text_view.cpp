@@ -218,8 +218,10 @@ void text_view::char_format_changed(const QTextCharFormat &i_oFormat)
 
 void text_view::notify_text(int id) {
 	if (id == m_iId) {
+		m_iId = NO_ITEM; // do not trigger the signal changed
 		data_item *sel = *m_oControl + id;
 		m_oEdit->setHtml(sel->m_sText);
+		m_iId = id;
 	}
 }
 
