@@ -269,14 +269,11 @@ void box_view::notify_add_item(int id)
 	setEnabled(true);
 }
 
-void box_view::synchro_doc(const hash_params& i_o)
-{
-	int l_iCmd = i_o[data_commande].toInt();
-	switch (l_iCmd)
-	{
-		case cmd_select_item:
-			{
-				int l_iOldId = m_iId;
+void box_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
+	bool one = (sel.size() == 1);
+	m_iId = NO_ITEM;
+
+	/*
 				if (l_iOldId)
 				{
 					data_item *l_oData = m_oControl->m_oItems.value(l_iOldId);
@@ -297,8 +294,22 @@ void box_view::synchro_doc(const hash_params& i_o)
 					if (l_oData and l_oData->m_iDataType == VIEW_DIAG)
 						from_string(l_oData->m_sDiag);
 				}
-			}
-			break;
+
+	if (one) {
+		data_item *l_oData = m_oControl->m_oItems.value(sel.at(0));
+		m_oEdit->setHtml(l_oData->m_sText);
+		m_iId = sel.at(0);
+	} else {
+		m_oEdit->clear();
+	}*/
+}
+
+/*
+void box_view::synchro_doc(const hash_params& i_o)
+{
+	int l_iCmd = i_o[data_commande].toInt();
+	switch (l_iCmd)
+	{
 		case cmd_save_data:
 			{
 				if (not m_iId) break;
@@ -350,7 +361,7 @@ void box_view::synchro_doc(const hash_params& i_o)
 		default:
 			break;
 	}
-}
+} */
 
 void box_view::mousePressEvent(QMouseEvent *i_oEv)
 {

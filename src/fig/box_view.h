@@ -93,12 +93,12 @@ class box_view : public QGraphicsView
 
 		void slot_move_up();
 		void slot_move_down();
-		void synchro_doc(const hash_params& i_o);
 
 		void slot_penstyle();
 		void slot_penwidth();
 
 		void notify_add_item(int);
+		void notify_select(const QList<int>& unsel, const QList<int>& sel);
 };
 
 #endif
