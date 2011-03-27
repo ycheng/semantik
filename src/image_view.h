@@ -38,10 +38,10 @@ class image_view : public QWidget
 		void sig_message(const QString&, int);
 
 	public slots:
-		void synchro_doc(const hash_params&);
 		void clear_pic();
 		void change_pic();
 		void context_menu(const QPoint&);
+		void notify_select(const QList<int>& unsel, const QList<int>& sel);
 };
 
 #endif

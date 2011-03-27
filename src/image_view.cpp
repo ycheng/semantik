@@ -95,29 +95,17 @@ void image_view::paintEvent(QPaintEvent*)
 	}
 }
 
-void image_view::synchro_doc(const hash_params & i_o)
-{
-	int l_iCmd = i_o[data_commande].toInt();
-	switch (l_iCmd)
-	{
-		case cmd_select_item:
-			{
-				m_iId = i_o[data_id].toInt();
-				if (m_iId <= NO_ITEM)
-				{
-					m_oPixmap = QPixmap();
-				}
-				else
-				{
-					data_item *l_oData = m_oControl->m_oItems.value(m_iId);
-					m_oPixmap = l_oData->m_oPix;
-				}
-				repaint();
-			}
-			break;
-		default:
-			break;
+void image_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
+	bool one = (sel.size() == 1);
+	if (one) {
+		m_iId = sel.at(0);
+		data_item *l_oData = m_oControl->m_oItems.value(m_iId);
+		m_oPixmap = l_oData->m_oPix;
+	} else {
+		m_oPixmap = QPixmap();
+		m_iId = NO_ITEM;
 	}
+	repaint();
 }
 
 void image_view::clear_pic()
