@@ -21,6 +21,8 @@
 #include "sem_model.h"
 #include "image_view.h"
 
+// FIXME change the pictures
+
 image_view::image_view(QWidget *i_oParent, sem_model *i_oControl) : QWidget(i_oParent)
 {
 	setCursor(Qt::PointingHandCursor);
@@ -30,12 +32,10 @@ image_view::image_view(QWidget *i_oParent, sem_model *i_oControl) : QWidget(i_oP
 	setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(context_menu(const QPoint&)));
 
-	///* FIXME cette action n'a pas de raccourci */
 	m_oChangePictureAction = new QAction(trUtf8("Change picture"), this);
         connect(m_oChangePictureAction, SIGNAL(triggered()), this, SLOT(change_pic()));
 	addAction(m_oChangePictureAction);
 
-	///* FIXME cette action n'a pas de raccourci */
 	m_oClearPictureAction = new QAction(trUtf8("Clear picture"), this);
         connect(m_oClearPictureAction, SIGNAL(triggered()), this, SLOT(clear_pic()));
 	addAction(m_oClearPictureAction);

@@ -22,7 +22,7 @@ class mem_command {
 		virtual void apply();
 		void add();
 
-		enum IType {DELETE, ADD, LINK, UNLINK, SELECT, MOVE, COLOR, FLAG, EDIT, DATATYPE, TEXT, VARS};
+		enum IType {DELETE, ADD, LINK, UNLINK, SELECT, MOVE, COLOR, FLAG, EDIT, DATATYPE, TEXT, VARS, PIC};
 		virtual IType type() = 0;
 };
 
@@ -162,6 +162,17 @@ class mem_vars: public mem_command {
 		QString oldVars;
 		QString newVars;
 		IType type() { return VARS; }
+};
+
+class mem_pic: public mem_command {
+	public:
+		mem_pic(sem_model*);
+		void undo();
+		void redo();
+		data_item *sel;
+		QPixmap oldPix;
+		QPixmap newPix;
+		IType type() { return PIC; }
 };
 
 #endif

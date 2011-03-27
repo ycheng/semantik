@@ -411,3 +411,18 @@ void mem_vars::undo() {
 	model->notify_vars(m_iId);
 }
 
+///////////////////////////////////////////////////////////////////
+
+mem_pic::mem_pic(sem_model* mod) : mem_command(mod) {
+}
+
+void mem_pic::redo() {
+	sel->m_oPix = newPix;
+	model->notify_pic(sel->m_iId);
+}
+
+void mem_pic::undo() {
+	sel->m_oPix = oldPix;
+	model->notify_pic(sel->m_iId);
+}
+
