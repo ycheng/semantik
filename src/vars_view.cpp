@@ -88,8 +88,14 @@ void vars_view::init_completer()
 void vars_view::notify_vars(int id) {
 	if (id == m_iId) {
 		m_bLockEdit = true;
-		data_item *sel = *m_oControl + id;
-		setText(sel->m_sHints);
+		if (id != NO_ITEM) {
+			data_item *sel = *m_oControl + id;
+			setText(sel->m_sHints);
+		}
+		else
+		{
+			setText(m_oControl->m_sHints);
+		}
 		m_bLockEdit = false;
 	}
 }
