@@ -22,6 +22,7 @@ vars_view::vars_view(QWidget *i_oParent, sem_model *i_oControl) : QTextEdit(i_oP
 
 	m_iId = NO_ITEM;
 	m_oCompleter = NULL;
+	m_bLockEdit = false;
 }
 
 void vars_view::init_completer()
@@ -84,9 +85,18 @@ void vars_view::init_completer()
 #endif
 }
 
+void vars_view::notify_vars(int id) {
+	if (id == m_iId) {
+		m_bLockEdit = true;
+		data_item *sel = *m_oControl + id;
+		setText(sel->m_sHints);
+		m_bLockEdit = false;
+	}
+}
+
 void vars_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 	bool one = (sel.size() == 1);
-
+	m_bLockEdit = true;
 	if (one) {
 		m_iId = sel.at(0);
 		data_item *l_oData = m_oControl->m_oItems.value(m_iId);
@@ -97,18 +107,52 @@ void vars_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 		m_oCompleter = m_oCompleterAll;
 		setText(m_oControl->m_sHints);
 	}
+	m_bLockEdit = false;
 }
 
 void vars_view::update_edit()
 {
+	if (m_bLockEdit) return;
+
+	mem_vars* tmp = NULL;
+
+	mem_command *c = NULL;
+	if (!m_oControl->m_oUndoStack.empty())
+	{
+		c = m_oControl->m_oUndoStack.pop();
+		m_oControl->m_oUndoStack.push(c);
+		if (c->type() != mem_command::VARS)
+		{
+			c = NULL;
+		}
+	}
+
+	tmp = (mem_vars*) c;
+	if (!c)
+	{
+		tmp = new mem_vars(m_oControl);
+		tmp->m_iId = m_iId;
+		if (m_iId)
+		{
+			data_item *l_oData = m_oControl->m_oItems.value(m_iId);
+			tmp->oldVars = l_oData->m_sHints;
+		}
+		else
+		{
+			tmp->oldVars = m_oControl->m_sHints;
+		}
+		tmp->add();
+	}
+	tmp->newVars = toPlainText();
+
 	if (m_iId)
 	{
 		data_item *l_oData = m_oControl->m_oItems.value(m_iId);
-		l_oData->m_sHints = toPlainText();
+		l_oData->m_sHints = tmp->newVars;
 	}
 	else
 	{
-		m_oControl->m_sHints = toPlainText();
+		m_oControl->m_sHints = tmp->newVars;
 	}
 }
 

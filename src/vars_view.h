@@ -30,6 +30,7 @@ class vars_view : public QTextEdit
 		vars_view(QWidget *i_oParent, sem_model *i_oControl);
 		sem_model *m_oControl;
 		int m_iId;
+		bool m_bLockEdit;
 		QCompleter *m_oCompleter;
 		QCompleter *m_oCompleterItem;
 		QCompleter *m_oCompleterAll;
@@ -42,6 +43,7 @@ class vars_view : public QTextEdit
 		void do_complete(const QString &);
 		void try_complete();
 		void notify_select(const QList<int>& unsel, const QList<int>& sel);
+		void notify_vars(int);
 };
 
 #endif

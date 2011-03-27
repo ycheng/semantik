@@ -158,7 +158,7 @@ class mem_vars: public mem_command {
 		mem_vars(sem_model*);
 		void undo();
 		void redo();
-		data_item *sel;
+		int m_iId;
 		QString oldVars;
 		QString newVars;
 		IType type() { return VARS; }

@@ -386,13 +386,28 @@ mem_vars::mem_vars(sem_model* mod) : mem_command(mod) {
 }
 
 void mem_vars::redo() {
-	sel->m_sHints = newVars;
-	model->notify_vars(sel->m_iId);
+	if (m_iId == NO_ITEM)
+	{
+		model->m_sHints = newVars;
+	}
+	else
+	{
+		data_item *item = model->m_oItems[m_iId];
+		item->m_sHints = newVars;
+	}
+	model->notify_vars(m_iId);
 }
 
 void mem_vars::undo() {
-	sel->m_sHints = oldVars;
-	model->notify_vars(sel->m_iId);
+	if (m_iId == NO_ITEM)
+	{
+		model->m_sHints = oldVars;
+	}
+	else
+	{
+		data_item *item = model->m_oItems[m_iId];
+		item->m_sHints = oldVars;
+	}
+	model->notify_vars(m_iId);
 }
-
 
