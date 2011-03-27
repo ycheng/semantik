@@ -238,6 +238,8 @@ void canvas_view::edit_off() {
 
 void canvas_view::slot_toggle_edit()
 {
+	if (!hasFocus()) return;
+
 	canvas_item* sel = NULL;
 	foreach (QGraphicsItem *tmp, items()) {
 		if (tmp->type() == CANVAS_ITEM_T && tmp->isSelected()) {

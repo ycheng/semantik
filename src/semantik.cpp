@@ -296,7 +296,6 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	m_oFlagsToolBar = toolBar(notr("flagsToolBar"));
 
 	connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oImageView, SLOT(synchro_doc(const hash_params&)));
-	connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oVarsView, SLOT(synchro_doc(const hash_params&)));
 	connect(m_oControl, SIGNAL(synchro(const hash_params&)), m_oDiagramView, SLOT(synchro_doc(const hash_params&)));
 
 	linear_view* ln = m_oTree->m_oView;
@@ -314,6 +313,7 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	connect(m_oControl, SIGNAL(sig_repaint(int)), m_oCanvas, SLOT(notify_repaint(int)));
 	connect(m_oControl, SIGNAL(sig_edit(int)), m_oCanvas, SLOT(notify_edit(int)));
 	connect(m_oControl, SIGNAL(sig_text(int)), m_oTextView, SLOT(notify_text(int)));
+	connect(m_oControl, SIGNAL(sig_vars(int)), m_oVarsView, SLOT(notify_vars(int)));
 
 	connect(m_oControl, SIGNAL(sig_flag(int)), m_oCanvas, SLOT(notify_flag(int)));
 	connect(m_oControl, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), m_oCanvas, SLOT(notify_select(const QList<int>&, const QList<int>&)));

@@ -84,29 +84,18 @@ void vars_view::init_completer()
 #endif
 }
 
-void vars_view::synchro_doc(const hash_params&i_o)
-{
-	int l_iCmd = i_o[data_commande].toInt();
-	switch (l_iCmd)
-	{
-		case cmd_select_item:
-			{
-				m_iId = i_o[data_id].toInt();
-				if (m_iId > NO_ITEM)
-				{
-					m_oCompleter = m_oCompleterItem;
-					data_item *l_oData = m_oControl->m_oItems.value(m_iId);
-					setText(l_oData->m_sHints);
-				}
-				else
-				{
-					m_oCompleter = m_oCompleterAll;
-					setText(m_oControl->m_sHints);
-				}
-			}
-			break;
-		default:
-			break;
+void vars_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
+	bool one = (sel.size() == 1);
+
+	if (one) {
+		m_iId = sel.at(0);
+		data_item *l_oData = m_oControl->m_oItems.value(m_iId);
+		m_oCompleter = m_oCompleterItem;
+		setText(l_oData->m_sHints);
+	} else {
+		m_iId = NO_ITEM;
+		m_oCompleter = m_oCompleterAll;
+		setText(m_oControl->m_sHints);
 	}
 }
 

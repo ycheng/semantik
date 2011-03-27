@@ -3,6 +3,7 @@
 #ifndef VARS_VIEW_H
 #define VARS_VIEW_H
 
+#include <QList>
 #include <QTreeWidget>
 #include <QSyntaxHighlighter>
 
@@ -37,10 +38,10 @@ class vars_view : public QTextEdit
 		void init_completer();
 
 	public slots:
-		void synchro_doc(const hash_params&);
 		void update_edit();
 		void do_complete(const QString &);
 		void try_complete();
+		void notify_select(const QList<int>& unsel, const QList<int>& sel);
 };
 
 #endif

@@ -380,5 +380,19 @@ void mem_text::undo() {
 	model->notify_text(sel->m_iId);
 }
 
+///////////////////////////////////////////////////////////////////
+
+mem_vars::mem_vars(sem_model* mod) : mem_command(mod) {
+}
+
+void mem_vars::redo() {
+	sel->m_sHints = newVars;
+	model->notify_vars(sel->m_iId);
+}
+
+void mem_vars::undo() {
+	sel->m_sHints = oldVars;
+	model->notify_vars(sel->m_iId);
+}
 
 
