@@ -108,48 +108,6 @@ void linear_view::synchro_doc(const hash_params&i_o)
 			break;
 		case cmd_select_item:
 			{
-				m_bLockSelect = true;
-
-				if (i_o[data_orig].toInt() == VIEW_LINEAR)
-				{
-					m_bLockSelect = false;
-					return;
-				}
-
-				int l_iId = i_o[data_id].toInt();
-
-				QList<QTreeWidgetItem *> l_oLst = selectedItems();
-				if (l_oLst.size()>1)
-				{
-					foreach (QTreeWidgetItem* l_oItem, l_oLst)
-					{
-						l_oItem->setSelected(false);
-					}
-				}
-				else if (l_oLst.size()==1)
-				{
-					QTreeWidgetItem *l_oItem = l_oLst.at(0);
-					int l_iIdOld = l_oItem->data(0, Qt::UserRole).toInt();
-					if (l_iIdOld != l_iId)
-					{
-						l_oItem->setSelected(false);
-						if (l_iId>0)
-						{
-							m_oItems.value(l_iId)->setSelected(true);
-							m_oItems.value(l_iId)->setExpanded(true);
-						}
-					}
-				}
-				else
-				{
-					//TODO dead code above
-					if (l_iId>NO_ITEM)
-					{
-						m_oItems.value(l_iId)->setSelected(true);
-						m_oItems.value(l_iId)->setExpanded(true);
-					}
-				}
-				m_bLockSelect = false;
 			}
 			break;
 		case cmd_link:
@@ -330,7 +288,26 @@ void linear_view::dropEvent(QDropEvent *i_oEv)
 }
 
 void linear_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
-	//qDebug()<<"linear_view::notify_select";
+	m_bLockSelect = true;
+
+	QList<QTreeWidgetItem *> l_oLst = selectedItems();
+	foreach (QTreeWidgetItem* l_oItem, l_oLst)
+	{
+		int id = l_oItem->data(0, Qt::UserRole).toInt();
+		if (!sel.contains(id))
+		{
+			l_oItem->setSelected(false);
+		}
+	}
+
+	foreach (int id, sel)
+	{
+		QTreeWidgetItem *item = m_oItems.value(id);
+		item->setSelected(true);
+		item->setExpanded(true);
+	}
+
+	m_bLockSelect = false;
 }
 
 #include "linear_view.moc"
