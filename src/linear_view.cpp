@@ -106,10 +106,6 @@ void linear_view::synchro_doc(const hash_params&i_o)
 				l_oItem->setBackgroundColor(0, l_o->get_color_scheme().m_oInnerColor);
 			}
 			break;
-		case cmd_select_item:
-			{
-			}
-			break;
 		case cmd_link:
 			{
 				QTreeWidgetItem *l_oItem1 = m_oItems.value(i_o[data_id].toInt());
@@ -308,6 +304,13 @@ void linear_view::notify_select(const QList<int>& unsel, const QList<int>& sel) 
 	}
 
 	m_bLockSelect = false;
+}
+
+void linear_view::notify_repaint(int id)
+{
+	QTreeWidgetItem *l_oItem = m_oItems.value(id);
+	data_item *l_o = m_oControl->m_oItems.value(id);
+	l_oItem->setBackgroundColor(0, l_o->get_color_scheme().m_oInnerColor);
 }
 
 #include "linear_view.moc"

@@ -239,8 +239,8 @@ def post_build(bld):
 	try:
 		os.popen('dot -Tpng me.dot -ofoo.png').read()
 	except:
-		print "the dot program was not found - install graphviz?"
+		Logs.pprint("the dot program was not found - install graphviz?")
 	else:
-		print "generated foo.png"
+		Logs.pprint("generated foo.png")
 
 

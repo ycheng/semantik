@@ -308,6 +308,8 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	connect(m_oControl, SIGNAL(sig_unlink_items(int, int)), m_oCanvas, SLOT(notify_unlink_items(int, int)));
 	connect(m_oControl, SIGNAL(sig_unlink_items(int, int)), ln, SLOT(notify_unlink_items(int, int)));
 	connect(m_oControl, SIGNAL(sig_repaint(int)), m_oCanvas, SLOT(notify_repaint(int)));
+	connect(m_oControl, SIGNAL(sig_repaint(int)), ln, SLOT(notify_repaint(int)));
+
 	connect(m_oControl, SIGNAL(sig_edit(int)), m_oCanvas, SLOT(notify_edit(int)));
 	connect(m_oControl, SIGNAL(sig_text(int)), m_oTextView, SLOT(notify_text(int)));
 	connect(m_oControl, SIGNAL(sig_vars(int)), m_oVarsView, SLOT(notify_vars(int)));
@@ -320,7 +322,7 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	connect(m_oControl, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), m_oVarsView, SLOT(notify_select(const QList<int>&, const QList<int>&)));
 	connect(m_oControl, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), m_oImageView, SLOT(notify_select(const QList<int>&, const QList<int>&)));
 	connect(m_oControl, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), m_oDiagramView, SLOT(notify_select(const QList<int>&, const QList<int>&)));
-	connect(m_oControl, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), m_oTree, SLOT(notify_select(const QList<int>&, const QList<int>&)));
+	connect(m_oControl, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), ln, SLOT(notify_select(const QList<int>&, const QList<int>&)));
 
 	connect(m_oControl, SIGNAL(sig_datatype(int)), m_oDataView, SLOT(notify_datatype(int)));
 

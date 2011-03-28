@@ -34,6 +34,7 @@ class linear_view : public QTreeWidget
 		void selection_changed();
 
 		void notify_add_item(int id);
+		void notify_repaint(int id);
 		void notify_delete_item(int id);
 		void notify_link_items(int id1, int id2);
 		void notify_unlink_items(int id1, int id2);
