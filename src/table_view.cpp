@@ -16,7 +16,7 @@
 table_view::table_view(QWidget *i_oParent, sem_model *i_oControl) : QTableWidget(0, 0, i_oParent)
 {
 	m_oControl = i_oControl;
-	m_bFreeze = 0;
+	m_bFreeze = false;
 
 	m_oAddRowAct = new QAction(trUtf8("Add Row"), this);
 	m_oAddRowAct->setStatusTip(trUtf8("Add a row"));
@@ -64,29 +64,6 @@ void table_view::synchro_doc(const hash_params& i_o)
 				m_iId = i_o[data_id].toInt();
 				setEnabled(m_iId > NO_ITEM);
 
-				if (m_iId > NO_ITEM)
-				{
-					m_bFreeze = 1;
-					data_item *l_oData = m_oControl->m_oItems.value(m_iId);
-
-					Q_ASSERT(l_oData!=NULL);
-
-					setRowCount(l_oData->m_iNumRows);
-					setColumnCount(l_oData->m_iNumCols);
-
-					foreach(data_table_item l_o, l_oData->m_oTableData)
-					{
-						QTableWidgetItem *l_oItem = new QTableWidgetItem();
-						l_oItem->setText(l_o.m_sText);
-						setItem(l_o.m_iRow, l_o.m_iCol, l_oItem);
-					}
-					m_bFreeze = 0;
-				}
-				else
-				{
-					setRowCount(0);
-					setColumnCount(0);
-				}
 			}
 			break;
 		default:
@@ -193,6 +170,33 @@ void table_view::resize_table()
 			}
 		}
 	}
+}
+
+void table_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
+	bool one = (sel.size() == 1);
+	if (one) {
+		m_bFreeze = true;
+		m_iId = sel.at(0);
+		data_item *l_oData = m_oControl->m_oItems.value(m_iId);
+
+		Q_ASSERT(l_oData!=NULL);
+
+		setRowCount(l_oData->m_iNumRows);
+		setColumnCount(l_oData->m_iNumCols);
+
+		foreach(data_table_item l_o, l_oData->m_oTableData)
+		{
+			QTableWidgetItem *l_oItem = new QTableWidgetItem();
+			l_oItem->setText(l_o.m_sText);
+			setItem(l_o.m_iRow, l_o.m_iCol, l_oItem);
+		}
+		m_bFreeze = false;
+	} else {
+		m_iId = NO_ITEM;
+		setRowCount(0);
+		setColumnCount(0);
+	}
+	repaint();
 }
 
 #include "table_view.moc"

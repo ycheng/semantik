@@ -8,6 +8,8 @@
 #in\
 clude "con.h"
 
+#include <QList>
+
 class table_view : public QTableWidget
 {
 	Q_OBJECT
@@ -27,13 +29,13 @@ class table_view : public QTableWidget
 		bool m_bFreeze;
 
 	public slots:
-		//void synchro_doc(const hash_params&);
 		void rm_row();
 		void rm_column();
 		void add_row();
 		void add_column();
 		void resize_table();
 		void cell_changed(int i_iRow, int i_iCol);
+		void notify_select(const QList<int>& unsel, const QList<int>& sel);
 };
 
 #endif
