@@ -8,6 +8,8 @@
 #include <QList>
 #include <QString>
 
+#include "data_item.h"
+
 class data_item;
 class sem_model;
 
@@ -22,7 +24,7 @@ class mem_command {
 		virtual void apply();
 		void add();
 
-		enum IType {DELETE, ADD, LINK, UNLINK, SELECT, MOVE, COLOR, FLAG, EDIT, DATATYPE, TEXT, VARS, PIC};
+		enum IType {DELETE, ADD, LINK, UNLINK, SELECT, MOVE, COLOR, FLAG, EDIT, DATATYPE, TEXT, VARS, PIC, TABLE};
 		virtual IType type() = 0;
 };
 
@@ -173,6 +175,21 @@ class mem_pic: public mem_command {
 		QPixmap oldPix;
 		QPixmap newPix;
 		IType type() { return PIC; }
+};
+
+class mem_table: public mem_command {
+	public:
+		mem_table(sem_model*);
+		void undo();
+		void redo();
+
+		int oldNRows;
+		int oldNCols;
+		int newNRows;
+		int newNCols;
+		data_table_item oldCell;
+		data_table_item newCell;
+		IType type() { return TABLE; }
 };
 
 #endif

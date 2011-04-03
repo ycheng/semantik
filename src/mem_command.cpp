@@ -426,3 +426,16 @@ void mem_pic::undo() {
 	model->notify_pic(sel->m_iId);
 }
 
+///////////////////////////////////////////////////////////////////
+
+mem_table::mem_table(sem_model* mod) : mem_command(mod) {
+}
+
+void mem_table::redo() {
+
+}
+
+void mem_table::undo() {
+
+}
+
