@@ -13,28 +13,32 @@
 #include "sem_model.h"
 #include "table_view.h"
 
+numbered_action::numbered_action(QString x, QWidget *y) : QAction(x, y) {
+
+}
+
 table_view::table_view(QWidget *i_oParent, sem_model *i_oControl) : QTableWidget(0, 0, i_oParent)
 {
 	m_oControl = i_oControl;
 	m_bFreeze = false;
 
-	m_oAddRowAct = new QAction(trUtf8("Add Row"), this);
+	m_oAddRowAct = new numbered_action(trUtf8("Add Row"), this);
 	m_oAddRowAct->setStatusTip(trUtf8("Add a row"));
         connect(m_oAddRowAct, SIGNAL(triggered()), this, SLOT(add_row()));
 	insertAction(0, m_oAddRowAct);
 
-	m_oAddColAct = new QAction(trUtf8("Add Column"), this);
+	m_oAddColAct = new numbered_action(trUtf8("Add Column"), this);
 	m_oAddColAct->setStatusTip(trUtf8("Add a column"));
         connect(m_oAddColAct, SIGNAL(triggered()), this, SLOT(add_column()));
 	insertAction(0, m_oAddColAct);
 
 
-	m_oRmRowAct = new QAction(trUtf8("Remove Row"), this);
+	m_oRmRowAct = new numbered_action(trUtf8("Remove Row"), this);
 	m_oRmRowAct->setStatusTip(trUtf8("Remove a row"));
         connect(m_oRmRowAct, SIGNAL(triggered()), this, SLOT(rm_row()));
 	insertAction(0, m_oRmRowAct);
 
-	m_oRmColAct = new QAction(trUtf8("Remove Column"), this);
+	m_oRmColAct = new numbered_action(trUtf8("Remove Column"), this);
 	m_oRmColAct->setStatusTip(trUtf8("Remove a column"));
         connect(m_oRmColAct, SIGNAL(triggered()), this, SLOT(rm_column()));
 	insertAction(0, m_oRmColAct);
@@ -53,25 +57,6 @@ table_view::table_view(QWidget *i_oParent, sem_model *i_oControl) : QTableWidget
 	connect(this, SIGNAL(cellChanged(int, int)), this, SLOT(cell_changed(int, int)));
 }
 
-/*
-void table_view::synchro_doc(const hash_params& i_o)
-{
-	int l_iCmd = i_o[data_commande].toInt();
-	switch (l_iCmd)
-	{
-		case cmd_select_item:
-			{
-				m_iId = i_o[data_id].toInt();
-				setEnabled(m_iId > NO_ITEM);
-
-			}
-			break;
-		default:
-			break;
-	}
-}
-*/
-
 void table_view::mousePressEvent(QMouseEvent *i_oEv)
 {
 	if (i_oEv->button() == Qt::RightButton)
@@ -79,6 +64,22 @@ void table_view::mousePressEvent(QMouseEvent *i_oEv)
 		bool l_b = currentRow()>=0 && currentColumn()>=0;
 		m_oRmColAct->setEnabled(l_b);
 		m_oRmRowAct->setEnabled(l_b);
+
+		QTableWidgetItem *t = itemAt(i_oEv->pos());
+		int i = 0;
+		int j = 0;
+		if (t != NULL)
+		{
+			i = t->row();
+			j = t->column();
+		}
+		m_oRmColAct->row = m_oRmRowAct->row = m_oAddRowAct->row = m_oAddColAct->row = i;
+		m_oRmColAct->col = m_oRmRowAct->col = m_oAddRowAct->col = m_oAddColAct->col = j;
+
+		m_oAddRowAct->setText(QString("%1 (%2)").arg(trUtf8("Add Row"), QString::number(i)));
+		m_oAddColAct->setText(QString("%1 (%2)").arg(trUtf8("Add Column"), QString::number(j)));
+		m_oRmRowAct->setText(QString("%1 (%2)").arg(trUtf8("Remove Row"), QString::number(i)));
+		m_oRmColAct->setText(QString("%1 (%2)").arg(trUtf8("Remove Column"), QString::number(j)));
 
 		QMenu::exec(actions(), i_oEv->globalPos());
 	}
@@ -121,30 +122,108 @@ void table_view::cell_changed(int i_iRow, int i_iCol)
 
 void table_view::add_row()
 {
-	insertRow(0);
 	data_item *l_oData = m_oControl->m_oItems.value(m_iId);
-	l_oData->m_iNumRows = rowCount();
+	QHash<QPair<int, int>, QString> changed;
+	for (int i=0; i < rowCount() + 1; ++i)
+	{
+		int ii = i;
+		if (ii >= m_oAddRowAct->row) ii++;
+		for (int j=0; j < columnCount(); ++j)
+		{
+			changed[QPair<int, int>(m_oAddRowAct->row, j)] = "";
+			changed[QPair<int, int>(ii, j)] = l_oData->m_oTableData[QPair<int, int>(i, j)];
+		}
+	}
+
+	mem_table *tmp = new mem_table(m_oControl);
+	tmp->m_iId = m_iId;
+	tmp->oldNRows = l_oData->m_iNumRows;
+	tmp->oldNCols = l_oData->m_iNumCols;
+	tmp->newNRows = rowCount() + 1;
+	tmp->newNCols = columnCount();
+	tmp->oldData = l_oData->m_oTableData;
+	tmp->newData = changed;
+	tmp->apply();
 }
 
 void table_view::add_column()
 {
-	insertColumn(0);
 	data_item *l_oData = m_oControl->m_oItems.value(m_iId);
-	l_oData->m_iNumCols = columnCount();
+	QHash<QPair<int, int>, QString> changed;
+	for (int i=0; i < rowCount(); ++i)
+	{
+		for (int j=0; j < columnCount() + 1; ++j)
+		{
+			int jj = j;
+			if (jj >= m_oAddRowAct->col) jj++;
+
+			changed[QPair<int, int>(i, m_oAddRowAct->col)] = "";
+			changed[QPair<int, int>(i, jj)] = l_oData->m_oTableData[QPair<int, int>(i, j)];
+		}
+	}
+
+	mem_table *tmp = new mem_table(m_oControl);
+	tmp->m_iId = m_iId;
+	tmp->oldNRows = l_oData->m_iNumRows;
+	tmp->oldNCols = l_oData->m_iNumCols;
+	tmp->newNRows = rowCount();
+	tmp->newNCols = columnCount() + 1;
+	tmp->oldData = l_oData->m_oTableData;
+	tmp->newData = changed;
+	tmp->apply();
 }
 
 void table_view::rm_row()
 {
-	removeRow(0);
 	data_item *l_oData = m_oControl->m_oItems.value(m_iId);
-	l_oData->m_iNumRows = rowCount();
+	QHash<QPair<int, int>, QString> changed;
+	for (int i=0; i < rowCount(); ++i)
+	{
+		int ii = i;
+		if (ii == m_oRmRowAct->row) continue;
+		if (ii > m_oRmRowAct->row) ii--;
+		for (int j=0; j < columnCount(); ++j)
+		{
+			changed[QPair<int, int>(ii, j)] = l_oData->m_oTableData[QPair<int, int>(i, j)];
+		}
+	}
+
+	mem_table *tmp = new mem_table(m_oControl);
+	tmp->m_iId = m_iId;
+	tmp->oldNRows = l_oData->m_iNumRows;
+	tmp->oldNCols = l_oData->m_iNumCols;
+	tmp->newNRows = rowCount() - 1;
+	tmp->newNCols = columnCount();
+	tmp->oldData = l_oData->m_oTableData;
+	tmp->newData = changed;
+	tmp->apply();
 }
 
 void table_view::rm_column()
 {
-	removeColumn(0);
 	data_item *l_oData = m_oControl->m_oItems.value(m_iId);
-	l_oData->m_iNumCols = columnCount();
+	QHash<QPair<int, int>, QString> changed;
+	for (int i=0; i < rowCount(); ++i)
+	{
+		for (int j=0; j < columnCount(); ++j)
+		{
+			int jj = j;
+			if (jj == m_oRmRowAct->col) continue;
+			if (jj > m_oAddRowAct->col) jj--;
+
+			changed[QPair<int, int>(i, jj)] = l_oData->m_oTableData[QPair<int, int>(i, j)];
+		}
+	}
+
+	mem_table *tmp = new mem_table(m_oControl);
+	tmp->m_iId = m_iId;
+	tmp->oldNRows = l_oData->m_iNumRows;
+	tmp->oldNCols = l_oData->m_iNumCols;
+	tmp->newNRows = rowCount();
+	tmp->newNCols = columnCount() - 1;
+	tmp->oldData = l_oData->m_oTableData;
+	tmp->newData = changed;
+	tmp->apply();
 }
 
 void table_view::resize_table()

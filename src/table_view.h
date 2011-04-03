@@ -8,7 +8,16 @@
 #in\
 clude "con.h"
 
+#include <QAction>
 #include <QList>
+
+class numbered_action : public QAction
+{
+	public:
+		numbered_action(QString, QWidget*);
+		int row;
+		int col;
+};
 
 class table_view : public QTableWidget
 {
@@ -21,10 +30,10 @@ class table_view : public QTableWidget
 
 		int m_iId;
 
-		QAction *m_oRmRowAct;
-		QAction *m_oRmColAct;
-		QAction *m_oAddRowAct;
-		QAction *m_oAddColAct;
+		numbered_action *m_oRmRowAct;
+		numbered_action *m_oRmColAct;
+		numbered_action *m_oAddRowAct;
+		numbered_action *m_oAddColAct;
 
 		bool m_bFreeze;
 
