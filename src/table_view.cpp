@@ -90,8 +90,8 @@ void table_view::mousePressEvent(QMouseEvent *i_oEv)
 
 void table_view::cell_changed(int i_iRow, int i_iCol)
 {
-	Q_ASSERT(m_iId>NO_ITEM);
 	if (m_bFreeze) return;
+	Q_ASSERT(m_iId != NO_ITEM);
 
 	QString l_sText;
 	QTableWidgetItem *l_oItem = item(i_iRow, i_iCol);
@@ -99,20 +99,40 @@ void table_view::cell_changed(int i_iRow, int i_iCol)
 	else l_sText = "";
 
 	data_item *l_oData = m_oControl->m_oItems.value(m_iId);
-	for (QList<data_table_item>::iterator l_oIt = l_oData->m_oTableData.begin(); l_oIt != l_oData->m_oTableData.end(); ++l_oIt)
-	{
-		data_table_item& l_o = *l_oIt;
+	QList<data_table_item> changed;
+
+	bool found = false;
+	foreach (data_table_item l_o, l_oData->m_oTableData) {
 		if (l_o.m_iRow == i_iRow && l_o.m_iCol == i_iCol)
 		{
-			l_o.m_sText = l_sText;
-			return;
+			found = true;
+			data_table_item t;
+			t.m_iRow = i_iRow;
+			t.m_iCol = i_iCol;
+			t.m_sText = l_sText;
+			changed.push_back(t);
+		}
+		else
+		{
+			changed.push_back(l_o);
 		}
 	}
-	data_table_item l_o;
-	l_o.m_iRow = i_iRow;
-	l_o.m_iCol = i_iCol;
-	l_o.m_sText = l_sText;
-	l_oData->m_oTableData.push_back(l_o);
+	if (!found)
+	{
+		data_table_item t;
+		t.m_iRow = i_iRow;
+		t.m_iCol = i_iCol;
+		t.m_sText = l_sText;
+		changed.push_back(t);
+	}
+
+	mem_table *tmp = new mem_table(m_oControl);
+	tmp->m_iId = m_iId;
+	tmp->oldNRows = tmp->newNRows = l_oData->m_iNumRows;
+	tmp->oldNCols = tmp->newNCols = l_oData->m_iNumCols;
+	tmp->oldData = l_oData->m_oTableData;
+	tmp->newData = changed;
+	tmp->apply();
 }
 
 void table_view::add_row()
@@ -159,47 +179,45 @@ void table_view::resize_table()
 		tmp->newNCols = l_oGen.m_oCols->value();
 		tmp->oldData = tmp->newData = l_oData->m_oTableData;
 		tmp->apply();
-
-		/*
-		setRowCount(l_oGen.m_oRows->value());
-		setColumnCount(l_oGen.m_oCols->value());
-
-		if (m_iId>NO_ITEM)
-		{
-			data_item *l_oData = m_oControl->m_oItems.value(m_iId);
-			l_oData->m_iNumRows = rowCount();
-			l_oData->m_iNumCols = columnCount();
-
-			for (int i=0; i<l_oData->m_oTableData.size(); ++i)
-			{
-				data_table_item l_o = l_oData->m_oTableData.at(i);
-				if (l_o.m_iRow >= rowCount() && l_o.m_iCol >= columnCount())
-				{
-					l_oData->m_oTableData.removeAt(i);
-					i--;
-				}
-			}
-		}
-		*/
 	}
 }
 
 void table_view::notify_table(int id)
 {
+	if (m_bFreeze)
+	{
+		return;
+	}
+	m_bFreeze = true;
+
 	data_item *l_oData = m_oControl->m_oItems.value(id);
+
 	if (l_oData->m_iNumRows != rowCount() || l_oData->m_iNumCols != columnCount())
 	{
 		setRowCount(l_oData->m_iNumRows);
 		setColumnCount(l_oData->m_iNumCols);
-		return;
 	}
+
+	foreach (data_table_item t, l_oData->m_oTableData)
+	{
+		QTableWidgetItem *it = item(t.m_iRow, t.m_iCol);
+		if (!it)
+		{
+			it = new QTableWidgetItem();
+			setItem(t.m_iRow, t.m_iCol, it);
+		}
+		it->setText(t.m_sText);
+	}
+	repaint();
+	m_bFreeze = false;
 }
 
 void table_view::notify_select(const QList<int>& unsel, const QList<int>& sel)
 {
+	m_bFreeze = true;
+
 	bool one = (sel.size() == 1);
 	if (one) {
-		m_bFreeze = true;
 		m_iId = sel.at(0);
 		data_item *l_oData = m_oControl->m_oItems.value(m_iId);
 
@@ -214,13 +232,13 @@ void table_view::notify_select(const QList<int>& unsel, const QList<int>& sel)
 			l_oItem->setText(l_o.m_sText);
 			setItem(l_o.m_iRow, l_o.m_iCol, l_oItem);
 		}
-		m_bFreeze = false;
 	} else {
 		m_iId = NO_ITEM;
 		setRowCount(0);
 		setColumnCount(0);
 	}
 	repaint();
+	m_bFreeze = false;
 }
 
 #include "table_view.moc"
