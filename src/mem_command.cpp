@@ -432,10 +432,20 @@ mem_table::mem_table(sem_model* mod) : mem_command(mod) {
 }
 
 void mem_table::redo() {
+	data_item *item = model->m_oItems[m_iId];
+	item->m_iNumRows = newNRows;
+	item->m_iNumCols = newNCols;
+	item->m_oTableData = newData;
 
+	model->notify_table(m_iId);
 }
 
 void mem_table::undo() {
+	data_item *item = model->m_oItems[m_iId];
+	item->m_iNumRows = oldNRows;
+	item->m_iNumCols = oldNCols;
+	item->m_oTableData = oldData;
 
+	model->notify_table(m_iId);
 }
 

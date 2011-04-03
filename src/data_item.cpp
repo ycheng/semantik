@@ -35,8 +35,8 @@ data_item::data_item(sem_model *i_oControl, int i_iId)
 
 	m_iDown = NO_ITEM;
 
-	m_iNumRows = 0;
-	m_iNumCols = 0;
+	m_iNumRows = 3;
+	m_iNumCols = 3;
 }
 
 /*!

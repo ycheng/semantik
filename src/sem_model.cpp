@@ -1371,5 +1371,9 @@ void sem_model::notify_pic(int id) {
 	emit sig_pic(id);
 }
 
+void sem_model::notify_table(int id) {
+	emit sig_table(id);
+}
+
 #include "sem_model.moc"
 

@@ -10,7 +10,6 @@
 
 #include "data_item.h"
 
-class data_item;
 class sem_model;
 
 class mem_sel;
@@ -183,12 +182,13 @@ class mem_table: public mem_command {
 		void undo();
 		void redo();
 
+		int m_iId;
 		int oldNRows;
 		int oldNCols;
 		int newNRows;
 		int newNCols;
-		data_table_item oldCell;
-		data_table_item newCell;
+		QList<data_table_item> oldData;
+		QList<data_table_item> newData;
 		IType type() { return TABLE; }
 };
 
