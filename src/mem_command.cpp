@@ -370,12 +370,14 @@ void mem_datatype::undo() {
 mem_text::mem_text(sem_model* mod) : mem_command(mod) {
 }
 
-void mem_text::redo() {
+void mem_text::redo()
+{
 	sel->m_sText = newText;
 	model->notify_text(sel->m_iId);
 }
 
-void mem_text::undo() {
+void mem_text::undo()
+{
 	sel->m_sText = oldText;
 	model->notify_text(sel->m_iId);
 }
@@ -385,7 +387,8 @@ void mem_text::undo() {
 mem_vars::mem_vars(sem_model* mod) : mem_command(mod) {
 }
 
-void mem_vars::redo() {
+void mem_vars::redo()
+{
 	if (m_iId == NO_ITEM)
 	{
 		model->m_sHints = newVars;
@@ -398,7 +401,8 @@ void mem_vars::redo() {
 	model->notify_vars(m_iId);
 }
 
-void mem_vars::undo() {
+void mem_vars::undo()
+{
 	if (m_iId == NO_ITEM)
 	{
 		model->m_sHints = oldVars;
@@ -416,12 +420,14 @@ void mem_vars::undo() {
 mem_pic::mem_pic(sem_model* mod) : mem_command(mod) {
 }
 
-void mem_pic::redo() {
+void mem_pic::redo()
+{
 	sel->m_oPix = newPix;
 	model->notify_pic(sel->m_iId);
 }
 
-void mem_pic::undo() {
+void mem_pic::undo()
+{
 	sel->m_oPix = oldPix;
 	model->notify_pic(sel->m_iId);
 }
@@ -431,7 +437,8 @@ void mem_pic::undo() {
 mem_table::mem_table(sem_model* mod) : mem_command(mod) {
 }
 
-void mem_table::redo() {
+void mem_table::redo()
+{
 	data_item *item = model->m_oItems[m_iId];
 	item->m_iNumRows = newNRows;
 	item->m_iNumCols = newNCols;
@@ -440,7 +447,8 @@ void mem_table::redo() {
 	model->notify_table(m_iId);
 }
 
-void mem_table::undo() {
+void mem_table::undo()
+{
 	data_item *item = model->m_oItems[m_iId];
 	item->m_iNumRows = oldNRows;
 	item->m_iNumCols = oldNCols;

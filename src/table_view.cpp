@@ -150,6 +150,17 @@ void table_view::resize_table()
 	l_oGen.m_oCols->setValue(columnCount());
 	if (l_oGen.exec() == QDialog::Accepted)
 	{
+		data_item *l_oData = m_oControl->m_oItems.value(m_iId);
+		mem_table *tmp = new mem_table(m_oControl);
+		tmp->m_iId = m_iId;
+		tmp->oldNRows = l_oData->m_iNumRows;
+		tmp->oldNCols = l_oData->m_iNumCols;
+		tmp->newNRows = l_oGen.m_oRows->value();
+		tmp->newNCols = l_oGen.m_oCols->value();
+		tmp->oldData = tmp->newData = l_oData->m_oTableData;
+		tmp->apply();
+
+		/*
 		setRowCount(l_oGen.m_oRows->value());
 		setColumnCount(l_oGen.m_oCols->value());
 
@@ -169,10 +180,23 @@ void table_view::resize_table()
 				}
 			}
 		}
+		*/
 	}
 }
 
-void table_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
+void table_view::notify_table(int id)
+{
+	data_item *l_oData = m_oControl->m_oItems.value(id);
+	if (l_oData->m_iNumRows != rowCount() || l_oData->m_iNumCols != columnCount())
+	{
+		setRowCount(l_oData->m_iNumRows);
+		setColumnCount(l_oData->m_iNumCols);
+		return;
+	}
+}
+
+void table_view::notify_select(const QList<int>& unsel, const QList<int>& sel)
+{
 	bool one = (sel.size() == 1);
 	if (one) {
 		m_bFreeze = true;

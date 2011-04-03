@@ -36,6 +36,7 @@ class table_view : public QTableWidget
 		void resize_table();
 		void cell_changed(int i_iRow, int i_iCol);
 		void notify_select(const QList<int>& unsel, const QList<int>& sel);
+		void notify_table(int id);
 };
 
 #endif
