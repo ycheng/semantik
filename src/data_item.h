@@ -3,6 +3,7 @@
 #ifndef DATA_ITEM_H
 #define DATA_ITEM_H
 
+#include <QPair>
 #include <QPixmap>
 #include <QList>
 #include <QMap>
@@ -13,14 +14,6 @@
 #include "con.h"
 
 class sem_model;
-
-class data_table_item //:
-{
-	public:
-	int m_iRow;
-	int m_iCol;
-	QString m_sText;
-};
 
 class data_link //:
 {
@@ -71,7 +64,7 @@ class data_item //:
 
 		int m_iNumRows;
 		int m_iNumCols;
-		QList<data_table_item> m_oTableData;
+		QHash<QPair<int, int>, QString> m_oTableData;
 		QString m_sHints;
 
 		bool load_from_path(const QString &);

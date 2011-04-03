@@ -80,11 +80,10 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 	else if (i_sName == notr("tbl"))
 	{
 		data_item *l_oItem = m_oControl->m_oItems.value(m_iId);
-		data_table_item l_o;
-		l_o.m_iRow = i_oAttrs.value(notr("row")).toInt();
-		l_o.m_iCol = i_oAttrs.value(notr("col")).toInt();
-		l_o.m_sText = i_oAttrs.value(notr("text"));
-		l_oItem->m_oTableData.push_back(l_o);
+		int row = i_oAttrs.value(notr("row")).toInt();
+		int col = i_oAttrs.value(notr("col")).toInt();
+		QPair<int, int> p(row, col);
+		l_oItem->m_oTableData[p] = i_oAttrs.value(notr("text"));
 	}
 	else if (i_sName == notr("item"))
 	{
@@ -447,12 +446,15 @@ QString sem_model::doc_to_xml()
 
 		l_oS<<notr("<tblsettings rows=\"%1\" cols=\"%2\"/>\n").arg(
 			QString::number(l_oItem->m_iNumRows), QString::number(l_oItem->m_iNumCols));
-		foreach (data_table_item l_o, l_oItem->m_oTableData)
+
+
+		QPair<int, int> p;
+		foreach (p, l_oItem->m_oTableData.keys())
 		{
 			l_oS<<notr("<tbl");
-			l_oS<<notr(" row=\"%1\"").arg(QString::number(l_o.m_iRow));
-			l_oS<<notr(" col=\"%1\"").arg(QString::number(l_o.m_iCol));
-			l_oS<<notr(" text=\"%1\"").arg(bind_node::protectXML(l_o.m_sText));
+			l_oS<<notr(" row=\"%1\"").arg(QString::number(p.first));
+			l_oS<<notr(" col=\"%1\"").arg(QString::number(p.second));
+			l_oS<<notr(" text=\"%1\"").arg(bind_node::protectXML(l_oItem->m_oTableData[p]));
 			l_oS<<notr("/>\n");
 		}
 

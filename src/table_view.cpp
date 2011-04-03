@@ -99,32 +99,16 @@ void table_view::cell_changed(int i_iRow, int i_iCol)
 	else l_sText = "";
 
 	data_item *l_oData = m_oControl->m_oItems.value(m_iId);
-	QList<data_table_item> changed;
+	QHash<QPair<int, int>, QString> changed;
 
-	bool found = false;
-	foreach (data_table_item l_o, l_oData->m_oTableData) {
-		if (l_o.m_iRow == i_iRow && l_o.m_iCol == i_iCol)
-		{
-			found = true;
-			data_table_item t;
-			t.m_iRow = i_iRow;
-			t.m_iCol = i_iCol;
-			t.m_sText = l_sText;
-			changed.push_back(t);
-		}
-		else
-		{
-			changed.push_back(l_o);
-		}
-	}
-	if (!found)
+	for (int i=0; i < rowCount(); ++i)
 	{
-		data_table_item t;
-		t.m_iRow = i_iRow;
-		t.m_iCol = i_iCol;
-		t.m_sText = l_sText;
-		changed.push_back(t);
+		for (int j=0; j < columnCount(); ++j)
+		{
+			changed[QPair<int, int>(i, j)] = l_oData->m_oTableData[QPair<int, int>(i, j)];
+		}
 	}
+	changed[QPair<int, int>(i_iRow, i_iCol)] = l_sText;
 
 	mem_table *tmp = new mem_table(m_oControl);
 	tmp->m_iId = m_iId;
@@ -198,15 +182,16 @@ void table_view::notify_table(int id)
 		setColumnCount(l_oData->m_iNumCols);
 	}
 
-	foreach (data_table_item t, l_oData->m_oTableData)
+	QPair<int, int> t;
+	foreach (t, l_oData->m_oTableData.keys())
 	{
-		QTableWidgetItem *it = item(t.m_iRow, t.m_iCol);
+		QTableWidgetItem *it = item(t.first, t.second);
 		if (!it)
 		{
 			it = new QTableWidgetItem();
-			setItem(t.m_iRow, t.m_iCol, it);
+			setItem(t.first, t.second, it);
 		}
-		it->setText(t.m_sText);
+		it->setText(l_oData->m_oTableData[t]);
 	}
 	repaint();
 	m_bFreeze = false;
@@ -226,11 +211,14 @@ void table_view::notify_select(const QList<int>& unsel, const QList<int>& sel)
 		setRowCount(l_oData->m_iNumRows);
 		setColumnCount(l_oData->m_iNumCols);
 
-		foreach(data_table_item l_o, l_oData->m_oTableData)
+		for (int i=0; i < rowCount(); ++i)
 		{
-			QTableWidgetItem *l_oItem = new QTableWidgetItem();
-			l_oItem->setText(l_o.m_sText);
-			setItem(l_o.m_iRow, l_o.m_iCol, l_oItem);
+			for (int j=0; j < columnCount(); ++j)
+			{
+				QTableWidgetItem *l_oItem = new QTableWidgetItem();
+				l_oItem->setText(l_oData->m_oTableData[QPair<int, int>(i, j)]);
+				setItem(i, j, l_oItem);
+			}
 		}
 	} else {
 		m_iId = NO_ITEM;

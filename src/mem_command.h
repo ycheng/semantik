@@ -187,8 +187,8 @@ class mem_table: public mem_command {
 		int oldNCols;
 		int newNRows;
 		int newNCols;
-		QList<data_table_item> oldData;
-		QList<data_table_item> newData;
+		QHash<QPair<int, int>, QString> oldData;
+		QHash<QPair<int, int>, QString> newData;
 		IType type() { return TABLE; }
 };
 

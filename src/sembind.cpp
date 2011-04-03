@@ -1,5 +1,6 @@
 // Thomas Nagy 2007-2011 GPLV3
 
+#include <QPair>
 #include <QtDebug>
 #include <QXmlDefaultHandler>
 
@@ -120,9 +121,9 @@ int bind_node::num_cols()
 
 QString bind_node::tbl_cell(int row, int col)
 {
-	foreach(data_table_item l_o, m_oItem->m_oTableData)
-	{
-		if (l_o.m_iRow == row && l_o.m_iCol == col) return l_o.m_sText;
+	QPair<int, int> l_o;
+	foreach(l_o, m_oItem->m_oTableData.keys()) {
+		if (l_o.first == row && l_o.second == col) return m_oItem->m_oTableData[l_o];
 	}
 	return "";
 }
