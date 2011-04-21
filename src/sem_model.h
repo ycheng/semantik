@@ -61,6 +61,7 @@ class sem_model: public QObject
 		void sig_vars(int id);
 		void sig_pic(int id);
 		void sig_table(int id);
+		void sig_sort(int id);
 
 
 		void enable_undo(bool, bool);
@@ -135,6 +136,7 @@ class sem_model: public QObject
 		void notify_pic(int id);
 		void notify_datatype(int id);
 		void notify_table(int id);
+		void notify_sort(int id);
 
 	public:
 

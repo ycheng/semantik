@@ -1377,5 +1377,9 @@ void sem_model::notify_table(int id) {
 	emit sig_table(id);
 }
 
+void sem_model::notify_sort(int id) {
+	emit sig_sort(id);
+}
+
 #include "sem_model.moc"
 

@@ -505,6 +505,7 @@ void canvas_view::wheelEvent(QWheelEvent *i_oEvent)
 	centerOn(l_o + mapToScene(viewport()->rect().center()) - mapToScene(i_oEvent->pos()));
 }
 
+#if 0
 void canvas_view::synchro_doc(const hash_params& i_o)
 {
 	int l_iCmd = i_o[data_commande].toInt();
@@ -537,10 +538,6 @@ void canvas_view::synchro_doc(const hash_params& i_o)
 				m_oItems.value(j)->update();
 			}
 			break;
-		case cmd_select_item:
-			{
-			}
-			break;
 		case cmd_link:
 			{
 				canvas_item *l_oR1 = m_oItems.value(i_o[data_id].toInt());
@@ -548,20 +545,6 @@ void canvas_view::synchro_doc(const hash_params& i_o)
 				canvas_link * l_oLink = new canvas_link(this, l_oR2, l_oR1);
 				l_oLink->update_pos();
 				l_oR1->update();
-			}
-			break;
-		case cmd_unlink:
-			{
-			}
-			break;
-		case cmd_remove_item:
-			{
-			}
-			break;
-		case cmd_sort_item:
-			{
-				QList<canvas_item*>sel = selection();
-				show_sort(sel[0]->Id(), m_iMode == sort_mode);
 			}
 			break;
 		case cmd_save_data:
@@ -587,6 +570,7 @@ void canvas_view::synchro_doc(const hash_params& i_o)
 			break;
 	}
 }
+#endif
 
 void canvas_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 
@@ -1470,6 +1454,10 @@ void canvas_view::notify_edit(int id) {
 
 void canvas_view::notify_flag(int id) {
 	m_oItems[id]->update_flags();
+}
+
+void canvas_view::notify_sort(int id) {
+	show_sort(id, m_iMode == sort_mode);
 }
 
 %: include  	"canvas_view.moc" 

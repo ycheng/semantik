@@ -88,9 +88,9 @@ void linear_view::notify_unlink_items(int id1, int id2) {
 	}
 }
 
+#if 0
 void linear_view::synchro_doc(const hash_params&i_o)
 {
-#if 0
 	int l_iCmd = i_o[data_commande].toInt();
 	switch (l_iCmd)
 	{
@@ -133,30 +133,13 @@ void linear_view::synchro_doc(const hash_params&i_o)
 
 				int l_iId = i_o[data_id].toInt();
 
-				QTreeWidgetItem *l_oItem = m_oItems.value(l_iId);
-				int l_iCnt = 0;
-				for (int i=0; i<m_oControl->m_oLinks.size(); i++)
-				{
-					QPoint l_oP = m_oControl->m_oLinks.at(i);
-					if (l_oP.x() == l_iId)
-					{
-						QTreeWidgetItem *l_oItem2 = m_oItems.value(l_oP.y());
-						int l_iIndex = l_oItem->indexOfChild(l_oItem2);
-						if (l_iIndex != l_iCnt)
-						{
-							l_oItem->takeChild(l_iIndex);
-							l_oItem->insertChild(l_iCnt, l_oItem2);
-						}
-						l_iCnt++;
-					}
-				}
 			}
 			break;
 		default:
 			break;
 	}
-#endif
 }
+#endif
 
 #if 0
 void linear_view::doubleClickHandler(QTreeWidgetItem* i_oWidget, int)
@@ -311,6 +294,27 @@ void linear_view::notify_repaint(int id)
 	QTreeWidgetItem *l_oItem = m_oItems.value(id);
 	data_item *l_o = m_oControl->m_oItems.value(id);
 	l_oItem->setBackgroundColor(0, l_o->get_color_scheme().m_oInnerColor);
+}
+
+void linear_view::notify_sort(int id) {
+	QTreeWidgetItem *l_oItem = m_oItems.value(id);
+	int l_iCnt = 0;
+	for (int i=0; i<m_oControl->m_oLinks.size(); i++)
+	{
+		QPoint l_oP = m_oControl->m_oLinks.at(i);
+		if (l_oP.x() == id)
+		{
+			QTreeWidgetItem *l_oItem2 = m_oItems.value(l_oP.y());
+			int l_iIndex = l_oItem->indexOfChild(l_oItem2);
+			if (l_iIndex != l_iCnt)
+			{
+				l_oItem->takeChild(l_iIndex);
+				l_oItem->insertChild(l_iCnt, l_oItem2);
+			}
+			l_iCnt++;
+		}
+	}
+
 }
 
 #include "linear_view.moc"

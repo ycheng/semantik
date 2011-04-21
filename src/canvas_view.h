@@ -121,7 +121,6 @@ class canvas_view : public QGraphicsView
 
 
 	public slots:
-		void synchro_doc(const hash_params&);
 		void change_colors(QAction*);
 		void fit_zoom();
 		void change_flags(QAction*);
@@ -148,6 +147,7 @@ class canvas_view : public QGraphicsView
 		void notify_repaint(int id);
 		void notify_edit(int id);
 		void notify_flag(int id);
+		void notify_sort(int id);
 		void sync_flags();
 		void sync_colors();
 

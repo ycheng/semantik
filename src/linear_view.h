@@ -28,7 +28,6 @@ class linear_view : public QTreeWidget
 		bool m_bLockSelect;
 
 	public slots:
-		void synchro_doc(const hash_params&);
 		//void doubleClickHandler(QTreeWidgetItem*, int);
 		void filter_slot(const QString & i_oS);
 		void selection_changed();
@@ -39,6 +38,7 @@ class linear_view : public QTreeWidget
 		void notify_link_items(int id1, int id2);
 		void notify_unlink_items(int id1, int id2);
 		void notify_select(const QList<int>& unsel, const QList<int>& sel);
+		void notify_sort(int id);
 };
 
 #endif

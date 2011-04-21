@@ -39,9 +39,6 @@ data_item::data_item(sem_model *i_oControl, int i_iId)
 	m_iNumCols = 3;
 }
 
-/*!
- * TODO check
- */
 bool data_item::load_from_path(const QString & i_sPath)
 {
 	QPixmap l_oPix;

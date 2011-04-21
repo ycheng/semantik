@@ -457,3 +457,16 @@ void mem_table::undo()
 	model->notify_table(m_iId);
 }
 
+///////////////////////////////////////////////////////////////////
+
+mem_sort::mem_sort(sem_model* mod) : mem_command(mod) {
+}
+
+void mem_sort::redo()
+{
+}
+
+void mem_sort::undo()
+{
+}
+

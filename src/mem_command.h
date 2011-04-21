@@ -23,7 +23,7 @@ class mem_command {
 		virtual void apply();
 		void add();
 
-		enum IType {DELETE, ADD, LINK, UNLINK, SELECT, MOVE, COLOR, FLAG, EDIT, DATATYPE, TEXT, VARS, PIC, TABLE};
+		enum IType {DELETE, ADD, LINK, UNLINK, SELECT, MOVE, COLOR, FLAG, EDIT, DATATYPE, TEXT, VARS, PIC, TABLE, SORT};
 		virtual IType type() = 0;
 };
 
@@ -190,6 +190,17 @@ class mem_table: public mem_command {
 		QHash<QPair<int, int>, QString> oldData;
 		QHash<QPair<int, int>, QString> newData;
 		IType type() { return TABLE; }
+};
+
+class mem_sort: public mem_command {
+	public:
+		mem_sort(sem_model*);
+		void undo();
+		void redo();
+
+		int m_iId;
+
+		IType type() { return SORT; }
 };
 
 #endif
