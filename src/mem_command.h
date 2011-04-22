@@ -195,10 +195,13 @@ class mem_table: public mem_command {
 class mem_sort: public mem_command {
 	public:
 		mem_sort(sem_model*);
+		void init(int i_iParent, int i_iChild, int i_iNum);
 		void undo();
 		void redo();
-
-		int m_iId;
+		int m_iChild;
+		int m_iParent;
+		QList<QPoint> oldData;
+		QList<QPoint> newData;
 
 		IType type() { return SORT; }
 };

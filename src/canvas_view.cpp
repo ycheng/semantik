@@ -1062,17 +1062,14 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 				}
 				else if (l_oItem && l_oItem->type() == CANVAS_SORT_T)
 				{
-					qDebug()<<"sort called"<<endl;
-
 					canvas_sort* l_oSort = (canvas_sort*) l_oItem;
 					int l_iId = l_oSort->m_oFrom->Id();
 					canvas_item* l_oRect = l_oSort->m_oFrom;
 					int l_iParentId = m_oControl->parent_of(l_iId);
 
-					qDebug()<<"sort_children("<<l_iParentId<<" "<<l_iId<<" "<<m_iSortCursor;
-
-					m_oControl->sort_children(l_iParentId, l_iId, m_iSortCursor);
-					show_sort(l_iParentId, true);
+					mem_sort *srt = new mem_sort(m_oControl);
+					srt->init(l_iParentId, l_iId, m_iSortCursor);
+					srt->apply();
 
 					m_iSortCursor++;
 					if (m_iSortCursor >= m_oControl->num_children(l_iParentId))

@@ -1,6 +1,8 @@
 // Thomas Nagy 2007-2011 GPLV3
 
+#include <QPoint>
 #include <QDebug>
+
 #include "data_item.h"
 #include "mem_command.h"
 #include "sem_model.h"
@@ -462,11 +464,87 @@ void mem_table::undo()
 mem_sort::mem_sort(sem_model* mod) : mem_command(mod) {
 }
 
+void mem_sort::init(int i_iParent, int i_iChild, int i_iNum)
+{
+	m_iParent = i_iParent;
+	m_iChild = i_iChild;
+
+	int i_iVal1 = -1;
+	int i_iVal2 = -1;
+
+	for (int i=0; i < model->m_oLinks.size(); i++)
+	{
+		QPoint l_oP = model->m_oLinks.at(i);
+		if (l_oP.x() == i_iParent)
+		{
+			oldData.append(l_oP);
+			newData.append(l_oP);
+		}
+	}
+
+	// very old code here
+	int l_iIdx = 0;
+	for (int i=0; i<newData.size(); i++)
+	{
+		QPoint l_oP = newData.at(i);
+		if (l_oP.x() == i_iParent)
+		{
+			if (l_iIdx == i_iNum)
+				i_iVal1 = i;
+			if (l_oP.y() == i_iChild)
+				i_iVal2 = i;
+			l_iIdx++;
+		}
+
+		if (i_iVal1>=0 && i_iVal2>=0)
+		{
+			if (i_iVal1 > i_iVal2)
+			{
+				newData.swap(i_iVal1, i_iVal2);
+				break;
+			}
+			else
+			{
+				int l_iPrev = i_iVal1;
+				for (int i=i_iVal1+1; i<i_iVal2+1; i++)
+				{
+					l_oP = newData.at(i);
+					if (l_oP.x() == i_iParent)
+						newData.swap(l_iPrev, i);
+				}
+				break;
+			}
+		}
+	}
+}
+
 void mem_sort::redo()
 {
+	for (int i=0; i < model->m_oLinks.size(); i++)
+	{
+		QPoint l_oP = model->m_oLinks.at(i);
+		if (l_oP.x() == m_iParent)
+		{
+			model->m_oLinks.removeAt(i);
+			i--;
+		}
+	}
+	model->m_oLinks += newData;
+	model->notify_sort(m_iParent);
 }
 
 void mem_sort::undo()
 {
+	for (int i=0; i < model->m_oLinks.size(); i++)
+	{
+		QPoint l_oP = model->m_oLinks.at(i);
+		if (l_oP.x() == m_iParent)
+		{
+			model->m_oLinks.removeAt(i);
+			i--;
+		}
+	}
+	model->m_oLinks += oldData;
+	model->notify_sort(m_iParent);
 }
 
