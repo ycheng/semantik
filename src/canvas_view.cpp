@@ -407,6 +407,7 @@ void canvas_view::show_sort(int i_iId, bool i_b)
 	int j=0;
 	for (int i=0; i<m_oControl->m_oLinks.size(); i++)
 	{
+		qDebug()<<"shos sowrt here"<<i;
 		QPoint l_oP = m_oControl->m_oLinks.at(i);
 		if (l_oP.x() == i_iId)
 		{
@@ -578,14 +579,17 @@ void canvas_view::notify_select(const QList<int>& unsel, const QList<int>& sel) 
 	foreach (int k, sel) {
 		Q_ASSERT(m_oItems[k] != NULL);
 		if (!m_oItems[k]->isSelected())
+		{
 			m_oItems[k]->setSelected(true);
+		}
 	}
 
 	foreach (int k, unsel) {
-		//qDebug()<<"unselect "<<k;
 		Q_ASSERT(m_oItems[k] != NULL);
 		if (m_oItems[k]->isSelected())
+		{
 			m_oItems[k]->setSelected(false);
+		}
 	}
 
 
@@ -787,6 +791,7 @@ void canvas_view::deselect_all(bool i_oSignal)
 	}
 }
 
+#if 0
 void canvas_view::add_select(canvas_item* i_oItem, bool i_oSignal)
 {
 	/*
@@ -839,6 +844,7 @@ void canvas_view::notify_select(bool i_oSignal)
 		m_oControl->select_item(NO_ITEM, VIEW_CANVAS);
 	*/
 }
+#endif
 
 void canvas_view::enable_actions()
 {
@@ -1035,6 +1041,44 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 					*/
 				}
 				m_oRubberLine->hide();
+			}
+			break;
+
+		case sort_mode:
+			{
+				QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
+				if (l_oItem && l_oItem->type() == CANVAS_ITEM_T)
+				{
+					check_selection();
+				}
+				else if (l_oItem && l_oItem->type() == CANVAS_SORT_T)
+				{
+					qDebug()<<"sort called"<<endl;
+
+					canvas_sort* l_oSort = (canvas_sort*) l_oItem;
+					int l_iId = l_oSort->m_oFrom->Id();
+					canvas_item* l_oRect = l_oSort->m_oFrom;
+					int l_iParentId = m_oControl->parent_of(l_iId);
+
+					qDebug()<<"sort_children("<<l_iParentId<<" "<<l_iId<<" "<<m_iSortCursor;
+
+					m_oControl->sort_children(l_iParentId, l_iId, m_iSortCursor);
+					show_sort(l_iParentId, true);
+
+					m_iSortCursor++;
+					if (m_iSortCursor >= m_oControl->num_children(l_iParentId))
+					{
+						// FIXME reset this value properly elsewhere
+						m_iSortCursor = 0;
+					}
+
+					emit sig_message(trUtf8("Click to set Item %1").arg(QString::number(m_iSortCursor+1)), -1);
+					//qDebug();
+				}
+				else
+				{
+					deselect_all();
+				}
 			}
 			break;
 	}
@@ -1539,41 +1583,6 @@ void canvas_view::notify_sort(int id) {
 				}
 			}
 			break;
-		case sort_mode:
-			{
-				QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
-				if (l_oItem && l_oItem->type() == CANVAS_ITEM_T)
-				{
-					l_oRect = (canvas_item*) l_oItem;
-					deselect_all();
-					add_select(l_oRect);
-				}
-				else if (l_oItem && l_oItem->type() == CANVAS_SORT_T)
-				{
-					qDebug()<<"sort called"<<endl;
-
-					canvas_sort * l_oSort = (canvas_sort*) l_oItem;
-					int l_iId = l_oSort->m_oFrom->Id();
-					l_oRect = l_oSort->m_oFrom;
-
-					qDebug()<<"sort_children("<<m_oSelected[0]->Id()<<" "<<l_iId<<" "<<m_iSortCursor;
-
-					m_oControl->sort_children(m_oSelected[0]->Id(), l_iId, m_iSortCursor);
-					show_sort(m_oSelected[0]->Id(), true);
-
-					m_iSortCursor++;
-					if (m_iSortCursor >= m_oControl->num_children(m_oSelected[0]->Id()))
-						m_iSortCursor=0;
-
-					emit sig_message(trUtf8("Click to set Item %1").arg(QString::number(m_iSortCursor+1)), -1);
-					//qDebug();
-				}
-				else
-				{
-					deselect_all();
-				}
-			}
-			break;
 		case scroll_mode:
 			viewport()->setCursor(Qt::ClosedHandCursor);
 			m_oLastPressPoint = i_oEv->pos();
@@ -1648,8 +1657,6 @@ void canvas_view::mouseMoveEvent___________________________(QMouseEvent *i_oEv)
 					m_oRubberLine->show();
 				}
 			}
-			break;
-		case sort_mode:
 			break;
 		case scroll_mode:
 			if (m_bPressed)
@@ -1738,8 +1745,6 @@ void canvas_view::mouseReleaseEvent______________________________________(QMouse
 				}
 				m_oRubberLine->hide();
 			}
-			break;
-		case sort_mode:
 			break;
 		case scroll_mode:
 			viewport()->setCursor(Qt::OpenHandCursor);

@@ -71,9 +71,9 @@ class canvas_view : public QGraphicsView
 
 		void deselect_all(bool i_oSignal=true);
 		void show_sort(int i_iId, bool i_b);
-		void add_select(canvas_item*, bool i_oSignal=true);
-		void rm_select(canvas_item*, bool i_oSignal=true);
-		void notify_select(bool i_oSignal=true);
+		//void add_select(canvas_item*, bool i_oSignal=true);
+		//void rm_select(canvas_item*, bool i_oSignal=true);
+		//void notify_select(bool i_oSignal=true);
 		void enable_menu_actions(); // like check_actions, but only for the popup menu
 
 		double compute_height(QMap<int, double> &map, QMap<int, QList<int> >&children, int id);
