@@ -92,6 +92,7 @@ class canvas_view : public QGraphicsView
 		QPointF m_oLastPoint;
 
 		int m_iSortCursor;
+		int m_iSortId;
 
 		void move_sel(int i_iX, int i_iY);
 

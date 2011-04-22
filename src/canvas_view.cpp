@@ -32,6 +32,8 @@
 canvas_view::canvas_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsView(i_oWidget)
 {
 	m_oSemantikWindow = i_oWidget;
+	m_iSortId = NO_ITEM;
+	m_iSortCursor = 0;
 
 	//m_oRubbery = new QRubberBand(QRubberBand::Rectangle, this);
 	//m_oRubbery->setGeometry(QRect(0, 0, 0, 0));
@@ -407,7 +409,6 @@ void canvas_view::show_sort(int i_iId, bool i_b)
 	int j=0;
 	for (int i=0; i<m_oControl->m_oLinks.size(); i++)
 	{
-		qDebug()<<"shos sowrt here"<<i;
 		QPoint l_oP = m_oControl->m_oLinks.at(i);
 		if (l_oP.x() == i_iId)
 		{
@@ -592,6 +593,19 @@ void canvas_view::notify_select(const QList<int>& unsel, const QList<int>& sel) 
 		}
 	}
 
+	if (m_iSortId != NO_ITEM)
+	{
+		show_sort(m_iSortId, false);
+		m_iSortCursor = 0;
+		m_iSortId = NO_ITEM;
+	}
+
+	if (sel.size() == 1 && m_iMode == sort_mode)
+	{
+		m_iSortId = sel.at(0);
+		show_sort(m_iSortId, true);
+		m_iSortCursor = 0;
+	}
 
 	/*
 	QList<canvas_item*> sel = selection();
