@@ -605,6 +605,7 @@ void canvas_view::notify_select(const QList<int>& unsel, const QList<int>& sel) 
 		m_iSortId = sel.at(0);
 		show_sort(m_iSortId, true);
 		m_iSortCursor = 0;
+		//emit sig_message(trUtf8("Click to set Item %1").arg(QString::number(m_iSortCursor+1)), -1);
 	}
 
 	/*
@@ -821,11 +822,6 @@ void canvas_view::add_select(canvas_item* i_oItem, bool i_oSignal)
 	m_oSelected.push_back(i_oItem);
 	i_oItem->set_selected(true);
 	i_oItem->setZValue(100);
-	if (m_iMode == sort_mode)
-	{
-		show_sort(i_oItem->Id(), true);
-		emit sig_message(trUtf8("Click to set Item %1").arg(QString::number(m_iSortCursor+1)), -1);
-	}
 	i_oItem->update();
 
 	notify_select(i_oSignal);
@@ -838,7 +834,6 @@ void canvas_view::rm_select(canvas_item* i_oItem, bool i_oSignal)
 	Q_ASSERT(i_oItem != NULL);
 	i_oItem->set_selected(false);
 	i_oItem->setZValue(99);
-	if (m_iMode == sort_mode) show_sort(i_oItem->Id(), false);
 	i_oItem->update();
 	m_oSelected.removeAll(i_oItem);
 
@@ -1082,12 +1077,10 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 					m_iSortCursor++;
 					if (m_iSortCursor >= m_oControl->num_children(l_iParentId))
 					{
-						// FIXME reset this value properly elsewhere
 						m_iSortCursor = 0;
 					}
 
 					emit sig_message(trUtf8("Click to set Item %1").arg(QString::number(m_iSortCursor+1)), -1);
-					//qDebug();
 				}
 				else
 				{

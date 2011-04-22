@@ -311,6 +311,7 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	connect(m_oControl, SIGNAL(sig_repaint(int)), ln, SLOT(notify_repaint(int)));
 
 	connect(m_oControl, SIGNAL(sig_edit(int)), m_oCanvas, SLOT(notify_edit(int)));
+	connect(m_oControl, SIGNAL(sig_edit(int)), ln, SLOT(notify_edit(int)));
 	connect(m_oControl, SIGNAL(sig_text(int)), m_oTextView, SLOT(notify_text(int)));
 	connect(m_oControl, SIGNAL(sig_vars(int)), m_oVarsView, SLOT(notify_vars(int)));
 

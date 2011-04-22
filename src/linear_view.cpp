@@ -99,11 +99,6 @@ void linear_view::synchro_doc(const hash_params&i_o)
 				if (i_o[data_orig].toInt() == VIEW_LINEAR) return;
 
 				int l_iId = i_o[data_id].toInt();
-				QTreeWidgetItem *l_oItem = m_oItems.value(l_iId);
-				l_oItem->setText(0, m_oControl->m_oItems.value(l_iId)->m_sSummary);
-
-				data_item *l_o = m_oControl->m_oItems.value(l_iId);
-				l_oItem->setBackgroundColor(0, l_o->get_color_scheme().m_oInnerColor);
 			}
 			break;
 		case cmd_link:
@@ -315,6 +310,12 @@ void linear_view::notify_sort(int id) {
 		}
 	}
 
+}
+
+void linear_view::notify_edit(int id)
+{
+	QTreeWidgetItem *l_oItem = m_oItems.value(id);
+	l_oItem->setText(0, m_oControl->m_oItems.value(id)->m_sSummary);
 }
 
 #include "linear_view.moc"
