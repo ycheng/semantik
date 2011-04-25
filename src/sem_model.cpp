@@ -481,9 +481,7 @@ bool sem_model::save_file(QString i_sUrl)
 {
 	Q_ASSERT(i_sUrl.endsWith(".sem"));
 
-	hash_params l_oCmd;
-	l_oCmd.insert(data_commande, QVariant(cmd_save_data));
-	emit synchro(l_oCmd);
+	emit sig_save_data();
 
 	QFile l_o2(QString(TEMPLATE_DIR)+notr("/semantik.sem.py"));
 	if (!l_o2.open(QIODevice::ReadOnly))

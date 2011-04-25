@@ -99,6 +99,7 @@ class box_view : public QGraphicsView
 
 		void notify_add_item(int);
 		void notify_select(const QList<int>& unsel, const QList<int>& sel);
+		void notify_save_data();
 };
 
 #endif

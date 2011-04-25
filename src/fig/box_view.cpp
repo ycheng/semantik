@@ -297,35 +297,21 @@ void box_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 			from_string(l_oData->m_sDiag);
 		}
 	}
+}
 
-	/*
-				if (l_iOldId)
-				{
-					data_item *l_oData = m_oControl->m_oItems.value(l_iOldId);
-					// important, if the parser dies
-					if (l_oData != NULL and l_oData->m_iDataType == VIEW_DIAG) {
-						l_oData->m_sDiag = to_string();
-					}
-				}
-				clear_diagram();
+void box_view::notify_save_data()
+{
+	if (!m_iId)
+	{
+		return;
+	}
 
-				m_iId = i_o[data_id].toInt();
-				// if (m_iId == l_iOldId) break;
-
-				setEnabled(m_iId > NO_ITEM);
-				if (m_iId)
-				{
-					data_item *l_oData = m_oControl->m_oItems.value(m_iId);
-					if (l_oData and l_oData->m_iDataType == VIEW_DIAG)
-						from_string(l_oData->m_sDiag);
-				}
-	if (one) {
-		data_item *l_oData = m_oControl->m_oItems.value(sel.at(0));
-		m_oEdit->setHtml(l_oData->m_sText);
-		m_iId = sel.at(0);
-	} else {
-		m_oEdit->clear();
-	}*/
+	data_item *l_oData = m_oControl->m_oItems.value(m_iId);
+	if (l_oData->m_iDataType != VIEW_DIAG)
+	{
+		return;
+	}
+	l_oData->m_sDiag = to_string();
 }
 
 /*
@@ -334,18 +320,6 @@ void box_view::synchro_doc(const hash_params& i_o)
 	int l_iCmd = i_o[data_commande].toInt();
 	switch (l_iCmd)
 	{
-		case cmd_save_data:
-			{
-				if (not m_iId) break;
-				data_item *l_oData = m_oControl->m_oItems.value(m_iId);
-				if (l_oData->m_iDataType != VIEW_DIAG)
-				{
-					//qDebug()<<m_iId<<" is not a diagram";
-					break;
-				}
-				l_oData->m_sDiag = to_string();
-			}
-			break;
 		case cmd_export_item:
 			{
 				int l_iOldId = m_iId;
