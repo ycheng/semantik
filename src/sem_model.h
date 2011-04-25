@@ -29,6 +29,9 @@ class html_converter : public QXmlDefaultHandler
 		QStringList m_oTotale;
 };
 
+
+// sem_model -> mediator
+
 class data_item;
 class bind_node;
 class sem_model: public QObject

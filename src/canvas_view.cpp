@@ -1508,6 +1508,18 @@ void canvas_view::notify_sort(int id) {
 	show_sort(id, m_iMode == sort_mode);
 }
 
+void canvas_view::focusOutEvent(QFocusEvent *i_oEv)
+{
+	m_oEditAction->setEnabled(false);
+}
+
+
+void canvas_view::focusInEvent(QFocusEvent *i_oEv)
+{
+	m_oEditAction->setEnabled(true);
+}
+
+
 %: include  	"canvas_view.moc" 
 
 

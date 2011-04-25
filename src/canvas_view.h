@@ -48,10 +48,9 @@ class canvas_view : public QGraphicsView
 		bool m_bDeleting;
 		mode_type m_iMode;
 
-		//void keyPressEvent(QKeyEvent *i_oEvent);
-		//void keyReleaseEvent(QKeyEvent *i_oEvent);
-		//void focusOutEvent(QFocusEvent *i_oEv);
-		//void focusInEvent(QFocusEvent *i_oEv);
+		void focusOutEvent(QFocusEvent *i_oEv);
+		void focusInEvent(QFocusEvent *i_oEv);
+
 		void wheelEvent(QWheelEvent *i_oEvent);
 		void mouseDoubleClickEvent(QMouseEvent *i_oEv);
 		void mousePressEvent(QMouseEvent *i_oEv);

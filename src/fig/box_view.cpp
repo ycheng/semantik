@@ -270,8 +270,33 @@ void box_view::notify_add_item(int id)
 }
 
 void box_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
+
+	int l_iOldId = m_iId;
+	if (l_iOldId)
+	{
+		data_item *l_oData = m_oControl->m_oItems.value(l_iOldId);
+		if (l_oData != NULL and l_oData->m_iDataType == VIEW_DIAG) {
+			l_oData->m_sDiag = to_string();
+		}
+	}
+	clear_diagram();
+
+
 	bool one = (sel.size() == 1);
-	m_iId = NO_ITEM;
+	if (!one)
+	{
+		m_iId = NO_ITEM;
+		setEnabled(false);
+	}
+	else
+	{
+		m_iId = sel.at(0);
+		data_item *l_oData = m_oControl->m_oItems.value(m_iId);
+		if (l_oData and l_oData->m_iDataType == VIEW_DIAG)
+		{
+			from_string(l_oData->m_sDiag);
+		}
+	}
 
 	/*
 				if (l_iOldId)
@@ -294,7 +319,6 @@ void box_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 					if (l_oData and l_oData->m_iDataType == VIEW_DIAG)
 						from_string(l_oData->m_sDiag);
 				}
-
 	if (one) {
 		data_item *l_oData = m_oControl->m_oItems.value(sel.at(0));
 		m_oEdit->setHtml(l_oData->m_sText);

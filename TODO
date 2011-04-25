@@ -2,11 +2,10 @@ Priority:
 ---------
 
 Undo operations
-Serialize the undo operations
-
 
 Ideas:
 ------
 
 Import kdissert documents properly
+Serialize undo operations
 

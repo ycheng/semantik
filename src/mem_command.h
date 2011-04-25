@@ -12,6 +12,8 @@
 
 class sem_model;
 
+// mem_command -> command
+
 class mem_sel;
 
 class mem_command {
