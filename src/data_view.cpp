@@ -41,6 +41,7 @@ void data_view::notify_datatype(int id) {
 		case VIEW_TEXT: j++;
 		default:
 			setCurrentIndex(j);
+			//qDebug()<<"index is"<<j;
 			break;
 	}
 }

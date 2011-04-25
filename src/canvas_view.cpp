@@ -1511,12 +1511,16 @@ void canvas_view::notify_sort(int id) {
 void canvas_view::focusOutEvent(QFocusEvent *i_oEv)
 {
 	m_oEditAction->setEnabled(false);
+	m_oDeleteAction->setEnabled(false);
+	QGraphicsView::focusOutEvent(i_oEv);
 }
 
 
 void canvas_view::focusInEvent(QFocusEvent *i_oEv)
 {
 	m_oEditAction->setEnabled(true);
+	m_oDeleteAction->setEnabled(true);
+	QGraphicsView::focusInEvent(i_oEv);
 }
 
 

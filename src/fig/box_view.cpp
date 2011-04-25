@@ -674,9 +674,10 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 	}
 }
 
-void box_view::focusInEvent(QFocusEvent *)
+void box_view::focusInEvent(QFocusEvent *i_oEv)
 {
 	enable_actions();
+	QGraphicsView::focusInEvent(i_oEv);
 }
 
 void box_view::focusOutEvent(QFocusEvent *i_oEv)
@@ -693,6 +694,7 @@ void box_view::focusOutEvent(QFocusEvent *i_oEv)
 
 	delete m_oCurrent;
 	m_oCurrent = NULL;
+	QGraphicsView::focusOutEvent(i_oEv);
 }
 
 void box_view::slot_delete()
