@@ -89,54 +89,6 @@ void linear_view::notify_unlink_items(int id1, int id2) {
 }
 
 #if 0
-void linear_view::synchro_doc(const hash_params&i_o)
-{
-	int l_iCmd = i_o[data_commande].toInt();
-	switch (l_iCmd)
-	{
-		case cmd_update_item:
-			{
-				if (i_o[data_orig].toInt() == VIEW_LINEAR) return;
-
-				int l_iId = i_o[data_id].toInt();
-			}
-			break;
-		case cmd_link:
-			{
-				QTreeWidgetItem *l_oItem1 = m_oItems.value(i_o[data_id].toInt());
-				QTreeWidgetItem *l_oItem2 = m_oItems.value(i_o[data_parent].toInt());
-				QTreeWidgetItem *l_oRet = takeTopLevelItem(indexOfTopLevelItem(l_oItem1));
-				Q_ASSERT(l_oRet != NULL);
-				l_oItem2->insertChild(l_oItem2->childCount(), l_oItem1);
-				l_oItem2->setExpanded(true);
-
-				data_item *l_o = m_oControl->m_oItems.value(i_o[data_id].toInt());
-				l_oItem1->setBackgroundColor(0, l_o->get_color_scheme().m_oInnerColor);
-			}
-			break;
-		case cmd_unlink:
-			{
-			}
-			break;
-		case cmd_remove_item:
-			{
-			}
-			break;
-		case cmd_sort_item:
-			{
-				if (i_o[data_orig].toInt() == VIEW_LINEAR) return;
-
-				int l_iId = i_o[data_id].toInt();
-
-			}
-			break;
-		default:
-			break;
-	}
-}
-#endif
-
-#if 0
 void linear_view::doubleClickHandler(QTreeWidgetItem* i_oWidget, int)
 {
 	if (i_oWidget)

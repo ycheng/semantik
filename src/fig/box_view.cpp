@@ -32,21 +32,18 @@
 #include "sembind.h"
 class box_reader : public QXmlDefaultHandler
 {
-        public:
-                box_reader(box_view*);
+    public:
+		box_reader(box_view*);
 
-        //private:
-                QString m_sBuf;
-                int m_iVersion;
+		QString m_sBuf;
+		int m_iVersion;
 		box_view *m_oControl;
 		box_link *m_oCurrent;
 		int m_iId;
 
-	//public:
-                bool startElement(const QString&, const QString&, const QString&, const QXmlAttributes&);
-                bool endElement(const QString&, const QString&, const QString&);
-                bool characters(const QString &i_sStr);
-
+		bool startElement(const QString&, const QString&, const QString&, const QXmlAttributes&);
+		bool endElement(const QString&, const QString&, const QString&);
+		bool characters(const QString &i_sStr);
 };
 
 box_reader::box_reader(box_view *i_oControl)
@@ -131,8 +128,8 @@ bool box_reader::endElement(const QString&, const QString&, const QString& i_sNa
 
 bool box_reader::characters(const QString &i_s)
 {
-        m_sBuf += i_s;
-        return true;
+	m_sBuf += i_s;
+	return true;
 }
 
 int box_view::next_id()
@@ -150,37 +147,37 @@ box_view::box_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsView(i_
 	l_oScene->setSceneRect(-400, -400, 400, 400);
 	setScene(l_oScene);
 
-        //setCacheMode(CacheBackground);
-        setRenderHint(QPainter::Antialiasing);
+	//setCacheMode(CacheBackground);
+	setRenderHint(QPainter::Antialiasing);
 
 	m_oEditAction = new QAction(QObject::trUtf8("Toggle edit"), this);
 	m_oEditAction->setShortcut(QObject::trUtf8("Return"));
-        connect(m_oEditAction, SIGNAL(triggered()), this, SLOT(slot_edit()));
+	connect(m_oEditAction, SIGNAL(triggered()), this, SLOT(slot_edit()));
 	addAction(m_oEditAction);
 
 	m_oAddItemAction = new QAction(QObject::trUtf8("Add Box"), this);
 	m_oAddItemAction->setShortcut(QObject::trUtf8("Ctrl+Return"));
-        connect(m_oAddItemAction, SIGNAL(triggered()), this, SLOT(slot_add_item()));
+	connect(m_oAddItemAction, SIGNAL(triggered()), this, SLOT(slot_add_item()));
 	addAction(m_oAddItemAction);
 
 	m_oDeleteAction = new QAction(QObject::trUtf8("Delete selection"), this);
 	m_oDeleteAction->setShortcut(QObject::trUtf8("Delete"));
-        connect(m_oDeleteAction, SIGNAL(triggered()), this, SLOT(slot_delete()));
+	connect(m_oDeleteAction, SIGNAL(triggered()), this, SLOT(slot_delete()));
 	addAction(m_oDeleteAction);
 
 	m_oColorAction = new QAction(QObject::trUtf8("Color..."), this);
-        connect(m_oColorAction, SIGNAL(triggered()), this, SLOT(slot_color()));
+	connect(m_oColorAction, SIGNAL(triggered()), this, SLOT(slot_color()));
 	addAction(m_oColorAction);
 
 
 	//m_oMoveUpAction = new QAction(QObject::trUtf8("Move up"), this);
 	//m_oMoveUpAction->setShortcut(QObject::trUtf8("PgUp"));
-        //connect(m_oMoveUpAction, SIGNAL(triggered()), this, SLOT(slot_move_up()));
+	//connect(m_oMoveUpAction, SIGNAL(triggered()), this, SLOT(slot_move_up()));
 	//addAction(m_oMoveUpAction);
 
 	//m_oMoveDownAction = new QAction(QObject::trUtf8("Move down"), this);
 	//m_oMoveDownAction->setShortcut(QObject::trUtf8("PgDown"));
-        //connect(m_oMoveDownAction, SIGNAL(triggered()), this, SLOT(slot_move_down()));
+	//connect(m_oMoveDownAction, SIGNAL(triggered()), this, SLOT(slot_move_down()));
 	//addAction(m_oMoveDownAction);
 
 
@@ -688,7 +685,11 @@ void box_view::focusOutEvent(QFocusEvent *i_oEv)
 	{
 		l_o->setEnabled(false);
 	}
-	if (m_oMenu->isVisible()) enable_menu_actions();
+
+	if (m_oMenu->isVisible())
+	{
+		enable_menu_actions();
+	}
 
 	delete m_oCurrent;
 	m_oCurrent = NULL;
