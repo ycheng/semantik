@@ -1,18 +1,21 @@
 # Алексей, 2009.
+# Алексей Кузнецов Alexey.Kouznetsov gmail.com, 2011.
+# Alexey D. Kouznetsov Alexey.Kouznetsov gmail.com, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: http://bugzilla.kde.org\n"
+"Report-Msgid-Bugs-To: http://www.google.com\n"
 "POT-Creation-Date: 2009-04-26 15:20+0200\n"
-"PO-Revision-Date: 2009-08-11 17:50+0400\n"
-"Last-Translator: Алексей Кузнецов\n"
+"PO-Revision-Date: 2011-05-10 00:58+0400\n"
+"Last-Translator: Alexey D. Kouznetsov Alexey.Kouznetsov gmail.com\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.0\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Lokalize 1.2\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
+"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: ru\n"
 
 msgid "Empty"
 msgstr "Пусто"
@@ -42,16 +45,16 @@ msgid "Move right"
 msgstr "Сдвинуть вправо"
 
 msgid "Select up"
-msgstr ""
+msgstr "Перейти выше"
 
 msgid "Select down"
-msgstr ""
+msgstr "Перейти ниже"
 
 msgid "Select left"
-msgstr ""
+msgstr "Перейти влево"
 
 msgid "Select right"
-msgstr ""
+msgstr "Перейти вправо"
 
 msgid "Next root"
 msgstr "Следующий корень"
@@ -178,14 +181,20 @@ msgstr "Цвет..."
 msgid "Connection width"
 msgstr "Толщина соед. линии"
 
+# Не нашёл стандартного сокращения для пикселя, пока что "п."
+#, fuzzy
 msgid "1px"
-msgstr ""
+msgstr "1 п."
 
+# Не нашёл стандартного сокращения для пикселя, пока что "п."
+#, fuzzy
 msgid "2px"
-msgstr ""
+msgstr "2 п."
 
+# Не нашёл стандартного сокращения для пикселя, пока что "п."
+#, fuzzy
 msgid "3px"
-msgstr ""
+msgstr "3 п."
 
 msgid "Connection style"
 msgstr "Тип соединений"
@@ -505,7 +514,7 @@ msgid "&Underline"
 msgstr "&Подчёркнутый"
 
 msgid "Code complete"
-msgstr ""
+msgstr "Код готов"
 
 msgid "exclude the picture"
 msgstr "исключить изображение"
