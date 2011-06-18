@@ -8,7 +8,7 @@ VERSION = '0.7.4'
 top = '.'
 
 import os, sys, re, time
-from waflib import Options, Logs
+from waflib import Options, Logs, Configure
 
 def compile_py(task):
 	outfile = task.m_outputs[0].abspath()
