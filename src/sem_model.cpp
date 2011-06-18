@@ -90,8 +90,10 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		m_iId = i_oAttrs.value(notr("id")).toInt();
 		if (!m_iId) return false;
 
-		data_item *l_oItem = new data_item(m_oControl, m_iId);
-		m_oControl->m_oItems[m_iId] = l_oItem;
+		mem_add *add = new mem_add(m_oControl);
+		add->item = new data_item(m_oControl, m_iId);
+		add->sel = new mem_sel(m_oControl);
+		data_item *l_oItem = add->item;
 
 		l_oItem->m_sSummary = i_oAttrs.value(notr("summary"));
 		l_oItem->m_sText = i_oAttrs.value(notr("text"));
@@ -120,6 +122,8 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		l_oItem->m_oCustom.m_oInnerColor = QColor(i_oAttrs.value(notr("custom_inner")));
 		l_oItem->m_oCustom.m_oBorderColor = QColor(i_oAttrs.value(notr("custom_border")));
 		l_oItem->m_oCustom.m_oTextColor = QColor(i_oAttrs.value(notr("custom_text")));
+
+		add->apply();
 	}
 	else if (i_sName == notr("color_schemes"))
 	{

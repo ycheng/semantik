@@ -35,6 +35,8 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsV
 	m_iSortId = NO_ITEM;
 	m_iSortCursor = 0;
 
+	m_oLastPoint = QPointF(0, 0);
+
 	//m_oRubbery = new QRubberBand(QRubberBand::Rectangle, this);
 	//m_oRubbery->setGeometry(QRect(0, 0, 0, 0));
 
@@ -1086,6 +1088,7 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 			}
 			break;
 	}
+	check_canvas_size();
 	update_cursor();
 }
 
@@ -1109,11 +1112,6 @@ void canvas_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 				add->item->m_iYY = m_oLastPoint.y();
 				add->parent = l_oR->Id();
 				add->apply();
-
-				//l_iAdded = m_oControl->add_item(l_oR->Id(), NO_ITEM, true);
-				//QList<canvas_item*> sel = selection();
-				//if (sel.size() == 1) sel[0]->setFocus();
-				check_canvas_size();
 			} else if (l_oItem->type() == CANVAS_LINK_T) {
 				canvas_link *l_oLink = (canvas_link*) l_oItem;
 				mem_unlink *link = new mem_unlink(m_oControl);
@@ -1432,7 +1430,9 @@ void canvas_view::notify_add_item(int id) {
 	canvas_item* l_oR = new canvas_item(this, id);
 	m_oItems[id] = l_oR;
 	l_oR->update_data();
-	//l_oR->setSelected(true); // NOTE: do not call methods that create events here
+	// do not call methods that create events here
+
+	check_canvas_size();
 }
 
 void canvas_view::notify_delete_item(int id) {
@@ -1443,6 +1443,8 @@ void canvas_view::notify_delete_item(int id) {
 	m_oItems.remove(id);
 	delete l_oR1;
 	m_bDeleting = false;
+
+	check_canvas_size();
 }
 
 void canvas_view::notify_link_items(int id1, int id2) {

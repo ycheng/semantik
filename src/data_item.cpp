@@ -37,6 +37,8 @@ data_item::data_item(sem_model *i_oControl, int i_iId)
 
 	m_iNumRows = 3;
 	m_iNumCols = 3;
+
+	m_iYY = m_iXX = -200000;
 }
 
 bool data_item::load_from_path(const QString & i_sPath)
