@@ -106,8 +106,7 @@ void canvas_item::rm_link(canvas_link* i_oLink2)
 void canvas_item::update_data()
 {
 	data_item *l_oItem = m_oGraph->m_oControl->m_oItems.value(Id());
-
-	if (l_oItem->m_iXX < 10000) {
+	if (l_oItem->m_iXX < -10000.0) {
 		l_oItem->m_iXX = m_oGraph->m_oLastPoint.x();
 		l_oItem->m_iYY = m_oGraph->m_oLastPoint.y();
 	}
