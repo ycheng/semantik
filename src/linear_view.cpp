@@ -208,7 +208,10 @@ void linear_view::dropEvent(QDropEvent *i_oEv)
 					{
 						if (l_oP.y() == j) // item found
 						{
-							m_oControl->sort_children(k, l_iId, l+z);
+							mem_sort *srt = new mem_sort(m_oControl);
+							srt->init(k, l_iId, l+z);
+							srt->apply();
+
 							break;
 						}
 						l++;

@@ -106,7 +106,6 @@ class sem_model: public QObject
 		void update_item(int i_oId, int i_iView=NO_VIEW);
 
 
-		void sort_children(int i_iParent, int i_iChild, int i_iNum);
 		int num_children(int i_iParent);
 		int m_iConnType;
 		int m_iReorgType;

@@ -973,51 +973,6 @@ void sem_model::update_item(int i_iId, int i_iView)
 	emit synchro(l_oCmd);
 }
 
-void sem_model::sort_children(int i_iParent, int i_iChild, int i_iNum)
-{
-	int i_iVal1 = -17;
-	int i_iVal2 = -19;
-
-	int l_iIdx = 0;
-	for (int i=0; i<m_oLinks.size(); i++)
-	{
-		QPoint l_oP = m_oLinks.at(i);
-		if (l_oP.x() == i_iParent)
-		{
-			if (l_iIdx == i_iNum)
-				i_iVal1 = i;
-			if (l_oP.y() == i_iChild)
-				i_iVal2 = i;
-			l_iIdx++;
-		}
-
-		if (i_iVal1>=0 && i_iVal2>=0)
-		{
-			if (i_iVal1 > i_iVal2)
-			{
-				m_oLinks.swap(i_iVal1, i_iVal2);
-				break;
-			}
-			else
-			{
-				int l_iPrev = i_iVal1;
-				for (int i=i_iVal1+1; i<i_iVal2+1; i++)
-				{
-					l_oP = m_oLinks.at(i);
-					if (l_oP.x() == i_iParent)
-						m_oLinks.swap(l_iPrev, i);
-				}
-				break;
-			}
-		}
-	}
-
-	hash_params l_oCmd;
-	l_oCmd.insert(data_commande, QVariant(cmd_sort_item));
-	l_oCmd.insert(data_id, QVariant(i_iParent));
-	emit synchro(l_oCmd);
-}
-
 void sem_model::set_dirty(bool b)
 {
 	if (b != m_bDirty)
