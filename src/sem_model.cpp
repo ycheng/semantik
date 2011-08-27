@@ -608,7 +608,12 @@ bool sem_model::open_file(const QString& i_sUrl)
 		notify_link_items(p.x(), p.y());
 	}
 
-	select_item(NO_ITEM);
+
+	QList<int> lst;
+	mem_sel *sel = new mem_sel(this);
+	sel->sel = lst;
+	sel->apply();
+
 
 	// now tell all the views that a new map was loaded
 	emit sig_open_map();
@@ -620,7 +625,10 @@ bool sem_model::open_file(const QString& i_sUrl)
 	m_sLastSaved = i_sUrl;
 	m_sLastSaved.replace(r, s);
 
-	select_item(NO_ITEM);
+	sel = new mem_sel(this);
+	sel->sel = lst;
+	sel->apply();
+
 	set_dirty(false);
 	return true;
 }
@@ -716,25 +724,7 @@ bool sem_model::link_items(int i_iParent, int i_iChild)
 	lnk->child = i_iChild;
 	lnk->apply();
 
-	//m_oLinks.append(QPoint(i_iParent, i_iChild));
-	/*hash_params l_oCmd;
-	l_oCmd.insert(data_commande, QVariant(cmd_link));
-	l_oCmd.insert(data_id, QVariant(i_iChild));
-	l_oCmd.insert(data_parent, QVariant(i_iParent));
-	emit synchro(l_oCmd);*/
-
 	return true;
-}
-
-void sem_model::select_item(int i_iId, int i_iView)
-{
-	/*m_iLastItemSelected = i_iId;
-	hash_params l_oCmd;
-	l_oCmd.insert(data_commande, QVariant(cmd_select_item));
-	l_oCmd.insert(data_id, QVariant(i_iId));
-	l_oCmd.insert(data_orig, QVariant(i_iView));
-	emit synchro(l_oCmd);
-	*/
 }
 
 QList<int> sem_model::all_roots()
@@ -1027,7 +1017,10 @@ void sem_model::generate_docs(const QString &i_oFile, const QString &i_sDirName,
 	bind_node::set_var(notr("namet"), i_oFile);
 	bind_node::set_var(notr("preview"), ""); // leave this right here! get the file generated
 
-	select_item(NO_ITEM);
+	QList<int> lst;
+	mem_sel *sel = new mem_sel(this);
+	sel->sel = lst;
+	sel->apply();
 
 	foreach (int l_iVal, m_oItems.keys())
 	{

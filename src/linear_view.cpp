@@ -110,12 +110,23 @@ void linear_view::selection_changed()
 	if (!m_bLockSelect)
 	{
 		QList<QTreeWidgetItem*> l_oItems = selectedItems();
-		if (l_oItems.size())
+		QList<int> lst;
+
+		foreach (QTreeWidgetItem* it, l_oItems)
+		{
+			lst.append(it->data(0, Qt::UserRole).toInt());
+		}
+
+		mem_sel *sel = new mem_sel(m_oControl);
+		sel->sel = lst;
+		sel->apply();
+
+		/*if (l_oItems.size())
 		{
 			QTreeWidgetItem *l_oItem = l_oItems.at(0);
 			int l_iIdOld = l_oItem->data(0, Qt::UserRole).toInt();
 			m_oControl->select_item(l_iIdOld, VIEW_LINEAR);
-		}
+		}*/
 	}
 }
 
@@ -228,7 +239,11 @@ void linear_view::dropEvent(QDropEvent *i_oEv)
 					link->apply();
 				}
 			}
-			m_oControl->select_item(l_iId);
+			QList<int> lst;
+			lst.append(l_iId);
+			mem_sel *sel = new mem_sel(m_oControl);
+			sel->sel = lst;
+			sel->apply();
 		}
 	}
 	i_oEv->accept();

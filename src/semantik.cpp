@@ -352,8 +352,6 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	m_oControl->init_colors();
 	m_oControl->init_flags();
 
-	m_oControl->select_item(NO_ITEM);
-
 	read_config();
 	statusBar()->showMessage(trUtf8("Welcome to Semantik"), 2000);
 	setAutoSaveSettings();
