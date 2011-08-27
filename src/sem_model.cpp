@@ -961,18 +961,6 @@ int sem_model::next_seq()
 	return num_seq;
 }
 
-void sem_model::update_item(int i_iId, int i_iView)
-{
-	qDebug()<<"update item called, remove";
-	if (!m_oItems.contains(i_iId)) return;
-
-	hash_params l_oCmd;
-	l_oCmd.insert(data_commande, QVariant(cmd_update_item));
-	l_oCmd.insert(data_id, QVariant(i_iId));
-	l_oCmd.insert(data_orig, QVariant(i_iView));
-	emit synchro(l_oCmd);
-}
-
 void sem_model::set_dirty(bool b)
 {
 	if (b != m_bDirty)

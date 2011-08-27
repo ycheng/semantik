@@ -103,8 +103,6 @@ class sem_model: public QObject
 
 		bool link_items(int id1, int id2);
 		void select_item(int i_oId, int i_iView=NO_VIEW);
-		void update_item(int i_oId, int i_iView=NO_VIEW);
-
 
 		int num_children(int i_iParent);
 		int m_iConnType;
