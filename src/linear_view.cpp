@@ -163,7 +163,14 @@ void linear_view::dropEvent(QDropEvent *i_oEv)
 			int l_iId = l_oChild->data(0, Qt::UserRole).toInt();
 			if (dropIndicatorPosition() == QAbstractItemView::OnItem)
 			{
-				if (m_oControl->parent_of(l_iId)) m_oControl->unlink_items(l_iId, m_oControl->parent_of(l_iId));
+				if (m_oControl->parent_of(l_iId))
+				{
+					mem_unlink *link = new mem_unlink(m_oControl);
+					link->child = l_iId;
+					link->parent = m_oControl->parent_of(l_iId);
+					link->apply();
+				}
+
 				if (l_oItem != NULL)
 				{
 					m_oControl->link_items(l_oItem->data(0, Qt::UserRole).toInt(), l_iId);
@@ -177,7 +184,13 @@ void linear_view::dropEvent(QDropEvent *i_oEv)
 				// make certain they have the same parent now
 				if (m_oControl->parent_of(l_iId) != k);
 				{
-					if (m_oControl->parent_of(l_iId)) m_oControl->unlink_items(l_iId, m_oControl->parent_of(l_iId));
+					if (m_oControl->parent_of(l_iId))
+					{
+						mem_unlink *link = new mem_unlink(m_oControl);
+						link->child = l_iId;
+						link->parent = m_oControl->parent_of(l_iId);
+						link->apply();
+					}
 					m_oControl->link_items(k, l_iId);
 				}
 
@@ -204,7 +217,13 @@ void linear_view::dropEvent(QDropEvent *i_oEv)
 			}
 			else
 			{
-				if (m_oControl->parent_of(l_iId)) m_oControl->unlink_items(l_iId, m_oControl->parent_of(l_iId));
+				if (m_oControl->parent_of(l_iId))
+				{
+					mem_unlink *link = new mem_unlink(m_oControl);
+					link->child = l_iId;
+					link->parent = m_oControl->parent_of(l_iId);
+					link->apply();
+				}
 			}
 			m_oControl->select_item(l_iId);
 		}

@@ -612,10 +612,6 @@ bool sem_model::open_file(const QString& i_sUrl)
 
 	// now tell all the views that a new map was loaded
 	emit sig_open_map();
-	//hash_params l_oCmd;
-	//l_oCmd.insert(data_commande, QVariant(cmd_open_map));
-	//emit synchro(l_oCmd);
-
 	emit sync_colors();
 
 	QRegExp r(notr(".kdi$"));
@@ -683,23 +679,6 @@ int sem_model::add_item(int i_oAdd, int i_iIdx, bool i_iCopy)
 	return NO_ITEM;
 }
 
-void sem_model::unlink_items(int i_iId1, int i_iId2)
-{
-	Q_ASSERT(false);
-	/*
-	Q_ASSERT(m_oItems.contains(i_iId1) && m_oItems.contains(i_iId2));
-
-	m_oLinks.removeAll(QPoint(i_iId1, i_iId2));
-	m_oLinks.removeAll(QPoint(i_iId2, i_iId1));
-
-	hash_params l_oCmd;
-	l_oCmd.insert(data_commande, QVariant(cmd_unlink));
-	l_oCmd.insert(data_id1, QVariant(i_iId1));
-	l_oCmd.insert(data_id2, QVariant(i_iId2));
-	emit synchro(l_oCmd);
-	*/
-}
-
 bool sem_model::link_items(int i_iParent, int i_iChild)
 {
 	Q_ASSERT(m_oItems.contains(i_iParent) && m_oItems.contains(i_iChild));
@@ -745,32 +724,6 @@ bool sem_model::link_items(int i_iParent, int i_iChild)
 	emit synchro(l_oCmd);*/
 
 	return true;
-}
-
-void sem_model::remove_item(int i_iId)
-{
-	Q_ASSERT(m_oItems.contains(i_iId));
-
-	dis_connect(i_iId);
-	hash_params l_oCmd;
-	l_oCmd.insert(data_commande, QVariant(cmd_remove_item));
-	l_oCmd.insert(data_id, QVariant(i_iId));
-	emit synchro(l_oCmd);
-
-	m_oItems.remove(i_iId);
-}
-
-void sem_model::dis_connect(int i_oId)
-{
-	for (int i=0; i<m_oLinks.size(); i++)
-	{
-		QPoint l_oP = m_oLinks.at(i);
-		if (l_oP.x() == i_oId || l_oP.y() == i_oId)
-		{
-			unlink_items(l_oP.x(), l_oP.y());
-			--i;
-		}
-	}
 }
 
 void sem_model::select_item(int i_iId, int i_iView)

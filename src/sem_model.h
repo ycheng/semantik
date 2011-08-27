@@ -101,10 +101,7 @@ class sem_model: public QObject
 		// and the third parameter is for copying the parents data
 		int add_item(int i_oAdd=NO_ITEM, int i_iIdx=NO_ITEM, bool i_iCopy=false);
 
-		void unlink_items(int id1, int id2);
 		bool link_items(int id1, int id2);
-		void remove_item(int i_oId);
-		void dis_connect(int i_oId);
 		void select_item(int i_oId, int i_iView=NO_VIEW);
 		void update_item(int i_oId, int i_iView=NO_VIEW);
 
