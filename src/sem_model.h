@@ -66,6 +66,7 @@ class sem_model: public QObject
 		void sig_table(int id);
 		void sig_sort(int id);
 		void sig_save_data();
+		void sig_open_map();
 
 		void enable_undo(bool, bool);
 

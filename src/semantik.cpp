@@ -343,6 +343,8 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 
 	connect(m_oControl, SIGNAL(sig_save_data()), m_oDiagramView, SLOT(notify_save_data()));
 
+	connect(m_oControl, SIGNAL(sig_open_map()), m_oCanvas, SLOT(notify_open_map()));
+
 	m_oTree->m_oView->addAction(m_oCanvas->m_oDeleteAction); // FIXME
 
 	//qDebug()<<"instance is "<<l_oInst<<endl;

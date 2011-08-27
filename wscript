@@ -200,6 +200,8 @@ def configure(conf):
 	if Options.options.prefix[:len(sur)] == sur:
 		conf.env.RPATH_NABLAH = '/usr/local/lib'
 
+	conf.define('GAP', 50, quote=False)
+
 def options(opt):
 	opt.load('kde4')
 	opt.load('qt4')

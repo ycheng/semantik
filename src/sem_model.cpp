@@ -611,9 +611,10 @@ bool sem_model::open_file(const QString& i_sUrl)
 	select_item(NO_ITEM);
 
 	// now tell all the views that a new map was loaded
-	hash_params l_oCmd;
-	l_oCmd.insert(data_commande, QVariant(cmd_open_map));
-	emit synchro(l_oCmd);
+	emit sig_open_map();
+	//hash_params l_oCmd;
+	//l_oCmd.insert(data_commande, QVariant(cmd_open_map));
+	//emit synchro(l_oCmd);
 
 	emit sync_colors();
 
