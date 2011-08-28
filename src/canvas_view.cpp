@@ -577,9 +577,6 @@ void canvas_view::synchro_doc(const hash_params& i_o)
 #endif
 
 void canvas_view::notify_open_map() {
-	//check_canvas_size();
-	//fit_zoom();
-
 	QRect l_oRect = viewport()->rect();
 	if (m_oItems.size() < 1) // no rectangle
 	{
@@ -611,9 +608,9 @@ void canvas_view::notify_open_map() {
 	scene()->setSceneRect(l_oR2);
 	fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
 
-	l_oR2 = l_oR2.united(QRectF(mapToScene(l_oRect.topLeft()), mapToScene(l_oRect.bottomRight())));
+	l_oR2 = l_oR2.united(QRectF(mapToScene(l_oRect.topLeft()) + QPointF(-10, -10), mapToScene(l_oRect.bottomRight()) + QPointF(10, 10)));
 	scene()->setSceneRect(l_oR2);
-	//fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
+	fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
 }
 
 void canvas_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
@@ -1202,7 +1199,8 @@ void canvas_view::check_canvas_size()
 	x -=GAP; y -= GAP; z += GAP, t += GAP;
 
 	l_oR2 = QRectF(QPointF(x, y), QPointF(z, t));
-	l_oR2 = l_oR2.united(QRectF(mapToScene(l_oRect.topLeft()), mapToScene(l_oRect.bottomRight())));
+	l_oR2 = l_oR2.united(QRectF(mapToScene(l_oRect.topLeft()) + QPointF(-10, -10), mapToScene(l_oRect.bottomRight()) + QPointF(10, 10)));
+
 	if (l_oR2 == sceneRect()) return;
 	scene()->setSceneRect(l_oR2);
 }
