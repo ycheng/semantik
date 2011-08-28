@@ -650,43 +650,6 @@ bool sem_model::read_xml_file(const QString &l_oBa)
 	return true;
 }
 
-int sem_model::add_item(int i_oAdd, int i_iIdx, bool i_iCopy)
-{
-	Q_ASSERT(false);
-	/*
-	Q_ASSERT(!m_oItems.contains(i_iIdx));
-
-	int l_iNext = NO_ITEM;
-
-	if (i_iIdx > NO_ITEM) l_iNext = i_iIdx;
-	else l_iNext = next_seq();
-
-	data_item *l_oItem = new data_item(this, l_iNext);
-	m_oItems[l_iNext] = l_oItem;
-
-	if (i_iCopy)
-	{
-		// copy parents colors and other settings
-		data_item *l_oParent = m_oItems[i_oAdd];
-		l_oItem->m_iColor = l_oParent->m_iColor;
-		l_oItem->m_oCustom = l_oParent->m_oCustom;
-	}
-
-	hash_params l_oCmd;
-	l_oCmd.insert(data_commande, QVariant(cmd_add_item));
-	l_oCmd.insert(data_id, QVariant(l_iNext));
-	emit synchro(l_oCmd);
-
-	if (i_oAdd != NO_ITEM)
-	{
-		link_items(i_oAdd, l_iNext);
-	}
-
-	select_item(l_iNext);
-	return l_iNext; */
-	return NO_ITEM;
-}
-
 bool sem_model::link_items(int i_iParent, int i_iChild)
 {
 	Q_ASSERT(m_oItems.contains(i_iParent) && m_oItems.contains(i_iChild));

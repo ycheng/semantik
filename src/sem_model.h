@@ -99,7 +99,6 @@ class sem_model: public QObject
 
 		// first parameter is the parent, second parameter is the wanted id
 		// and the third parameter is for copying the parents data
-		int add_item(int i_oAdd=NO_ITEM, int i_iIdx=NO_ITEM, bool i_iCopy=false);
 		bool link_items(int id1, int id2);
 
 		int num_children(int i_iParent);
