@@ -68,6 +68,7 @@ class sem_model: public QObject
 		void sig_save_data();
 		void sig_open_map();
 		void sig_change_data(int id);
+		void sig_export_item(int id);
 
 		void enable_undo(bool, bool);
 
@@ -134,6 +135,7 @@ class sem_model: public QObject
 		void notify_table(int id);
 		void notify_sort(int id);
 		void notify_change_data(int id);
+		void notify_export_item(int id);
 
 	public:
 

@@ -1223,5 +1223,9 @@ void sem_model::notify_change_data(int id) {
 	emit sig_change_data(id);
 }
 
+void sem_model::notify_export_item(int id) {
+	emit sig_export_item(id);
+}
+
 #include "sem_model.moc"
 
