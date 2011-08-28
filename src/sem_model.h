@@ -41,8 +41,6 @@ class sem_model: public QObject
 	signals:
 		//void rectangle_changed(int i);
 
-		void synchro(const hash_params&);
-
 		void sig_message(const QString&, int);
 		void dirty(bool);
 		void update_title();

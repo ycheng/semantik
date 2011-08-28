@@ -991,10 +991,7 @@ void sem_model::generate_docs(const QString &i_oFile, const QString &i_sDirName,
 		// the diagram view is the only one for now
 		if (l_oData->m_iDataType != VIEW_DIAG)
 			continue;
-		hash_params l_oCmd;
-		l_oCmd.insert(data_commande, QVariant(cmd_export_item));
-		l_oCmd.insert(data_id, QVariant(l_oData->m_iId));
-		emit synchro(l_oCmd);
+		notify_export_item(l_oData->m_iId);
 	}
 
 	if (!init_py())
