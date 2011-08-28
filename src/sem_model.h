@@ -67,6 +67,7 @@ class sem_model: public QObject
 		void sig_sort(int id);
 		void sig_save_data();
 		void sig_open_map();
+		void sig_change_data(int id);
 
 		void enable_undo(bool, bool);
 
@@ -132,6 +133,7 @@ class sem_model: public QObject
 		void notify_datatype(int id);
 		void notify_table(int id);
 		void notify_sort(int id);
+		void notify_change_data(int id);
 
 	public:
 
@@ -164,8 +166,6 @@ class sem_model: public QObject
 
 		void select_item_keyboard(int, int);
 		void private_select_item(int i_oId);
-
-		void change_data(int i_iId, int i_iType);
 
 		void check_undo(bool); // check if the undo/redo actions can be enabled
 		int itemSelected();

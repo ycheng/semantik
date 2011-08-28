@@ -1475,6 +1475,11 @@ void canvas_view::notify_add_item(int id) {
 	check_canvas_size();
 }
 
+void canvas_view::notify_change_data(int id)
+{
+	qDebug()<<"FIXME data has changed!!!";
+}
+
 void canvas_view::notify_delete_item(int id) {
 	m_bDeleting = true;
 	canvas_item *l_oR1 = m_oItems.value(id);

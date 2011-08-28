@@ -1135,19 +1135,6 @@ data_item* sem_model::operator+(const int y)
 	return m_oItems.value(y);
 }
 
-void sem_model::change_data(int i_iId, int i_iType)
-{
-	if (i_iId <= NO_ITEM) return;
-	Q_ASSERT(m_oItems.value(i_iId) != NULL);
-
-	m_oItems.value(i_iId)->m_iDataType = i_iType;
-
-	hash_params l_oCmd;
-	l_oCmd.insert(data_commande, QVariant(cmd_change_data));
-	l_oCmd.insert(data_id, QVariant(i_iId));
-	emit synchro(l_oCmd);
-}
-
 void sem_model::slot_undo() {
 	if (!m_oUndoStack.isEmpty()) {
 		mem_command *t = m_oUndoStack.pop();
@@ -1230,6 +1217,10 @@ void sem_model::notify_table(int id) {
 
 void sem_model::notify_sort(int id) {
 	emit sig_sort(id);
+}
+
+void sem_model::notify_change_data(int id) {
+	emit sig_change_data(id);
 }
 
 #include "sem_model.moc"
