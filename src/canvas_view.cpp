@@ -13,6 +13,7 @@
 #include "canvas_item.h"
 #include "canvas_link.h"
 #include<QCoreApplication>
+#include <QSet>
 #include "canvas_sort.h"
 #include "semantik.h"
 #include <QTextCursor> 
@@ -1359,9 +1360,26 @@ void canvas_view::mouseMoveEvent(QMouseEvent *i_oEv) {
 		case select_mode:
 			{
 				QGraphicsView::mouseMoveEvent(i_oEv);
-				foreach (QGraphicsItem*tmp, scene()->selectedItems()) { // FIXME this will not scale
-					if (tmp->type() == CANVAS_ITEM_T && tmp->isSelected()) {
-						((canvas_item*) tmp)->update_links();
+
+				QList<QGraphicsItem*> sel = scene()->selectedItems();
+				if (sel.size() > 4) { // does not solve the repainting problem
+					QSet<canvas_link*> lst;
+					foreach (QGraphicsItem*tmp, sel) {
+						if (tmp->type() == CANVAS_ITEM_T && tmp->isSelected()) {
+							canvas_item* x = (canvas_item*) tmp;
+							foreach (canvas_link* l_oLink, x->m_oLinks) {
+								lst.insert(l_oLink);
+							}
+						}
+					}
+					foreach (canvas_link* tmp, lst) {
+						tmp->update_pos();
+					}
+				} else {
+					foreach (QGraphicsItem*tmp, sel) {
+						if (tmp->type() == CANVAS_ITEM_T && tmp->isSelected()) {
+							((canvas_item*) tmp)->update_links();
+						}
 					}
 				}
 			}
