@@ -6,7 +6,6 @@
 #include <QObject>
 #include <QStack>
 #include <QXmlDefaultHandler>
-#include <QMutex>
 #include<KUrl> 
 
 #include "aux.h"
@@ -169,8 +168,6 @@ class sem_model: public QObject
 
 		void check_undo(bool); // check if the undo/redo actions can be enabled
 		int itemSelected();
-
-		QMutex m_oLock;
 
 	private:
 		int num_seq;

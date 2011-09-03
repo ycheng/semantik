@@ -31,13 +31,13 @@ class semantik_reader : public QXmlDefaultHandler
 	public:
 		semantik_reader(sem_model*);
 
-	//private:
+	private:
 		QString m_sBuf;
 		int m_iVersion;
 		sem_model *m_oControl;
 		int m_iId;
 
-	//public:
+	public:
 		bool startElement(const QString&, const QString&, const QString&, const QXmlAttributes&);
 		bool endElement(const QString&, const QString&, const QString&);
 		bool characters(const QString &i_sStr);
@@ -182,7 +182,6 @@ void sem_model::destroy_timer()
 
 void sem_model::slot_autosave()
 {
-	m_oLock.lock();
 	// autosave for the last used save name
 	qDebug()<<"autosave"<<m_sLastSaved;
 	if (m_sLastSaved.length() > 1)
@@ -194,7 +193,6 @@ void sem_model::slot_autosave()
 		}
 		emit sig_message(o, 5000);
 	}
-	m_oLock.unlock();
 }
 
 void sem_model::init_colors()

@@ -395,7 +395,6 @@ void canvas_view::slot_delete()
 		return;
 	}
 
-	// TODO compose?
 	mem_sel *sel = new mem_sel(m_oControl);
 	sel->sel;
 	sel->unsel = l_oLst;
@@ -508,73 +507,6 @@ void canvas_view::wheelEvent(QWheelEvent *i_oEvent)
 	scale(i_iScaleFactor, i_iScaleFactor);
 	centerOn(l_o + mapToScene(viewport()->rect().center()) - mapToScene(i_oEvent->pos()));
 }
-
-#if 0
-void canvas_view::synchro_doc(const hash_params& i_o)
-{
-	int l_iCmd = i_o[data_commande].toInt();
-	switch (l_iCmd)
-	{
-		case cmd_add_item:
-			{
-				int l_iId = i_o[data_id].toInt();
-				Q_ASSERT(! m_oItems.contains(l_iId));
-
-				canvas_item*l_oR = new canvas_item(this, l_iId);
-
-				l_oR->setSelected(true);
-
-				QRectF l_oRect = l_oR->boundingRect();
-				l_oR->setPos(m_oLastPoint - QPointF(l_oRect.width()/2, l_oRect.height()/2));
-
-				data_item *l_oData = *m_oControl + l_iId;
-				l_oData->m_iXX = l_oR->pos().x();
-				l_oData->m_iYY = l_oR->pos().y();
-
-				m_oItems[l_iId] = l_oR;
-			}
-			break;
-		case cmd_update_item:
-			{
-				if (i_o[data_orig].toInt() == VIEW_CANVAS) return;
-				int j = i_o[data_id].toInt();
-				m_oItems.value(j)->update_data();
-				m_oItems.value(j)->update();
-			}
-			break;
-		case cmd_link:
-			{
-				canvas_item *l_oR1 = m_oItems.value(i_o[data_id].toInt());
-				canvas_item *l_oR2 = m_oItems.value(i_o[data_parent].toInt());
-				canvas_link * l_oLink = new canvas_link(this, l_oR2, l_oR1);
-				l_oLink->update_pos();
-				l_oR1->update();
-			}
-			break;
-		case cmd_save_data:
-			{
-				QList<canvas_item*> l_oList = m_oItems.values();
-				foreach (canvas_item *l_oItem, l_oList)
-				{
-					data_item *l_oData = *m_oControl + l_oItem->Id();
-					l_oData->m_iXX = l_oItem->pos().x();
-					l_oData->m_iYY = l_oItem->pos().y();
-					l_oData->m_iWW = l_oItem->boundingRect().width();
-					l_oData->m_iHH = l_oItem->boundingRect().height();
-				}
-			}
-			break;
-		case cmd_open_map:
-			{
-				check_canvas_size();
-				fit_zoom();
-			}
-			break;
-		default:
-			break;
-	}
-}
-#endif
 
 void canvas_view::notify_open_map() {
 	QRect l_oRect = viewport()->rect();
@@ -1044,7 +976,7 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 							mv->newPos.append(m_oItems[lst[i]]->pos());
 						}
 						mv->apply();
-					} else { qDebug()<<"move too small"; }
+					} // else { qDebug()<<"move too small"; }
 				}
 			}
 			break;
@@ -1157,10 +1089,6 @@ void canvas_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 				link->apply();
 			}
 		} else if (i_oEv->modifiers() != Qt::ControlModifier) {
-			//l_iAdded = m_oControl->add_item();
-			//QList<canvas_item*> sel = selection();
-			//if (sel.size() == 1) sel[0]->setFocus();
-
 			mem_add *add = new mem_add(m_oControl);
 			add->init();
 			add->item->m_iXX = m_oLastPoint.x();
@@ -1431,7 +1359,7 @@ void canvas_view::mouseMoveEvent(QMouseEvent *i_oEv) {
 		case select_mode:
 			{
 				QGraphicsView::mouseMoveEvent(i_oEv);
-				foreach (QGraphicsItem*tmp, scene()->selectedItems()) {
+				foreach (QGraphicsItem*tmp, scene()->selectedItems()) { // FIXME this will not scale
 					if (tmp->type() == CANVAS_ITEM_T && tmp->isSelected()) {
 						((canvas_item*) tmp)->update_links();
 					}
