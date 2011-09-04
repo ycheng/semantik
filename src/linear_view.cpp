@@ -19,10 +19,7 @@ linear_view::linear_view(QWidget *i_oParent, sem_model *i_oControl) : QTreeWidge
 	setDragDropMode(QAbstractItemView::InternalMove);
 	header()->hide();
 	m_oControl = i_oControl;
-	//connect(this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)),
-	//	this, SLOT(doubleClickHandler(QTreeWidgetItem*, int)));
-	connect(this, SIGNAL(itemSelectionChanged()),
-		this, SLOT(selection_changed()));
+	connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(selection_changed()));
 	m_bLockSelect = false;
 }
 
@@ -88,23 +85,6 @@ void linear_view::notify_unlink_items(int id1, int id2) {
 	}
 }
 
-#if 0
-void linear_view::doubleClickHandler(QTreeWidgetItem* i_oWidget, int)
-{
-	if (i_oWidget)
-	{
-		QTreeWidgetItem *l_oItem = new QTreeWidgetItem(i_oWidget);
-		l_oItem->setText(0, "hello");
-	}
-	else
-	{
-		QTreeWidgetItem *l_oItem = new QTreeWidgetItem(this);
-		l_oItem->setText(0, "hello");
-		addTopLevelItem(l_oItem);
-	}
-}
-#endif
-
 void linear_view::selection_changed()
 {
 	if (!m_bLockSelect)
@@ -120,13 +100,6 @@ void linear_view::selection_changed()
 		mem_sel *sel = new mem_sel(m_oControl);
 		sel->sel = lst;
 		sel->apply();
-
-		/*if (l_oItems.size())
-		{
-			QTreeWidgetItem *l_oItem = l_oItems.at(0);
-			int l_iIdOld = l_oItem->data(0, Qt::UserRole).toInt();
-			m_oControl->select_item(l_iIdOld, VIEW_LINEAR);
-		}*/
 	}
 }
 
@@ -298,7 +271,6 @@ void linear_view::notify_sort(int id) {
 			l_iCnt++;
 		}
 	}
-
 }
 
 void linear_view::notify_edit(int id)

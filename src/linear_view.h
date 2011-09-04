@@ -28,7 +28,6 @@ class linear_view : public QTreeWidget
 		bool m_bLockSelect;
 
 	public slots:
-		//void doubleClickHandler(QTreeWidgetItem*, int);
 		void filter_slot(const QString & i_oS);
 		void selection_changed();
 

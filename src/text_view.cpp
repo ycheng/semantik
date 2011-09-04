@@ -23,26 +23,17 @@ text_view::text_view(QWidget *i_oParent, sem_model *i_oControl) : QWidget(i_oPar
 {
 	QGridLayout *l_oLayout = new QGridLayout();
 	setLayout(l_oLayout);
-	//m_oLineEdit = new QLineEdit(this);
 
 	m_oControl = i_oControl;
 
 	m_oEdit = new KTextEdit(this);
 	m_oEdit->setCheckSpellingEnabled(true);
-	//l_oLayout->addWidget(m_oLineEdit, 0, 0);
 	l_oLayout->addWidget(m_oEdit, 1, 0, 1, 4);
 	l_oLayout->setMargin(0);
 	setMinimumHeight(30);
 
 	m_iId = NO_ITEM;
 
-	/*QPalette l_oPalette = m_oLineEdit->palette();
-	l_oPalette.setBrush(QPalette::Inactive, QPalette::Base, QColor(230, 230, 230));
-	l_oPalette.setBrush(QPalette::Disabled, QPalette::Base, QColor(230, 230, 230));
-	m_oLineEdit->setPalette(l_oPalette);
-	m_oEdit->setPalette(l_oPalette);*/
-
-	//connect(m_oLineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(update_summary(const QString &)));
 	connect(m_oEdit, SIGNAL(textChanged()), this, SLOT(update_edit()));
 	connect(m_oEdit, SIGNAL(currentCharFormatChanged(const QTextCharFormat &)), this, SLOT(char_format_changed(const QTextCharFormat &)));
 

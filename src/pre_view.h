@@ -19,7 +19,6 @@ class pre_view : public QStackedWidget
 		QLabel *m_oLabel;
 		browser *m_oBrowser;
 
-
 	public slots:
 		void notify_preview();
 };

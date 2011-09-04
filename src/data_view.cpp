@@ -33,7 +33,6 @@ void data_view::notify_datatype(int id) {
 	int j = 0;
 	switch (l_oItem->m_iDataType)
 	{
-		// just to make it really complicated
 		// text image table diagram
 		case VIEW_DIAG: j++;
 		case VIEW_TABLE: j++;

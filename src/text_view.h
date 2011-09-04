@@ -20,7 +20,6 @@ class text_view : public QWidget
 		text_view(QWidget *i_oParent, sem_model *i_oControl);
 		sem_model *m_oControl;
 		KTextEdit *m_oEdit;
-		QLineEdit *m_oLineEdit;
 
 		int m_iId;
 

@@ -579,32 +579,6 @@ void canvas_view::notify_select(const QList<int>& unsel, const QList<int>& sel) 
 		m_iSortCursor = 0;
 		//emit sig_message(trUtf8("Click to set Item %1").arg(QString::number(m_iSortCursor+1)), -1);
 	}
-
-	/*
-	QList<canvas_item*> sel = selection();
-	if (i_o[data_orig].toInt() == VIEW_CANVAS)
-	{
-	check_selected();
-		return;
-	}
-	int l_iId = i_o[data_id].toInt();
-	if (l_iId == NO_ITEM)
-	{
-		deselect_all(false);
-	}
-	else if (sel.size() == 1)
-	{
-		if (sel[0]->Id() != l_iId)
-		{
-			sel[0]->setSelected(false);
-			m_oItems.value(l_iId)->setSelected(true);
-		}
-	}
-	else
-	{
-		add_select(m_oItems.value(l_iId), false);
-	}
-	check_selected();*/
 }
 
 void canvas_view::sync_colors() {

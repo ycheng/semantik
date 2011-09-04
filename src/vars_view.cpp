@@ -280,7 +280,6 @@ void vars_view::try_complete()
 	bool l_b = l_oCursor.position() == l_iWord;
 	l_oCursor.setPosition(l_iSave);
 
-	// TODO message for saying "can not complete"
 	if (!l_b) return;
 
 	if (l_sPrefix != m_oCompleter->completionPrefix())
