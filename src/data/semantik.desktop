@@ -1,5 +1,4 @@
 [Desktop Entry]
-Encoding=UTF-8
 Name=Semantik
 Exec=semantik
 GenericName=Mind mapping software
@@ -10,4 +9,4 @@ Icon=semantik
 MimeType=application/x-semantik;
 X-KDE-StartupNotify=true
 X-DBUS-StartupType=Multi
-Categories=Qt;KDE;Application;Office;
+Categories=Qt;KDE;Office;
