@@ -1,3 +1,4 @@
+// Thomas Nagy 2007-2011 GPLV3
 
 #include "browser.h"
 #include <QtDebug>

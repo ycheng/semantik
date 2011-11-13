@@ -1,3 +1,5 @@
+// Thomas Nagy 2007-2011 GPLV3
+
 #include <QWebView>
 
 #ifndef _BROWSER_H
