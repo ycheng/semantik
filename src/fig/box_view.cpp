@@ -240,7 +240,7 @@ void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 	QPointF m_oLastPoint = mapToScene(i_oEv->pos());
 
 	QGraphicsItem *l_oItem = itemAt(i_oEv->pos());
-	if (l_oItem and l_oItem->type() == gratype(39))
+	if (l_oItem and l_oItem->type() == BOX_LINK_T)
 	{
 		box_link *l_oLink = (box_link*) l_oItem;
 		m_oLinks.removeAll(l_oLink);
@@ -354,7 +354,7 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 		// select the item under the cursor if available and show the popup menu
 		m_oLastPoint = mapToScene(i_oEv->pos());
 		QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
-		if (l_oItem && (l_oItem->type() == gratype(37) || l_oItem->type() == gratype(39)))
+		if (l_oItem && (l_oItem->type() == BOX_ITEM_T || l_oItem->type() == BOX_LINK_T))
 		{
 			if (!m_oSelected.contains(l_oItem))
 			{
@@ -384,7 +384,7 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 
 
 	QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
-	if (l_oItem && l_oItem->type() == gratype(37))
+	if (l_oItem && l_oItem->type() == BOX_ITEM_T)
 	{
 		box_item *l_oRect = (box_item*) l_oItem;
 		if (QApplication::keyboardModifiers() & Qt::ControlModifier)
@@ -423,7 +423,7 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 			m_oOffsetPoint = QPointF(-1, -1);
 		}
 	}
-	else if (l_oItem && l_oItem->type() == gratype(39))
+	else if (l_oItem && l_oItem->type() == BOX_LINK_T)
 	{
 		box_link *l_oLink = (box_link*) l_oItem;
 		if (i_oEv->modifiers() == Qt::ShiftModifier)
@@ -485,7 +485,7 @@ void box_view::deselect_all()
 	if (m_oSelected.size() == 1)
 	{
 		QFocusEvent l_oEv = QFocusEvent(QEvent::FocusOut);
-		if (m_oSelected[0]->type() == gratype(37))
+		if (m_oSelected[0]->type() == BOX_ITEM_T)
 			((box_item*) m_oSelected[0])->focus_out(&l_oEv);
 	}
 
@@ -561,7 +561,7 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 	}
 	else
 	{
-		if (m_oSelected.size() == 1 and m_oSelected[0]->type() == gratype(39) and
+		if (m_oSelected.size() == 1 and m_oSelected[0]->type() == BOX_LINK_T and
 			((box_link*) m_oSelected[0])->m_iControlSegment)
 		{
 			/* boustophedon */
@@ -578,7 +578,7 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 			l_oLink->update_ratio(); // no need to update_pos
 			l_oLink->update();
 		}
-		else if (m_oSelected.size() == 1 and m_oSelected[0]->type() == gratype(37) and
+		else if (m_oSelected.size() == 1 and m_oSelected[0]->type() == BOX_ITEM_T and
 			m_oOffsetPoint.x()>0 and m_oOffsetPoint.y()>0 )
 		{
 			QPointF l_o = m_oLastMovePoint - m_oLastPoint + m_oOffsetPoint;
@@ -599,7 +599,7 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 		{
 			foreach (QGraphicsItem *l_oItem, m_oSelected)
 			{
-				if (l_oItem->type() == gratype(37))
+				if (l_oItem->type() == BOX_ITEM_T)
 				{
 					((box_item*) l_oItem)->move_by(l_oRect.width(), l_oRect.height());
 				}
@@ -633,7 +633,7 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 		box_item *l_oUnder = NULL;
 		foreach (QGraphicsItem *l_oI1, scene()->items(m_oLastMovePoint))
 		{
-			if (l_oI1->type() == gratype(37))
+			if (l_oI1->type() == BOX_ITEM_T)
 			{
 				l_oUnder = (box_item*) l_oI1;
 				break;
@@ -695,7 +695,7 @@ void box_view::slot_delete()
 		%:\
 		ifdef\
 		unix
-		if (l_o->type() == gratype(37))
+		if (l_o->type() == BOX_ITEM_T)
 		{
 			// disconnect
 			foreach (box_link *l_oLink, m_oLinks)
@@ -710,7 +710,7 @@ void box_view::slot_delete()
 			}
 			m_oItems.removeAll((box_item*) l_o);
 		}
-		else if (l_o->type() == gratype(39))
+		else if (l_o->type() == BOX_LINK_T)
 		{
 			m_oLinks.removeAll((box_link*) l_o);
 		}
@@ -724,15 +724,15 @@ void box_view::enable_menu_actions()
 	m_oAddItemAction->setEnabled(m_oSelected.size() <= 1);
 	m_oDeleteAction->setEnabled(m_oSelected.size() >= 1);
 	m_oColorAction->setEnabled(m_oSelected.size() >= 1);
-	m_oEditAction->setEnabled(m_oSelected.size() == 1 and m_oSelected[0]->type() == gratype(37));
+	m_oEditAction->setEnabled(m_oSelected.size() == 1 and m_oSelected[0]->type() == BOX_ITEM_T);
 
-	m_oWidthMenu->setEnabled(m_oSelected.size() >= 1 and m_oSelected[0]->type() == gratype(39));
+	m_oWidthMenu->setEnabled(m_oSelected.size() >= 1 and m_oSelected[0]->type() == BOX_LINK_T);
 	foreach(QAction* l_o, m_oWidthGroup->actions())
 	{
 		l_o->setEnabled(m_oSelected.size() >= 1);
 	}
 
-	m_oStyleMenu->setEnabled(m_oSelected.size() >= 1 and m_oSelected[0]->type() == gratype(39));
+	m_oStyleMenu->setEnabled(m_oSelected.size() >= 1 and m_oSelected[0]->type() == BOX_LINK_T);
 	foreach(QAction* l_o, m_oStyleGroup->actions())
 	{
 		l_o->setEnabled(m_oSelected.size() >= 1);
@@ -766,7 +766,7 @@ void box_view::slot_color()
 	{
 		QAbstractGraphicsShapeItem* l_o = (QAbstractGraphicsShapeItem*) l_oItem;
 		l_o->setBrush(l_oColor);
-		if (l_oItem->type() == gratype(39))
+		if (l_oItem->type() == BOX_LINK_T)
 		{
 			box_link *l_oLink = (box_link*) l_oItem;
 			QPen l_oPen = l_oLink->pen();
@@ -782,7 +782,7 @@ void box_view::slot_penstyle()
 	int l_i = ((QAction*) QObject::sender())->data().toInt();
 	foreach (QGraphicsItem* l_o, m_oSelected)
 	{
-		if (l_o->type() == gratype(39))
+		if (l_o->type() == BOX_LINK_T)
 		{
 			box_link *l_oLink = (box_link*) l_o;
 			QPen l_oPen = l_oLink->pen();
@@ -798,7 +798,7 @@ void box_view::slot_penwidth()
 	int l_i = ((QAction*) QObject::sender())->data().toInt();
 	foreach (QGraphicsItem* l_o, m_oSelected)
 	{
-		if (l_o->type() == gratype(39))
+		if (l_o->type() == BOX_LINK_T)
 		{
 			box_link *l_oLink = (box_link*) l_o;
 			QPen l_oPen = l_oLink->pen();
@@ -810,7 +810,7 @@ void box_view::slot_penwidth()
 
 void box_view::slot_edit()
 {
-	if (m_oSelected.size() == 1 && m_oSelected[0]->type() == gratype(37))
+	if (m_oSelected.size() == 1 && m_oSelected[0]->type() == BOX_ITEM_T)
 	{
 		box_item *l_o = (box_item*) m_oSelected[0];
 		if (l_o->m_bEdit)
@@ -929,7 +929,7 @@ QString box_view::to_string()
 
 void box_view::keyPressEvent(QKeyEvent *i_oEvent)
 {
-	if (m_oSelected.size() == 1 && m_oSelected[0]->type() == gratype(37))
+	if (m_oSelected.size() == 1 && m_oSelected[0]->type() == BOX_ITEM_T)
 	{
 		box_item * l_oItem = (box_item*) m_oSelected[0];
 		if (l_oItem->m_bEdit && i_oEvent->type() == QEvent::KeyPress)
@@ -970,7 +970,7 @@ bool box_view::event(QEvent *i_oEvent)
 		|| i_oEvent->type() == QEvent::ShortcutOverride
 		|| i_oEvent->type() == QEvent::Shortcut)
 	{
-		if (m_oSelected.size() == 1 && m_oSelected[0]->type() == gratype(37))
+		if (m_oSelected.size() == 1 && m_oSelected[0]->type() == BOX_ITEM_T)
 		{
 			box_item *l_oItem = (box_item*) m_oSelected[0];
 			if (l_oItem->m_bEdit)
@@ -989,7 +989,7 @@ bool box_view::event(QEvent *i_oEvent)
 	}
 	else if (i_oEvent->type() == QEvent::InputMethod)
 	{
-		if (m_oSelected.size() == 1 && m_oSelected[0]->type() == gratype(37))
+		if (m_oSelected.size() == 1 && m_oSelected[0]->type() == BOX_ITEM_T)
 		{
 			box_item * l_oItem = (box_item*) m_oSelected[0];
 			if (l_oItem->m_bEdit)

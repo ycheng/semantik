@@ -15,7 +15,7 @@ class box_item : public QGraphicsRectItem
 		box_item(box_view*);
 		~box_item();
 
-		int type() const { return gratype(37); }
+		int type() const { return BOX_ITEM_T; }
 
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
                 QTextDocument *m_oDoc;

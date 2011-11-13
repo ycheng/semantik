@@ -16,7 +16,7 @@ class box_link : public QGraphicsRectItem
 		box_link(box_view*);
 		~box_link();
 
-		int type() const { return gratype(39); }
+		int type() const { return BOX_LINK_T; }
 
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
 		bool m_bSel;

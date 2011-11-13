@@ -77,7 +77,7 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 		box_item *l_oUnder = NULL;
 		foreach (QGraphicsItem *l_oI1, scene()->items(m_oView->m_oLastMovePoint))
 		{
-			if (l_oI1->type() == gratype(37))
+			if (l_oI1->type() == BOX_ITEM_T)
 			{
 				l_oUnder = (box_item*) l_oI1;
 				break;
@@ -97,7 +97,7 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 		box_item *l_oUnder = NULL;
 		foreach (QGraphicsItem *l_oI1, scene()->items(m_oView->m_oLastMovePoint))
 		{
-			if (l_oI1->type() == gratype(37))
+			if (l_oI1->type() == BOX_ITEM_T)
 			{
 				l_oUnder = (box_item*) l_oI1;
 				break;
@@ -229,7 +229,7 @@ void box_link::update_pos()
 	box_item *l_oUnder = NULL;
         foreach (QGraphicsItem *l_oI1, scene()->items(m_oView->m_oLastMovePoint))
         {
-                if (l_oI1->type() == gratype(37))
+                if (l_oI1->type() == BOX_ITEM_T)
                 {
                         l_oUnder = (box_item*) l_oI1;
 			break;
@@ -306,7 +306,7 @@ void box_link::update_pos()
 	//QList<QGraphicsItem *> l_oLst = m_oView->scene()->items(m_oView->m_oLastMovePoint);
 	//foreach (QGraphicsItem *l_oItem, l_oLst)
 	//{
-	//	if (l_oItem->type() == gratype(37))
+	//	if (l_oItem->type() == BOX_ITEM_T)
 	//	{
 	//		box_item *l_oBox = (box_item*) l_oItem;
 			//m_oView->add_select(l_oBox);
