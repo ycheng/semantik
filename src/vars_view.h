@@ -37,6 +37,7 @@ class vars_view : public QTextEdit
 		QAction *m_oCompleteAction;
 		void keyPressEvent(QKeyEvent*);
 		void init_completer();
+		bool startup;
 
 	public slots:
 		void update_edit();

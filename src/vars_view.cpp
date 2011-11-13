@@ -23,6 +23,7 @@ vars_view::vars_view(QWidget *i_oParent, sem_model *i_oControl) : QTextEdit(i_oP
 	m_iId = NO_ITEM;
 	m_oCompleter = NULL;
 	m_bLockEdit = false;
+	startup = true;
 }
 
 void vars_view::init_completer()
@@ -119,6 +120,12 @@ void vars_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 void vars_view::update_edit()
 {
 	if (m_bLockEdit) return;
+
+	if (startup)
+	{
+		startup = false;
+		return;
+	}
 
 	mem_vars* tmp = NULL;
 
