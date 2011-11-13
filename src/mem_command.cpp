@@ -30,6 +30,15 @@ void mem_command::add() {
 	model->check_undo(true);
 }
 
+void mem_command::redo_dirty() {
+	was_dirty = model->m_bDirty;
+	model->set_dirty(true);
+}
+
+void mem_command::undo_dirty() {
+	model->set_dirty(was_dirty);
+}
+
 ///////////////////////////////////////////////////////////////////
 
 mem_delete::mem_delete(sem_model* mod) : mem_command(mod) {
@@ -59,6 +68,7 @@ void mem_delete::redo() {
 		model->notify_delete_item(d->m_iId);
 		model->m_oItems.remove(d->m_iId);
 	}
+	redo_dirty();
 }
 
 void mem_delete::undo() {
@@ -72,6 +82,7 @@ void mem_delete::undo() {
 		model->m_oLinks.append(p);
 		model->notify_link_items(p.x(), p.y());
 	}
+	undo_dirty();
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -100,6 +111,7 @@ void mem_add::redo() {
 		sel->sel.append(item->m_iId);
 	}
 	sel->redo();
+	redo_dirty();
 }
 
 void mem_add::undo() {
@@ -114,6 +126,7 @@ void mem_add::undo() {
 	Q_ASSERT(model->m_oItems.contains(item->m_iId));
 	model->notify_delete_item(item->m_iId);
 	model->m_oItems.remove(item->m_iId);
+	undo_dirty();
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -127,6 +140,7 @@ void mem_link::redo() {
 	Q_ASSERT(!model->m_oLinks.contains(QPoint(parent, child)));
 	model->m_oLinks.append(QPoint(parent, child));
 	model->notify_link_items(parent, child);
+	redo_dirty();
 }
 
 void mem_link::undo() {
@@ -134,6 +148,7 @@ void mem_link::undo() {
 	Q_ASSERT(model->m_oLinks.contains(QPoint(parent, child)));
 	model->m_oLinks.removeAll(QPoint(parent, child));
 	model->notify_unlink_items(parent, child);
+	undo_dirty();
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -147,6 +162,7 @@ void mem_unlink::redo() {
 	Q_ASSERT(model->m_oLinks.contains(QPoint(parent, child)));
 	model->m_oLinks.removeAll(QPoint(parent, child));
 	model->notify_unlink_items(parent, child);
+	redo_dirty();
 }
 
 void mem_unlink::undo() {
@@ -154,6 +170,7 @@ void mem_unlink::undo() {
 	Q_ASSERT(!model->m_oLinks.contains(QPoint(parent, child)));
 	model->m_oLinks.append(QPoint(parent, child));
 	model->notify_link_items(parent, child);
+	undo_dirty();
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -243,6 +260,7 @@ void mem_move::redo() {
 		it->m_iYY = newPos[i].y();
 	}
 	model->notify_move(sel, newPos);
+	redo_dirty();
 }
 
 void mem_move::undo() {
@@ -253,6 +271,7 @@ void mem_move::undo() {
 		it->m_iYY = oldPos[i].y();
 	}
 	model->notify_move(sel, oldPos);
+	undo_dirty();
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -273,6 +292,7 @@ void mem_color::redo() {
 		t->m_iColor = newColor;
 		model->notify_repaint(i.key());
 	}
+	redo_dirty();
 }
 
 void mem_color::undo() {
@@ -283,6 +303,7 @@ void mem_color::undo() {
 		t->m_iColor = i.value();
 		model->notify_repaint(i.key());
 	}
+	undo_dirty();
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -311,6 +332,7 @@ void mem_flag::redo() {
 		}
 		model->notify_flag(i.key());
 	}
+	redo_dirty();
 }
 
 void mem_flag::undo() {
@@ -321,6 +343,7 @@ void mem_flag::undo() {
 		t->m_oFlags = i.value();
 		model->notify_flag(i.key());
 	}
+	undo_dirty();
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -337,11 +360,13 @@ mem_edit::mem_edit(sem_model* mod) : mem_command(mod) {
 void mem_edit::redo() {
 	sel->m_sSummary = newSummary;
 	model->notify_edit(sel->m_iId);
+	redo_dirty();
 }
 
 void mem_edit::undo() {
 	sel->m_sSummary = oldSummary;
 	model->notify_edit(sel->m_iId);
+	undo_dirty();
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -360,11 +385,13 @@ mem_datatype::mem_datatype(sem_model* mod) : mem_command(mod) {
 void mem_datatype::redo() {
 	sel->m_iDataType = newDataType;
 	model->notify_datatype(sel->m_iId);
+	redo_dirty();
 }
 
 void mem_datatype::undo() {
 	sel->m_iDataType = oldDataType;
 	model->notify_datatype(sel->m_iId);
+	undo_dirty();
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -376,12 +403,14 @@ void mem_text::redo()
 {
 	sel->m_sText = newText;
 	model->notify_text(sel->m_iId);
+	redo_dirty();
 }
 
 void mem_text::undo()
 {
 	sel->m_sText = oldText;
 	model->notify_text(sel->m_iId);
+	undo_dirty();
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -401,6 +430,7 @@ void mem_vars::redo()
 		item->m_sHints = newVars;
 	}
 	model->notify_vars(m_iId);
+	redo_dirty();
 }
 
 void mem_vars::undo()
@@ -415,6 +445,7 @@ void mem_vars::undo()
 		item->m_sHints = oldVars;
 	}
 	model->notify_vars(m_iId);
+	undo_dirty();
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -426,12 +457,14 @@ void mem_pic::redo()
 {
 	sel->m_oPix = newPix;
 	model->notify_pic(sel->m_iId);
+	redo_dirty();
 }
 
 void mem_pic::undo()
 {
 	sel->m_oPix = oldPix;
 	model->notify_pic(sel->m_iId);
+	undo_dirty();
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -447,6 +480,7 @@ void mem_table::redo()
 	item->m_oTableData = newData;
 
 	model->notify_table(m_iId);
+	redo_dirty();
 }
 
 void mem_table::undo()
@@ -457,6 +491,7 @@ void mem_table::undo()
 	item->m_oTableData = oldData;
 
 	model->notify_table(m_iId);
+	undo_dirty();
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -531,6 +566,7 @@ void mem_sort::redo()
 	}
 	model->m_oLinks += newData;
 	model->notify_sort(m_iParent);
+	redo_dirty();
 }
 
 void mem_sort::undo()
@@ -546,5 +582,6 @@ void mem_sort::undo()
 	}
 	model->m_oLinks += oldData;
 	model->notify_sort(m_iParent);
+	undo_dirty();
 }
 

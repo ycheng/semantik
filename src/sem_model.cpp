@@ -917,10 +917,7 @@ void sem_model::set_dirty(bool b)
 	if (b != m_bDirty)
 	{
 		m_bDirty = b;
-		if (b)
-		{
-			emit sig_message(trUtf8("dirty"), 1000);
-		}
+		//if (b) emit sig_message(trUtf8("dirty"), 1000); // CLEANUP
 		emit(update_title());
 	}
 }

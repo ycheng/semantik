@@ -464,16 +464,21 @@ void semantik_win::slot_open()
 
 void semantik_win::update_title()
 {
-	if (m_oControl->m_oCurrentUrl.path().isEmpty())
-	{
-		setWindowTitle(trUtf8("Semantik"));
-		return;
-	}
-
 	QString mod;
 	if (m_oControl->m_bDirty) mod = trUtf8(" [Modified] ");
-	setWindowTitle(trUtf8("%1 %2 - Semantik").arg(m_oControl->m_oCurrentUrl.path(), mod));
-	m_oRecentFilesAct->addUrl(m_oControl->m_oCurrentUrl);
+
+	QString txt;
+	if (m_oControl->m_oCurrentUrl.path().isEmpty())
+	{
+		txt = trUtf8("Semantik %1").arg(mod);
+	}
+	else
+	{
+		txt = trUtf8("%1 %2 - Semantik").arg(m_oControl->m_oCurrentUrl.path(), mod);
+		m_oRecentFilesAct->addUrl(m_oControl->m_oCurrentUrl); // TODO
+	}
+	setWindowTitle(txt);
+
 }
 
 void semantik_win::slot_properties()

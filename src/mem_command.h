@@ -23,8 +23,11 @@ class mem_command {
 		virtual void undo() = 0;
 		virtual void redo() = 0;
 		virtual void apply();
+		virtual void redo_dirty();
+		virtual void undo_dirty();
 		void add();
 
+		bool was_dirty;
 		enum IType {DELETE, ADD, LINK, UNLINK, SELECT, MOVE, COLOR, FLAG, EDIT, DATATYPE, TEXT, VARS, PIC, TABLE, SORT};
 		virtual IType type() = 0;
 };
