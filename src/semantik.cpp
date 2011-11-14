@@ -448,6 +448,11 @@ bool semantik_win::slot_save()
 
 void semantik_win::slot_open()
 {
+	if (m_oControl->m_bDirty)
+	{
+		if (!proceed_save()) return;
+	}
+
 	KUrl l_o = KFileDialog::getOpenUrl(KUrl(notr("kfiledialog:///document")),
 		trUtf8("*.sem *.kdi *.mm *.vym|All Supported Files (*.sem *.kdi *.mm *.vym)"),
 		this, trUtf8("Choose a file name"));
