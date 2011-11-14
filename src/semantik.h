@@ -97,6 +97,7 @@ class semantik_win : public KXmlGuiWindow
 		QString m_sFileName;
 
 		bool queryClose();
+		bool proceed_save();
 
 	public slots:
 		void update_title();

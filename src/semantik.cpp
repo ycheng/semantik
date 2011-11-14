@@ -514,12 +514,12 @@ void semantik_win::slot_properties()
 bool semantik_win::queryClose()
 {
 	write_config();
-	if (!m_oControl->m_bDirty)
-	{
-		//writeConfig();
-		return true;
-	}
+	if (!m_oControl->m_bDirty) return true;
+	return proceed_save();
+}
 
+bool semantik_win::proceed_save()
+{
 	QString l_oTitle = m_oControl->m_sLastSaved;
 	if (l_oTitle.isEmpty()) l_oTitle = trUtf8("Untitled");
 
@@ -532,12 +532,27 @@ bool semantik_win::queryClose()
 	{
 		case KMessageBox::Yes:
 			return slot_save();
-		case KMessageBox::No :
+		case KMessageBox::No:
 			return true;
 		default:
 			return false;
 	}
 	return false;
+}
+
+void semantik_win::slot_recent(const KUrl& i_oUrl)
+{
+	if (i_oUrl.path().isEmpty()) return;
+	if (m_oControl->m_bDirty)
+	{
+		if (!proceed_save()) return;
+	}
+
+	if (m_oControl->open_file(i_oUrl.path()))
+	{
+		m_oControl->m_oCurrentUrl = i_oUrl;
+	}
+	update_title();
 }
 
 void semantik_win::slot_tool_select()
@@ -567,16 +582,6 @@ void semantik_win::slot_tool_scroll()
 void semantik_win::slot_message(const QString & i_sMsg, int i_iDur)
 {
 	statusBar()->showMessage(i_sMsg, i_iDur);
-}
-
-void semantik_win::slot_recent(const KUrl& i_oUrl)
-{
-	if (i_oUrl.path().isEmpty()) return;
-	if (m_oControl->open_file(i_oUrl.path()))
-	{
-		m_oControl->m_oCurrentUrl = i_oUrl;
-	}
-	update_title();
 }
 
 void semantik_win::slot_tip_of_day()
