@@ -25,10 +25,6 @@ class box_view : public QGraphicsView
 		void wheelEvent(QWheelEvent*);
 		void clear_diagram();
 
-		void keyPressEvent(QKeyEvent*);
-		void keyReleaseEvent(QKeyEvent*);
-		bool event(QEvent *i_oEvent);
-
 		QList<QGraphicsItem*> m_oSelected;
 		QList<box_item*> m_oItems;
 		QList<box_link*> m_oLinks;

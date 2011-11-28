@@ -55,15 +55,14 @@ bool box_reader::startElement(const QString&, const QString&, const QString& i_s
 {
 	if (i_sName == QObject::trUtf8("box_item"))
 	{
-		box_item *l_o = new box_item(m_oControl);
+		box_item *l_o = new box_item(m_oControl, i_oAttrs.value(QObject::trUtf8("id")).toInt());
 		m_oControl->m_oItems.push_back(l_o);
-		l_o->m_iId = i_oAttrs.value(QObject::trUtf8("id")).toInt();
 		m_oControl->m_iIdCounter = 1 + qMax(m_oControl->m_iIdCounter, l_o->m_iId);
-		l_o->m_oDoc->setPlainText(i_oAttrs.value(QObject::trUtf8("text")));
-		l_o->setBrush(QColor(i_oAttrs.value(QObject::trUtf8("col"))));
+		l_o->setPlainText(i_oAttrs.value(QObject::trUtf8("text")));
+		//l_o->setBrush(QColor(i_oAttrs.value(QObject::trUtf8("col"))));
 
-		l_o->set_pos(i_oAttrs.value(QObject::trUtf8("c1")).toFloat(), i_oAttrs.value(QObject::trUtf8("c2")).toFloat());
-		l_o->setRect(QRectF(0., 0., i_oAttrs.value(QObject::trUtf8("c3")).toDouble(), i_oAttrs.value(QObject::trUtf8("c4")).toDouble()));
+		l_o->setPos(QPointF(i_oAttrs.value(QObject::trUtf8("c1")).toFloat(), i_oAttrs.value(QObject::trUtf8("c2")).toFloat()));
+		//l_o->setRect(QRectF(0., 0., i_oAttrs.value(QObject::trUtf8("c3")).toDouble(), i_oAttrs.value(QObject::trUtf8("c4")).toDouble()));
 	}
 	else if (i_sName == QObject::trUtf8("box_link"))
 	{
@@ -249,13 +248,13 @@ void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 		return;
 	}
 
-	box_item *l_o = new box_item(this);
+	box_item *l_o = new box_item(this, m_oControl->next_seq());
 	m_oItems.push_back(l_o);
 	l_o->setRect(0, 0, 80, 40);
 
 	QRectF l_oRect = l_o->boundingRect();
 	add_select(l_o);
-	l_o->set_pos(m_oLastPoint - QPointF(l_oRect.width()/2, l_oRect.height()/2));
+	l_o->setPos(m_oLastPoint - QPointF(l_oRect.width()/2, l_oRect.height()/2));
 
 	check_canvas_size();
 }
@@ -485,8 +484,6 @@ void box_view::deselect_all()
 	if (m_oSelected.size() == 1)
 	{
 		QFocusEvent l_oEv = QFocusEvent(QEvent::FocusOut);
-		if (m_oSelected[0]->type() == BOX_ITEM_T)
-			((box_item*) m_oSelected[0])->focus_out(&l_oEv);
 	}
 
 	while (m_oSelected.size() > 0)
@@ -601,7 +598,7 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 			{
 				if (l_oItem->type() == BOX_ITEM_T)
 				{
-					((box_item*) l_oItem)->move_by(l_oRect.width(), l_oRect.height());
+					((box_item*) l_oItem)->moveBy(l_oRect.width(), l_oRect.height());
 				}
 
 				foreach (box_link *l_oLink, m_oLinks)
@@ -750,11 +747,11 @@ void box_view::enable_actions()
 
 void box_view::slot_add_item()
 {
-	box_item *l_o = new box_item(this);
+	box_item *l_o = new box_item(this, m_oControl->next_seq());
 	l_o->setRect(0, 0, 80, 40);
 	QRectF l_oRect = l_o->boundingRect();
 	add_select(l_o);
-	l_o->set_pos(m_oLastPoint - QPointF(l_oRect.width()/2, l_oRect.height()/2));
+	l_o->setPos(m_oLastPoint - QPointF(l_oRect.width()/2, l_oRect.height()/2));
 }
 
 void box_view::slot_color()
@@ -816,12 +813,10 @@ void box_view::slot_edit()
 		if (l_o->m_bEdit)
 		{
 			QFocusEvent l_oEv = QFocusEvent(QEvent::FocusOut);
-			l_o->focus_out(&l_oEv);
 			l_o->update();
 		}
 		else
 		{
-			l_o->focus_in();
 			l_o->update();
 		}
 	}
@@ -889,7 +884,7 @@ QString box_view::to_string()
 	foreach (box_item *l_oBox, m_oItems)
 	{
 		l<<QObject::trUtf8("<box_item id=\"%1\"").arg(QString::number(l_oBox->m_iId));
-		l<<QObject::trUtf8(" text=\"%1\"").arg(bind_node::protectXML(l_oBox->m_oDoc->toPlainText()));
+		l<<QObject::trUtf8(" text=\"%1\"").arg(bind_node::protectXML(l_oBox->toPlainText()));
 		l<<QObject::trUtf8(" c1=\"%1\" c2=\"%2\" c3=\"%3\" c4=\"%4\"").arg(
 				QString::number(l_oBox->pos().x()),
 				QString::number(l_oBox->pos().y()),
@@ -925,80 +920,6 @@ QString box_view::to_string()
 	l<<QObject::trUtf8("</sem_diagram>");
 
 	return l.join("");
-}
-
-void box_view::keyPressEvent(QKeyEvent *i_oEvent)
-{
-	if (m_oSelected.size() == 1 && m_oSelected[0]->type() == BOX_ITEM_T)
-	{
-		box_item * l_oItem = (box_item*) m_oSelected[0];
-		if (l_oItem->m_bEdit && i_oEvent->type() == QEvent::KeyPress)
-		{
-			setCursor(Qt::ArrowCursor);
-			l_oItem->keyPressEvent(i_oEvent);
-		}
-	}
-	if (QApplication::keyboardModifiers() & Qt::ControlModifier) setCursor(Qt::CrossCursor);
-	i_oEvent->accept();
-}
-
-void box_view::keyReleaseEvent(QKeyEvent *i_oEvent)
-{
-	if (! (QApplication::keyboardModifiers() & Qt::ControlModifier))
-		setCursor(Qt::ArrowCursor);
-
-	i_oEvent->accept();
-}
-
-bool box_view::event(QEvent *i_oEvent)
-{
-	//qDebug()<<"event type "<<i_oEvent->type();
-	/*if (i_oEvent->type() == QEvent::ToolTip)
-	{
-		QHelpEvent *l_oEv = static_cast<QHelpEvent*>(i_oEvent);
-		QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(l_oEv->pos()));
-		if (l_oItem && l_oItem->type() == gratype(7))
-		{
-			data_item *l_o = *m_oControl + ((canvas_item*) l_oItem)->Id();
-			if (l_o && l_o->m_iTextLength > 1)
-			{
-				QToolTip::showText(l_oEv->globalPos(), l_o->m_sText);
-			}
-		}
-	}
-	else*/ if (i_oEvent->type() == QEvent::KeyPress
-		|| i_oEvent->type() == QEvent::ShortcutOverride
-		|| i_oEvent->type() == QEvent::Shortcut)
-	{
-		if (m_oSelected.size() == 1 && m_oSelected[0]->type() == BOX_ITEM_T)
-		{
-			box_item *l_oItem = (box_item*) m_oSelected[0];
-			if (l_oItem->m_bEdit)
-			{
-				QKeyEvent *l_o = (QKeyEvent*) i_oEvent;
-				if (m_oEditAction->shortcut().matches(l_o->key()))
-				{
-					//qDebug()<<"matches"<<l_o->key();
-					return QGraphicsView::event(i_oEvent);
-				}
-
-				keyPressEvent(l_o);
-				return true;
-			}
-		}
-	}
-	else if (i_oEvent->type() == QEvent::InputMethod)
-	{
-		if (m_oSelected.size() == 1 && m_oSelected[0]->type() == BOX_ITEM_T)
-		{
-			box_item * l_oItem = (box_item*) m_oSelected[0];
-			if (l_oItem->m_bEdit)
-			{
-				l_oItem->inputMethodEvent((QInputMethodEvent*) i_oEvent);
-			}
-		}
-	}
-	return QGraphicsView::event(i_oEvent);
 }
 
 void box_view::check_canvas_size()
