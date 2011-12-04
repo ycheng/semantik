@@ -12,6 +12,8 @@
 
 class QTextDocument;
 class box_view;
+class data_item;
+class data_box;
 class box_item : public QGraphicsTextItem
 {
 	public:
@@ -21,7 +23,7 @@ class box_item : public QGraphicsTextItem
 		int type() const { return BOX_ITEM_T; }
 
 
-		//void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
+		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
 		bool m_bSel;
 		bool m_bEdit;
 
@@ -45,6 +47,8 @@ class box_item : public QGraphicsTextItem
 		int m_iId;
 
 		box_view *m_oView;
+		data_box *m_oBox;
+		data_item *m_oItem;
 
 		void mousePressEvent(QGraphicsSceneMouseEvent* e);
 		void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);

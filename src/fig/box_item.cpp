@@ -15,6 +15,8 @@
 #include "data_item.h"
 #include "sem_model.h"
 
+#define PAD 3
+
 box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oView(i_oParent)
 {
 	//l_oOpt.setAlignment(Qt::AlignCenter);
@@ -38,6 +40,9 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oVie
 	//m_oColor = s_oColorRoot; //"#ABFBC7");
 	//m_oColorBackup = m_oColor;
 
+	m_oItem = m_oView->m_oControl->m_oItems[m_oView->m_iId];
+	m_oBox = m_oItem->m_oBoxes[m_iId];
+
 	i_oParent->scene()->addItem(this);
 
 	setCacheMode(QGraphicsItem::DeviceCoordinateCache);
@@ -48,6 +53,50 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oVie
 box_item::~box_item()
 {
 
+}
+
+void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+	painter->save();
+
+	QRectF l_oRect = boundingRect().adjusted(PAD, PAD, -PAD, -PAD);
+	data_item *l_oItem = m_oItem; //m_oGraph->m_oControl->m_oItems.value(Id());
+	color_scheme l_oColorScheme = l_oItem->get_color_scheme();
+
+	QPen l_oPen = QPen(Qt::SolidLine);
+
+	l_oPen.setColor(l_oColorScheme.m_oBorderColor);
+	if (isSelected()) l_oPen.setStyle(Qt::DotLine);
+	l_oPen.setCosmetic(true);
+
+	painter->setPen(l_oPen);
+
+	if (textInteractionFlags() & Qt::TextEditorInteraction)
+	{
+		painter->setBrush(Qt::white);
+	}
+	else
+	{
+		painter->setBrush(l_oColorScheme.m_oInnerColor);
+	}
+
+	painter->drawRoundRect(l_oRect, 20, 20);
+
+	QAbstractTextDocumentLayout::PaintContext ctx;
+	if (textInteractionFlags() & Qt::TextEditorInteraction) {
+		QTextCursor cursor = textCursor();
+		ctx.cursorPosition = cursor.position();
+		QAbstractTextDocumentLayout::Selection selection;
+		selection.cursor = cursor;
+		selection.format.setBackground(ctx.palette.brush(QPalette::Active, QPalette::Highlight));
+		selection.format.setForeground(ctx.palette.brush(QPalette::Active, QPalette::HighlightedText));
+		ctx.selections.append(selection);
+	}
+
+	ctx.clip = l_oRect;
+	document()->documentLayout()->draw(painter, ctx);
+
+	painter->restore();
 }
 
 /*
@@ -165,8 +214,7 @@ QRectF box_item::boundingRect() const {
 }
 
 void box_item::update_data() {
-	data_box *box = m_oView->m_oControl->m_oItems[m_oView->m_iId]->m_oBoxes[m_iId];
-	setPos(QPointF(box->m_iXX, box->m_iYY));
-	setPlainText(box->m_sText);
+	setPos(QPointF(m_oBox->m_iXX, m_oBox->m_iYY));
+	setPlainText(m_oBox->m_sText);
 	adjustSize();
 }
