@@ -30,6 +30,8 @@
 #include "data_item.h"
 #include "box_view.h"
 #include "sembind.h"
+ #include "mem_box.h"
+
 class box_reader : public QXmlDefaultHandler
 {
     public:
@@ -56,7 +58,7 @@ bool box_reader::startElement(const QString&, const QString&, const QString& i_s
 	if (i_sName == QObject::trUtf8("box_item"))
 	{
 		box_item *l_o = new box_item(m_oControl, i_oAttrs.value(QObject::trUtf8("id")).toInt());
-		m_oControl->m_oItems.push_back(l_o);
+		m_oControl->m_oItems[l_o->m_iId] = l_o;
 		m_oControl->m_iIdCounter = 1 + qMax(m_oControl->m_iIdCounter, l_o->m_iId);
 		l_o->setPlainText(i_oAttrs.value(QObject::trUtf8("text")));
 		//l_o->setBrush(QColor(i_oAttrs.value(QObject::trUtf8("col"))));
@@ -66,7 +68,7 @@ bool box_reader::startElement(const QString&, const QString&, const QString& i_s
 	}
 	else if (i_sName == QObject::trUtf8("box_link"))
 	{
-		box_link *l_o = new box_link(m_oControl);
+		/* box_link *l_o = new box_link(m_oControl);
 		l_o->m_iParent = i_oAttrs.value(QObject::trUtf8("p1")).toInt();
 		l_o->m_iChild = i_oAttrs.value(QObject::trUtf8("p2")).toInt();
 
@@ -101,7 +103,7 @@ bool box_reader::startElement(const QString&, const QString&, const QString& i_s
 		}
 
 		m_oControl->m_oLinks.push_back(l_o);
-		m_oCurrent = l_o;
+		m_oCurrent = l_o; */
 	}
 	else if (i_sName == QObject::trUtf8("box_link_offset"))
 	{
@@ -233,6 +235,7 @@ void box_view::wheelEvent(QWheelEvent *i_oEvent)
 	centerOn(l_o + mapToScene(viewport()->rect().center()) - mapToScene(i_oEvent->pos()));
 }
 
+/*
 void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 {
 	if (i_oEv->button() != Qt::LeftButton) return;
@@ -248,15 +251,30 @@ void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 		return;
 	}
 
-	box_item *l_o = new box_item(this, m_oControl->next_seq());
-	m_oItems.push_back(l_o);
-	l_o->setRect(0, 0, 80, 40);
+}*/
 
-	QRectF l_oRect = l_o->boundingRect();
-	add_select(l_o);
-	l_o->setPos(m_oLastPoint - QPointF(l_oRect.width()/2, l_oRect.height()/2));
+void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
+{
+	if (i_oEv->button() != Qt::LeftButton) return;
+	QPointF m_oLastPoint = mapToScene(i_oEv->pos());
+	QGraphicsItem *l_oItem = itemAt(i_oEv->pos());
+	if (l_oItem and l_oItem->type() == BOX_LINK_T)
+	{
+		box_link *l_oLink = (box_link*) l_oItem;
+		//TODO
+		//m_oLinks.removeAll(l_oLink);
+		//m_oSelected.removeAll(l_oLink);
+		//delete l_oLink;
+		return;
+	}
 
-	check_canvas_size();
+	if (i_oEv->modifiers() != Qt::ControlModifier) {
+		mem_add_box *add = new mem_add_box(m_oControl);
+		add->init(m_iId);
+		add->box->m_iXX = m_oLastPoint.x();
+		add->box->m_iYY = m_oLastPoint.y();
+		add->apply();
+	}
 }
 
 void box_view::notify_add_item(int id)
@@ -685,6 +703,7 @@ void box_view::focusOutEvent(QFocusEvent *i_oEv)
 
 void box_view::slot_delete()
 {
+	/*
 	while (m_oSelected.size() > 0)
 	{
 		QGraphicsItem *l_o = m_oSelected.takeFirst();
@@ -713,7 +732,7 @@ void box_view::slot_delete()
 		}
 		#endif
 		delete l_o;
-	}
+	}*/
 }
 
 void box_view::enable_menu_actions()
@@ -869,9 +888,8 @@ void box_view::clear_diagram()
 	}
 	Q_ASSERT(m_oLinks.size() == 0);
 
-	while (m_oItems.size()>0)
+	foreach (box_item *l_o, m_oItems.values())
 	{
-		box_item *l_o = m_oItems.takeFirst();
 		delete l_o;
 	}
 	Q_ASSERT(m_oItems.size() == 0);
@@ -881,7 +899,7 @@ QString box_view::to_string()
 {
 	QStringList l;
 	l<<QObject::trUtf8("<sem_diagram>");
-	foreach (box_item *l_oBox, m_oItems)
+	foreach (box_item *l_oBox, m_oItems.values())
 	{
 		l<<QObject::trUtf8("<box_item id=\"%1\"").arg(QString::number(l_oBox->m_iId));
 		l<<QObject::trUtf8(" text=\"%1\"").arg(bind_node::protectXML(l_oBox->toPlainText()));
@@ -924,6 +942,7 @@ QString box_view::to_string()
 
 void box_view::check_canvas_size()
 {
+	/*
 	QWidget *l_oW = viewport();
 	QRect l_oRect = l_oW->rect();
 
@@ -954,8 +973,20 @@ void box_view::check_canvas_size()
 	l_oR2 = l_oR2.united(QRectF(mapToScene(l_oRect.topLeft()), mapToScene(l_oRect.bottomRight())));
 	if (l_oR2 == sceneRect()) return;
 	scene()->setSceneRect(l_oR2);
+	*/
 }
 
+void box_view::notify_add_box(int id, int box)
+{
+	box_item *l_o = new box_item(this, box);
+	m_oItems[box] = l_o;
+	l_o->update_data();
+}
+
+void box_view::notify_del_box(int id, int box)
+{
+	qDebug()<<"test delete items";
+}
 
 #include "box_view.moc"
 

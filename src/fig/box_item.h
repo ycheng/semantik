@@ -44,11 +44,13 @@ class box_item : public QGraphicsTextItem
 
 		int m_iId;
 
-		box_view *m_oControl;
+		box_view *m_oView;
 
 		void mousePressEvent(QGraphicsSceneMouseEvent* e);
 		void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
 		void keyPressEvent(QKeyEvent*);
+
+		void update_data();
 };
 
 #endif // BOX_ITEM_H

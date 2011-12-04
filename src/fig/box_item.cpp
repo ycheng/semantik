@@ -1,6 +1,5 @@
 // Thomas Nagy 2007-2011 GPLV3
 
-
 #include <QApplication>
 #include <QAbstractTextDocumentLayout>
 #include <QTextDocument>
@@ -13,8 +12,10 @@
 #include <QTextDocument>
 #include "box_item.h"
 #include "box_view.h"
+#include "data_item.h"
+#include "sem_model.h"
 
-box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem()
+box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oView(i_oParent)
 {
 	//l_oOpt.setAlignment(Qt::AlignCenter);
 	//m_oDoc->setDefaultTextOption(l_oOpt);
@@ -163,4 +164,9 @@ QRectF box_item::boundingRect() const {
 	return rect.adjusted(-OFF, -OFF, OFF, OFF);
 }
 
-
+void box_item::update_data() {
+	data_box *box = m_oView->m_oControl->m_oItems[m_oView->m_iId]->m_oBoxes[m_iId];
+	setPos(QPointF(box->m_iXX, box->m_iYY));
+	setPlainText(box->m_sText);
+	adjustSize();
+}

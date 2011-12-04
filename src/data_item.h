@@ -22,6 +22,16 @@ class data_link //:
 	QString m_sCaption;
 };
 
+class data_box
+{
+	public:
+	data_box(int id) { m_iId = id; }
+	int m_iId;
+	QString m_sText;
+	double m_iXX;
+	double m_iYY;
+};
+
 class data_item //:
 {
 	public:
@@ -68,6 +78,8 @@ class data_item //:
 		QString m_sHints;
 
 		bool load_from_path(const QString &);
+
+		QHash<int, data_box*> m_oBoxes;
 };
 
 #endif

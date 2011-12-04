@@ -26,8 +26,10 @@ class box_view : public QGraphicsView
 		void clear_diagram();
 
 		QList<QGraphicsItem*> m_oSelected;
-		QList<box_item*> m_oItems;
 		QList<box_link*> m_oLinks;
+
+		QMap<int, box_item*> m_oItems;
+
 
 		void deselect_all();
 		void add_select(QGraphicsItem*);
@@ -94,6 +96,9 @@ class box_view : public QGraphicsView
 		void slot_penwidth();
 
 		void notify_add_item(int);
+		void notify_add_box(int, int);
+		void notify_del_box(int, int);
+
 		void notify_select(const QList<int>& unsel, const QList<int>& sel);
 		void notify_save_data();
 		void notify_export_item(int);

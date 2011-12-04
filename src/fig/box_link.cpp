@@ -109,7 +109,7 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 			i_oPainter->drawEllipse(QRectF(l_o + l_oOffset, l_o - l_oOffset));
 		}
 	}
-	else if (m_oChild && m_oParent && m_oParent->m_oControl->m_oSelected.contains(this))
+	else if (m_oChild && m_oParent && m_oParent->m_oView->m_oSelected.contains(this))
 	{
 		// if the link is selected
 		i_oPainter->setBrush(QColor(255, 255, 0));

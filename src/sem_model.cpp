@@ -1219,5 +1219,13 @@ void sem_model::notify_export_item(int id) {
 	emit sig_export_item(id);
 }
 
+void sem_model::notify_add_box(int id, int box) {
+	emit sig_add_box(id, box);
+}
+
+void sem_model::notify_del_box(int id, int box) {
+	emit sig_del_box(id, box);
+}
+
 #include "sem_model.moc"
 
