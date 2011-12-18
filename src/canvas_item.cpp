@@ -181,10 +181,26 @@ void canvas_item::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 }
 
 void canvas_item::keyPressEvent(QKeyEvent* e) {
+	if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)
+	{
+		e->ignore();
+		return;
+	}
+
 	QGraphicsTextItem::keyPressEvent(e);
 	adjustSize();
 	update_links();
 }
+
+void canvas_item::keyReleaseEvent(QKeyEvent* e) {
+	if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)
+	{
+		e->ignore();
+		return;
+	}
+	QGraphicsTextItem::keyReleaseEvent(e);
+}
+
 
 QRectF canvas_item::boundingRect() const {
 	QTextDocument *doc = document();

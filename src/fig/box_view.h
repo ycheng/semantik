@@ -20,6 +20,8 @@ class box_view : public QGraphicsView
 		box_view(QWidget*, sem_model *);
 		~box_view();
 
+
+		QList<box_item*> selection();
 		void mousePressEvent(QMouseEvent *);
 		void mouseDoubleClickEvent(QMouseEvent*);
 		void wheelEvent(QWheelEvent*);

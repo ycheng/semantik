@@ -243,7 +243,12 @@ void canvas_view::edit_off() {
 
 void canvas_view::slot_toggle_edit()
 {
-	if (!hasFocus()) return;
+	qDebug()<<"slot toggle edit";
+
+	if (!hasFocus()) {
+		qDebug()<<"does not have the focus";
+		return;
+	}
 
 	canvas_item* sel = NULL;
 	foreach (QGraphicsItem *tmp, items()) {
@@ -815,7 +820,7 @@ void canvas_view::enable_menu_actions()
 	QList<canvas_item*> sel = selection();
 	m_oAddItemAction->setEnabled(sel.size()<=1);
 	m_oDeleteAction->setEnabled(sel.size()>0);
-	m_oEditAction->setEnabled(sel.size()==1);
+	//m_oEditAction->setEnabled(sel.size()==1);
 	m_oColorMenu->setEnabled(sel.size()>=1);
 	m_oDataMenu->setEnabled(sel.size()==1);
 
@@ -1475,16 +1480,20 @@ void canvas_view::notify_sort(int id) {
 
 void canvas_view::focusOutEvent(QFocusEvent *i_oEv)
 {
-	m_oEditAction->setEnabled(false);
+	qDebug()<<"focus out";
+	//m_oEditAction->setEnabled(false);
 	m_oDeleteAction->setEnabled(false);
+	m_oEditAction->setEnabled(false);
 	QGraphicsView::focusOutEvent(i_oEv);
 }
 
 
 void canvas_view::focusInEvent(QFocusEvent *i_oEv)
 {
-	m_oEditAction->setEnabled(true);
+	qDebug()<<"focus in";
+	//m_oEditAction->setEnabled(true);
 	m_oDeleteAction->setEnabled(true);
+	m_oEditAction->setEnabled(true);
 	QGraphicsView::focusInEvent(i_oEv);
 }
 

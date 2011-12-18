@@ -15,6 +15,11 @@ class mem_del_box : public mem_command {
 		//QList<data_item*> items;
 		//QSet<QPoint> links;
 
+		data_item *item;
+
+		QList<data_item*> items;
+		QSet<QPoint> links;
+	
 		IType type() { return DEL_BOX; }
 };
 
@@ -28,7 +33,6 @@ class mem_add_box : public mem_command {
 
 		data_item* item;
 		data_box* box;
-		int parent;
 
 		double m_iXX;
 		double m_iYY;

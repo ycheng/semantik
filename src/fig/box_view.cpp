@@ -678,61 +678,36 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 	}
 }
 
-void box_view::focusInEvent(QFocusEvent *i_oEv)
-{
-	enable_actions();
-	QGraphicsView::focusInEvent(i_oEv);
-}
-
-void box_view::focusOutEvent(QFocusEvent *i_oEv)
-{
-	foreach (QAction* l_o, actions())
-	{
-		l_o->setEnabled(false);
-	}
-
-	if (m_oMenu->isVisible())
-	{
-		enable_menu_actions();
-	}
-
-	delete m_oCurrent;
-	m_oCurrent = NULL;
-	QGraphicsView::focusOutEvent(i_oEv);
-}
-
 void box_view::slot_delete()
 {
-	/*
-	while (m_oSelected.size() > 0)
-	{
-		QGraphicsItem *l_o = m_oSelected.takeFirst();
-		scene()->removeItem(l_o);
-		%:\
-		ifdef\
-		unix
-		if (l_o->type() == BOX_ITEM_T)
-		{
-			// disconnect
-			foreach (box_link *l_oLink, m_oLinks)
-			{
-				if (l_oLink->m_oParent == l_o || l_oLink->m_oChild == l_o)
-				{
-					scene()->removeItem(l_oLink);
-					delete l_oLink;
-					m_oLinks.removeAll(l_oLink);
-					m_oSelected.removeAll(l_oLink);
-				}
-			}
-			m_oItems.removeAll((box_item*) l_o);
+	QList<int> l_oLst;
+	foreach (box_item *l_oItem, selection()) {
+		l_oLst.push_back(l_oItem->m_iId);
+	}
+
+	if (l_oLst.isEmpty()) {
+		return;
+	}
+
+	//mem_sel *sel = new mem_sel(m_oControl);
+	//sel->sel;
+	//sel->unsel = l_oLst;
+	//sel->apply();
+
+	mem_del_box *del = new mem_del_box(m_oControl);
+	del->init(m_iId, l_oLst);
+	del->apply();
+}
+
+QList<box_item*> box_view::selection() {
+	// FIXME use scene()->selectedItems()
+	QList<box_item*> ret;
+	foreach (QGraphicsItem *tmp, items()) {
+		if (tmp->type() == BOX_ITEM_T && tmp->isSelected()) {
+			ret.append((box_item*) tmp);
 		}
-		else if (l_o->type() == BOX_LINK_T)
-		{
-			m_oLinks.removeAll((box_link*) l_o);
-		}
-		#endif
-		delete l_o;
-	}*/
+	}
+	return ret;
 }
 
 void box_view::enable_menu_actions()
@@ -975,6 +950,50 @@ void box_view::check_canvas_size()
 	scene()->setSceneRect(l_oR2);
 	*/
 }
+
+void box_view::focusOutEvent(QFocusEvent *i_oEv)
+{
+	qDebug()<<"focus out";
+	//m_oEditAction->setEnabled(false);
+	m_oDeleteAction->setEnabled(false);
+	m_oEditAction->setEnabled(false);
+	QGraphicsView::focusOutEvent(i_oEv);
+}
+
+
+void box_view::focusInEvent(QFocusEvent *i_oEv)
+{
+	qDebug()<<"focus in";
+	//m_oEditAction->setEnabled(true);
+	m_oDeleteAction->setEnabled(true);
+	m_oEditAction->setEnabled(true);
+	QGraphicsView::focusInEvent(i_oEv);
+}
+
+/*
+void box_view::focusInEvent(QFocusEvent *i_oEv)
+{
+	enable_actions();
+	QGraphicsView::focusInEvent(i_oEv);
+}
+
+void box_view::focusOutEvent(QFocusEvent *i_oEv)
+{
+	foreach (QAction* l_o, actions())
+	{
+		l_o->setEnabled(false);
+	}
+
+	if (m_oMenu->isVisible())
+	{
+		enable_menu_actions();
+	}
+
+	delete m_oCurrent;
+	m_oCurrent = NULL;
+	QGraphicsView::focusOutEvent(i_oEv);
+}*/
+
 
 void box_view::notify_add_box(int id, int box)
 {
