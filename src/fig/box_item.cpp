@@ -33,8 +33,6 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oVie
 	setPlainText("edit me");
 	//adjustSize();
 
-	setFlags(ItemIsMovable | ItemIsSelectable);
-
 	//setRect(0, 0, 20, 20);
 	//m_oColor = QColor("#FFFCD5");
 	//m_oColor = s_oColorRoot; //"#ABFBC7");
@@ -48,6 +46,8 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oVie
 	setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
 	setZValue(64);
+
+	setFlags(ItemIsMovable | ItemIsSelectable);
 }
 
 box_item::~box_item()

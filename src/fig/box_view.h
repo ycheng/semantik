@@ -89,7 +89,7 @@ class box_view : public QGraphicsView
 		void slot_delete();
 		void slot_add_item();
 		void slot_color();
-		void slot_edit();
+		void slot_toggle_edit();
 
 		void slot_move_up();
 		void slot_move_down();

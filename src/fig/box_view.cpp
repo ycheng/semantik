@@ -153,7 +153,7 @@ box_view::box_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsView(i_
 
 	m_oEditAction = new QAction(QObject::trUtf8("Toggle edit"), this);
 	m_oEditAction->setShortcut(QObject::trUtf8("Return"));
-	connect(m_oEditAction, SIGNAL(triggered()), this, SLOT(slot_edit()));
+	connect(m_oEditAction, SIGNAL(triggered()), this, SLOT(slot_toggle_edit()));
 	addAction(m_oEditAction);
 
 	m_oAddItemAction = new QAction(QObject::trUtf8("Add Box"), this);
@@ -274,6 +274,8 @@ void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 		add->box->m_iXX = m_oLastPoint.x();
 		add->box->m_iYY = m_oLastPoint.y();
 		add->apply();
+
+		m_oItems.value(add->box->m_iId)->setSelected(true);
 	}
 }
 
@@ -799,6 +801,7 @@ void box_view::slot_penwidth()
 	}
 }
 
+/*
 void box_view::slot_edit()
 {
 	if (m_oSelected.size() == 1 && m_oSelected[0]->type() == BOX_ITEM_T)
@@ -814,6 +817,84 @@ void box_view::slot_edit()
 			l_o->update();
 		}
 	}
+}
+*/
+
+void box_view::slot_toggle_edit()
+{
+	if (!hasFocus()) {
+		return;
+	}
+
+	box_item* sel = NULL;
+	foreach (QGraphicsItem *tmp, items()) {
+		if (tmp->type() == BOX_ITEM_T && tmp->isSelected()) {
+			if (sel) {
+				sel = NULL;
+				break;
+			} else {
+				sel = (box_item*) tmp;
+			}
+		}
+	}
+
+	if (sel) {
+		if (sel->textInteractionFlags() & Qt::TextEditorInteraction) {
+			sel->setTextInteractionFlags(Qt::NoTextInteraction);
+			/*if (sel->toPlainText() == QObject::trUtf8("")) {
+				sel->setPlainText(QObject::trUtf8("Empty"));
+				sel->update(); // seems to update faster
+				//sel->update_links();
+
+			}*/
+			// FIXME
+			/*if (sel->toPlainText() != (*m_oControl + sel->m_iId)->m_sSummary) {
+				mem_edit *ed = new mem_edit(m_oControl);
+				ed->newSummary = sel->toPlainText();
+				ed->apply();
+			}*/
+		} else {
+			sel->setTextInteractionFlags(Qt::TextEditorInteraction);
+			sel->setFocus();
+
+			m_oAddItemAction->setEnabled(false);
+			m_oDeleteAction->setEnabled(false);
+
+			/*
+			m_oInsertSiblingAction->setEnabled(false);
+			m_oNextRootAction->setEnabled(false);
+
+			m_oMoveUpAction->setEnabled(false);
+			m_oMoveDownAction->setEnabled(false);
+			m_oMoveLeftAction->setEnabled(false);
+			m_oMoveRightAction->setEnabled(false);
+			m_oSelectUpAction->setEnabled(false);
+			m_oSelectDownAction->setEnabled(false);
+			m_oSelectLeftAction->setEnabled(false);
+			m_oSelectRightAction->setEnabled(false);
+			m_oControl->check_undo(false);
+			*/
+			return;
+		}
+	}
+
+	m_oAddItemAction->setEnabled(true);
+	m_oDeleteAction->setEnabled(true);
+
+	/*
+	m_oInsertSiblingAction->setEnabled(true);
+	m_oNextRootAction->setEnabled(true);
+
+	m_oMoveUpAction->setEnabled(true);
+	m_oMoveDownAction->setEnabled(true);
+	m_oMoveLeftAction->setEnabled(true);
+	m_oMoveRightAction->setEnabled(true);
+	m_oSelectUpAction->setEnabled(true);
+	m_oSelectDownAction->setEnabled(true);
+	m_oSelectLeftAction->setEnabled(true);
+	m_oSelectRightAction->setEnabled(true);
+	m_oControl->check_undo(true);
+	*/
 }
 
 void box_view::slot_move_up()
@@ -954,7 +1035,7 @@ void box_view::check_canvas_size()
 void box_view::focusOutEvent(QFocusEvent *i_oEv)
 {
 	qDebug()<<"focus out";
-	//m_oEditAction->setEnabled(false);
+	m_oAddItemAction->setEnabled(false);
 	m_oDeleteAction->setEnabled(false);
 	m_oEditAction->setEnabled(false);
 	QGraphicsView::focusOutEvent(i_oEv);
@@ -964,7 +1045,7 @@ void box_view::focusOutEvent(QFocusEvent *i_oEv)
 void box_view::focusInEvent(QFocusEvent *i_oEv)
 {
 	qDebug()<<"focus in";
-	//m_oEditAction->setEnabled(true);
+	m_oAddItemAction->setEnabled(true);
 	m_oDeleteAction->setEnabled(true);
 	m_oEditAction->setEnabled(true);
 	QGraphicsView::focusInEvent(i_oEv);
