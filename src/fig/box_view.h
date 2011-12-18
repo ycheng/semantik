@@ -22,9 +22,6 @@ class box_view : public QGraphicsView
 
 
 		QList<box_item*> selection();
-		void mousePressEvent(QMouseEvent *);
-		void mouseDoubleClickEvent(QMouseEvent*);
-		void wheelEvent(QWheelEvent*);
 		void clear_diagram();
 
 		QList<QGraphicsItem*> m_oSelected;
@@ -36,9 +33,6 @@ class box_view : public QGraphicsView
 		void deselect_all();
 		void add_select(QGraphicsItem*);
 		void rm_select(QGraphicsItem*);
-
-		void mouseMoveEvent(QMouseEvent*);
-		void mouseReleaseEvent(QMouseEvent*);
 
 		QPointF m_oLastPoint;
 		QPointF m_oLastMovePoint;
@@ -83,6 +77,13 @@ class box_view : public QGraphicsView
 
 		QActionGroup *m_oWidthGroup;
 		QActionGroup *m_oStyleGroup;
+
+
+		void mousePressEvent2(QMouseEvent *);
+		void mouseMoveEvent2(QMouseEvent*);
+		void mouseReleaseEvent2(QMouseEvent*);
+		void mouseDoubleClickEvent(QMouseEvent*);
+		void wheelEvent(QWheelEvent*);
 
 	public slots:
 		void enable_actions(); // used on focus in
