@@ -55,7 +55,6 @@ class canvas_item: public QGraphicsTextItem
 
 		int Id() const {return m_iId;};
 
-		bool m_bSel;
 		bool m_bEdit;
 		QString m_sNum;
 

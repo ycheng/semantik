@@ -67,7 +67,7 @@ void canvas_link::update_pos()
 
 void canvas_link::update_selected()
 {
-	bool l_b = (m_oFrom->m_bSel || m_oTo->m_bSel);
+	bool l_b = (m_oFrom->isSelected() || m_oTo->isSelected());
 	if (m_bSel != l_b)
 	{
 		m_bSel = l_b;

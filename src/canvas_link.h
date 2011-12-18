@@ -29,14 +29,12 @@ class canvas_link: public QGraphicsPathItem
 
 		bool m_bSel;
 
-	//private:
 		canvas_view *m_oGraph;
 
 		int m_iID;
 		QColor m_oColor;
 		QString m_sLabel;
 
-	//public:
 		void update_pos();
 		void update_spline();
 		void update_triangle();

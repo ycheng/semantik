@@ -244,7 +244,6 @@ void canvas_view::edit_off() {
 void canvas_view::slot_toggle_edit()
 {
 	qDebug()<<"slot toggle edit";
-
 	if (!hasFocus()) {
 		qDebug()<<"does not have the focus";
 		return;

@@ -201,12 +201,6 @@ void box_item::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 	QGraphicsTextItem::mouseReleaseEvent(e);
 }
 
-void box_item::keyPressEvent(QKeyEvent* e) {
-	QGraphicsTextItem::keyPressEvent(e);
-	adjustSize();
-	//update_links();
-}
-
 QRectF box_item::boundingRect() const {
 	QTextDocument *doc = document();
 	QRectF rect(QPointF(0, 0), doc->size());
@@ -218,3 +212,25 @@ void box_item::update_data() {
 	setPlainText(m_oBox->m_sText);
 	adjustSize();
 }
+
+void box_item::keyPressEvent(QKeyEvent* e) {
+	if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)
+	{
+		e->ignore();
+		m_oView->slot_toggle_edit();
+		return;
+	}
+
+	QGraphicsTextItem::keyPressEvent(e);
+	adjustSize();
+}
+
+void box_item::keyReleaseEvent(QKeyEvent* e) {
+	if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)
+	{
+		e->ignore();
+		return;
+	}
+	QGraphicsTextItem::keyReleaseEvent(e);
+}
+

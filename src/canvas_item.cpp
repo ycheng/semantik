@@ -44,7 +44,6 @@ canvas_item::canvas_item(canvas_view *i_oGraphWidget, int i_iId) : QGraphicsText
 	//setDefaultTextOption(l_oOpt);
 
 	m_iId = i_iId;
-	m_bSel = false;
 	m_bEdit = false;
 	m_sNum = "1";
 
@@ -184,6 +183,7 @@ void canvas_item::keyPressEvent(QKeyEvent* e) {
 	if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)
 	{
 		e->ignore();
+		m_oGraph->slot_toggle_edit();
 		return;
 	}
 
@@ -200,7 +200,6 @@ void canvas_item::keyReleaseEvent(QKeyEvent* e) {
 	}
 	QGraphicsTextItem::keyReleaseEvent(e);
 }
-
 
 QRectF canvas_item::boundingRect() const {
 	QTextDocument *doc = document();
