@@ -17,9 +17,9 @@ class mem_del_box : public mem_command {
 
 		data_item *item;
 
-		QList<data_item*> items;
+		QList<data_box*> items;
 		QSet<QPoint> links;
-	
+
 		IType type() { return DEL_BOX; }
 };
 

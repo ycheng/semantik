@@ -18,18 +18,59 @@ mem_del_box::mem_del_box(sem_model* mod) : mem_command(mod)
 
 void mem_del_box::init(int id, QList<int> ids)
 {
-
+	item = model->m_oItems.value(id);
+	// get the boxes
+	foreach (int k, ids) {
+		items.append(item->m_oBoxes.value(k));
+	}
+	// get the links
+	//QSet<QPoint> links;
 }
 
 
 void mem_del_box::undo()
 {
+	foreach (data_box *k, items) {
+		item->m_oBoxes[k->m_iId] = k;
+	}
+	foreach (data_box *k, items) {
+		model->notify_add_box(item->m_iId, k->m_iId);
+	}
+
+	/*foreach (data_item* d, items) {
+		Q_ASSERT(!model->m_oItems.contains(d->m_iId));
+		model->m_oItems[d->m_iId] = d;
+		model->notify_add_item(d->m_iId);
+	}
+	foreach (QPoint p, links) {
+		Q_ASSERT(!model->m_oLinks.contains(p));
+		model->m_oLinks.append(p);
+		model->notify_link_items(p.x(), p.y());
+	}*/
+	undo_dirty();
 
 }
 
 void mem_del_box::redo()
 {
+	foreach (data_box *k, items) {
+		model->notify_del_box(item->m_iId, k->m_iId);
+	}
+	foreach (data_box *k, items) {
+		item->m_oBoxes.remove(k->m_iId);
+	}
 
+	/*foreach (QPoint p, links) {
+		Q_ASSERT(model->m_oLinks.contains(p));
+		model->m_oLinks.removeAll(p);
+		model->notify_unlink_items(p.x(), p.y());
+	}
+	foreach (data_item* d, items) {
+		Q_ASSERT(model->m_oItems.contains(d->m_iId));
+		model->notify_delete_item(d->m_iId);
+		model->m_oItems.remove(d->m_iId);
+	}*/
+	redo_dirty();
 }
 
 mem_add_box::mem_add_box(sem_model* mod) : mem_command(mod)
@@ -38,13 +79,12 @@ mem_add_box::mem_add_box(sem_model* mod) : mem_command(mod)
 }
 
 void mem_add_box::init(int id) {
-	item = model->m_oItems[id];
+	item = model->m_oItems.value(id);
 	box = new data_box(model->next_seq());
 }
 
 void mem_add_box::redo()
 {
-	qDebug()<<"mem box add redo";
 	item->m_oBoxes[box->m_iId] = box;
 	model->notify_add_box(item->m_iId, box->m_iId);
 	redo_dirty();
@@ -52,7 +92,6 @@ void mem_add_box::redo()
 
 void mem_add_box::undo()
 {
-	qDebug()<<"mem box add undo";
 	model->notify_del_box(item->m_iId, box->m_iId);
 	item->m_oBoxes.remove(box->m_iId);
 	undo_dirty();

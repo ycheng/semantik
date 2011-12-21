@@ -765,7 +765,11 @@ void box_view::notify_add_box(int id, int box)
 
 void box_view::notify_del_box(int id, int box)
 {
-	qDebug()<<"test delete items";
+	box_item *l_o = m_oItems.value(box);
+        Q_ASSERT(l_o!=NULL);
+        scene()->removeItem(l_o);
+	m_oItems.remove(box);
+	delete l_o;
 }
 
 void box_view::mouseReleaseEvent2(QMouseEvent *i_oEv)
