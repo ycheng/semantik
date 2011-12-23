@@ -66,7 +66,7 @@ class box_view : public QGraphicsView
 		// private
 		int m_iIdCounter;
 
-		QString to_string();
+		void sync_view();
 		void from_string(const QString &);
 
 		sem_model *m_oControl;

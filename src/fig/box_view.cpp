@@ -35,17 +35,17 @@
 class box_reader : public QXmlDefaultHandler
 {
     public:
-		box_reader(box_view*);
+	box_reader(box_view*);
 
-		QString m_sBuf;
-		int m_iVersion;
-		box_view *m_oControl;
-		box_link *m_oCurrent;
-		int m_iId;
+	QString m_sBuf;
+	int m_iVersion;
+	box_view *m_oControl;
+	box_link *m_oCurrent;
+	int m_iId;
 
-		bool startElement(const QString&, const QString&, const QString&, const QXmlAttributes&);
-		bool endElement(const QString&, const QString&, const QString&);
-		bool characters(const QString &i_sStr);
+	bool startElement(const QString&, const QString&, const QString&, const QXmlAttributes&);
+	bool endElement(const QString&, const QString&, const QString&);
+	bool characters(const QString &i_sStr);
 };
 
 box_reader::box_reader(box_view *i_oControl)
@@ -57,13 +57,15 @@ bool box_reader::startElement(const QString&, const QString&, const QString& i_s
 {
 	if (i_sName == QObject::trUtf8("box_item"))
 	{
-		box_item *l_o = new box_item(m_oControl, i_oAttrs.value(QObject::trUtf8("id")).toInt());
-		m_oControl->m_oItems[l_o->m_iId] = l_o;
-		m_oControl->m_iIdCounter = 1 + qMax(m_oControl->m_iIdCounter, l_o->m_iId);
-		l_o->setPlainText(i_oAttrs.value(QObject::trUtf8("text")));
-		//l_o->setBrush(QColor(i_oAttrs.value(QObject::trUtf8("col"))));
+		int id = i_oAttrs.value(QObject::trUtf8("id")).toInt();
 
-		l_o->setPos(QPointF(i_oAttrs.value(QObject::trUtf8("c1")).toFloat(), i_oAttrs.value(QObject::trUtf8("c2")).toFloat()));
+		data_box *box = new data_box(id);
+		m_oControl->m_oControl->m_oItems[m_iId]->m_oBoxes[id] = box;
+		box->m_iXX = i_oAttrs.value(QObject::trUtf8("c1")).toFloat();
+		box->m_iYY = i_oAttrs.value(QObject::trUtf8("c2")).toFloat();
+		box->m_sText = i_oAttrs.value(QObject::trUtf8("text"));
+
+		//l_o->setBrush(QColor(i_oAttrs.value(QObject::trUtf8("col"))));
 		//l_o->setRect(QRectF(0., 0., i_oAttrs.value(QObject::trUtf8("c3")).toDouble(), i_oAttrs.value(QObject::trUtf8("c4")).toDouble()));
 	}
 	else if (i_sName == QObject::trUtf8("box_link"))
@@ -233,19 +235,18 @@ void box_view::notify_add_item(int id)
 
 void box_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 
-	int l_iOldId = m_iId;
+	/*int l_iOldId = m_iId;
 	if (l_iOldId)
 	{
 		data_item *l_oData = m_oControl->m_oItems.value(l_iOldId);
 		if (l_oData != NULL and l_oData->m_iDataType == VIEW_DIAG) {
 			l_oData->m_sDiag = to_string();
 		}
-	}
+	}*/
 	clear_diagram();
 
 
-	bool one = (sel.size() == 1);
-	if (!one)
+	if (sel.size() != 1)
 	{
 		m_iId = NO_ITEM;
 		setEnabled(false);
@@ -253,16 +254,33 @@ void box_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 	else
 	{
 		m_iId = sel.at(0);
+		qDebug()<<"one selected";
 		data_item *l_oData = m_oControl->m_oItems.value(m_iId);
 		if (l_oData and l_oData->m_iDataType == VIEW_DIAG)
 		{
-			from_string(l_oData->m_sDiag);
+			if (!l_oData->m_sDiag.isEmpty())
+			{
+				from_string(l_oData->m_sDiag);
+			}
+			check_canvas_size();
 		}
+	}
+}
+
+void box_view::sync_view()
+{
+	data_item *item = m_oControl->m_oItems.value(m_iId);
+	foreach (data_box *box, item->m_oBoxes.values()) {
+		box_item *l_o = new box_item(this, box->m_iId);
+		m_oItems[box->m_iId] = l_o;
+		l_o->setPlainText(box->m_sText);
+		l_o->setPos(QPointF(box->m_iXX, box->m_iYY));
 	}
 }
 
 void box_view::notify_save_data()
 {
+	// FIXME remove?
 	if (!m_iId)
 	{
 		return;
@@ -273,7 +291,7 @@ void box_view::notify_save_data()
 	{
 		return;
 	}
-	l_oData->m_sDiag = to_string();
+	//l_oData->m_sDiag = to_string();
 }
 
 void box_view::notify_export_item(int id)
@@ -605,7 +623,6 @@ void box_view::from_string(const QString &i_s)
 		//qDebug()<<"parse error!!";
 		clear_diagram();
 	}
-	check_canvas_size();
 }
 
 void box_view::clear_diagram()
@@ -628,9 +645,10 @@ void box_view::clear_diagram()
 	{
 		delete l_o;
 	}
-	Q_ASSERT(m_oItems.size() == 0);
+	//Q_ASSERT(m_oItems.size() == 0);
 }
 
+/*
 QString box_view::to_string()
 {
 	QStringList l;
@@ -674,7 +692,7 @@ QString box_view::to_string()
 	l<<QObject::trUtf8("</sem_diagram>");
 
 	return l.join("");
-}
+}*/
 
 void box_view::check_canvas_size()
 {
