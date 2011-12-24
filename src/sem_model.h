@@ -62,7 +62,6 @@ class sem_model: public QObject
 		void sig_pic(int id);
 		void sig_table(int id);
 		void sig_sort(int id);
-		void sig_save_data();
 		void sig_open_map();
 		void sig_change_data(int id);
 		void sig_export_item(int id);

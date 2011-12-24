@@ -280,22 +280,6 @@ void box_view::sync_view()
 	}
 }
 
-void box_view::notify_save_data()
-{
-	// FIXME remove?
-	if (!m_iId)
-	{
-		return;
-	}
-
-	data_item *l_oData = m_oControl->m_oItems.value(m_iId);
-	if (l_oData->m_iDataType != VIEW_DIAG)
-	{
-		return;
-	}
-	//l_oData->m_sDiag = to_string();
-}
-
 void box_view::notify_export_item(int id)
 {
 	int l_iOldId = m_iId;
