@@ -100,6 +100,7 @@ class canvas_view : public QGraphicsView
 
 		QAction *m_oAddItemAction;
 		QAction *m_oEditAction;
+		QAction *m_oCancelEditAction;
 		QAction *m_oDeleteAction;
 
 		QAction *m_oMoveUpAction;
@@ -119,6 +120,7 @@ class canvas_view : public QGraphicsView
 		void fit_zoom();
 		void change_flags(QAction*);
 		void slot_toggle_edit();
+		void slot_cancel_edit();
 		void slot_add_item();
 		void enable_actions(); // used on focus in
 		void slot_add_sibling();

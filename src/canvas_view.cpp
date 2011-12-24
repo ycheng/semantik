@@ -117,6 +117,11 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsV
 	addAction(m_oEditAction);
 	connect(m_oEditAction, SIGNAL(triggered()), this, SLOT(slot_toggle_edit()));
 
+	m_oCancelEditAction = new QAction(trUtf8("Cancel edit"), this);
+	m_oCancelEditAction->setShortcut(notr("Escape"));
+	addAction(m_oCancelEditAction);
+	connect(m_oCancelEditAction, SIGNAL(triggered()), this, SLOT(slot_cancel_edit()));
+
 	m_oMenu = new QMenu(this);
 	m_oMenu->addAction(m_oAddItemAction);
 	m_oMenu->addAction(m_oEditAction);
@@ -285,6 +290,7 @@ void canvas_view::slot_toggle_edit()
 			sel->setFocus();
 
 			m_oAddItemAction->setEnabled(false);
+			m_oCancelEditAction->setEnabled(true);
 			m_oInsertSiblingAction->setEnabled(false);
 			m_oDeleteAction->setEnabled(false);
 			m_oNextRootAction->setEnabled(false);
@@ -303,6 +309,7 @@ void canvas_view::slot_toggle_edit()
 	}
 
 	m_oAddItemAction->setEnabled(true);
+	m_oCancelEditAction->setEnabled(false);
 	m_oInsertSiblingAction->setEnabled(true);
 	m_oDeleteAction->setEnabled(true);
 	m_oNextRootAction->setEnabled(true);
@@ -318,6 +325,41 @@ void canvas_view::slot_toggle_edit()
 	m_oControl->check_undo(true);
 }
 
+void canvas_view::slot_cancel_edit()
+{
+	canvas_item* sel = NULL;
+	foreach (QGraphicsItem *tmp, items()) {
+		if (tmp->type() == CANVAS_ITEM_T && tmp->isSelected()) {
+			if (sel) {
+				sel = NULL;
+				break;
+			} else {
+				sel = (canvas_item*) tmp;
+			}
+		}
+	}
+
+	if (sel && sel->textInteractionFlags() & Qt::TextEditorInteraction) {
+		sel->setTextInteractionFlags(Qt::NoTextInteraction);
+		sel->update_data();
+	}
+
+	m_oAddItemAction->setEnabled(true);
+	m_oCancelEditAction->setEnabled(false);
+	m_oInsertSiblingAction->setEnabled(true);
+	m_oDeleteAction->setEnabled(true);
+	m_oNextRootAction->setEnabled(true);
+
+	m_oMoveUpAction->setEnabled(true);
+	m_oMoveDownAction->setEnabled(true);
+	m_oMoveLeftAction->setEnabled(true);
+	m_oMoveRightAction->setEnabled(true);
+	m_oSelectUpAction->setEnabled(true);
+	m_oSelectDownAction->setEnabled(true);
+	m_oSelectLeftAction->setEnabled(true);
+	m_oSelectRightAction->setEnabled(true);
+	m_oControl->check_undo(true);
+}
 
 void canvas_view::slot_move()
 {
@@ -1480,22 +1522,18 @@ void canvas_view::notify_sort(int id) {
 void canvas_view::focusOutEvent(QFocusEvent *i_oEv)
 {
 	qDebug()<<"focus out";
-	//m_oEditAction->setEnabled(false);
 	m_oDeleteAction->setEnabled(false);
 	m_oEditAction->setEnabled(false);
 	QGraphicsView::focusOutEvent(i_oEv);
 }
 
-
 void canvas_view::focusInEvent(QFocusEvent *i_oEv)
 {
 	qDebug()<<"focus in";
-	//m_oEditAction->setEnabled(true);
 	m_oDeleteAction->setEnabled(true);
 	m_oEditAction->setEnabled(true);
 	QGraphicsView::focusInEvent(i_oEv);
 }
-
 
 %: include  	"canvas_view.moc" 
 

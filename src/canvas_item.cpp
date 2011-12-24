@@ -180,7 +180,7 @@ void canvas_item::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 }
 
 void canvas_item::keyPressEvent(QKeyEvent* e) {
-	if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)
+	if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return || e->key() == Qt::Key_Escape)
 	{
 		e->ignore();
 		m_oGraph->slot_toggle_edit();
@@ -193,7 +193,7 @@ void canvas_item::keyPressEvent(QKeyEvent* e) {
 }
 
 void canvas_item::keyReleaseEvent(QKeyEvent* e) {
-	if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)
+	if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return || e->key() == Qt::Key_Escape)
 	{
 		e->ignore();
 		return;
