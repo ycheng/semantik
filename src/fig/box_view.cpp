@@ -260,7 +260,9 @@ void box_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 			if (!l_oData->m_sDiag.isEmpty())
 			{
 				from_string(l_oData->m_sDiag);
+				l_oData->m_sDiag = "";
 			}
+			sync_view();
 			check_canvas_size();
 		}
 		setEnabled(true);
