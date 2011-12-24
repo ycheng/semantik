@@ -627,25 +627,16 @@ void box_view::from_string(const QString &i_s)
 
 void box_view::clear_diagram()
 {
-	m_oSelected.clear();
-	if (m_oCurrent)
-	{
-		delete m_oCurrent;
-	}
-	m_oCurrent = NULL;
-	m_iIdCounter = 1;
-	while (m_oLinks.size()>0)
-	{
-		box_link *l_o = m_oLinks.takeFirst();
+	foreach (box_link *l_o, m_oLinks) {
+		scene()->removeItem(l_o);
 		delete l_o;
 	}
-	Q_ASSERT(m_oLinks.size() == 0);
-
-	foreach (box_item *l_o, m_oItems.values())
-	{
+	m_oLinks.clear();
+	foreach (box_item *l_o, m_oItems.values()) {
+		scene()->removeItem(l_o);
 		delete l_o;
 	}
-	//Q_ASSERT(m_oItems.size() == 0);
+	m_oItems.clear();
 }
 
 /*
