@@ -245,7 +245,6 @@ void box_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 	}*/
 	clear_diagram();
 
-
 	if (sel.size() != 1)
 	{
 		m_iId = NO_ITEM;
@@ -254,8 +253,8 @@ void box_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 	else
 	{
 		m_iId = sel.at(0);
-		qDebug()<<"one selected";
 		data_item *l_oData = m_oControl->m_oItems.value(m_iId);
+		Q_ASSERT(l_oData);
 		if (l_oData and l_oData->m_iDataType == VIEW_DIAG)
 		{
 			if (!l_oData->m_sDiag.isEmpty())
@@ -264,6 +263,7 @@ void box_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 			}
 			check_canvas_size();
 		}
+		setEnabled(true);
 	}
 }
 
@@ -767,6 +767,8 @@ void box_view::focusOutEvent(QFocusEvent *i_oEv)
 
 void box_view::notify_add_box(int id, int box)
 {
+	qDebug()<<"notify add box"<<id<<" "<<box;
+
 	box_item *l_o = new box_item(this, box);
 	m_oItems[box] = l_o;
 	l_o->update_data();
@@ -944,7 +946,12 @@ void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 
 void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 {
-	if (i_oEv->button() != Qt::LeftButton) return;
+	if (i_oEv->button() != Qt::LeftButton)
+	{
+		//qDebug()<<"left button on click, leaving";
+		return;
+	}
+
 	QPointF m_oLastPoint = mapToScene(i_oEv->pos());
 	QGraphicsItem *l_oItem = itemAt(i_oEv->pos());
 	if (l_oItem and l_oItem->type() == BOX_LINK_T)
@@ -958,6 +965,8 @@ void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 	}
 
 	if (i_oEv->modifiers() != Qt::ControlModifier) {
+		//qDebug()<<"adding a box from double click";
+
 		mem_add_box *add = new mem_add_box(m_oControl);
 		add->init(m_iId);
 		add->box->m_iXX = m_oLastPoint.x();
