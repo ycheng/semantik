@@ -348,6 +348,7 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 
 	connect(m_oControl, SIGNAL(sig_add_box(int, int)), m_oDiagramView, SLOT(notify_add_box(int, int)));
 	connect(m_oControl, SIGNAL(sig_del_box(int, int)), m_oDiagramView, SLOT(notify_del_box(int, int)));
+	connect(m_oControl, SIGNAL(sig_edit_box(int, int)), m_oDiagramView, SLOT(notify_edit_box(int, int)));
 	
 	m_oTree->m_oView->addAction(m_oCanvas->m_oDeleteAction); // FIXME
 

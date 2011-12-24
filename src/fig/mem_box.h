@@ -40,4 +40,18 @@ class mem_add_box : public mem_command {
 		IType type() { return ADD_BOX; }
 };
 
+class mem_edit_box: public mem_command {
+	public:
+		mem_edit_box(sem_model*, int id, int box);
+		void undo();
+		void redo();
+
+		data_item *item;
+		data_box *box;
+
+		QString oldText;
+		QString newText;
+		IType type() { return EDIT_BOX; }
+};
+
 #endif

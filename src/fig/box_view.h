@@ -103,6 +103,7 @@ class box_view : public QGraphicsView
 		void notify_add_item(int);
 		void notify_add_box(int, int);
 		void notify_del_box(int, int);
+		void notify_edit_box(int, int);
 
 		void notify_select(const QList<int>& unsel, const QList<int>& sel);
 		void notify_export_item(int);

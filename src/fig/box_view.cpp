@@ -241,6 +241,11 @@ void box_view::notify_add_item(int id)
 	setEnabled(true);
 }
 
+void box_view::notify_edit_box(int id, int bid)
+{
+
+}
+
 void box_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 
 	/*int l_iOldId = m_iId;
@@ -546,12 +551,11 @@ void box_view::slot_toggle_edit()
 				//sel->update_links();
 
 			}*/
-			// FIXME
-			/*if (sel->toPlainText() != (*m_oControl + sel->m_iId)->m_sSummary) {
-				mem_edit *ed = new mem_edit(m_oControl);
-				ed->newSummary = sel->toPlainText();
+			if (sel->toPlainText() != m_oControl->m_oItems[m_iId]->m_oBoxes[sel->m_iId]->m_sText) {
+				mem_edit_box *ed = new mem_edit_box(m_oControl, m_iId, sel->m_iId);
+				ed->newText = sel->toPlainText();
 				ed->apply();
-			}*/
+			}
 		} else {
 			sel->setTextInteractionFlags(Qt::TextEditorInteraction);
 			sel->setFocus();

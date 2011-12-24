@@ -73,6 +73,8 @@ void mem_del_box::redo()
 	redo_dirty();
 }
 
+///////////////////////////////////////////////////////////////////
+
 mem_add_box::mem_add_box(sem_model* mod) : mem_command(mod)
 {
 	item = NULL;
@@ -94,6 +96,27 @@ void mem_add_box::undo()
 {
 	model->notify_del_box(item->m_iId, box->m_iId);
 	item->m_oBoxes.remove(box->m_iId);
+	undo_dirty();
+}
+
+///////////////////////////////////////////////////////////////////
+
+mem_edit_box::mem_edit_box(sem_model* mod, int id, int bid) : mem_command(mod) {
+	item = model->m_oItems[id];
+	box = item->m_oBoxes[bid];
+}
+
+void mem_edit_box::redo()
+{
+	box->m_sText = newText;
+	model->notify_edit_box(item->m_iId, box->m_iId);
+	redo_dirty();
+}
+
+void mem_edit_box::undo()
+{
+	box->m_sText = oldText;
+	model->notify_edit_box(item->m_iId, box->m_iId);
 	undo_dirty();
 }
 

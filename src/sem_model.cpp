@@ -1225,5 +1225,9 @@ void sem_model::notify_del_box(int id, int box) {
 	emit sig_del_box(id, box);
 }
 
+void sem_model::notify_edit_box(int id, int box) {
+	emit sig_edit_box(id, box);
+}
+
 #include "sem_model.moc"
 

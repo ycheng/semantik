@@ -29,7 +29,7 @@ class mem_command {
 
 		bool was_dirty;
 		enum IType {DELETE, ADD, LINK, UNLINK, SELECT, MOVE, COLOR, FLAG, EDIT, DATATYPE, TEXT, VARS, PIC, TABLE, SORT,
-			ADD_BOX, DEL_BOX};
+			ADD_BOX, DEL_BOX, EDIT_BOX};
 		virtual IType type() = 0;
 };
 
