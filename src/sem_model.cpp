@@ -77,6 +77,18 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		l_oItem->m_iNumRows = i_oAttrs.value(notr("rows")).toInt();
 		l_oItem->m_iNumCols = i_oAttrs.value(notr("cols")).toInt();
 	}
+	else if (i_sName == notr("itembox"))
+	{
+		data_item *l_oItem = m_oControl->m_oItems.value(m_iId);
+		int bid = i_oAttrs.value(notr("id")).toInt();
+		data_box *box = new data_box(bid);
+		l_oItem->m_oBoxes[bid] = box;
+		box->m_sText = i_oAttrs.value(notr("text"));
+		box->m_iXX = i_oAttrs.value(notr("x")).toFloat();
+		box->m_iYY = i_oAttrs.value(notr("y")).toFloat();
+		box->m_iWW = i_oAttrs.value(notr("w")).toFloat();
+		box->m_iHH = i_oAttrs.value(notr("h")).toFloat();
+	}
 	else if (i_sName == notr("tbl"))
 	{
 		data_item *l_oItem = m_oControl->m_oItems.value(m_iId);
@@ -461,6 +473,22 @@ QString sem_model::doc_to_xml()
 			l_oS<<notr("<flag id=\"%1\"/>\n").arg(bind_node::protectXML(l_s));
 		}
 
+
+		foreach (data_box *box, l_oItem->m_oBoxes)
+		{
+			l_oS<<notr("<itembox id=\"%1\" text=\"%2\" x=\"%3\" y=\"%4\" w=\"%5\" h=\"%6\">\n").arg(
+				QString::number(box->m_iId),
+				bind_node::protectXML(box->m_sText),
+				QString::number(box->m_iXX),
+				QString::number(box->m_iYY),
+				QString::number(box->m_iWW),
+				QString::number(box->m_iHH)
+			);
+			l_oS<<notr("</itembox>\n");
+		}
+
+		// TODO same thing for the links
+		
 		l_oS<<notr("</item>\n");
 	}
 

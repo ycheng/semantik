@@ -30,6 +30,8 @@ class data_box
 	QString m_sText;
 	double m_iXX;
 	double m_iYY;
+	double m_iWW;
+	double m_iHH;
 };
 
 class data_item //:
