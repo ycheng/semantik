@@ -158,6 +158,12 @@ box_view::box_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsView(i_
 	connect(m_oEditAction, SIGNAL(triggered()), this, SLOT(slot_toggle_edit()));
 	addAction(m_oEditAction);
 
+	m_oCancelEditAction = new QAction(trUtf8("Cancel edit"), this);
+	m_oCancelEditAction->setShortcut(notr("Escape"));
+	addAction(m_oCancelEditAction);
+	connect(m_oCancelEditAction, SIGNAL(triggered()), this, SLOT(slot_cancel_edit()));
+	m_oCancelEditAction->setEnabled(false);
+
 	m_oAddItemAction = new QAction(QObject::trUtf8("Add Box"), this);
 	m_oAddItemAction->setShortcut(QObject::trUtf8("Ctrl+Return"));
 	connect(m_oAddItemAction, SIGNAL(triggered()), this, SLOT(slot_add_item()));
@@ -579,6 +585,29 @@ void box_view::slot_toggle_edit()
 	m_oSelectRightAction->setEnabled(true);
 	m_oControl->check_undo(true);
 	*/
+}
+
+void box_view::slot_cancel_edit()
+{
+	box_item* sel = NULL;
+	foreach (QGraphicsItem *tmp, items()) {
+		if (tmp->type() == BOX_ITEM_T && tmp->isSelected()) {
+			if (sel) {
+				sel = NULL;
+				break;
+			} else {
+				sel = (box_item*) tmp;
+			}
+		}
+	}
+
+	if (sel && sel->textInteractionFlags() & Qt::TextEditorInteraction) {
+		sel->setTextInteractionFlags(Qt::NoTextInteraction);
+		sel->update_data();
+	}
+
+	m_oAddItemAction->setEnabled(true);
+	m_oDeleteAction->setEnabled(true);
 }
 
 void box_view::slot_move_up()

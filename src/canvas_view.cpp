@@ -121,6 +121,7 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsV
 	m_oCancelEditAction->setShortcut(notr("Escape"));
 	addAction(m_oCancelEditAction);
 	connect(m_oCancelEditAction, SIGNAL(triggered()), this, SLOT(slot_cancel_edit()));
+	m_oCancelEditAction->setEnabled(false);
 
 	m_oMenu = new QMenu(this);
 	m_oMenu->addAction(m_oAddItemAction);

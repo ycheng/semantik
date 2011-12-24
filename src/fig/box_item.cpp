@@ -214,7 +214,7 @@ void box_item::update_data() {
 }
 
 void box_item::keyPressEvent(QKeyEvent* e) {
-	if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)
+	if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return || e->key() == Qt::Key_Escape)
 	{
 		e->ignore();
 		m_oView->slot_toggle_edit();
@@ -226,7 +226,7 @@ void box_item::keyPressEvent(QKeyEvent* e) {
 }
 
 void box_item::keyReleaseEvent(QKeyEvent* e) {
-	if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)
+	if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return || e->key() == Qt::Key_Escape)
 	{
 		e->ignore();
 		return;

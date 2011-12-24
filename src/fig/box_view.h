@@ -49,6 +49,7 @@ class box_view : public QGraphicsView
 
 		QAction *m_oAddItemAction;
 		QAction *m_oEditAction;
+		QAction *m_oCancelEditAction;
 		QAction *m_oDeleteAction;
 		QAction *m_oColorAction;
 		QAction *m_oMoveUpAction;
@@ -91,6 +92,7 @@ class box_view : public QGraphicsView
 		void slot_add_item();
 		void slot_color();
 		void slot_toggle_edit();
+		void slot_cancel_edit();
 
 		void slot_move_up();
 		void slot_move_down();
