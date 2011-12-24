@@ -180,10 +180,15 @@ void canvas_item::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 }
 
 void canvas_item::keyPressEvent(QKeyEvent* e) {
-	if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return || e->key() == Qt::Key_Escape)
+	// FIXME Qt Sucks
+	if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)
 	{
-		e->ignore();
-		m_oGraph->slot_toggle_edit();
+		m_oGraph->m_oEditAction->activate(QAction::Trigger);
+		return;
+	}
+	else if (e->key() == Qt::Key_Escape)
+	{
+		m_oGraph->m_oCancelEditAction->activate(QAction::Trigger);
 		return;
 	}
 
@@ -195,7 +200,6 @@ void canvas_item::keyPressEvent(QKeyEvent* e) {
 void canvas_item::keyReleaseEvent(QKeyEvent* e) {
 	if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return || e->key() == Qt::Key_Escape)
 	{
-		e->ignore();
 		return;
 	}
 	QGraphicsTextItem::keyReleaseEvent(e);

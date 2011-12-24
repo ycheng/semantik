@@ -215,6 +215,8 @@ box_view::box_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsView(i_
 
 	m_oAddItemAction->setEnabled(false);
 	m_oDeleteAction->setEnabled(false);
+
+	qDebug()<<"disable edit action";
 	m_oEditAction->setEnabled(false);
 	//m_oMoveUpAction->setEnabled(false);
 	//m_oMoveDownAction->setEnabled(false);
@@ -255,6 +257,9 @@ void box_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 	{
 		m_iId = NO_ITEM;
 		setEnabled(false);
+		qDebug()<<"disable edit action";
+		m_oEditAction->setEnabled(false);
+		m_oCancelEditAction->setEnabled(false);
 	}
 	else
 	{
@@ -272,6 +277,7 @@ void box_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 			check_canvas_size();
 		}
 		setEnabled(true);
+		m_oEditAction->setEnabled(true);
 	}
 }
 
@@ -283,6 +289,7 @@ void box_view::sync_view()
 		m_oItems[box->m_iId] = l_o;
 		l_o->setPlainText(box->m_sText);
 		l_o->setPos(QPointF(box->m_iXX, box->m_iYY));
+		l_o->update_data();
 	}
 }
 
@@ -407,6 +414,8 @@ void box_view::enable_menu_actions()
 	m_oAddItemAction->setEnabled(m_oSelected.size() <= 1);
 	m_oDeleteAction->setEnabled(m_oSelected.size() >= 1);
 	m_oColorAction->setEnabled(m_oSelected.size() >= 1);
+
+	qDebug()<<"disable edit action";
 	m_oEditAction->setEnabled(m_oSelected.size() == 1 and m_oSelected[0]->type() == BOX_ITEM_T);
 
 	m_oWidthMenu->setEnabled(m_oSelected.size() >= 1 and m_oSelected[0]->type() == BOX_LINK_T);
@@ -549,6 +558,7 @@ void box_view::slot_toggle_edit()
 
 			m_oAddItemAction->setEnabled(false);
 			m_oDeleteAction->setEnabled(false);
+			m_oCancelEditAction->setEnabled(true);
 
 			/*
 			m_oInsertSiblingAction->setEnabled(false);
@@ -570,6 +580,7 @@ void box_view::slot_toggle_edit()
 
 	m_oAddItemAction->setEnabled(true);
 	m_oDeleteAction->setEnabled(true);
+	m_oCancelEditAction->setEnabled(false);
 
 	/*
 	m_oInsertSiblingAction->setEnabled(true);
@@ -589,6 +600,7 @@ void box_view::slot_toggle_edit()
 
 void box_view::slot_cancel_edit()
 {
+	qDebug()<<"slot cancel edit";
 	box_item* sel = NULL;
 	foreach (QGraphicsItem *tmp, items()) {
 		if (tmp->type() == BOX_ITEM_T && tmp->isSelected()) {
@@ -602,6 +614,7 @@ void box_view::slot_cancel_edit()
 	}
 
 	if (sel && sel->textInteractionFlags() & Qt::TextEditorInteraction) {
+		qDebug()<<"cancel edit!"<<sel;
 		sel->setTextInteractionFlags(Qt::NoTextInteraction);
 		sel->update_data();
 	}
@@ -741,6 +754,7 @@ void box_view::focusOutEvent(QFocusEvent *i_oEv)
 	qDebug()<<"focus out";
 	m_oAddItemAction->setEnabled(false);
 	m_oDeleteAction->setEnabled(false);
+	qDebug()<<"disable edit action";
 	m_oEditAction->setEnabled(false);
 	QGraphicsView::focusOutEvent(i_oEv);
 }

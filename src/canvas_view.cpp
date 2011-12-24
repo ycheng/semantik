@@ -125,7 +125,7 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsV
 
 	m_oMenu = new QMenu(this);
 	m_oMenu->addAction(m_oAddItemAction);
-	m_oMenu->addAction(m_oEditAction);
+	//m_oMenu->addAction(m_oEditAction);
 	m_oMenu->addAction(m_oDeleteAction);
 
 	QAction *fullAction = new QAction(trUtf8("Toggle fullscreen"), this);

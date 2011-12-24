@@ -4,6 +4,7 @@ Priority:
 Fix the diagram view
  - recover diagrams
  - undo operations
+ - move the cursor at the end on undo
 Display pictures on the canvas
 Fix the crashes when loading other documents (?)
 Fix the custom color

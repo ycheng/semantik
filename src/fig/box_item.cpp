@@ -9,6 +9,7 @@
 #include <QClipboard>
 #include <QPainter>
 #include <QtDebug>
+#include <QAction>
 #include <QTextDocument>
 #include "box_item.h"
 #include "box_view.h"
@@ -210,16 +211,22 @@ QRectF box_item::boundingRect() const {
 void box_item::update_data() {
 	setPos(QPointF(m_oBox->m_iXX, m_oBox->m_iYY));
 	setPlainText(m_oBox->m_sText);
-	adjustSize();
+	qDebug()<<"plain text is ->"<<m_oBox->m_sText;
 }
 
 void box_item::keyPressEvent(QKeyEvent* e) {
-	if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return || e->key() == Qt::Key_Escape)
+	// FIXME Qt Sucks
+	if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)
 	{
-		e->ignore();
-		m_oView->slot_toggle_edit();
+		m_oView->m_oEditAction->activate(QAction::Trigger);
 		return;
 	}
+	else if (e->key() == Qt::Key_Escape)
+	{
+		m_oView->m_oCancelEditAction->activate(QAction::Trigger);
+		return;
+	}
+
 
 	QGraphicsTextItem::keyPressEvent(e);
 	adjustSize();
