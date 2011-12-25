@@ -934,6 +934,7 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 		return;
 	}
 
+	/*
 	QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
 	if (l_oItem && l_oItem->type() == BOX_ITEM_T)
 	{
@@ -961,7 +962,7 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 			m_oOffsetPoint = QPointF(-1, -1);
 		}
 		return;
-	}
+	}*/
 	/*else if (l_oItem && l_oItem->type() == BOX_LINK_T)
 	{
 		box_link *l_oLink = (box_link*) l_oItem;
@@ -1052,7 +1053,7 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 		m_oCurrent->update_pos();
 		return;
 	}
-	else
+	/*else
 	{
 		if (m_oSelected.size() == 1 and m_oSelected[0]->type() == BOX_LINK_T and
 			((box_link*) m_oSelected[0])->m_iControlSegment)
@@ -1104,7 +1105,7 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 				}
 			}
 		}
-	}
+	}*/
 	//check_canvas_size();
 
 	QGraphicsView::mouseMoveEvent(i_oEv);

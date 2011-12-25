@@ -31,7 +31,7 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oVie
 	m_bSel = false;
 	m_bEdit = false;
 
-	setPlainText("edit me");
+	setPlainText("");
 	//adjustSize();
 
 	//setRect(0, 0, 20, 20);
@@ -47,7 +47,7 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oVie
 	setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
 	setZValue(64);
-
+	setTextWidth(80);
 	setFlags(ItemIsMovable | ItemIsSelectable);
 }
 
@@ -229,7 +229,7 @@ void box_item::keyPressEvent(QKeyEvent* e) {
 
 
 	QGraphicsTextItem::keyPressEvent(e);
-	adjustSize();
+	update();
 }
 
 void box_item::keyReleaseEvent(QKeyEvent* e) {
