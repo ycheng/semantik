@@ -8,6 +8,7 @@ Fix the diagram view
 Display pictures on the canvas
 Fix the crashes when loading other documents (?)
 Fix the custom color
+Use KIO::put
 
 Ideas:
 ------

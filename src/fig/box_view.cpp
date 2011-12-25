@@ -825,139 +825,6 @@ void box_view::notify_unlink_box(int id, int pid, int cid)
 }
 
 
-void box_view::mouseReleaseEvent2(QMouseEvent *i_oEv)
-{
-	if (m_bScroll)
-	{
-		m_bPressed = false;
-		m_bScroll = false;
-		viewport()->setCursor(Qt::ArrowCursor);
-		return;
-	}
-
-	m_bPressed = false;
-	if (m_oCurrent)
-	{
-		box_item *l_oUnder = NULL;
-		foreach (QGraphicsItem *l_oI1, scene()->items(m_oLastMovePoint))
-		{
-			if (l_oI1->type() == BOX_ITEM_T)
-			{
-				l_oUnder = (box_item*) l_oI1;
-				break;
-			}
-		}
-
-		if (l_oUnder)
-		{
-			if (!m_oCurrent->m_oChild) m_oCurrent->m_oChild = l_oUnder;
-			else m_oCurrent->m_oParent = l_oUnder;
-
-			if (m_oCurrent->m_iParent != m_oCurrent->m_iChild or
-				m_oCurrent->m_oParent != m_oCurrent->m_oChild)
-			{
-				m_oLinks.push_back(m_oCurrent);
-				m_oCurrent->update();
-				m_oCurrent = NULL;
-			}
-		}
-
-		// use the fall through
-		if (m_oCurrent)
-		{
-			delete m_oCurrent;
-			m_oCurrent = NULL;
-		}
-	}
-}
-
-void box_view::mouseMoveEvent2(QMouseEvent *i_oEv)
-{
-	if (m_bScroll)
-	{
-		QScrollBar *l_h_bar = horizontalScrollBar();
-		QScrollBar *l_v_bar = verticalScrollBar();
-
-		QPoint l_o = i_oEv->pos() - m_oScrollPoint;
-
-		l_h_bar->setValue(l_h_bar->value() + (isRightToLeft() ? l_o.x() : - l_o.x()));
-		l_v_bar->setValue(l_v_bar->value() - l_o.y());
-
-		m_oScrollPoint = i_oEv->pos();
-		return;
-	}
-
-	if (!m_bPressed)
-	{
-		return;
-	}
-
-	QRectF l_oRect;
-	l_oRect.setTopLeft(m_oLastMovePoint);
-	m_oLastMovePoint = mapToScene(i_oEv->pos());
-	l_oRect.setBottomRight(m_oLastMovePoint);
-
-	if (m_oCurrent)
-	{
-		m_oCurrent->update_pos();
-	}
-	else
-	{
-		if (m_oSelected.size() == 1 and m_oSelected[0]->type() == BOX_LINK_T and
-			((box_link*) m_oSelected[0])->m_iControlSegment)
-		{
-			/* boustophedon */
-			box_link *l_oLink = (box_link*) m_oSelected[0];
-			int i = l_oLink->m_iControlSegment;
-
-			QPointF l_oP((l_oLink->m_oLst[i].x()+l_oLink->m_oLst[i+1].x())/2,
-					(l_oLink->m_oLst[i].y()+l_oLink->m_oLst[i+1].y())/2);
-			--i;
-
-			QPointF l_oNew = m_oLastMovePoint - m_oLastPoint + l_oLink->m_oControlPoint - l_oP;
-			l_oLink->m_oOffsets[i].setX((int) l_oNew.x());
-			l_oLink->m_oOffsets[i].setY((int) l_oNew.y());
-			l_oLink->update_ratio(); // no need to update_pos
-			l_oLink->update();
-		}
-		else if (m_oSelected.size() == 1 and m_oSelected[0]->type() == BOX_ITEM_T and
-			m_oOffsetPoint.x()>0 and m_oOffsetPoint.y()>0 )
-		{
-			QPointF l_o = m_oLastMovePoint - m_oLastPoint + m_oOffsetPoint;
-			box_item *l_oItem = (box_item*) m_oSelected[0];
-			l_o.setX(qMax(GRID_VALUE, l_o.x()));
-			l_o.setY(qMax(GRID_VALUE, l_o.y()));
-			l_oItem->setRect(0, 0, int_val(l_o.x()), int_val(l_o.y()));
-
-			// then update the links
-			foreach (box_link *l_oLink, m_oLinks)
-			{
-				// either the parent or the child
-				if (l_oLink->m_oParent == l_oItem or l_oLink->m_oChild == l_oItem)
-					l_oLink->update_pos();
-			}
-		}
-		else
-		{
-			foreach (QGraphicsItem *l_oItem, m_oSelected)
-			{
-				if (l_oItem->type() == BOX_ITEM_T)
-				{
-					((box_item*) l_oItem)->moveBy(l_oRect.width(), l_oRect.height());
-				}
-
-				foreach (box_link *l_oLink, m_oLinks)
-				{
-					// either the parent or the child
-					if (l_oLink->m_oParent == l_oItem or l_oLink->m_oChild == l_oItem)
-						l_oLink->update_pos();
-				}
-			}
-		}
-	}
-	check_canvas_size();
-}
-
 void box_view::wheelEvent(QWheelEvent *i_oEvent)
 {
 	QPointF l_o = mapToScene(i_oEvent->pos());
@@ -1019,8 +886,9 @@ void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 	}
 }
 
-void box_view::mousePressEvent2(QMouseEvent *i_oEv)
+void box_view::mousePressEvent(QMouseEvent *i_oEv)
 {
+	/*
 	if (i_oEv->button() == Qt::RightButton)
 	{
 		// select the item under the cursor if available and show the popup menu
@@ -1040,7 +908,7 @@ void box_view::mousePressEvent2(QMouseEvent *i_oEv)
 		}
 		m_oMenu->popup(i_oEv->globalPos());
 		return;
-	}
+	}*/
 
 	m_bPressed = true;
 	m_oLastMovePoint = mapToScene(i_oEv->pos());
@@ -1054,7 +922,7 @@ void box_view::mousePressEvent2(QMouseEvent *i_oEv)
 		return;
 	}
 
-
+	/*
 	QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
 	if (l_oItem && l_oItem->type() == BOX_ITEM_T)
 	{
@@ -1150,6 +1018,148 @@ void box_view::mousePressEvent2(QMouseEvent *i_oEv)
 	{
 		deselect_all();
 	}
+	*/
+	QGraphicsView::mousePressEvent(i_oEv);
+}
+
+void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
+{
+	if (m_bScroll)
+	{
+		QScrollBar *l_h_bar = horizontalScrollBar();
+		QScrollBar *l_v_bar = verticalScrollBar();
+
+		QPoint l_o = i_oEv->pos() - m_oScrollPoint;
+
+		l_h_bar->setValue(l_h_bar->value() + (isRightToLeft() ? l_o.x() : - l_o.x()));
+		l_v_bar->setValue(l_v_bar->value() - l_o.y());
+
+		m_oScrollPoint = i_oEv->pos();
+		return;
+	}
+
+	QGraphicsView::mouseMoveEvent(i_oEv);
+
+	/*
+	if (!m_bPressed)
+	{
+		return;
+	}
+
+	QRectF l_oRect;
+	l_oRect.setTopLeft(m_oLastMovePoint);
+	m_oLastMovePoint = mapToScene(i_oEv->pos());
+	l_oRect.setBottomRight(m_oLastMovePoint);
+
+	if (m_oCurrent)
+	{
+		m_oCurrent->update_pos();
+	}
+	else
+	{
+		if (m_oSelected.size() == 1 and m_oSelected[0]->type() == BOX_LINK_T and
+			((box_link*) m_oSelected[0])->m_iControlSegment)
+		{
+			box_link *l_oLink = (box_link*) m_oSelected[0];
+			int i = l_oLink->m_iControlSegment;
+
+			QPointF l_oP((l_oLink->m_oLst[i].x()+l_oLink->m_oLst[i+1].x())/2,
+					(l_oLink->m_oLst[i].y()+l_oLink->m_oLst[i+1].y())/2);
+			--i;
+
+			QPointF l_oNew = m_oLastMovePoint - m_oLastPoint + l_oLink->m_oControlPoint - l_oP;
+			l_oLink->m_oOffsets[i].setX((int) l_oNew.x());
+			l_oLink->m_oOffsets[i].setY((int) l_oNew.y());
+			l_oLink->update_ratio(); // no need to update_pos
+			l_oLink->update();
+		}
+		else if (m_oSelected.size() == 1 and m_oSelected[0]->type() == BOX_ITEM_T and
+			m_oOffsetPoint.x()>0 and m_oOffsetPoint.y()>0 )
+		{
+			QPointF l_o = m_oLastMovePoint - m_oLastPoint + m_oOffsetPoint;
+			box_item *l_oItem = (box_item*) m_oSelected[0];
+			l_o.setX(qMax(GRID_VALUE, l_o.x()));
+			l_o.setY(qMax(GRID_VALUE, l_o.y()));
+			l_oItem->setRect(0, 0, int_val(l_o.x()), int_val(l_o.y()));
+
+			// then update the links
+			foreach (box_link *l_oLink, m_oLinks)
+			{
+				// either the parent or the child
+				if (l_oLink->m_oParent == l_oItem or l_oLink->m_oChild == l_oItem)
+					l_oLink->update_pos();
+			}
+		}
+		else
+		{
+			foreach (QGraphicsItem *l_oItem, m_oSelected)
+			{
+				if (l_oItem->type() == BOX_ITEM_T)
+				{
+					((box_item*) l_oItem)->moveBy(l_oRect.width(), l_oRect.height());
+				}
+
+				foreach (box_link *l_oLink, m_oLinks)
+				{
+					// either the parent or the child
+					if (l_oLink->m_oParent == l_oItem or l_oLink->m_oChild == l_oItem)
+						l_oLink->update_pos();
+				}
+			}
+		}
+	}
+	check_canvas_size();
+	*/
+
+}
+
+void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
+{
+	QGraphicsView::mouseReleaseEvent(i_oEv);
+
+	if (m_bScroll)
+	{
+		m_bPressed = false;
+		m_bScroll = false;
+		viewport()->setCursor(Qt::ArrowCursor);
+		return;
+	}
+
+	/*
+	m_bPressed = false;
+	if (m_oCurrent)
+	{
+		box_item *l_oUnder = NULL;
+		foreach (QGraphicsItem *l_oI1, scene()->items(m_oLastMovePoint))
+		{
+			if (l_oI1->type() == BOX_ITEM_T)
+			{
+				l_oUnder = (box_item*) l_oI1;
+				break;
+			}
+		}
+
+		if (l_oUnder)
+		{
+			if (!m_oCurrent->m_oChild) m_oCurrent->m_oChild = l_oUnder;
+			else m_oCurrent->m_oParent = l_oUnder;
+
+			if (m_oCurrent->m_iParent != m_oCurrent->m_iChild or
+				m_oCurrent->m_oParent != m_oCurrent->m_oChild)
+			{
+				m_oLinks.push_back(m_oCurrent);
+				m_oCurrent->update();
+				m_oCurrent = NULL;
+			}
+		}
+
+		// use the fall through
+		if (m_oCurrent)
+		{
+			delete m_oCurrent;
+			m_oCurrent = NULL;
+		}
+	}*/
 }
 
 

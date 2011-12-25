@@ -80,9 +80,9 @@ class box_view : public QGraphicsView
 		QActionGroup *m_oStyleGroup;
 
 
-		void mousePressEvent2(QMouseEvent *);
-		void mouseMoveEvent2(QMouseEvent*);
-		void mouseReleaseEvent2(QMouseEvent*);
+		void mousePressEvent(QMouseEvent *);
+		void mouseMoveEvent(QMouseEvent*);
+		void mouseReleaseEvent(QMouseEvent*);
 		void mouseDoubleClickEvent(QMouseEvent*);
 		void wheelEvent(QWheelEvent*);
 
