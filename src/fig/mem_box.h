@@ -56,10 +56,11 @@ class mem_edit_box: public mem_command {
 
 class mem_link_box : public mem_command {
 	public:
-		mem_link_box(sem_model*);
+		mem_link_box(sem_model*, int id);
 		void undo();
 		void redo();
 
+		int m_iId;
 		int parent;
 		int child;
 
@@ -68,10 +69,11 @@ class mem_link_box : public mem_command {
 
 class mem_unlink_box : public mem_command {
 	public:
-		mem_unlink_box(sem_model*);
+		mem_unlink_box(sem_model*, int id);
 		void undo();
 		void redo();
 
+		int m_iId;
 		int parent;
 		int child;
 		IType type() { return UNLINK_BOX; }

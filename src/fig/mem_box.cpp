@@ -122,8 +122,8 @@ void mem_edit_box::undo()
 
 ///////////////////////////////////////////////////////////////////
 
-mem_link_box::mem_link_box(sem_model* mod) : mem_command(mod) {
-
+mem_link_box::mem_link_box(sem_model* mod, int id) : mem_command(mod) {
+	m_iId = id;
 }
 
 void mem_link_box::redo() {
@@ -144,8 +144,8 @@ void mem_link_box::undo() {
 
 ///////////////////////////////////////////////////////////////////
 
-mem_unlink_box::mem_unlink_box(sem_model* mod) : mem_command(mod) {
-
+mem_unlink_box::mem_unlink_box(sem_model* mod, int id) : mem_command(mod) {
+	m_iId = id;
 }
 
 void mem_unlink_box::redo() {
