@@ -79,6 +79,8 @@ class box_view : public QGraphicsView
 		QActionGroup *m_oWidthGroup;
 		QActionGroup *m_oStyleGroup;
 
+		void keyPressEvent(QKeyEvent *i_oEvent);
+		void keyReleaseEvent(QKeyEvent *i_oEvent);
 
 		void mousePressEvent(QMouseEvent *);
 		void mouseMoveEvent(QMouseEvent*);

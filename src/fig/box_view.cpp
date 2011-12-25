@@ -853,6 +853,18 @@ void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 
 }*/
 
+void box_view::keyPressEvent(QKeyEvent *i_oEvent)
+{
+	QGraphicsView::keyPressEvent(i_oEvent);
+	if (QApplication::keyboardModifiers() & Qt::ControlModifier) setCursor(Qt::CrossCursor);
+}
+
+void box_view::keyReleaseEvent(QKeyEvent *i_oEvent)
+{
+	QGraphicsView::keyReleaseEvent(i_oEvent);
+	setCursor(Qt::ArrowCursor);
+}
+
 void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 {
 	if (i_oEv->button() != Qt::LeftButton)
@@ -922,7 +934,6 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 		return;
 	}
 
-	/*
 	QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
 	if (l_oItem && l_oItem->type() == BOX_ITEM_T)
 	{
@@ -933,26 +944,13 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 			m_oCurrent = new box_link(this);
 			m_oCurrent->m_oParent = l_oRect;
 			m_oCurrent->m_oChild = NULL;
-			m_oCurrent->m_iParent = box_link::pos_inrect(
-				l_oRect->rect(), l_oRect->pos() - m_oLastMovePoint);
+			m_oCurrent->m_iParent = box_link::pos_inrect(l_oRect->rect(), l_oRect->pos() - m_oLastMovePoint);
 			m_oCurrent->m_iChild = 0;
 			m_oCurrent->update_pos();
 		}
-		else if (i_oEv->modifiers() == Qt::ShiftModifier)
-		{
-			if (m_oSelected.contains(l_oRect))
-				rm_select(l_oRect);
-			else
-				add_select(l_oRect);
-		}
-		else if (!m_oSelected.contains(l_oRect))
-		{
-			deselect_all();
-			add_select(l_oRect);
-		}
 
 		QPointF l_o = l_oItem->pos();
-		// used by the handle for resizing the boxes - check that the click was on the handle
+		// TODO used by the handle for resizing the boxes - check that the click was on the handle
 		if (m_oLastPoint.x() + m_oLastPoint.y() - l_o.x() - l_o.y() >
 			l_oRect->rect().width() + l_oRect->rect().height() - 2*GRID_VALUE)
 		{
@@ -963,7 +961,7 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 			m_oOffsetPoint = QPointF(-1, -1);
 		}
 	}
-	else if (l_oItem && l_oItem->type() == BOX_LINK_T)
+	/*else if (l_oItem && l_oItem->type() == BOX_LINK_T)
 	{
 		box_link *l_oLink = (box_link*) l_oItem;
 		if (i_oEv->modifiers() == Qt::ShiftModifier)
@@ -1017,8 +1015,8 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 	else
 	{
 		deselect_all();
-	}
-	*/
+	}*/
+
 	QGraphicsView::mousePressEvent(i_oEv);
 }
 
@@ -1040,7 +1038,7 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 
 	QGraphicsView::mouseMoveEvent(i_oEv);
 
-	/*
+
 	if (!m_bPressed)
 	{
 		return;
@@ -1108,15 +1106,12 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 			}
 		}
 	}
-	check_canvas_size();
-	*/
-
+	//check_canvas_size();
 }
 
 void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 {
 	QGraphicsView::mouseReleaseEvent(i_oEv);
-
 	if (m_bScroll)
 	{
 		m_bPressed = false;
@@ -1125,7 +1120,6 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 		return;
 	}
 
-	/*
 	m_bPressed = false;
 	if (m_oCurrent)
 	{
@@ -1159,9 +1153,8 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 			delete m_oCurrent;
 			m_oCurrent = NULL;
 		}
-	}*/
+	}
 }
-
 
 #include "box_view.moc"
 
