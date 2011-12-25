@@ -800,8 +800,6 @@ void box_view::focusOutEvent(QFocusEvent *i_oEv)
 
 void box_view::notify_add_box(int id, int box)
 {
-	qDebug()<<"notify add box"<<id<<" "<<box;
-
 	box_item *l_o = new box_item(this, box);
 	m_oItems[box] = l_o;
 	l_o->update_data();
@@ -815,6 +813,17 @@ void box_view::notify_del_box(int id, int box)
 	m_oItems.remove(box);
 	delete l_o;
 }
+
+void box_view::notify_link_box(int id, int pid, int cid)
+{
+	qDebug()<<"notify link box";
+}
+
+void box_view::notify_unlink_box(int id, int pid, int cid)
+{
+	qDebug()<<"notify unlink box";
+}
+
 
 void box_view::mouseReleaseEvent2(QMouseEvent *i_oEv)
 {

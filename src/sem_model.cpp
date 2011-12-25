@@ -1257,5 +1257,13 @@ void sem_model::notify_edit_box(int id, int box) {
 	emit sig_edit_box(id, box);
 }
 
+void sem_model::notify_link_box(int id, int pid, int cid) {
+	emit sig_link_box(id, pid, cid);
+}
+
+void sem_model::notify_unlink_box(int id, int pid, int cid) {
+	emit sig_unlink_box(id, pid, cid);
+}
+
 #include "sem_model.moc"
 

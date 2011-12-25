@@ -69,6 +69,8 @@ class sem_model: public QObject
 		void sig_add_box(int, int);
 		void sig_del_box(int, int);
 		void sig_edit_box(int, int);
+		void sig_link_box(int, int, int);
+		void sig_unlink_box(int, int, int);
 
 		void enable_undo(bool, bool);
 
@@ -140,6 +142,8 @@ class sem_model: public QObject
 		void notify_add_box(int id, int box);
 		void notify_del_box(int id, int box);
 		void notify_edit_box(int id, int box);
+		void notify_link_box(int id, int pid, int cid);
+		void notify_unlink_box(int id, int pid, int cid);
 
 	public:
 
