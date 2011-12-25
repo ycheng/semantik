@@ -6,6 +6,7 @@
 #include <QPair>
 #include <QPixmap>
 #include <QList>
+#include <QPoint>
 #include <QMap>
 #include <QSyntaxHighlighter>
 #include <QTextDocument>
@@ -15,11 +16,14 @@
 
 class sem_model;
 
-class data_link //:
+class data_link
 {
 	public:
 	QString m_sLink;
 	QString m_sCaption;
+	int m_iParent;
+	int m_iChild;
+	QList<QPoint> m_oOffsets;
 };
 
 class data_box

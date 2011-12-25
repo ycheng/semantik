@@ -120,4 +120,50 @@ void mem_edit_box::undo()
 	undo_dirty();
 }
 
+///////////////////////////////////////////////////////////////////
+
+mem_link_box::mem_link_box(sem_model* mod) : mem_command(mod) {
+
+}
+
+void mem_link_box::redo() {
+	//qDebug()<<"redo mem_link"<<parent<<child;
+	Q_ASSERT(!model->m_oLinks.contains(QPoint(parent, child)));
+	model->m_oLinks.append(QPoint(parent, child));
+	model->notify_link_items(parent, child);
+	redo_dirty();
+}
+
+void mem_link_box::undo() {
+	//qDebug()<<"undo mem_link"<<parent<<child;
+	Q_ASSERT(model->m_oLinks.contains(QPoint(parent, child)));
+	model->m_oLinks.removeAll(QPoint(parent, child));
+	model->notify_unlink_items(parent, child);
+	undo_dirty();
+}
+
+///////////////////////////////////////////////////////////////////
+
+mem_unlink_box::mem_unlink_box(sem_model* mod) : mem_command(mod) {
+
+}
+
+void mem_unlink_box::redo() {
+	//qDebug()<<"redo mem_link"<<parent<<child;
+	Q_ASSERT(model->m_oLinks.contains(QPoint(parent, child)));
+	model->m_oLinks.removeAll(QPoint(parent, child));
+	model->notify_unlink_items(parent, child);
+	redo_dirty();
+}
+
+void mem_unlink_box::undo() {
+	//qDebug()<<"undo mem_link"<<parent<<child;
+	Q_ASSERT(!model->m_oLinks.contains(QPoint(parent, child)));
+	model->m_oLinks.append(QPoint(parent, child));
+	model->notify_link_items(parent, child);
+	undo_dirty();
+}
+
+///////////////////////////////////////////////////////////////////
+
 

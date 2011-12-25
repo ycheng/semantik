@@ -54,4 +54,28 @@ class mem_edit_box: public mem_command {
 		IType type() { return EDIT_BOX; }
 };
 
+class mem_link_box : public mem_command {
+	public:
+		mem_link_box(sem_model*);
+		void undo();
+		void redo();
+
+		int parent;
+		int child;
+
+		IType type() { return LINK_BOX; }
+};
+
+class mem_unlink_box : public mem_command {
+	public:
+		mem_unlink_box(sem_model*);
+		void undo();
+		void redo();
+
+		int parent;
+		int child;
+		IType type() { return UNLINK_BOX; }
+};
+
+
 #endif
