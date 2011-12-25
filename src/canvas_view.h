@@ -116,6 +116,7 @@ class canvas_view : public QGraphicsView
 		QAction *m_oNextRootAction;
 
 	public slots:
+		void export_map();
 		void change_colors(QAction*);
 		void fit_zoom();
 		void change_flags(QAction*);
@@ -132,7 +133,6 @@ class canvas_view : public QGraphicsView
 		void zoom_out();
 		void toggle_fullscreen();
 		void update_cursor();
-
 
 		void notify_add_item(int id);
 		void notify_delete_item(int id);

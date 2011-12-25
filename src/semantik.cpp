@@ -167,6 +167,11 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	m_oReorgAct->setShortcut(trUtf8("Ctrl+R"));
 	connect(m_oReorgAct, SIGNAL(triggered(bool)), m_oCanvas, SLOT(reorganize()));
 
+	m_oExportAct = new KAction(trUtf8("&Export the map"), this);
+	actionCollection()->addAction(notr("export_map"), m_oExportAct);
+	m_oExportAct->setShortcut(trUtf8("Ctrl+E"));
+	connect(m_oExportAct, SIGNAL(triggered(bool)), m_oCanvas, SLOT(export_map()));
+
 	KStandardAction::preferences(this, SLOT(slot_properties()), actionCollection());
 
 	m_oGenerateAct = new KAction(trUtf8("&Generate..."), this);

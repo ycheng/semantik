@@ -1265,5 +1265,9 @@ void sem_model::notify_unlink_box(int id, int pid, int cid) {
 	emit sig_unlink_box(id, pid, cid);
 }
 
+void sem_model::notify_message(const QString& msg, int duration) {
+	emit sig_message(msg, duration);
+}
+
 #include "sem_model.moc"
 

@@ -5,6 +5,7 @@
   <Menu name="file"><text>&amp;File</text>
   </Menu>
   <Menu name="edit"><text>&amp;Edit</text>
+      <Action name="export_map" />
       <Action name="reorganize_map" />
   </Menu>
   <Menu name="view"><text>&amp;View</text>

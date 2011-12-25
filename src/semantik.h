@@ -66,6 +66,7 @@ class semantik_win : public KXmlGuiWindow
 		//void update_color_scheme();
 
 		KAction *m_oReorgAct;
+		KAction *m_oExportAct;
 
 		KAction *m_oDocPropsAct;
 		KAction *m_oConfPropsAct;

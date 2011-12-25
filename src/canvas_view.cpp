@@ -25,6 +25,7 @@
 #include <QWheelEvent>
 #include  <QMatrix>
 #include <QPointF>
+#include <KFileDialog>
 
  #include <QGraphicsTextItem>
 
@@ -1362,6 +1363,32 @@ void canvas_view::pack(QMap<int, double> &width, QMap<int, double> &height, QMap
 		}
 		m_oItems[id]->update_links();
 	}
+}
+
+void canvas_view::export_map()
+{
+	KUrl l_o = KFileDialog::getSaveUrl(KUrl(notr("kfiledialog:///document")),
+		trUtf8("*.png|PNG Files (*.png)"), this,
+		trUtf8("Export the map as a picture"));
+
+	if (!l_o.isValid() || l_o.path().isEmpty()) return;
+
+	QRectF l_oRect = scene()->itemsBoundingRect();
+	l_oRect = QRectF(l_oRect.topLeft() - QPointF(25, 25), l_oRect.bottomRight() + QPointF(25, 25));
+	QRectF l_oR(0, 0, l_oRect.width(), l_oRect.height());
+
+	// fill with white
+	QImage l_oImage((int) l_oR.width(), (int) l_oR.height(), QImage::Format_RGB32);
+	l_oImage.fill(qRgb(255,255,255));
+
+	QPainter l_oP;
+	l_oP.begin(&l_oImage);
+	l_oP.setRenderHints(QPainter::Antialiasing);
+	scene()->render(&l_oP, l_oR, l_oRect);
+	l_oP.end();
+
+	l_oImage.save(l_o.path());
+	m_oControl->notify_message(trUtf8("Exported '%1'").arg(l_o.path()), 2000);
 }
 
 QList<canvas_item*> canvas_view::selection() {

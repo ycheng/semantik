@@ -145,6 +145,8 @@ class sem_model: public QObject
 		void notify_link_box(int id, int pid, int cid);
 		void notify_unlink_box(int id, int pid, int cid);
 
+		void notify_message(const QString& msg, int duration);
+
 	public:
 
 		KUrl m_oCurrentUrl;
