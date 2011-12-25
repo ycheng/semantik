@@ -960,6 +960,7 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 		{
 			m_oOffsetPoint = QPointF(-1, -1);
 		}
+		return;
 	}
 	/*else if (l_oItem && l_oItem->type() == BOX_LINK_T)
 	{
@@ -1036,9 +1037,6 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 		return;
 	}
 
-	QGraphicsView::mouseMoveEvent(i_oEv);
-
-
 	if (!m_bPressed)
 	{
 		return;
@@ -1052,6 +1050,7 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 	if (m_oCurrent)
 	{
 		m_oCurrent->update_pos();
+		return;
 	}
 	else
 	{
@@ -1107,13 +1106,15 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 		}
 	}
 	//check_canvas_size();
+
+	QGraphicsView::mouseMoveEvent(i_oEv);
 }
 
 void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 {
-	QGraphicsView::mouseReleaseEvent(i_oEv);
 	if (m_bScroll)
 	{
+		QGraphicsView::mouseReleaseEvent(i_oEv);
 		m_bPressed = false;
 		m_bScroll = false;
 		viewport()->setCursor(Qt::ArrowCursor);
@@ -1153,6 +1154,10 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 			delete m_oCurrent;
 			m_oCurrent = NULL;
 		}
+	}
+	else
+	{
+		QGraphicsView::mouseReleaseEvent(i_oEv);
 	}
 }
 
