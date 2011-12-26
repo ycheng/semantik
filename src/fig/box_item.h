@@ -56,6 +56,9 @@ class box_item : public QGraphicsTextItem
 		void keyReleaseEvent(QKeyEvent*);
 
 		void update_data();
+		void update_links();
+
+		QVariant itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue);
 };
 
 #endif // BOX_ITEM_H

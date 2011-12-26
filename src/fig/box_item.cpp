@@ -13,6 +13,7 @@
 #include <QTextDocument>
 #include "box_item.h"
 #include "box_view.h"
+ #include "box_link.h"
 #include "data_item.h"
 #include "sem_model.h"
 
@@ -239,5 +240,28 @@ void box_item::keyReleaseEvent(QKeyEvent* e) {
 		return;
 	}
 	QGraphicsTextItem::keyReleaseEvent(e);
+}
+
+QVariant box_item::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue)
+{
+	bool l_bChange = ((i_oChange == ItemPositionChange) && scene());
+
+	QVariant l_oRet = QGraphicsItem::itemChange(i_oChange, i_oValue);
+
+	if (l_bChange)
+	{
+		qDebug()<<"stuff changed, update links";
+		update_links();
+	}
+
+	return l_oRet;
+}
+
+void box_item::update_links()
+{
+	foreach (box_link* l_oLink, m_oView->m_oLinks)
+	{
+		l_oLink->update_pos();
+	}
 }
 

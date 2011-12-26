@@ -1053,6 +1053,16 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 		m_oCurrent->update_pos();
 		return;
 	}
+	else
+	{
+		foreach (QGraphicsItem*tmp, scene()->selectedItems()) {
+			if (tmp->type() == BOX_ITEM_T && tmp->isSelected()) {
+				((box_item*) tmp)->update_links();
+			}
+		}
+	}
+
+
 	/*else
 	{
 		if (m_oSelected.size() == 1 and m_oSelected[0]->type() == BOX_LINK_T and
