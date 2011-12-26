@@ -934,7 +934,6 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 		return;
 	}
 
-	/*
 	QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
 	if (l_oItem && l_oItem->type() == BOX_ITEM_T)
 	{
@@ -948,6 +947,7 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 			m_oCurrent->m_iParent = box_link::pos_inrect(l_oRect->rect(), l_oRect->pos() - m_oLastMovePoint);
 			m_oCurrent->m_iChild = 0;
 			m_oCurrent->update_pos();
+			return;
 		}
 
 		QPointF l_o = l_oItem->pos();
@@ -961,8 +961,8 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 		{
 			m_oOffsetPoint = QPointF(-1, -1);
 		}
-		return;
-	}*/
+	}
+
 	/*else if (l_oItem && l_oItem->type() == BOX_LINK_T)
 	{
 		box_link *l_oLink = (box_link*) l_oItem;
