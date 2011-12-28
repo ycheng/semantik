@@ -6,6 +6,8 @@
 
 #include <QGraphicsRectItem>
 #include <QRectF>
+#include <QPair>
+#include <QSet>
 #include "con.h"
 
 class box_view;
@@ -51,7 +53,19 @@ class box_link : public QGraphicsRectItem
 
 		static int pos_inrect(const QRectF&, const QPointF&);
 		int pos_heuristic(const QRectF&, int, const QPointF&);
-};
+
+
+		// This shows how to abuse the qt containers :-)
+		QList<int> ver;
+		QList<int> hor;
+		QSet<QPair<int, int> > graph;
+		QHash<QPair<int, int>, QPair<int, int> > prev;
+		QHash<QPair<int, int>, int> dist;
+
+		void set_rectangles(int ax1, int ax2, int ay1, int ay2, int ap, int bx1, int bx2, int by1, int by2, int bp);
+		int may_use(QPair<int, int> cand, QPair<int, int> p, int ax1, int ax2, int ay1, int ay2, int bx1, int bx2, int by1, int by2);
+
+}; 
 
 #endif // BOX_LINK_H
 
