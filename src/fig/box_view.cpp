@@ -814,12 +814,24 @@ void box_view::notify_del_box(int id, int box)
 	delete l_o;
 }
 
-void box_view::notify_link_box(int id, int pid, int cid)
+void box_view::notify_link_box(int id, data_link* link)
 {
 	qDebug()<<"notify link box";
+	if (m_oCurrent)
+	{
+		m_oLinks.push_back(m_oCurrent);
+		m_oCurrent->update();
+		m_oCurrent = NULL;
+	}
+	else
+	{
+		box_link *l_o = new box_link(this);
+		l_o->set_link(link);
+		m_oCurrent->update_pos();
+	}
 }
 
-void box_view::notify_unlink_box(int id, int pid, int cid)
+void box_view::notify_unlink_box(int id, data_link* link)
 {
 	qDebug()<<"notify unlink box";
 }
@@ -1147,19 +1159,18 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 
 		if (l_oUnder)
 		{
-			if (!m_oCurrent->m_oChild) m_oCurrent->m_oChild = l_oUnder;
-			else m_oCurrent->m_oParent = l_oUnder;
+			if (!m_oCurrent->m_oChild)
+				m_oCurrent->m_oChild = l_oUnder;
+			else
+				m_oCurrent->m_oParent = l_oUnder;
 
-			if (m_oCurrent->m_iParent != m_oCurrent->m_iChild or
-				m_oCurrent->m_oParent != m_oCurrent->m_oChild)
-			{
-				m_oLinks.push_back(m_oCurrent);
-				m_oCurrent->update();
-				m_oCurrent = NULL;
-			}
+			//see notify_link_box();
+			mem_link_box *ln = new mem_link_box(m_oControl, m_iId);
+			ln->init(m_oCurrent->m_oParent->m_iId, 
+				m_oCurrent->m_iParent, m_oCurrent->m_oChild->m_iId, m_oCurrent->m_iChild);
+			ln->apply();
 		}
 
-		// use the fall through
 		if (m_oCurrent)
 		{
 			delete m_oCurrent;

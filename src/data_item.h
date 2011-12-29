@@ -23,6 +23,8 @@ class data_link
 	QString m_sCaption;
 	int m_iParent;
 	int m_iChild;
+	int m_iParentPos;
+	int m_iChildPos;
 	QList<QPoint> m_oOffsets;
 };
 
@@ -86,6 +88,7 @@ class data_item //:
 		bool load_from_path(const QString &);
 
 		QHash<int, data_box*> m_oBoxes;
+		QList<data_link*> m_oLinks;
 };
 
 #endif

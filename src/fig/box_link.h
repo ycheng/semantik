@@ -12,6 +12,7 @@
 
 class box_view;
 class box_item;
+class data_link;
 class box_link : public QGraphicsRectItem
 {
 	public:
@@ -25,9 +26,6 @@ class box_link : public QGraphicsRectItem
 
 		int m_iParent;
 		int m_iChild;
-		int m_iParentPos;
-		int m_iChildPos;
-
 
 		int m_iControlSegment;
 		QPointF m_oControlPoint;
@@ -50,6 +48,7 @@ class box_link : public QGraphicsRectItem
 		QList<QPoint> m_oOffsets; // this is the list we will keep
 
 		void update_ratio();
+		void set_link(data_link*);
 
 		static int pos_inrect(const QRectF&, const QPointF&);
 		int pos_heuristic(const QRectF&, int, const QPointF&);

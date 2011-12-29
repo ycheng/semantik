@@ -7,6 +7,7 @@
 #include "box_link.h"
 #include "box_view.h"
 #include "box_item.h"
+#include "data_item.h"
 
 #define pad 25
 #define MAX 2000000000
@@ -599,5 +600,13 @@ bool box_link::contains(const QPointF& i_oP) const
 		return false;
 	}
 	return QGraphicsRectItem::contains(i_oP);
+}
+
+void box_link::set_link(data_link* link)
+{
+	m_oParent = m_oView->m_oItems.value(link->m_iParent);
+	m_oChild = m_oView->m_oItems.value(link->m_iChild);
+	m_iParent = link->m_iParentPos;
+	m_iChild = link->m_iChildPos;
 }
 

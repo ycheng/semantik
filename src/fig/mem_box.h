@@ -5,6 +5,8 @@
 
 #include "mem_command.h"
 
+class data_link;
+
 class mem_del_box : public mem_command {
 	public:
 		mem_del_box(sem_model*);
@@ -57,12 +59,12 @@ class mem_edit_box: public mem_command {
 class mem_link_box : public mem_command {
 	public:
 		mem_link_box(sem_model*, int id);
+		void init(int, int, int, int);
 		void undo();
 		void redo();
 
 		int m_iId;
-		int parent;
-		int child;
+		data_link *link;
 
 		IType type() { return LINK_BOX; }
 };
@@ -74,8 +76,8 @@ class mem_unlink_box : public mem_command {
 		void redo();
 
 		int m_iId;
-		int parent;
-		int child;
+		data_link *link;
+
 		IType type() { return UNLINK_BOX; }
 };
 

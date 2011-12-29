@@ -126,19 +126,27 @@ mem_link_box::mem_link_box(sem_model* mod, int id) : mem_command(mod) {
 	m_iId = id;
 }
 
+void mem_link_box::init(int parent, int parentPos, int child, int childPos) {
+	link = new data_link();
+	link->m_iParent = parent;
+	link->m_iParentPos = parentPos;
+	link->m_iChild = child;
+	link->m_iChildPos = childPos;
+}
+
 void mem_link_box::redo() {
-	//qDebug()<<"redo mem_link"<<parent<<child;
-	Q_ASSERT(!model->m_oLinks.contains(QPoint(parent, child)));
-	model->m_oLinks.append(QPoint(parent, child));
-	model->notify_link_items(parent, child);
+	qDebug()<<"redo mem_link_box"<<link;
+
+	model->m_oItems[m_iId]->m_oLinks.append(link);
+	model->notify_link_box(m_iId, link);
 	redo_dirty();
 }
 
 void mem_link_box::undo() {
-	//qDebug()<<"undo mem_link"<<parent<<child;
-	Q_ASSERT(model->m_oLinks.contains(QPoint(parent, child)));
-	model->m_oLinks.removeAll(QPoint(parent, child));
-	model->notify_unlink_items(parent, child);
+	qDebug()<<"undo mem_link_box"<<link;
+
+	model->m_oItems[m_iId]->m_oLinks.removeAll(link);
+	model->notify_unlink_box(m_iId, link);
 	undo_dirty();
 }
 
@@ -149,18 +157,16 @@ mem_unlink_box::mem_unlink_box(sem_model* mod, int id) : mem_command(mod) {
 }
 
 void mem_unlink_box::redo() {
-	//qDebug()<<"redo mem_link"<<parent<<child;
-	Q_ASSERT(model->m_oLinks.contains(QPoint(parent, child)));
-	model->m_oLinks.removeAll(QPoint(parent, child));
-	model->notify_unlink_items(parent, child);
+	//qDebug()<<"redo mem_link_box"<<link;
+	model->m_oItems[m_iId]->m_oLinks.append(link);
+	model->notify_link_box(m_iId, link);
 	redo_dirty();
 }
 
 void mem_unlink_box::undo() {
-	//qDebug()<<"undo mem_link"<<parent<<child;
-	Q_ASSERT(!model->m_oLinks.contains(QPoint(parent, child)));
-	model->m_oLinks.append(QPoint(parent, child));
-	model->notify_link_items(parent, child);
+	//qDebug()<<"undo mem_link_box"<<link;
+	model->m_oItems[m_iId]->m_oLinks.removeAll(link);
+	model->notify_unlink_box(m_iId, link);
 	undo_dirty();
 }
 
