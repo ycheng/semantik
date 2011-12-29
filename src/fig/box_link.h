@@ -41,7 +41,7 @@ class box_link : public QGraphicsRectItem
 
 		bool contains(const QPointF& i_oP) const;
 
-		int m_iId;
+		//int m_iId;
 
 		QList<QPoint> m_oGood;
 		QList<QPoint> m_oLst;

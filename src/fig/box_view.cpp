@@ -296,6 +296,12 @@ void box_view::sync_view()
 		l_o->setPos(QPointF(box->m_iXX, box->m_iYY));
 		l_o->update_data();
 	}
+
+	foreach (data_link *link, item->m_oLinks) {
+		box_link *l_o = new box_link(this);
+		l_o->set_link(link);
+		l_o->update_pos();
+	}
 }
 
 void box_view::notify_export_item(int id)

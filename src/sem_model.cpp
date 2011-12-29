@@ -89,6 +89,16 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		box->m_iWW = i_oAttrs.value(notr("w")).toFloat();
 		box->m_iHH = i_oAttrs.value(notr("h")).toFloat();
 	}
+	else if (i_sName == notr("linkbox"))
+	{
+		data_item *l_oItem = m_oControl->m_oItems.value(m_iId);
+		data_link *link = new data_link();
+		l_oItem->m_oLinks.append(link);
+		link->m_iParent = i_oAttrs.value(notr("parent")).toInt();
+		link->m_iParentPos = i_oAttrs.value(notr("parentpos")).toInt();
+		link->m_iChild = i_oAttrs.value(notr("child")).toInt();
+		link->m_iChildPos = i_oAttrs.value(notr("childpos")).toInt();
+	}
 	else if (i_sName == notr("tbl"))
 	{
 		data_item *l_oItem = m_oControl->m_oItems.value(m_iId);
@@ -487,7 +497,17 @@ QString sem_model::doc_to_xml()
 			l_oS<<notr("</itembox>\n");
 		}
 
-		// TODO same thing for the links
+		foreach (data_link *link, l_oItem->m_oLinks)
+		{
+			l_oS<<notr("<linkbox parent=\"%1\" parentpos=\"%2\" child=\"%3\" childpos=\"%4\">\n").arg(
+				QString::number(link->m_iParent),
+				QString::number(link->m_iParentPos),
+				QString::number(link->m_iChild),
+				QString::number(link->m_iChildPos)
+				);
+			l_oS<<notr("</linkbox>\n");			
+
+		}
 		
 		l_oS<<notr("</item>\n");
 	}

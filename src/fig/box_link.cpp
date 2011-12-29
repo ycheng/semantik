@@ -19,7 +19,7 @@ box_link::box_link(box_view* i_oParent) : QGraphicsRectItem()
 	/*setBrush(QColor(0, 255, 0, 160));
 	setPen(QColor(Qt::black));*/
 
-	m_iId = i_oParent->next_id();
+	//m_iId = i_oParent->next_id();
 
         QPen l_oPen;
         l_oPen.setWidth(1);
@@ -49,6 +49,8 @@ box_link::~box_link()
 
 void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *option, QWidget * i_oW)
 {
+	if (!m_oParent)
+		return;
 	//i_oPainter->setPen(pen());
 	//QGraphicsRectItem::paint(i_oPainter, option, i_oW);
 
@@ -604,9 +606,9 @@ bool box_link::contains(const QPointF& i_oP) const
 
 void box_link::set_link(data_link* link)
 {
-	m_oParent = m_oView->m_oItems.value(link->m_iParent);
-	m_oChild = m_oView->m_oItems.value(link->m_iChild);
 	m_iParent = link->m_iParentPos;
 	m_iChild = link->m_iChildPos;
+	m_oChild = m_oView->m_oItems.value(link->m_iChild);
+	m_oParent = m_oView->m_oItems.value(link->m_iParent);
 }
 
