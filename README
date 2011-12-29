@@ -1,4 +1,4 @@
-Semantik 0.7.4, Thomas Nagy
+Semantik 0.7.5, Thomas Nagy
 contact: tnagy1024 at gmail dot com
 
 -----------------------------------------------
@@ -16,11 +16,8 @@ To compile, run:
 Then run the following installation command as root (important - Semantik will only work if installed):
 ./waf install
 
-To execute Semantik right from the source directory (developers):
-./waf --exe
-
 The generic command for creating a package is the following (packagers):
-./waf configure --prefix=/usr; ./waf; DESTDIR=$fakeroot ./waf install
+./waf configure clean build --prefix=/usr && DESTDIR=$fakeroot ./waf install
 
 -----------------------------------------------
 
