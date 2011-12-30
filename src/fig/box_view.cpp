@@ -301,6 +301,7 @@ void box_view::sync_view()
 		box_link *l_o = new box_link(this);
 		l_o->set_link(link);
 		l_o->update_pos();
+		m_oLinks.append(l_o);
 	}
 }
 
