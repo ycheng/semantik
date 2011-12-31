@@ -46,7 +46,7 @@
 <html>
 <h3>4. Data types</h3>
 <ul>
- <li>right-click on a map item and set the data type</li>
+ <li>Right-click on a map item and set the data type</li>
  <li>A graph may be created in the diagram panel</li>
  <li>Pictures may be added in the image panel</li>
 </ul>
@@ -64,4 +64,12 @@
 </html>
 </tip>
 
+<tip category="semantik">
+<html>
+<h3>6. LaTeX export</h3>
+<p>
+Set 'all_latex=1' to let the beamer and pdf templates parse LaTeX commands
+</p>
+</html>
+</tip>
 
