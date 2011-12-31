@@ -852,7 +852,15 @@ void box_view::notify_link_box(int id, data_link* link)
 
 void box_view::notify_unlink_box(int id, data_link* link)
 {
-	qDebug()<<"notify unlink box";
+	Q_ASSERT(!m_oCurrent);
+	foreach (box_link *cur, m_oLinks) {
+		if (cur->m_oLink == link)
+		{
+			delete cur;
+			m_oLinks.removeAll(cur);
+			break;
+		}
+	}
 }
 
 
@@ -906,13 +914,13 @@ void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 
 	QPointF m_oLastPoint = mapToScene(i_oEv->pos());
 	QGraphicsItem *l_oItem = itemAt(i_oEv->pos());
-	if (l_oItem and l_oItem->type() == BOX_LINK_T)
+	if (l_oItem && l_oItem->type() == BOX_LINK_T)
 	{
 		box_link *l_oLink = (box_link*) l_oItem;
-		//TODO
-		//m_oLinks.removeAll(l_oLink);
-		//m_oSelected.removeAll(l_oLink);
-		//delete l_oLink;
+		mem_unlink_box *rm = new mem_unlink_box(m_oControl, m_iId);
+		rm->link = l_oLink->m_oLink;
+		rm->apply();
+
 		return;
 	}
 
