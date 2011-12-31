@@ -466,11 +466,14 @@ void box_view::enable_actions()
 
 void box_view::slot_add_item()
 {
-	box_item *l_o = new box_item(this, m_oControl->next_seq());
-	l_o->setRect(0, 0, 80, 40);
-	QRectF l_oRect = l_o->boundingRect();
-	add_select(l_o);
-	l_o->setPos(m_oLastPoint - QPointF(l_oRect.width()/2, l_oRect.height()/2));
+	mem_add_box *add = new mem_add_box(m_oControl);
+	add->init(m_iId);
+	add->box->m_iXX = m_oLastPoint.x();
+	add->box->m_iYY = m_oLastPoint.y();
+	add->apply();
+
+	m_oItems.value(add->box->m_iId)->setSelected(true);
+	// l_o->setPos(m_oLastPoint - QPointF(l_oRect.width()/2, l_oRect.height()/2)); // TODO
 }
 
 void box_view::slot_color()

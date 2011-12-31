@@ -62,8 +62,6 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	QRectF l_oRect = boundingRect().adjusted(PAD, PAD, -PAD, -PAD);
 	data_item *l_oItem = m_oItem; //m_oGraph->m_oControl->m_oItems.value(Id());
 
-	data_box *box = m_oItem->m_oBoxes.value(m_iId);
-
 	QPen l_oPen = QPen(Qt::SolidLine);
 
 	l_oPen.setColor(Qt::black);
@@ -78,7 +76,7 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	}
 	else
 	{
-		painter->setBrush(box->fill_color);
+		painter->setBrush(m_oBox->fill_color);
 	}
 
 	painter->drawRoundRect(l_oRect, 20, 20);
@@ -211,7 +209,6 @@ QRectF box_item::boundingRect() const {
 void box_item::update_data() {
 	setPos(QPointF(m_oBox->m_iXX, m_oBox->m_iYY));
 	setPlainText(m_oBox->m_sText);
-	qDebug()<<"plain text is ->"<<m_oBox->m_sText;
 }
 
 void box_item::keyPressEvent(QKeyEvent* e) {
