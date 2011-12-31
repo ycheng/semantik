@@ -57,7 +57,6 @@ class box_view : public QGraphicsView
 		QAction *m_oMoveDownAction;
 
 		void focusInEvent(QFocusEvent *);
-		void focusOutEvent(QFocusEvent *);
 
 		void enable_menu_actions(); // like check_actions, but only for the popup menu
 
@@ -109,6 +108,7 @@ class box_view : public QGraphicsView
 		void notify_edit_box(int, int);
 		void notify_link_box(int id, data_link *link);
 		void notify_unlink_box(int id, data_link* link);
+		void notify_focus(void*);
 
 		void notify_select(const QList<int>& unsel, const QList<int>& sel);
 		void notify_export_item(int);

@@ -1547,20 +1547,23 @@ void canvas_view::notify_sort(int id) {
 	show_sort(id, m_iMode == sort_mode);
 }
 
-void canvas_view::focusOutEvent(QFocusEvent *i_oEv)
-{
-	qDebug()<<"focus out";
-	m_oDeleteAction->setEnabled(false);
-	m_oEditAction->setEnabled(false);
-	QGraphicsView::focusOutEvent(i_oEv);
-}
-
 void canvas_view::focusInEvent(QFocusEvent *i_oEv)
 {
-	qDebug()<<"focus in";
+	m_oControl->notify_focus(this);
+
+	m_oAddItemAction->setEnabled(true);
 	m_oDeleteAction->setEnabled(true);
 	m_oEditAction->setEnabled(true);
+
 	QGraphicsView::focusInEvent(i_oEv);
+}
+
+void canvas_view::notify_focus(void* ptr) {
+	if (ptr != this) {
+		m_oAddItemAction->setEnabled(false);
+		m_oDeleteAction->setEnabled(false);
+		m_oEditAction->setEnabled(false);
+	}
 }
 
 %: include  	"canvas_view.moc" 
@@ -1814,6 +1817,8 @@ void canvas_view::mouseReleaseEvent______________________________________(QMouse
 	}
 	update_cursor();
 }
+
+
 #endif
 
 

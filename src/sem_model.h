@@ -71,6 +71,7 @@ class sem_model: public QObject
 		void sig_edit_box(int, int);
 		void sig_link_box(int, data_link*);
 		void sig_unlink_box(int, data_link*);
+		void sig_focus(void*);
 
 		void enable_undo(bool, bool);
 
@@ -181,6 +182,8 @@ class sem_model: public QObject
 
 		void check_undo(bool); // check if the undo/redo actions can be enabled
 		int itemSelected();
+
+		void notify_focus(void *);
 
 	private:
 		int num_seq;

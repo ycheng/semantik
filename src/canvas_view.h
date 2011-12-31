@@ -48,7 +48,6 @@ class canvas_view : public QGraphicsView
 		bool m_bDeleting;
 		mode_type m_iMode;
 
-		void focusOutEvent(QFocusEvent *i_oEv);
 		void focusInEvent(QFocusEvent *i_oEv);
 
 		void wheelEvent(QWheelEvent *i_oEvent);
@@ -148,6 +147,7 @@ class canvas_view : public QGraphicsView
 		void notify_change_data(int id);
 		void sync_flags();
 		void sync_colors();
+		void notify_focus(void*);
 
 		void slot_change_data();
 		void reorganize();
