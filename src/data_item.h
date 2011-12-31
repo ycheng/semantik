@@ -26,7 +26,7 @@ class data_link
 	int m_iParentPos;
 	int m_iChildPos;
 	QList<QPoint> m_oOffsets;
-	QString fill_color;
+	QColor fill_color;
 };
 
 class data_box
@@ -39,8 +39,8 @@ class data_box
 	double m_iYY;
 	double m_iWW;
 	double m_iHH;
-	QString fill_color;
-	QString border_color;
+	QColor fill_color;
+	QColor border_color;
 };
 
 class data_item //:

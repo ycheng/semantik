@@ -24,8 +24,6 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oVie
 	//l_oOpt.setAlignment(Qt::AlignCenter);
 	//m_oDoc->setDefaultTextOption(l_oOpt);
 
-	//m_iId = i_oParent->next_id();
-
 	//setBrush(QColor(170, 170, 255));
 
 	m_iId = i_iId;
@@ -63,11 +61,12 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
 	QRectF l_oRect = boundingRect().adjusted(PAD, PAD, -PAD, -PAD);
 	data_item *l_oItem = m_oItem; //m_oGraph->m_oControl->m_oItems.value(Id());
-	color_scheme l_oColorScheme = l_oItem->get_color_scheme();
+
+	data_box *box = m_oItem->m_oBoxes.value(m_iId);
 
 	QPen l_oPen = QPen(Qt::SolidLine);
 
-	l_oPen.setColor(l_oColorScheme.m_oBorderColor);
+	l_oPen.setColor(Qt::black);
 	if (isSelected()) l_oPen.setStyle(Qt::DotLine);
 	l_oPen.setCosmetic(true);
 
@@ -79,7 +78,7 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	}
 	else
 	{
-		painter->setBrush(l_oColorScheme.m_oInnerColor);
+		painter->setBrush(box->fill_color);
 	}
 
 	painter->drawRoundRect(l_oRect, 20, 20);

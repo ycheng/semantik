@@ -88,6 +88,8 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		box->m_iYY = i_oAttrs.value(notr("y")).toFloat();
 		box->m_iWW = i_oAttrs.value(notr("w")).toFloat();
 		box->m_iHH = i_oAttrs.value(notr("h")).toFloat();
+		box->fill_color = QColor(i_oAttrs.value(notr("fill")));
+		box->border_color = QColor(i_oAttrs.value(notr("border")));
 	}
 	else if (i_sName == notr("linkbox"))
 	{
@@ -98,6 +100,7 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		link->m_iParentPos = i_oAttrs.value(notr("parentpos")).toInt();
 		link->m_iChild = i_oAttrs.value(notr("child")).toInt();
 		link->m_iChildPos = i_oAttrs.value(notr("childpos")).toInt();
+		link->fill_color = QColor(i_oAttrs.value(notr("fill")));
 	}
 	else if (i_sName == notr("tbl"))
 	{
@@ -493,8 +496,8 @@ QString sem_model::doc_to_xml()
 				QString::number(box->m_iYY),
 				QString::number(box->m_iWW),
 				QString::number(box->m_iHH),
-				box->fill_color,
-				box->border_color
+				box->fill_color.name(),
+				box->border_color.name()
 			);
 			l_oS<<notr("</itembox>\n");
 		}
@@ -506,7 +509,7 @@ QString sem_model::doc_to_xml()
 				QString::number(link->m_iParentPos),
 				QString::number(link->m_iChild),
 				QString::number(link->m_iChildPos),
-				link->fill_color
+				link->fill_color.name()
 				);
 			l_oS<<notr("</linkbox>\n");			
 

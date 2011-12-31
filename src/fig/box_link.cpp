@@ -28,9 +28,6 @@ box_link::box_link(box_view* i_oParent) : QGraphicsRectItem()
 
 	setBrush(QColor(Qt::black));
 
-	i_oParent->scene()->addItem(this);
-	setZValue(60);
-
 	m_iParent = 0;
 	m_iChild = 0;
 
@@ -38,8 +35,12 @@ box_link::box_link(box_view* i_oParent) : QGraphicsRectItem()
 	m_oChild = NULL;
 	m_oView = i_oParent;
 
+	m_oLink = NULL;
 	// control segment: used to resize the segments
 	m_iControlSegment = 0;
+
+	i_oParent->scene()->addItem(this);
+	setZValue(60);
 }
 
 box_link::~box_link()
@@ -55,7 +56,12 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 	//QGraphicsRectItem::paint(i_oPainter, option, i_oW);
 
 	i_oPainter->setPen(pen());
-	i_oPainter->setBrush(brush());
+
+	if (m_oLink) {
+		i_oPainter->setBrush(m_oLink->fill_color);
+	} else {
+		i_oPainter->setBrush(QColor(Qt::black));
+	}
 
 	for (int i=0; i<m_oGood.size() - 1; ++i)
 	{
@@ -589,5 +595,6 @@ void box_link::set_link(data_link* link)
 	m_iChild = link->m_iChildPos;
 	m_oChild = m_oView->m_oItems.value(link->m_iChild);
 	m_oParent = m_oView->m_oItems.value(link->m_iParent);
+	m_oLink = link;
 }
 

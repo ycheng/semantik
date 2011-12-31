@@ -30,6 +30,8 @@ class box_link : public QGraphicsRectItem
 		int m_iControlSegment;
 		QPointF m_oControlPoint;
 
+		data_link *m_oLink;
+
 		box_item *m_oParent;
 		box_item *m_oChild;
 
@@ -60,10 +62,8 @@ class box_link : public QGraphicsRectItem
 		QSet<QPair<int, int> > graph;
 		QHash<QPair<int, int>, QPair<int, int> > prev;
 		QHash<QPair<int, int>, int> dist;
-
 		void set_rectangles(int ax1, int ax2, int ay1, int ay2, int ap, int bx1, int bx2, int by1, int by2, int bp);
 		int may_use(QPair<int, int> cand, QPair<int, int> p, int ax1, int ax2, int ay1, int ay2, int bx1, int bx2, int by1, int by2);
-
 }; 
 
 #endif // BOX_LINK_H
