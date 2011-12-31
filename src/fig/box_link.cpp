@@ -21,13 +21,6 @@ box_link::box_link(box_view* i_oParent) : QGraphicsRectItem()
 
 	//m_iId = i_oParent->next_id();
 
-        QPen l_oPen;
-        l_oPen.setWidth(1);
-	l_oPen.setColor(QColor(Qt::black));
-        setPen(l_oPen);
-
-	setBrush(QColor(Qt::black));
-
 	m_iParent = 0;
 	m_iChild = 0;
 
@@ -41,6 +34,8 @@ box_link::box_link(box_view* i_oParent) : QGraphicsRectItem()
 
 	i_oParent->scene()->addItem(this);
 	setZValue(60);
+
+	setFlags(ItemIsSelectable);
 }
 
 box_link::~box_link()
@@ -55,13 +50,18 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 	//i_oPainter->setPen(pen());
 	//QGraphicsRectItem::paint(i_oPainter, option, i_oW);
 
-	i_oPainter->setPen(pen());
+	QColor c = QColor(Qt::black);
+	if (m_oLink)
+		c = m_oLink->fill_color;
+	if (isSelected())
+		c = QColor(Qt::red);
 
-	if (m_oLink) {
-		i_oPainter->setBrush(m_oLink->fill_color);
-	} else {
-		i_oPainter->setBrush(QColor(Qt::black));
-	}
+	i_oPainter->setBrush(c);
+        QPen l_oPen;
+      	l_oPen.setStyle(Qt::SolidLine);
+	l_oPen.setWidth(1);
+	l_oPen.setColor(c);
+	i_oPainter->setPen(l_oPen);
 
 	for (int i=0; i<m_oGood.size() - 1; ++i)
 	{
@@ -69,15 +69,14 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 		i_oPainter->drawLine(l_oLine);
 		//qDebug()<<m_oGood[i].x()<<m_oGood[i].y()<<m_oGood[i+1].x()<<m_oGood[i+1].y();
 	}
-	QPen l_oPen = pen();
-	l_oPen.setStyle(Qt::SolidLine);
-	i_oPainter->setPen(l_oPen);
+	//QPen l_oPen = pen();
+	//l_oPen.setStyle(Qt::SolidLine);
+	//i_oPainter->setPen(l_oPen);
 
 	//draw_triangle(i_oPainter, m_iParent, m_oGood[0]);
 	draw_triangle(i_oPainter, m_iChild, m_oGood[m_oGood.size()-1]);
 
 	l_oPen.setWidth(1);
-	i_oPainter->setPen(l_oPen);
 
 	QPointF l_oOffset(3, 3);
 	if (!m_oParent && m_oChild)

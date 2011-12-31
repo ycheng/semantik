@@ -433,23 +433,25 @@ QList<box_item*> box_view::selection() {
 
 void box_view::enable_menu_actions()
 {
-	m_oAddItemAction->setEnabled(m_oSelected.size() <= 1);
-	m_oDeleteAction->setEnabled(m_oSelected.size() >= 1);
-	m_oColorAction->setEnabled(m_oSelected.size() >= 1);
+	QList<QGraphicsItem*> selection = scene()->selectedItems();
+	int selected = selection.size();
 
-	qDebug()<<"disable edit action";
-	m_oEditAction->setEnabled(m_oSelected.size() == 1 and m_oSelected[0]->type() == BOX_ITEM_T);
+	m_oAddItemAction->setEnabled(selected <= 1);
+	m_oDeleteAction->setEnabled(selected >= 1);
+	m_oColorAction->setEnabled(selected >= 1);
 
-	m_oWidthMenu->setEnabled(m_oSelected.size() >= 1 and m_oSelected[0]->type() == BOX_LINK_T);
+	m_oEditAction->setEnabled(selected == 1 and selection.at(0)->type() == BOX_ITEM_T);
+
+	m_oWidthMenu->setEnabled(selected >= 1 and selection.at(0)->type() == BOX_LINK_T);
 	foreach(QAction* l_o, m_oWidthGroup->actions())
 	{
-		l_o->setEnabled(m_oSelected.size() >= 1);
+		l_o->setEnabled(selected >= 1);
 	}
 
-	m_oStyleMenu->setEnabled(m_oSelected.size() >= 1 and m_oSelected[0]->type() == BOX_LINK_T);
+	m_oStyleMenu->setEnabled(selected >= 1 and selection.at(0)->type() == BOX_LINK_T);
 	foreach(QAction* l_o, m_oStyleGroup->actions())
 	{
-		l_o->setEnabled(m_oSelected.size() >= 1);
+		l_o->setEnabled(selected >= 1);
 	}
 }
 
@@ -929,12 +931,11 @@ void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 
 void box_view::mousePressEvent(QMouseEvent *i_oEv)
 {
-	/*
 	if (i_oEv->button() == Qt::RightButton)
 	{
 		// select the item under the cursor if available and show the popup menu
 		m_oLastPoint = mapToScene(i_oEv->pos());
-		QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
+		/*QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
 		if (l_oItem && (l_oItem->type() == BOX_ITEM_T || l_oItem->type() == BOX_LINK_T))
 		{
 			if (!m_oSelected.contains(l_oItem))
@@ -946,10 +947,10 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 		else
 		{
 			deselect_all();
-		}
+		}*/
 		m_oMenu->popup(i_oEv->globalPos());
 		return;
-	}*/
+	}
 
 	m_bPressed = true;
 	m_oLastMovePoint = mapToScene(i_oEv->pos());
