@@ -64,8 +64,7 @@ bool box_reader::startElement(const QString&, const QString&, const QString& i_s
 		box->m_iXX = i_oAttrs.value(QObject::trUtf8("c1")).toFloat();
 		box->m_iYY = i_oAttrs.value(QObject::trUtf8("c2")).toFloat();
 		box->m_sText = i_oAttrs.value(QObject::trUtf8("text"));
-
-		//l_o->setBrush(QColor(i_oAttrs.value(QObject::trUtf8("col"))));
+		box->fill_color = i_oAttrs.value(QObject::trUtf8("col"));
 		//l_o->setRect(QRectF(0., 0., i_oAttrs.value(QObject::trUtf8("c3")).toDouble(), i_oAttrs.value(QObject::trUtf8("c4")).toDouble()));
 	}
 	else if (i_sName == QObject::trUtf8("box_link"))
@@ -288,7 +287,20 @@ void box_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 
 void box_view::sync_view()
 {
+	if (!m_iId) return;
+	
 	data_item *item = m_oControl->m_oItems.value(m_iId);
+	Q_ASSERT(item);
+	if (item->m_iDataType != VIEW_DIAG)
+	{
+		return;
+	}
+	if (!item->m_sDiag.isEmpty())
+	{
+		from_string(item->m_sDiag);
+		item->m_sDiag = "";
+	}
+
 	foreach (data_box *box, item->m_oBoxes.values()) {
 		box_item *l_o = new box_item(this, box->m_iId);
 		m_oItems[box->m_iId] = l_o;
@@ -311,8 +323,7 @@ void box_view::notify_export_item(int id)
 	clear_diagram();
 
 	m_iId = id;
-	data_item *l_oData = m_oControl->m_oItems.value(m_iId);
-	from_string(l_oData->m_sDiag);
+	sync_view();
 
 	QRectF l_oRect = scene()->itemsBoundingRect();
 	l_oRect = QRectF(l_oRect.topLeft() - QPointF(25, 25), l_oRect.bottomRight() + QPointF(25, 25));
@@ -336,8 +347,7 @@ void box_view::notify_export_item(int id)
 	m_iId = l_iOldId;
 	if (m_iId != NO_ITEM)
 	{
-		data_item *l_oData = m_oControl->m_oItems.value(m_iId);
-		from_string(l_oData->m_sDiag);
+		sync_view();
 	}
 }
 

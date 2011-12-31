@@ -486,24 +486,27 @@ QString sem_model::doc_to_xml()
 
 		foreach (data_box *box, l_oItem->m_oBoxes)
 		{
-			l_oS<<notr("<itembox id=\"%1\" text=\"%2\" x=\"%3\" y=\"%4\" w=\"%5\" h=\"%6\">\n").arg(
+			l_oS<<notr("<itembox id=\"%1\" text=\"%2\" x=\"%3\" y=\"%4\" w=\"%5\" h=\"%6\" fill=\"%7\" border=\"%8\">\n").arg(
 				QString::number(box->m_iId),
 				bind_node::protectXML(box->m_sText),
 				QString::number(box->m_iXX),
 				QString::number(box->m_iYY),
 				QString::number(box->m_iWW),
-				QString::number(box->m_iHH)
+				QString::number(box->m_iHH),
+				box->fill_color,
+				box->border_color
 			);
 			l_oS<<notr("</itembox>\n");
 		}
 
 		foreach (data_link *link, l_oItem->m_oLinks)
 		{
-			l_oS<<notr("<linkbox parent=\"%1\" parentpos=\"%2\" child=\"%3\" childpos=\"%4\">\n").arg(
+			l_oS<<notr("<linkbox parent=\"%1\" parentpos=\"%2\" child=\"%3\" childpos=\"%4\" fill=\"%5\">\n").arg(
 				QString::number(link->m_iParent),
 				QString::number(link->m_iParentPos),
 				QString::number(link->m_iChild),
-				QString::number(link->m_iChildPos)
+				QString::number(link->m_iChildPos),
+				link->fill_color
 				);
 			l_oS<<notr("</linkbox>\n");			
 
