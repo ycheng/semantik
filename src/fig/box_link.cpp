@@ -382,9 +382,6 @@ void box_link::update_pos()
 	QRectF l_oR1, l_oR2;
 	QPointF l_oP = m_oView->m_oLastMovePoint;
 
-
-	//int ax1, ax2, ay1, ay2, ap, bx1, bx2, by1, by2, bp;
-
 	// FIXME ITA  find the box_item under the pointer
 	box_item *l_oUnder = NULL;
         foreach (QGraphicsItem *l_oI1, scene()->items(m_oView->m_oLastMovePoint))
@@ -445,18 +442,6 @@ void box_link::update_pos()
 	int by2 = (int) (l_oR2.y()+l_oR2.height());
 	int bp = m_iChild;
 
-	//int low_x = qMin(ax1, bx1) - 20;
-	//int high_x = qMax(ax2, bx2) + 20;
-	//int low_y = qMin(ay1, by1) - 20;
-	//int high_y = qMax(ay2, by2) + 20;
-
-	//setRect(QRectF(low_x, low_y, high_x - low_x, high_y - low_y));
-	//m_oGood.clear();
-	//m_oGood.append(QPoint(ax1, ay1));
-	//m_oGood.append(QPoint(bx1, by1));
-
-	//set_rectangles(ax1, ax2, ay1, ay2, ap, bx1, bx2, by1, by2, bp);
-
 	set_rectangles(
 		(int) l_oR1.x(), (int) (l_oR1.x()+l_oR1.width()),
 		(int) l_oR1.y(), (int) (l_oR1.y()+l_oR1.height()),
@@ -466,12 +451,6 @@ void box_link::update_pos()
 		m_iChild);
 
 	/*
-	int ret = num_seg();
-	while (m_oLst.size() > ret)
-		m_oLst.takeFirst();
-	while (m_oLst.size() < ret)
-		m_oLst<<QPoint();
-
 	//qDebug()<<"begin dump";
 	for (int i=0; i<ret; ++i)
 	{
