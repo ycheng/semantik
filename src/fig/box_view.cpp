@@ -401,23 +401,24 @@ void box_view::rm_select(QGraphicsItem* i_oItem)
 
 void box_view::slot_delete()
 {
-	QList<int> l_oLst;
-	foreach (box_item *l_oItem, selection()) {
-		l_oLst.push_back(l_oItem->m_iId);
+	QList<data_box*> boxes;
+	QList<data_link*> links;
+	foreach (QGraphicsItem* el, scene()->selectedItems()) {
+		if (el->type() == BOX_ITEM_T) {
+			box_item *bit = (box_item*) el;
+			boxes.append(bit->m_oBox);
+		}
+		else if (el->type() == BOX_LINK_T) {
+			box_link *l = (box_link*) el;
+			links.append(l->m_oLink);
+		}
 	}
 
-	if (l_oLst.isEmpty()) {
-		return;
+	if (boxes.size() > 0 || links.size() > 0) {
+		mem_del_box *del = new mem_del_box(m_oControl, m_iId);
+		del->init(boxes, links);
+		del->apply();
 	}
-
-	//mem_sel *sel = new mem_sel(m_oControl);
-	//sel->sel;
-	//sel->unsel = l_oLst;
-	//sel->apply();
-
-	mem_del_box *del = new mem_del_box(m_oControl);
-	del->init(m_iId, l_oLst);
-	del->apply();
 }
 
 QList<box_item*> box_view::selection() {

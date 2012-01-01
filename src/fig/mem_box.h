@@ -9,18 +9,14 @@ class data_link;
 
 class mem_del_box : public mem_command {
 	public:
-		mem_del_box(sem_model*);
-		void init(int id, QList<int> ids);
+		mem_del_box(sem_model*, int id);
+		void init(QList<data_box*>, QList<data_link*>);
 		void undo();
 		void redo();
 
-		//QList<data_item*> items;
-		//QSet<QPoint> links;
-
-		data_item *item;
-
+		int m_iId;
 		QList<data_box*> items;
-		QSet<QPoint> links;
+		QList<data_link*> links;
 
 		IType type() { return DEL_BOX; }
 };

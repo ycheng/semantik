@@ -11,65 +11,43 @@
 
 #include "mem_box.h"
 
-mem_del_box::mem_del_box(sem_model* mod) : mem_command(mod)
+mem_del_box::mem_del_box(sem_model* mod, int id) : mem_command(mod)
 {
-
+	m_iId = id;
 }
 
-void mem_del_box::init(int id, QList<int> ids)
+void mem_del_box::init(QList<data_box*> _items, QList<data_link*> _links)
 {
-	item = model->m_oItems.value(id);
-	// get the boxes
-	foreach (int k, ids) {
-		items.append(item->m_oBoxes.value(k));
-	}
-	// get the links
-	//QSet<QPoint> links;
+	items = _items;
+	links = _links;
 }
 
 
 void mem_del_box::undo()
 {
+	data_item *item = model->m_oItems[m_iId];
 	foreach (data_box *k, items) {
 		item->m_oBoxes[k->m_iId] = k;
+		model->notify_add_box(m_iId, k->m_iId);
 	}
-	foreach (data_box *k, items) {
-		model->notify_add_box(item->m_iId, k->m_iId);
+	foreach (data_link *k, links) {
+		item->m_oLinks.append(k);
+		model->notify_link_box(m_iId, k);
 	}
-
-	/*foreach (data_item* d, items) {
-		Q_ASSERT(!model->m_oItems.contains(d->m_iId));
-		model->m_oItems[d->m_iId] = d;
-		model->notify_add_item(d->m_iId);
-	}
-	foreach (QPoint p, links) {
-		Q_ASSERT(!model->m_oLinks.contains(p));
-		model->m_oLinks.append(p);
-		model->notify_link_items(p.x(), p.y());
-	}*/
 	undo_dirty();
-
 }
 
 void mem_del_box::redo()
 {
-	foreach (data_box *k, items) {
-		model->notify_del_box(item->m_iId, k->m_iId);
+	data_item *item = model->m_oItems[m_iId];
+	foreach (data_link *k, links) {
+		model->notify_unlink_box(m_iId, k);
+		item->m_oLinks.removeAll(k);
 	}
 	foreach (data_box *k, items) {
+		model->notify_del_box(m_iId, k->m_iId);
 		item->m_oBoxes.remove(k->m_iId);
 	}
-
-	/*foreach (QPoint p, links) {
-		Q_ASSERT(model->m_oLinks.contains(p));
-		model->m_oLinks.removeAll(p);
-		model->notify_unlink_items(p.x(), p.y());
-	}
-	foreach (data_item* d, items) {
-		Q_ASSERT(model->m_oItems.contains(d->m_iId));
-		model->notify_delete_item(d->m_iId);
-		model->m_oItems.remove(d->m_iId);
-	}*/
 	redo_dirty();
 }
 
@@ -136,16 +114,14 @@ void mem_link_box::init(int parent, int parentPos, int child, int childPos) {
 }
 
 void mem_link_box::redo() {
-	qDebug()<<"redo mem_link_box"<<link;
-
+	//qDebug()<<"redo mem_link_box"<<link;
 	model->m_oItems[m_iId]->m_oLinks.append(link);
 	model->notify_link_box(m_iId, link);
 	redo_dirty();
 }
 
 void mem_link_box::undo() {
-	qDebug()<<"undo mem_link_box"<<link;
-
+	//qDebug()<<"undo mem_link_box"<<link;
 	model->m_oItems[m_iId]->m_oLinks.removeAll(link);
 	model->notify_unlink_box(m_iId, link);
 	undo_dirty();
