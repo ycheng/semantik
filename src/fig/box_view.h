@@ -32,8 +32,6 @@ class box_view : public QGraphicsView
 
 
 		void deselect_all();
-		//void add_select(QGraphicsItem*);
-		//void rm_select(QGraphicsItem*);
 
 		QPointF m_oLastPoint;
 		QPointF m_oLastMovePoint;

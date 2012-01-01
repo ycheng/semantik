@@ -366,41 +366,6 @@ void box_view::deselect_all()
 	enable_menu_actions();
 }
 
-/*
-void box_view::add_select(QGraphicsItem* i_oItem)
-{
-	if (m_oSelected.contains(i_oItem))
-	{
-		qDebug()<<"item already selected";
-		return;
-	}
-
-	m_oSelected.push_back(i_oItem);
-	i_oItem->update();
-	enable_menu_actions();
-
-	if (m_oSelected.size() == 2)
-	{
-		// we do this if the item selected is a box item to show/hide the resize handle
-		m_oSelected[0]->update();
-	}
-}
-*/
-/*
-void box_view::rm_select(QGraphicsItem* i_oItem)
-{
-	m_oSelected.removeAll(i_oItem);
-	i_oItem->update();
-	enable_menu_actions();
-
-	if (m_oSelected.size() == 1)
-	{
-		// we do this if the item selected is a box item to show/hide the resize handle
-		m_oSelected[0]->update();
-	}
-}
-*/
-
 void box_view::slot_delete()
 {
 	QList<data_box*> boxes;
@@ -790,31 +755,6 @@ void box_view::focusInEvent(QFocusEvent *i_oEv)
 	QGraphicsView::focusInEvent(i_oEv);
 }
 
-/*
-void box_view::focusInEvent(QFocusEvent *i_oEv)
-{
-	enable_actions();
-	QGraphicsView::focusInEvent(i_oEv);
-}
-
-void box_view::focusOutEvent(QFocusEvent *i_oEv)
-{
-	foreach (QAction* l_o, actions())
-	{
-		l_o->setEnabled(false);
-	}
-
-	if (m_oMenu->isVisible())
-	{
-		enable_menu_actions();
-	}
-
-	delete m_oCurrent;
-	m_oCurrent = NULL;
-	QGraphicsView::focusOutEvent(i_oEv);
-}*/
-
-
 void box_view::notify_add_box(int id, int box)
 {
 	box_item *l_o = new box_item(this, box);
@@ -850,8 +790,6 @@ void box_view::notify_link_box(int id, data_link* link)
 
 void box_view::notify_unlink_box(int id, data_link* link)
 {
-	qDebug()<<"unlinking"<<link;
-
 	Q_ASSERT(!m_oCurrent);
 	foreach (box_link *cur, m_oLinks) {
 		if (cur->m_oLink == link)
