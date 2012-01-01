@@ -413,6 +413,7 @@ void box_view::slot_delete()
 		else if (el->type() == BOX_LINK_T) {
 			box_link *l = (box_link*) el;
 			links.append(l->m_oLink);
+			Q_ASSERT(l->m_oLink);
 		}
 	}
 
@@ -835,6 +836,7 @@ void box_view::notify_link_box(int id, data_link* link)
 	if (m_oCurrent)
 	{
 		m_oLinks.push_back(m_oCurrent);
+		m_oCurrent->m_oLink = link;
 		m_oCurrent->update();
 		m_oCurrent = NULL;
 	}
@@ -848,6 +850,8 @@ void box_view::notify_link_box(int id, data_link* link)
 
 void box_view::notify_unlink_box(int id, data_link* link)
 {
+	qDebug()<<"unlinking"<<link;
+
 	Q_ASSERT(!m_oCurrent);
 	foreach (box_link *cur, m_oLinks) {
 		if (cur->m_oLink == link)

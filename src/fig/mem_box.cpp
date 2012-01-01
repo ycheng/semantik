@@ -122,8 +122,8 @@ void mem_link_box::redo() {
 
 void mem_link_box::undo() {
 	//qDebug()<<"undo mem_link_box"<<link;
-	model->m_oItems[m_iId]->m_oLinks.removeAll(link);
 	model->notify_unlink_box(m_iId, link);
+	model->m_oItems[m_iId]->m_oLinks.removeAll(link);
 	undo_dirty();
 }
 
@@ -135,14 +135,14 @@ mem_unlink_box::mem_unlink_box(sem_model* mod, int id) : mem_command(mod) {
 
 void mem_unlink_box::redo() {
 	//qDebug()<<"redo mem_link_box"<<link;
-	model->m_oItems[m_iId]->m_oLinks.append(link);
 	model->notify_unlink_box(m_iId, link);
+	model->m_oItems[m_iId]->m_oLinks.removeAll(link);
 	redo_dirty();
 }
 
 void mem_unlink_box::undo() {
 	//qDebug()<<"undo mem_link_box"<<link;
-	model->m_oItems[m_iId]->m_oLinks.removeAll(link);
+	model->m_oItems[m_iId]->m_oLinks.append(link);
 	model->notify_link_box(m_iId, link);
 	undo_dirty();
 }
