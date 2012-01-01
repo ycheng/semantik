@@ -889,7 +889,7 @@ void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 void box_view::keyPressEvent(QKeyEvent *i_oEvent)
 {
 	QGraphicsView::keyPressEvent(i_oEvent);
-	if (QApplication::keyboardModifiers() & Qt::ControlModifier) setCursor(Qt::CrossCursor);
+	if (QApplication::keyboardModifiers() & Qt::ShiftModifier) setCursor(Qt::CrossCursor);
 }
 
 void box_view::keyReleaseEvent(QKeyEvent *i_oEvent)
@@ -918,7 +918,7 @@ void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 		return;
 	}
 
-	if (i_oEv->modifiers() != Qt::ControlModifier) {
+	if (i_oEv->modifiers() != Qt::ShiftModifier) {
 		//qDebug()<<"adding a box from double click";
 
 		mem_add_box *add = new mem_add_box(m_oControl);
@@ -971,7 +971,7 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 	if (l_oItem && l_oItem->type() == BOX_ITEM_T)
 	{
 		box_item *l_oRect = (box_item*) l_oItem;
-		if (QApplication::keyboardModifiers() & Qt::ControlModifier)
+		if (QApplication::keyboardModifiers() & Qt::ShiftModifier)
 		{
 			if (m_oCurrent) return;
 			m_oCurrent = new box_link(this);
