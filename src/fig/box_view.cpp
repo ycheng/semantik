@@ -366,6 +366,7 @@ void box_view::deselect_all()
 	enable_menu_actions();
 }
 
+/*
 void box_view::add_select(QGraphicsItem* i_oItem)
 {
 	if (m_oSelected.contains(i_oItem))
@@ -384,7 +385,8 @@ void box_view::add_select(QGraphicsItem* i_oItem)
 		m_oSelected[0]->update();
 	}
 }
-
+*/
+/*
 void box_view::rm_select(QGraphicsItem* i_oItem)
 {
 	m_oSelected.removeAll(i_oItem);
@@ -397,7 +399,7 @@ void box_view::rm_select(QGraphicsItem* i_oItem)
 		m_oSelected[0]->update();
 	}
 }
-
+*/
 
 void box_view::slot_delete()
 {
