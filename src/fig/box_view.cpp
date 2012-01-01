@@ -5,6 +5,7 @@
 #include <QGraphicsScene>
 #include <QApplication>
 #include<QList>
+#include <QSet>
 #include <QScrollBar>
 #include <QMenu>
 #include<QTextDocument>
@@ -369,22 +370,30 @@ void box_view::deselect_all()
 void box_view::slot_delete()
 {
 	QList<data_box*> boxes;
-	QList<data_link*> links;
+	QSet<data_link*> links;
 	foreach (QGraphicsItem* el, scene()->selectedItems()) {
 		if (el->type() == BOX_ITEM_T) {
 			box_item *bit = (box_item*) el;
 			boxes.append(bit->m_oBox);
-		}
-		else if (el->type() == BOX_LINK_T) {
+
+			foreach (box_link* l, m_oLinks)
+			{
+				if (l->m_oLink->m_iParent == bit->m_oBox->m_iId || l->m_oLink->m_iChild == bit->m_oBox->m_iId)
+				{
+					links << l->m_oLink;
+				}
+			}
+
+		} else if (el->type() == BOX_LINK_T) {
 			box_link *l = (box_link*) el;
-			links.append(l->m_oLink);
+			links << l->m_oLink;
 			Q_ASSERT(l->m_oLink);
 		}
 	}
 
 	if (boxes.size() > 0 || links.size() > 0) {
 		mem_del_box *del = new mem_del_box(m_oControl, m_iId);
-		del->init(boxes, links);
+		del->init(boxes, links.toList());
 		del->apply();
 	}
 }
