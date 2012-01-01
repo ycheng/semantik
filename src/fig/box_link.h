@@ -8,6 +8,7 @@
 #include <QRectF>
 #include <QPair>
 #include <QSet>
+#include <QPainterPath>
 #include "con.h"
 
 class box_view;
@@ -41,7 +42,8 @@ class box_link : public QGraphicsRectItem
 
 		void draw_triangle(QPainter *i_oPainter, int i_iPosition, QPointF i_oP);
 
-		bool contains(const QPointF& i_oP) const;
+		QPainterPath shape() const;
+		QPainterPath inner_shape;
 
 		//int m_iId;
 

@@ -514,7 +514,6 @@ void box_link::update_ratio()
 		for (int i=0; i<ret; ++i) m_oGood[i] = m_oLst[i];
 	}
 
-
 	for (int i=0; i<m_oOffsets.size(); ++i)
 	{
 		int tmp = 0;
@@ -555,37 +554,32 @@ void box_link::update_ratio()
 
 	// now we have the size
 	setRect(QRectF(mx1, my1, qAbs(mx2 - mx1), qAbs(my2 - my1)));
+
+
+	QPainterPath p;
+	for (int i=0; i<m_oGood.size() - 1; ++i)
+	{
+		int x1 = qMin(m_oGood[i].x(), m_oGood[i+1].x());
+		int x2 = qMax(m_oGood[i].x(), m_oGood[i+1].x());
+		int y1 = qMin(m_oGood[i].y(), m_oGood[i+1].y());
+		int y2 = qMax(m_oGood[i].y(), m_oGood[i+1].y());
+
+		if (x1 == x2)
+		{
+			p.addRect(x1 - 5, y1, 10, y2 - y1);
+		}
+		else
+		{
+			p.addRect(x1, y1 - 5, x2 - x1, 10);
+		}
+	}
+
+	inner_shape = p;
 }
 
-bool box_link::contains(const QPointF& i_oP) const
+QPainterPath box_link::shape() const
 {
-	// if the list of segments is not empty
-	if (m_oGood.size() >= 1)
-	{
-		for (int i=0; i<m_oGood.size() - 1; ++i)
-		{
-			int x1 = qMin(m_oGood[i].x(), m_oGood[i+1].x());
-			int x2 = qMax(m_oGood[i].x(), m_oGood[i+1].x());
-			int y1 = qMin(m_oGood[i].y(), m_oGood[i+1].y());
-			int y2 = qMax(m_oGood[i].y(), m_oGood[i+1].y());
-
-			// vertical
-			if (m_oGood[i].x() == m_oGood[i+1].x())
-			{
-				if (i_oP.x() >= x1 - 5 and i_oP.x() <= x2 + 5)
-					if (i_oP.y() >= y1 and i_oP.y() <= y2)
-						return true;
-			}
-			else //if (m_oGood[i].y() == m_oGood[i+1].y())
-			{
-				if (i_oP.y() >= y1 - 5 and i_oP.y() <= y2 + 5)
-					if (i_oP.x() >= x1 and i_oP.x() <= x2)
-						return true;
-			}
-		}
-		return false;
-	}
-	return QGraphicsRectItem::contains(i_oP);
+	return inner_shape;
 }
 
 void box_link::set_link(data_link* link)
