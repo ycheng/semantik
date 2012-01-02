@@ -228,6 +228,9 @@ box_view::box_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsView(i_
 	m_oCurrent = NULL;
 	m_bPressed = false;
 	m_bScroll = false;
+
+	grab_segment_link = NULL;
+	grab_segment_pos = 0;
 }
 
 box_view::~box_view()
@@ -949,21 +952,10 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 		}
 	}
 
+
 	/*else if (l_oItem && l_oItem->type() == BOX_LINK_T)
 	{
 		box_link *l_oLink = (box_link*) l_oItem;
-		if (i_oEv->modifiers() == Qt::ShiftModifier)
-		{
-			if (m_oSelected.contains(l_oLink))
-			{
-				rm_select(l_oLink);
-			}
-			else
-			{
-				add_select(l_oLink);
-				l_oLink->m_iControlSegment = 0;
-			}
-		}
 		else if (m_oSelected.contains(l_oLink) and m_oSelected.size() == 1)
 		{
 			// check if a control point is hit for changing the segment position
@@ -985,27 +977,31 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 				}
 			}
 
-			// no control point was hit, usual behaviour
-			if (!l_b)
-			{
-				deselect_all();
-				add_select(l_oLink);
-				l_oLink->m_iControlSegment = 0;
-			}
-		}
-		else
-		{
-			deselect_all();
-			add_select(l_oLink);
-			l_oLink->m_iControlSegment = 0;
-		}
 	}
-	else
-	{
-		deselect_all();
-	}*/
+	*/
 
 	QGraphicsView::mousePressEvent(i_oEv);
+
+	QList<QGraphicsItem*> it = scene()->selectedItems();
+	if (it.size() == 1 && it.at(0)->type() == BOX_LINK_T)
+	{
+		box_link* link = (box_link*) it.at(0);
+		for (int i=1; i < link->m_oGood.size() - 2; ++i)
+		{
+			QPointF l_o = QPointF((link->m_oGood[i].x()+link->m_oGood[i+1].x())/2, (link->m_oGood[i].y()+link->m_oGood[i+1].y())/2);
+			QPointF l_oP = mapToScene(i_oEv->pos());
+			l_oP.setX(l_o.x() - l_oP.x());
+			l_oP.setY(l_o.y() - l_oP.y());
+			qreal l_i = l_oP.x() * l_oP.x() + l_oP.y() * l_oP.y();
+			if (l_i < 100)
+			{
+				grab_segment_link = link;
+				grab_segment_pos = i;
+				grab_segment_link->m_oControlPoint = l_o;
+				break;
+			}
+		}
+	}
 }
 
 void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
@@ -1039,6 +1035,19 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 		m_oCurrent->update_pos();
 		return;
 	}
+	else if (grab_segment_link)
+	{
+		int i = grab_segment_pos;
+		QPoint l_oP((grab_segment_link->m_oLst[i].x() + grab_segment_link->m_oLst[i+1].x())/2,
+                            (grab_segment_link->m_oLst[i].y() + grab_segment_link->m_oLst[i+1].y())/2);
+		--i;
+
+		QPointF l_oNew = m_oLastMovePoint - m_oLastPoint + grab_segment_link->m_oControlPoint - l_oP;
+		grab_segment_link->m_oOffsets[i].setX((int) l_oNew.x());
+		grab_segment_link->m_oOffsets[i].setY((int) l_oNew.y());
+		grab_segment_link->update_ratio(); // no need to update_pos
+		grab_segment_link->update();
+	}
 	else
 	{
 		foreach (QGraphicsItem*tmp, scene()->selectedItems()) {
@@ -1051,22 +1060,6 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 
 	/*else
 	{
-		if (m_oSelected.size() == 1 and m_oSelected[0]->type() == BOX_LINK_T and
-			((box_link*) m_oSelected[0])->m_iControlSegment)
-		{
-			box_link *l_oLink = (box_link*) m_oSelected[0];
-			int i = l_oLink->m_iControlSegment;
-
-			QPointF l_oP((l_oLink->m_oLst[i].x()+l_oLink->m_oLst[i+1].x())/2,
-					(l_oLink->m_oLst[i].y()+l_oLink->m_oLst[i+1].y())/2);
-			--i;
-
-			QPointF l_oNew = m_oLastMovePoint - m_oLastPoint + l_oLink->m_oControlPoint - l_oP;
-			l_oLink->m_oOffsets[i].setX((int) l_oNew.x());
-			l_oLink->m_oOffsets[i].setY((int) l_oNew.y());
-			l_oLink->update_ratio(); // no need to update_pos
-			l_oLink->update();
-		}
 		else if (m_oSelected.size() == 1 and m_oSelected[0]->type() == BOX_ITEM_T and
 			m_oOffsetPoint.x()>0 and m_oOffsetPoint.y()>0 )
 		{
@@ -1084,23 +1077,6 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 					l_oLink->update_pos();
 			}
 		}
-		else
-		{
-			foreach (QGraphicsItem *l_oItem, m_oSelected)
-			{
-				if (l_oItem->type() == BOX_ITEM_T)
-				{
-					((box_item*) l_oItem)->moveBy(l_oRect.width(), l_oRect.height());
-				}
-
-				foreach (box_link *l_oLink, m_oLinks)
-				{
-					// either the parent or the child
-					if (l_oLink->m_oParent == l_oItem or l_oLink->m_oChild == l_oItem)
-						l_oLink->update_pos();
-				}
-			}
-		}
 	}*/
 	//check_canvas_size();
 
@@ -1109,6 +1085,8 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 
 void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 {
+	grab_segment_link = 0;
+
 	if (m_bScroll)
 	{
 		QGraphicsView::mouseReleaseEvent(i_oEv);
