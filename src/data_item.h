@@ -19,6 +19,8 @@ class sem_model;
 class data_link
 {
 	public:
+	data_link() { style = Qt::SolidLine; border_width = 1; }
+
 	QString m_sLink;
 	QString m_sCaption;
 	int m_iParent;
@@ -28,6 +30,7 @@ class data_link
 	QList<QPoint> m_oOffsets;
 	QColor fill_color;
 	int border_width;
+	Qt::PenStyle style;
 };
 
 class data_box

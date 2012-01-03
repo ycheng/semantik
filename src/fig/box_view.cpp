@@ -480,14 +480,13 @@ void box_view::slot_color()
 void box_view::slot_penstyle()
 {
 	int l_i = ((QAction*) QObject::sender())->data().toInt();
-	foreach (QGraphicsItem* l_o, m_oSelected)
+	foreach (QGraphicsItem* l_o, scene()->selectedItems())
 	{
 		if (l_o->type() == BOX_LINK_T)
 		{
 			box_link *l_oLink = (box_link*) l_o;
-			QPen l_oPen = l_oLink->pen();
-			l_oPen.setStyle((Qt::PenStyle) l_i);
-			l_oLink->setPen(l_oPen);
+			l_oLink->m_oLink->style = (Qt::PenStyle) l_i;
+			l_oLink->update();
 		}
 	}
 

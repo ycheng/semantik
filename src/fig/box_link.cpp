@@ -15,11 +15,7 @@
 
 box_link::box_link(box_view* i_oParent) : QGraphicsRectItem()
 {
-	m_bSel = false;
-	/*setBrush(QColor(0, 255, 0, 160));
-	setPen(QColor(Qt::black));*/
-
-	//m_iId = i_oParent->next_id();
+	/*setBrush(QColor(0, 255, 0, 160));*/
 
 	m_iParent = 0;
 	m_iChild = 0;
@@ -29,8 +25,6 @@ box_link::box_link(box_view* i_oParent) : QGraphicsRectItem()
 	m_oView = i_oParent;
 
 	m_oLink = NULL;
-	// control segment: used to resize the segments
-	m_iControlSegment = 0;
 
 	i_oParent->scene()->addItem(this);
 	setZValue(60);
@@ -58,11 +52,17 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 
 	i_oPainter->setBrush(c);
         QPen l_oPen;
-      	l_oPen.setStyle(Qt::SolidLine);
 	if (m_oLink)
+	{
 		l_oPen.setWidth(m_oLink->border_width);
+		l_oPen.setStyle(m_oLink->style);
+	}
 	else
+	{
 		l_oPen.setWidth(1);
+		l_oPen.setStyle(Qt::SolidLine);
+	}
+
 	l_oPen.setColor(c);
 	i_oPainter->setPen(l_oPen);
 
@@ -75,6 +75,8 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 	//QPen l_oPen = pen();
 	//l_oPen.setStyle(Qt::SolidLine);
 	//i_oPainter->setPen(l_oPen);
+
+      	l_oPen.setStyle(Qt::SolidLine);
 
 	//draw_triangle(i_oPainter, m_iParent, m_oGood[0]);
 	draw_triangle(i_oPainter, m_iChild, m_oGood[m_oGood.size()-1]);
@@ -471,24 +473,6 @@ void box_link::update_pos()
 	//qDebug()<<"end dump";
 
 	update_ratio();
-
-	//bool l_b = false;
-	//QList<QGraphicsItem *> l_oLst = m_oView->scene()->items(m_oView->m_oLastMovePoint);
-	//foreach (QGraphicsItem *l_oItem, l_oLst)
-	//{
-	//	if (l_oItem->type() == BOX_ITEM_T)
-	//	{
-	//		box_item *l_oBox = (box_item*) l_oItem;
-			//m_oView->add_select(l_oBox);
-	//		l_b = true;
-	//		break;
-	//	}
-	//}
-	//if (not l_b)
-	//{
-	//	m_oView->deselect_all();
-	//}
-
 }
 
 

@@ -102,6 +102,7 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		link->m_iChildPos = i_oAttrs.value(notr("childpos")).toInt();
 		link->fill_color = QColor(i_oAttrs.value(notr("fill")));
 		link->border_width = i_oAttrs.value(notr("borderwidth")).toInt();
+		link->style = (Qt::PenStyle) i_oAttrs.value(notr("style")).toInt();
 	}
 	else if (i_sName == notr("tbl"))
 	{
@@ -505,13 +506,14 @@ QString sem_model::doc_to_xml()
 
 		foreach (data_link *link, l_oItem->m_oLinks)
 		{
-			l_oS<<notr("<linkbox parent=\"%1\" parentpos=\"%2\" child=\"%3\" childpos=\"%4\" fill=\"%5\" borderwidth=\"%6\">\n").arg(
+			l_oS<<notr("<linkbox parent=\"%1\" parentpos=\"%2\" child=\"%3\" childpos=\"%4\" fill=\"%5\" borderwidth=\"%6\" style=\"%7\">\n").arg(
 				QString::number(link->m_iParent),
 				QString::number(link->m_iParentPos),
 				QString::number(link->m_iChild),
 				QString::number(link->m_iChildPos),
 				link->fill_color.name(),
-				QString::number(link->border_width)
+				QString::number(link->border_width),
+				QString::number(link->style)
 				);
 			l_oS<<notr("</linkbox>\n");			
 

@@ -23,12 +23,10 @@ class box_link : public QGraphicsRectItem
 		int type() const { return BOX_LINK_T; }
 
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
-		bool m_bSel;
 
 		int m_iParent;
 		int m_iChild;
 
-		int m_iControlSegment;
 		QPointF m_oControlPoint;
 
 		data_link *m_oLink;
