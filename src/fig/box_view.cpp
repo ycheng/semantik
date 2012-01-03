@@ -179,15 +179,15 @@ box_view::box_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsView(i_
 	addAction(m_oColorAction);
 
 
-	//m_oMoveUpAction = new QAction(QObject::trUtf8("Move up"), this);
-	//m_oMoveUpAction->setShortcut(QObject::trUtf8("PgUp"));
-	//connect(m_oMoveUpAction, SIGNAL(triggered()), this, SLOT(slot_move_up()));
-	//addAction(m_oMoveUpAction);
+	m_oMoveUpAction = new QAction(QObject::trUtf8("Move up"), this);
+	m_oMoveUpAction->setShortcut(QObject::trUtf8("PgUp"));
+	connect(m_oMoveUpAction, SIGNAL(triggered()), this, SLOT(slot_move_up()));
+	addAction(m_oMoveUpAction);
 
-	//m_oMoveDownAction = new QAction(QObject::trUtf8("Move down"), this);
-	//m_oMoveDownAction->setShortcut(QObject::trUtf8("PgDown"));
-	//connect(m_oMoveDownAction, SIGNAL(triggered()), this, SLOT(slot_move_down()));
-	//addAction(m_oMoveDownAction);
+	m_oMoveDownAction = new QAction(QObject::trUtf8("Move down"), this);
+	m_oMoveDownAction->setShortcut(QObject::trUtf8("PgDown"));
+	connect(m_oMoveDownAction, SIGNAL(triggered()), this, SLOT(slot_move_down()));
+	addAction(m_oMoveDownAction);
 
 
 	m_oMenu = new QMenu(this);
@@ -216,7 +216,6 @@ box_view::box_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsView(i_
 	m_oAddItemAction->setEnabled(false);
 	m_oDeleteAction->setEnabled(false);
 
-	qDebug()<<"disable edit action";
 	m_oEditAction->setEnabled(false);
 	//m_oMoveUpAction->setEnabled(false);
 	//m_oMoveDownAction->setEnabled(false);
@@ -249,23 +248,14 @@ void box_view::notify_edit_box(int id, int bid)
 
 }
 
-void box_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
-
-	/*int l_iOldId = m_iId;
-	if (l_iOldId)
-	{
-		data_item *l_oData = m_oControl->m_oItems.value(l_iOldId);
-		if (l_oData != NULL and l_oData->m_iDataType == VIEW_DIAG) {
-			l_oData->m_sDiag = to_string();
-		}
-	}*/
+void box_view::notify_select(const QList<int>& unsel, const QList<int>& sel)
+{
 	clear_diagram();
 
 	if (sel.size() != 1)
 	{
 		m_iId = NO_ITEM;
 		setEnabled(false);
-		qDebug()<<"disable edit action";
 		m_oEditAction->setEnabled(false);
 		m_oCancelEditAction->setEnabled(false);
 	}
@@ -355,21 +345,6 @@ void box_view::notify_export_item(int id)
 	}
 }
 
-void box_view::deselect_all()
-{
-	if (m_oSelected.size() == 1)
-	{
-		QFocusEvent l_oEv = QFocusEvent(QEvent::FocusOut);
-	}
-
-	while (m_oSelected.size() > 0)
-	{
-		QGraphicsItem *l_oItem = m_oSelected.takeFirst();
-		l_oItem->update();
-	}
-	enable_menu_actions();
-}
-
 void box_view::slot_delete()
 {
 	QList<data_box*> boxes;
@@ -401,16 +376,15 @@ void box_view::slot_delete()
 	}
 }
 
-QList<box_item*> box_view::selection() {
-	// FIXME use scene()->selectedItems()
+/*QList<box_item*> box_view::selection() {
 	QList<box_item*> ret;
-	foreach (QGraphicsItem *tmp, items()) {
-		if (tmp->type() == BOX_ITEM_T && tmp->isSelected()) {
+	foreach (QGraphicsItem *tmp, scene()->selectedItems()) {
+		if (tmp->type() == BOX_ITEM_T) {
 			ret.append((box_item*) tmp);
 		}
 	}
 	return ret;
-}
+}*/
 
 void box_view::enable_menu_actions()
 {
@@ -459,21 +433,22 @@ void box_view::slot_add_item()
 
 void box_view::slot_color()
 {
-	Q_ASSERT(m_oSelected.size() >= 1);
 	QColor l_oColor = QColorDialog::getColor(l_oColor, this);
 	if (!l_oColor.isValid()) return;
-	foreach (QGraphicsItem *l_oItem, m_oSelected)
+	foreach (QGraphicsItem *l_oItem, scene()->selectedItems())
 	{
-		QAbstractGraphicsShapeItem* l_o = (QAbstractGraphicsShapeItem*) l_oItem;
-		l_o->setBrush(l_oColor);
 		if (l_oItem->type() == BOX_LINK_T)
 		{
 			box_link *l_oLink = (box_link*) l_oItem;
-			QPen l_oPen = l_oLink->pen();
-			l_oPen.setColor(l_oColor);
-			l_oLink->setPen(l_oPen);
+			l_oLink->m_oLink->fill_color = l_oColor;
+			l_oLink->update();
 		}
-		l_oItem->update();
+		else if (l_oItem->type() == BOX_ITEM_T)
+		{
+			box_item *it = (box_item*) l_oItem;
+			it->m_oBox->fill_color = l_oColor;
+			it->update();
+		}
 	}
 }
 
@@ -611,7 +586,7 @@ void box_view::slot_cancel_edit()
 
 void box_view::slot_move_up()
 {
-	foreach (QGraphicsItem *l_oItem, m_oSelected)
+	foreach (QGraphicsItem *l_oItem, scene()->selectedItems())
 	{
 		l_oItem->setZValue(l_oItem->zValue()+1);
 	}
@@ -619,7 +594,7 @@ void box_view::slot_move_up()
 
 void box_view::slot_move_down()
 {
-	foreach (QGraphicsItem *l_oItem, m_oSelected)
+	foreach (QGraphicsItem *l_oItem, scene()->selectedItems())
 	{
 		l_oItem->setZValue(l_oItem->zValue()-1);
 	}

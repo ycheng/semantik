@@ -22,16 +22,13 @@ class box_view : public QGraphicsView
 		~box_view();
 
 
-		QList<box_item*> selection();
+		//QList<box_item*> selection();
 		void clear_diagram();
 
-		QList<QGraphicsItem*> m_oSelected;
 		QList<box_link*> m_oLinks;
 
 		QMap<int, box_item*> m_oItems;
 
-
-		void deselect_all();
 
 		QPointF m_oLastPoint;
 		QPointF m_oLastMovePoint;
