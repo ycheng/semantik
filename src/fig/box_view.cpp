@@ -1002,15 +1002,6 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 		grab_segment_link->update_ratio(); // no need to update_pos
 		grab_segment_link->update();
 	}
-	else
-	{
-		foreach (QGraphicsItem*tmp, scene()->selectedItems()) {
-			if (tmp->type() == BOX_ITEM_T && tmp->isSelected()) {
-				((box_item*) tmp)->update_links();
-			}
-		}
-	}
-
 
 	/*else
 	{

@@ -18,6 +18,7 @@
 #include "sem_model.h"
 
 #define PAD 3
+#define GRID 10
 
 box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oView(i_oParent)
 {
@@ -47,7 +48,7 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oVie
 
 	setZValue(64);
 	setTextWidth(80);
-	setFlags(ItemIsMovable | ItemIsSelectable);
+	setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
 }
 
 box_item::~box_item()
@@ -240,17 +241,24 @@ void box_item::keyReleaseEvent(QKeyEvent* e) {
 
 QVariant box_item::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue)
 {
-	bool l_bChange = ((i_oChange == ItemPositionChange) && scene());
-
 	QVariant l_oRet = QGraphicsItem::itemChange(i_oChange, i_oValue);
-
-	if (l_bChange)
+	if (scene())
 	{
-		qDebug()<<"stuff changed, update links";
-		update_links();
+		if (i_oChange == ItemPositionChange)
+		{
+			QPointF np = i_oValue.toPointF();
+			np.setX(((int) np.x() / GRID) * GRID);
+			np.setY(((int) np.y() / GRID) * GRID);
+			return np;
+		}
+		else if (i_oChange == ItemPositionHasChanged)
+		{
+			//qDebug()<<"stuff changed, update links";
+			update_links();
+		}
 	}
 
-	return l_oRet;
+	return QGraphicsItem::itemChange(i_oChange, i_oValue);
 }
 
 void box_item::update_links()
