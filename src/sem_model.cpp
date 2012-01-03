@@ -562,7 +562,7 @@ bool sem_model::save_file(QString i_sUrl)
 	PyRun_SimpleString(l_oBa.constData());
 
 	m_sLastSaved = i_sUrl;
-
+	set_dirty(false);
 	return true;
 }
 
