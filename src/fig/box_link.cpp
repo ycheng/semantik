@@ -59,7 +59,10 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 	i_oPainter->setBrush(c);
         QPen l_oPen;
       	l_oPen.setStyle(Qt::SolidLine);
-	l_oPen.setWidth(1);
+	if (m_oLink)
+		l_oPen.setWidth(m_oLink->border_width);
+	else
+		l_oPen.setWidth(1);
 	l_oPen.setColor(c);
 	i_oPainter->setPen(l_oPen);
 

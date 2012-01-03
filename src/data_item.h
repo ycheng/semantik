@@ -27,6 +27,7 @@ class data_link
 	int m_iChildPos;
 	QList<QPoint> m_oOffsets;
 	QColor fill_color;
+	int border_width;
 };
 
 class data_box

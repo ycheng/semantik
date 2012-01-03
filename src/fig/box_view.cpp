@@ -496,36 +496,16 @@ void box_view::slot_penstyle()
 void box_view::slot_penwidth()
 {
 	int l_i = ((QAction*) QObject::sender())->data().toInt();
-	foreach (QGraphicsItem* l_o, m_oSelected)
+	foreach (QGraphicsItem* l_o, scene()->selectedItems())
 	{
 		if (l_o->type() == BOX_LINK_T)
 		{
 			box_link *l_oLink = (box_link*) l_o;
-			QPen l_oPen = l_oLink->pen();
-			l_oPen.setWidth(l_i);
-			l_oLink->setPen(l_oPen);
+			l_oLink->m_oLink->border_width = l_i;
+			l_oLink->update();
 		}
 	}
 }
-
-/*
-void box_view::slot_edit()
-{
-	if (m_oSelected.size() == 1 && m_oSelected[0]->type() == BOX_ITEM_T)
-	{
-		box_item *l_o = (box_item*) m_oSelected[0];
-		if (l_o->m_bEdit)
-		{
-			QFocusEvent l_oEv = QFocusEvent(QEvent::FocusOut);
-			l_o->update();
-		}
-		else
-		{
-			l_o->update();
-		}
-	}
-}
-*/
 
 void box_view::slot_toggle_edit()
 {
