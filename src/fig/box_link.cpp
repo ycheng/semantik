@@ -442,26 +442,17 @@ void box_link::update_pos()
 		}
 	}
 
-
 	int ax1 = (int) l_oR1.x();
 	int ax2 = (int) (l_oR1.x()+l_oR1.width());
 	int ay1 = (int) l_oR1.y();
 	int ay2 = (int) (l_oR1.y()+l_oR1.height());
-	int ap = m_iParent;
 
 	int bx1 = (int) l_oR2.x();
 	int bx2 = (int) (l_oR2.x()+l_oR2.width());
 	int by1 = (int) l_oR2.y();
 	int by2 = (int) (l_oR2.y()+l_oR2.height());
-	int bp = m_iChild;
 
-	set_rectangles(
-		(int) l_oR1.x(), (int) (l_oR1.x()+l_oR1.width()),
-		(int) l_oR1.y(), (int) (l_oR1.y()+l_oR1.height()),
-		m_iParent,
-		(int) l_oR2.x(), (int) (l_oR2.x()+l_oR2.width()),
-		(int) l_oR2.y(), (int) (l_oR2.y()+l_oR2.height()),
-		m_iChild);
+	set_rectangles(ax1, ax2, ay1, ay2, m_iParent, bx1, bx2, by1, by2, m_iChild);
 
 	/*
 	//qDebug()<<"begin dump";
