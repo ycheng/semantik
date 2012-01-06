@@ -478,7 +478,7 @@ void box_link::update_ratio()
 	// here we reset the offsets if necessary
 	int ret = m_oLst.size();
 
-	if (m_oOffsets.size() != ret - 2)
+	if (m_oOffsets.size() != ret - 3)
 	{
 		m_oOffsets.clear();
 		for (int i=1; i < ret - 2; ++i)
