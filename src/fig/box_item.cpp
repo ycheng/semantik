@@ -28,8 +28,6 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oVie
 	//setBrush(QColor(170, 170, 255));
 
 	m_iId = i_iId;
-	m_bSel = false;
-	m_bEdit = false;
 
 	setPlainText("");
 	//adjustSize();

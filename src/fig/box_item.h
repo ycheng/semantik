@@ -21,11 +21,7 @@ class box_item : public QGraphicsTextItem
 		~box_item();
 
 		int type() const { return BOX_ITEM_T; }
-
-
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
-		bool m_bSel;
-		bool m_bEdit;
 
 		qreal m_iXX;
 		qreal m_iYY;
@@ -34,14 +30,9 @@ class box_item : public QGraphicsTextItem
 		QColor m_oColorBackup;
 		QString m_sLabel;
 
-		QBrush brush() { return QBrush(); }
-		//void move_by(qreal, qreal);
-		//void set_pos(QPointF i_oP);
-		//void set_pos(qreal i_iXX, qreal i_iYY);
-
 		QRectF boundingRect() const;
 
-		QRectF rect() const {return boundingRect(); }; // TODO
+		QRectF rect() const { return boundingRect(); }; // TODO
 		void setRect(int, int, int, int) { }
 
 		int m_iId;
