@@ -17,7 +17,7 @@
 #include "data_item.h"
 #include "sem_model.h"
 
-#define PAD 3
+#define PAD 2
 #define GRID 10
 
 box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oView(i_oParent)
@@ -67,7 +67,8 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
 	l_oPen.setColor(Qt::black);
 	if (isSelected()) l_oPen.setStyle(Qt::DotLine);
-	l_oPen.setCosmetic(true);
+	l_oPen.setCosmetic(false);
+	l_oPen.setWidth(1);
 
 	painter->setPen(l_oPen);
 
