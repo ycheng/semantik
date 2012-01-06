@@ -435,53 +435,53 @@ void box_view::slot_color()
 {
 	QColor l_oColor = QColorDialog::getColor(l_oColor, this);
 	if (!l_oColor.isValid()) return;
-	foreach (QGraphicsItem *l_oItem, scene()->selectedItems())
+	mem_prop_box *mem = new mem_prop_box(m_oControl, m_iId);
+	foreach (QGraphicsItem *l_o, scene()->selectedItems())
 	{
-
-		// FIXME FIXME FIXME
-		if (l_oItem->type() == BOX_LINK_T)
+		if (l_o->type() == BOX_LINK_T)
 		{
-			box_link *l_oLink = (box_link*) l_oItem;
-			//l_oLink->m_oLink->fill_color = l_oColor;
-			l_oLink->update();
+			mem->items.append(((box_link*) l_o)->m_oLink);
 		}
-		else if (l_oItem->type() == BOX_ITEM_T)
+		else if (l_o->type() == BOX_ITEM_T)
 		{
-			box_item *it = (box_item*) l_oItem;
-			//it->m_oBox->fill_color = l_oColor;
-			it->update();
+			mem->items.append(((box_item*) l_o)->m_oBox);
 		}
 	}
+	mem->change_type = CH_COLOR;
+	mem->new_props.color = l_oColor;
+	mem->apply();
 }
 
 void box_view::slot_penstyle()
 {
 	int l_i = ((QAction*) QObject::sender())->data().toInt();
-	// FIXME FIXME FIXME
+	mem_prop_box *mem = new mem_prop_box(m_oControl, m_iId);
 	foreach (QGraphicsItem* l_o, scene()->selectedItems())
 	{
 		if (l_o->type() == BOX_LINK_T)
 		{
-			box_link *l_oLink = (box_link*) l_o;
-			//l_oLink->m_oLink->style = (Qt::PenStyle) l_i;
-			l_oLink->update();
+			mem->items.append(((box_link*) l_o)->m_oLink);
 		}
 	}
-
+	mem->change_type = CH_PENST;
+	mem->new_props.pen_style = (Qt::PenStyle) l_i;
+	mem->apply();
 }
 
 void box_view::slot_penwidth()
 {
 	int l_i = ((QAction*) QObject::sender())->data().toInt();
+	mem_prop_box *mem = new mem_prop_box(m_oControl, m_iId);
 	foreach (QGraphicsItem* l_o, scene()->selectedItems())
 	{
 		if (l_o->type() == BOX_LINK_T)
 		{
-			box_link *l_oLink = (box_link*) l_o;
-			l_oLink->m_oLink->border_width = l_i;
-			l_oLink->update();
+			mem->items.append(((box_link*) l_o)->m_oLink);
 		}
 	}
+	mem->change_type = CH_BORDER;
+	mem->new_props.border_width = l_i;
+	mem->apply();
 }
 
 void box_view::slot_toggle_edit()
