@@ -221,6 +221,7 @@ void box_item::keyPressEvent(QKeyEvent* e) {
 
 	QGraphicsTextItem::keyPressEvent(e);
 	update();
+	update_links();
 }
 
 void box_item::keyReleaseEvent(QKeyEvent* e) {
