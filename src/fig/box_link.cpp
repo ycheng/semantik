@@ -478,7 +478,7 @@ void box_link::update_ratio()
 	if (m_oOffsets.size() != ret - 2)
 	{
 		m_oOffsets.clear();
-		for (int i=1; i<ret-1; ++i)
+		for (int i=1; i < ret - 2; ++i)
 		{
 			m_oOffsets.append(QPoint(0, 0));
 		}
@@ -491,13 +491,11 @@ void box_link::update_ratio()
 	}
 	else
 	{
-		//just copy the data
 		for (int i=0; i<ret; ++i) m_oGood[i] = m_oLst[i];
 	}
 
 	for (int i=0; i < m_oOffsets.size(); ++i)
 	{
-		int tmp = 0;
 		if (m_oLst[i+1].x() == m_oLst[i+2].x())
 		{
 			int v = m_oOffsets[i].x() + m_oLst[i+1].x();
