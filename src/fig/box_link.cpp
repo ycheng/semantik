@@ -46,7 +46,7 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 
 	QColor c = QColor(Qt::black);
 	if (m_oLink)
-		c = m_oLink->fill_color;
+		c = m_oLink->color;
 	//if (isSelected())
 	//	c = QColor(Qt::red);
 
@@ -55,7 +55,7 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 	if (m_oLink)
 	{
 		l_oPen.setWidth(m_oLink->border_width);
-		l_oPen.setStyle(m_oLink->style);
+		l_oPen.setStyle(m_oLink->pen_style);
 	}
 	else
 	{

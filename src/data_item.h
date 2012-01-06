@@ -16,11 +16,24 @@
 
 class sem_model;
 
-class data_link
+class diagram_item
 {
 	public:
-	data_link() { style = Qt::SolidLine; border_width = 1; }
+	diagram_item();
 
+	void setBorderWidth(int);
+	void setPenStyle(Qt::PenStyle);
+	void setColor(QColor);
+
+	int border_width;
+	Qt::PenStyle pen_style;
+	QColor color;
+};
+
+class data_link : public diagram_item
+{
+	public:
+	data_link();
 	QString m_sLink;
 	QString m_sCaption;
 	int m_iParent;
@@ -28,23 +41,18 @@ class data_link
 	int m_iParentPos;
 	int m_iChildPos;
 	QList<QPoint> m_oOffsets;
-	QColor fill_color;
-	int border_width;
-	Qt::PenStyle style;
 };
 
-class data_box
+class data_box : public diagram_item
 {
 	public:
-	data_box(int id) { m_iId = id; }
+	data_box(int id);
 	int m_iId;
 	QString m_sText;
 	double m_iXX;
 	double m_iYY;
 	double m_iWW;
 	double m_iHH;
-	QColor fill_color;
-	QColor border_color;
 };
 
 class data_item //:

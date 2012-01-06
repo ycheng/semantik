@@ -77,7 +77,7 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	}
 	else
 	{
-		painter->setBrush(m_oBox->fill_color);
+		painter->setBrush(m_oBox->color);
 	}
 
 	painter->drawRoundRect(l_oRect, 20, 20);

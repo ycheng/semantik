@@ -61,7 +61,7 @@ mem_add_box::mem_add_box(sem_model* mod) : mem_command(mod)
 void mem_add_box::init(int id) {
 	item = model->m_oItems.value(id);
 	box = new data_box(model->next_seq());
-	box->fill_color = QColor("#cafeba");
+	box->color = QColor("#cafeba");
 }
 
 void mem_add_box::redo()

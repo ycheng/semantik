@@ -98,6 +98,40 @@ color_scheme& data_item::get_color_scheme_raw()
 	return m_oControl->m_oColorSchemes[m_iColor];
 }
 
+
+diagram_item::diagram_item()
+{
+	pen_style = Qt::SolidLine;
+	border_width = 1;
+}
+
+data_box::data_box(int id) : diagram_item()
+{
+	m_iId = id;
+	color = QColor("#cafeba");
+}
+
+void diagram_item::setBorderWidth(int bw)
+{
+	border_width = bw;
+}
+
+void diagram_item::setPenStyle(Qt::PenStyle st)
+{
+	pen_style = st;
+}
+
+void diagram_item::setColor(QColor co)
+{
+	color = co;
+}
+
+data_link::data_link() : diagram_item()
+{
+	color = QColor(Qt::black);
+}
+
+
 /*
 #include "main.moc"
 */

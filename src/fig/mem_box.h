@@ -79,9 +79,9 @@ class mem_unlink_box : public mem_command {
 		IType type() { return UNLINK_BOX; }
 };
 
-class mem_color_box : public mem_command {
+class mem_prop_box : public mem_command {
 	public:
-		mem_color_box(sem_model*, int id);
+		mem_prop_box(sem_model*, int id);
 		void init(QGraphicsItem*, QColor color);
 		void undo();
 		void redo();
@@ -91,34 +91,7 @@ class mem_color_box : public mem_command {
 		QColor color;
 		QHash<QGraphicsItem*, QColor> prev_colors;
 
-		IType type() { return COLOR_BOX; }
-};
-
-class mem_border_link : public mem_command {
-	public:
-		mem_border_link(sem_model*, int id);
-		void undo();
-		void redo();
-		int m_iId;
-
-		int width; 
-		QHash<data_link*, int> prev_borders;
-
-		IType type() { return BORDER_LINK; }
-};
-
-
-class mem_style_link : public mem_command {
-	public:
-		mem_style_link(sem_model*, int id);
-		void undo();
-		void redo();
-		int m_iId;
-
-		Qt::PenStyle style;
-		QHash<data_link*, Qt::PenStyle> prev_styles;
-
-		IType type() { return STYLE_LINK; }
+		IType type() { return PROP_BOX; }
 };
 
 #endif

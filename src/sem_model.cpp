@@ -88,8 +88,7 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		box->m_iYY = i_oAttrs.value(notr("y")).toFloat();
 		box->m_iWW = i_oAttrs.value(notr("w")).toFloat();
 		box->m_iHH = i_oAttrs.value(notr("h")).toFloat();
-		box->fill_color = QColor(i_oAttrs.value(notr("fill")));
-		box->border_color = QColor(i_oAttrs.value(notr("border")));
+		box->color = QColor(i_oAttrs.value(notr("color")));
 	}
 	else if (i_sName == notr("linkbox"))
 	{
@@ -100,9 +99,9 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		link->m_iParentPos = i_oAttrs.value(notr("parentpos")).toInt();
 		link->m_iChild = i_oAttrs.value(notr("child")).toInt();
 		link->m_iChildPos = i_oAttrs.value(notr("childpos")).toInt();
-		link->fill_color = QColor(i_oAttrs.value(notr("fill")));
-		link->border_width = i_oAttrs.value(notr("borderwidth")).toInt();
-		link->style = (Qt::PenStyle) i_oAttrs.value(notr("style")).toInt();
+		link->color = QColor(i_oAttrs.value(notr("color")));
+		link->border_width = i_oAttrs.value(notr("border_width")).toInt();
+		link->pen_style = (Qt::PenStyle) i_oAttrs.value(notr("pen_style")).toInt();
 	}
 	else if (i_sName == notr("tbl"))
 	{
@@ -491,29 +490,28 @@ QString sem_model::doc_to_xml()
 
 		foreach (data_box *box, l_oItem->m_oBoxes)
 		{
-			l_oS<<notr("<itembox id=\"%1\" text=\"%2\" x=\"%3\" y=\"%4\" w=\"%5\" h=\"%6\" fill=\"%7\" border=\"%8\">\n").arg(
+			l_oS<<notr("<itembox id=\"%1\" text=\"%2\" x=\"%3\" y=\"%4\" w=\"%5\" h=\"%6\" color=\"%7\">\n").arg(
 				QString::number(box->m_iId),
 				bind_node::protectXML(box->m_sText),
 				QString::number(box->m_iXX),
 				QString::number(box->m_iYY),
 				QString::number(box->m_iWW),
 				QString::number(box->m_iHH),
-				box->fill_color.name(),
-				box->border_color.name()
+				box->color.name()
 			);
 			l_oS<<notr("</itembox>\n");
 		}
 
 		foreach (data_link *link, l_oItem->m_oLinks)
 		{
-			l_oS<<notr("<linkbox parent=\"%1\" parentpos=\"%2\" child=\"%3\" childpos=\"%4\" fill=\"%5\" borderwidth=\"%6\" style=\"%7\">\n").arg(
+			l_oS<<notr("<linkbox parent=\"%1\" parentpos=\"%2\" child=\"%3\" childpos=\"%4\" color=\"%5\" border_width=\"%6\" pen_style=\"%7\">\n").arg(
 				QString::number(link->m_iParent),
 				QString::number(link->m_iParentPos),
 				QString::number(link->m_iChild),
 				QString::number(link->m_iChildPos),
-				link->fill_color.name(),
+				link->color.name(),
 				QString::number(link->border_width),
-				QString::number(link->style)
+				QString::number(link->pen_style)
 				);
 			l_oS<<notr("</linkbox>\n");			
 

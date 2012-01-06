@@ -65,7 +65,7 @@ bool box_reader::startElement(const QString&, const QString&, const QString& i_s
 		box->m_iXX = i_oAttrs.value(QObject::trUtf8("c1")).toFloat();
 		box->m_iYY = i_oAttrs.value(QObject::trUtf8("c2")).toFloat();
 		box->m_sText = i_oAttrs.value(QObject::trUtf8("text"));
-		box->fill_color = i_oAttrs.value(QObject::trUtf8("col"));
+		box->color = i_oAttrs.value(QObject::trUtf8("col"));
 		//l_o->setRect(QRectF(0., 0., i_oAttrs.value(QObject::trUtf8("c3")).toDouble(), i_oAttrs.value(QObject::trUtf8("c4")).toDouble()));
 	}
 	else if (i_sName == QObject::trUtf8("box_link"))
@@ -437,16 +437,18 @@ void box_view::slot_color()
 	if (!l_oColor.isValid()) return;
 	foreach (QGraphicsItem *l_oItem, scene()->selectedItems())
 	{
+
+		// FIXME FIXME FIXME
 		if (l_oItem->type() == BOX_LINK_T)
 		{
 			box_link *l_oLink = (box_link*) l_oItem;
-			l_oLink->m_oLink->fill_color = l_oColor;
+			//l_oLink->m_oLink->fill_color = l_oColor;
 			l_oLink->update();
 		}
 		else if (l_oItem->type() == BOX_ITEM_T)
 		{
 			box_item *it = (box_item*) l_oItem;
-			it->m_oBox->fill_color = l_oColor;
+			//it->m_oBox->fill_color = l_oColor;
 			it->update();
 		}
 	}
@@ -455,12 +457,13 @@ void box_view::slot_color()
 void box_view::slot_penstyle()
 {
 	int l_i = ((QAction*) QObject::sender())->data().toInt();
+	// FIXME FIXME FIXME
 	foreach (QGraphicsItem* l_o, scene()->selectedItems())
 	{
 		if (l_o->type() == BOX_LINK_T)
 		{
 			box_link *l_oLink = (box_link*) l_o;
-			l_oLink->m_oLink->style = (Qt::PenStyle) l_i;
+			//l_oLink->m_oLink->style = (Qt::PenStyle) l_i;
 			l_oLink->update();
 		}
 	}
