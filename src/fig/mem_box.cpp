@@ -149,4 +149,49 @@ void mem_unlink_box::undo() {
 
 ///////////////////////////////////////////////////////////////////
 
+#define CH_COLOR 1
+#define CH_BORDER 2
+#define CH_PENST 4
+
+mem_prop_box::mem_prop_box(sem_model* mod, int id) : mem_command(mod) {
+	m_iId = id;
+}
+
+void mem_prop_box::redo() {
+	for (int i = prev_values.size(); i < items.size(); ++i)
+	{
+		diagram_item *cur = items.at(i);
+		diagram_item *it = new diagram_item();
+		it->color = cur->color;
+		it->pen_style = cur->pen_style;
+		it->border_width = cur->border_width;
+		prev_values[cur] = it;
+	}
+	foreach (diagram_item *cur, items) {
+		if (change_type & CH_COLOR) {
+			cur->color = new_props.color;
+		}
+		if (change_type & CH_BORDER) {
+			cur->border_width = new_props.border_width;
+		}
+		if (change_type & CH_PENST) {
+			cur->pen_style = new_props.pen_style;
+		}
+	}
+}
+
+void mem_prop_box::undo() {
+	foreach (diagram_item *cur, items) {
+		if (change_type & CH_COLOR) {
+			cur->color = prev_values[cur]->color;
+		}
+		if (change_type & CH_BORDER) {
+			cur->border_width = prev_values[cur]->border_width;
+		}
+		if (change_type & CH_PENST) {
+			cur->pen_style = prev_values[cur]->pen_style;
+		}
+	}
+}
+
 

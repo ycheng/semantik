@@ -79,19 +79,28 @@ class mem_unlink_box : public mem_command {
 		IType type() { return UNLINK_BOX; }
 };
 
+#define CH_COLOR 1
+#define CH_BORDER 2
+#define CH_PENST 4
+
 class mem_prop_box : public mem_command {
 	public:
 		mem_prop_box(sem_model*, int id);
-		void init(QGraphicsItem*, QColor color);
 		void undo();
 		void redo();
 
 		int m_iId;
+		int change_type;
+		diagram_item new_props;
 
-		QColor color;
-		QHash<QGraphicsItem*, QColor> prev_colors;
+		// item -> item with value before
+		QList<diagram_item*> items;
 
 		IType type() { return PROP_BOX; }
+
+	private:
+		QHash<diagram_item*, diagram_item*> prev_values;
+
 };
 
 #endif
