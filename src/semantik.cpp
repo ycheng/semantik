@@ -356,6 +356,7 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	connect(m_oControl, SIGNAL(sig_edit_box(int, int)), m_oDiagramView, SLOT(notify_edit_box(int, int)));
 	connect(m_oControl, SIGNAL(sig_link_box(int, data_link*)), m_oDiagramView, SLOT(notify_link_box(int, data_link*)));
 	connect(m_oControl, SIGNAL(sig_unlink_box(int, data_link*)), m_oDiagramView, SLOT(notify_unlink_box(int, data_link*)));
+	connect(m_oControl, SIGNAL(sig_box_props(int, const QList<diagram_item*>&)), m_oDiagramView, SLOT(notify_box_props(int, const QList<diagram_item*>&)));
 
 	connect(m_oControl, SIGNAL(sig_focus(void*)), m_oCanvas, SLOT(notify_focus(void*)));
 	connect(m_oControl, SIGNAL(sig_focus(void*)), m_oDiagramView, SLOT(notify_focus(void*)));

@@ -1301,5 +1301,9 @@ void sem_model::notify_focus(void* ptr) {
 	emit sig_focus(ptr);
 }
 
+void sem_model::notify_box_props(int id, const QList<diagram_item*>& items) {
+	emit sig_box_props(id, items);
+}
+
 #include "sem_model.moc"
 

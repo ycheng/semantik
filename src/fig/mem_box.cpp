@@ -178,6 +178,8 @@ void mem_prop_box::redo() {
 			cur->pen_style = new_props.pen_style;
 		}
 	}
+	model->notify_box_props(m_iId, items);
+	redo_dirty();
 }
 
 void mem_prop_box::undo() {
@@ -192,6 +194,8 @@ void mem_prop_box::undo() {
 			cur->pen_style = prev_values[cur]->pen_style;
 		}
 	}
+	model->notify_box_props(m_iId, items);
+	undo_dirty();
 }
 
 

@@ -1091,5 +1091,29 @@ void box_view::notify_focus(void* ptr) {
 	}
 }
 
+void box_view::notify_box_props(int id, const QList<diagram_item*>& items)
+{
+	Q_ASSERT(id == m_iId);
+	foreach (diagram_item* it, items) {
+		foreach (box_link *lnk, m_oLinks)
+		{
+			if (lnk->m_oLink == it) {
+				lnk->update();
+				goto end;
+			}
+		}
+
+		foreach (box_item *box, m_oItems.values())
+		{
+			if (box->m_oBox == it) {
+				box->update();
+				goto end;
+			}
+		}
+		end:
+			;
+	}
+}
+
 #include "box_view.moc"
 
