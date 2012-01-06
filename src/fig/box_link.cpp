@@ -495,22 +495,22 @@ void box_link::update_ratio()
 		for (int i=0; i<ret; ++i) m_oGood[i] = m_oLst[i];
 	}
 
-	for (int i=0; i<m_oOffsets.size(); ++i)
+	for (int i=0; i < m_oOffsets.size(); ++i)
 	{
 		int tmp = 0;
 		if (m_oLst[i+1].x() == m_oLst[i+2].x())
 		{
-			tmp = m_oOffsets[i].x() + m_oLst[i+1].x();
-			m_oGood[i+1].setX(int_val2(tmp));
-			tmp = m_oOffsets[i].x() + m_oLst[i+2].x();
-			m_oGood[i+2].setX(int_val2(tmp));
+			int v = m_oOffsets[i].x() + m_oLst[i+1].x();
+			v = int_val2(v);
+			m_oGood[i+1].setX(v);
+			m_oGood[i+2].setX(v);
 		}
-		else
+		else if (m_oLst[i+1].y() == m_oLst[i+2].y())
 		{
-			tmp = m_oOffsets[i].y() + m_oLst[i+1].y();
-			m_oGood[i+1].setY(int_val2(tmp));
-			tmp = m_oOffsets[i].y() + m_oLst[i+2].y();
-			m_oGood[i+2].setY(int_val2(tmp));
+			int v = m_oOffsets[i].y() + m_oLst[i+1].y();
+			v = int_val2(v);
+			m_oGood[i+1].setY(v);
+                        m_oGood[i+2].setY(v);
 		}
 	}
 
