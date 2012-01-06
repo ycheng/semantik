@@ -1,4 +1,4 @@
-// Thomas Nagy 2007-2011 GPLV3
+// Thomas Nagy 2007-2012 GPLV3
 
 #ifndef GENERATOR_DIALOG_H
 #define GENERATOR_DIALOG_H

@@ -1,4 +1,4 @@
-// Thomas Nagy 2007-2011 GPLV3
+// Thomas Nagy 2007-2012 GPLV3
 
 #ifndef DATA_ITEM_H
 #define DATA_ITEM_H

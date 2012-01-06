@@ -1,4 +1,4 @@
-// Thomas Nagy 2007-2011 GPLV3
+// Thomas Nagy 2007-2012 GPLV3
 
 #include <QtDebug>
 #include <QTreeWidget>

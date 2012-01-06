@@ -58,13 +58,17 @@ More help in about->help
   command_odt=oowriter %s
   command_s5=firefox %s
 
-  this is only necessary for documents that do not have a kde component yet
+  this is only necessary for documents that do not have a KDE component yet
 
 -----------------------------------------------
 
 4. Licensing:
 
 GPL V3
+
+Do not port Semantik to proprietary platforms (Windows, Mac). You may be free
+to do it, but the author is also free to stop the development, or to keep the
+next versions for himself.
 
 -----------------------------------------------
 
@@ -81,5 +85,5 @@ You may add the following code to your pages to show your interest in Semantik
 
 Enjoy Semantik
 
-Thomas Nagy, 2007-2011
+Thomas Nagy, 2007-2012
 
