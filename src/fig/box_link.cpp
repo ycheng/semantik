@@ -15,8 +15,6 @@
 
 box_link::box_link(box_view* i_oParent) : QGraphicsRectItem()
 {
-	/*setBrush(QColor(0, 255, 0, 160));*/
-
 	m_iParent = 0;
 	m_iChild = 0;
 

@@ -22,13 +22,7 @@
 
 box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oView(i_oParent)
 {
-	//l_oOpt.setAlignment(Qt::AlignCenter);
-	//m_oDoc->setDefaultTextOption(l_oOpt);
-
-	//setBrush(QColor(170, 170, 255));
-
 	m_iId = i_iId;
-
 	setPlainText("");
 	//adjustSize();
 

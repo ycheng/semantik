@@ -135,15 +135,9 @@ bool box_reader::characters(const QString &i_s)
 	return true;
 }
 
-int box_view::next_id()
-{
-	return ++m_iIdCounter;
-}
-
 box_view::box_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsView(i_oWidget)
 {
 	m_oControl = i_oControl;
-	m_iIdCounter = 0; // hidden
 	m_iId = NO_ITEM;
 
 	QGraphicsScene *l_oScene = new QGraphicsScene(this);

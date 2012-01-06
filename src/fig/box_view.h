@@ -56,12 +56,7 @@ class box_view : public QGraphicsView
 
 		void enable_menu_actions(); // like check_actions, but only for the popup menu
 
-		int next_id();
-
 		int m_iId; // the item this diagram belongs to
-
-		// private
-		int m_iIdCounter;
 
 		void sync_view();
 		void from_string(const QString &);
