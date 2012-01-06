@@ -36,6 +36,7 @@ class semantik_reader : public QXmlDefaultHandler
 		int m_iVersion;
 		sem_model *m_oControl;
 		int m_iId;
+		data_link * cur_link;
 
 	public:
 		bool startElement(const QString&, const QString&, const QString&, const QXmlAttributes&);
@@ -47,6 +48,8 @@ class semantik_reader : public QXmlDefaultHandler
 semantik_reader::semantik_reader(sem_model *i_oControl)
 {
 	m_oControl = i_oControl;
+	cur_link = NULL;
+	m_iId = NO_ITEM;
 }
 
 bool semantik_reader::startElement(const QString&, const QString&, const QString& i_sName, const QXmlAttributes& i_oAttrs)
@@ -93,15 +96,19 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 	else if (i_sName == notr("linkbox"))
 	{
 		data_item *l_oItem = m_oControl->m_oItems.value(m_iId);
-		data_link *link = new data_link();
-		l_oItem->m_oLinks.append(link);
-		link->m_iParent = i_oAttrs.value(notr("parent")).toInt();
-		link->m_iParentPos = i_oAttrs.value(notr("parentpos")).toInt();
-		link->m_iChild = i_oAttrs.value(notr("child")).toInt();
-		link->m_iChildPos = i_oAttrs.value(notr("childpos")).toInt();
-		link->color = QColor(i_oAttrs.value(notr("color")));
-		link->border_width = i_oAttrs.value(notr("border_width")).toInt();
-		link->pen_style = (Qt::PenStyle) i_oAttrs.value(notr("pen_style")).toInt();
+		cur_link = new data_link();
+		l_oItem->m_oLinks.append(cur_link);
+		cur_link->m_iParent = i_oAttrs.value(notr("parent")).toInt();
+		cur_link->m_iParentPos = i_oAttrs.value(notr("parentpos")).toInt();
+		cur_link->m_iChild = i_oAttrs.value(notr("child")).toInt();
+		cur_link->m_iChildPos = i_oAttrs.value(notr("childpos")).toInt();
+		cur_link->color = QColor(i_oAttrs.value(notr("color")));
+		cur_link->border_width = i_oAttrs.value(notr("border_width")).toInt();
+		cur_link->pen_style = (Qt::PenStyle) i_oAttrs.value(notr("pen_style")).toInt();
+	}
+	else if (i_sName == notr("linkbox_offset")) {
+		Q_ASSERT(cur_link);
+		cur_link->m_oOffsets.append(QPoint(i_oAttrs.value(notr("x")).toInt(), i_oAttrs.value(notr("y")).toInt()));
 	}
 	else if (i_sName == notr("tbl"))
 	{
@@ -513,6 +520,9 @@ QString sem_model::doc_to_xml()
 				QString::number(link->border_width),
 				QString::number(link->pen_style)
 				);
+			foreach (QPoint p, link->m_oOffsets) {
+				l_oS<<notr("<linkbox_offset x=\"%1\" y=\"%2\">").arg(QString::number(p.x()), QString::number(p.y()));
+			}
 			l_oS<<notr("</linkbox>\n");			
 
 		}
