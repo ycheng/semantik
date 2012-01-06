@@ -406,23 +406,26 @@ void box_link::update_pos()
                 }
         }
 
+#define JUST 2
+
+	// ITA
 	if (m_oParent)
 	{
-		l_oR1 = m_oParent->rect().translated(m_oParent->pos());
+		l_oR1 = m_oParent->rect().translated(m_oParent->pos()).adjusted(JUST, JUST, -JUST, -JUST);
 	}
 	else if (l_oUnder)
 	{
-		l_oR1 = l_oUnder->rect().translated(l_oUnder->pos());
+		l_oR1 = l_oUnder->rect().translated(l_oUnder->pos()).adjusted(JUST, JUST, -JUST, -JUST);
 		m_iParent = pos_inrect(l_oUnder->rect(), l_oUnder->pos() - l_oP);
 	}
 
 	if (m_oChild)
 	{
-		l_oR2 = m_oChild->rect().translated(m_oChild->pos());
+		l_oR2 = m_oChild->rect().translated(m_oChild->pos()).adjusted(JUST, JUST, -JUST, -JUST);
 	}
 	else if (l_oUnder)
 	{
-		l_oR2 = l_oUnder->rect().translated(l_oUnder->pos());
+		l_oR2 = l_oUnder->rect().translated(l_oUnder->pos()).adjusted(JUST, JUST, -JUST, -JUST);
 		m_iChild = pos_inrect(l_oUnder->rect(), l_oUnder->pos() - l_oP);
 	}
 
