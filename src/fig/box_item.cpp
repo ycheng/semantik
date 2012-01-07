@@ -74,6 +74,7 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	painter->drawRoundRect(l_oRect, 20, 20);
 
 	QAbstractTextDocumentLayout::PaintContext ctx;
+	ctx.palette = QApplication::palette("QTextControl");
 	if (textInteractionFlags() & Qt::TextEditorInteraction) {
 		QTextCursor cursor = textCursor();
 		ctx.cursorPosition = cursor.position();
@@ -88,99 +89,9 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	document()->documentLayout()->draw(painter, ctx);
 
 	painter->restore();
+
+	// TODO resize handle
 }
-
-/*
-void box_item::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *option, QWidget * i_oW)
-{
-	//QGraphicsRectItem::paint(i_oPainter, option, i_oW);
-	QPen l_oPen = QPen(Qt::SolidLine);
-	l_oPen.setColor(QColor(Qt::black));
-	l_oPen.setWidth(1);
-	if (m_oControl->m_oSelected.contains(this)) l_oPen.setWidth(2);
-	i_oPainter->setPen(l_oPen);
-
-	QRectF l_oB = boundingRect();
-
-	qreal w = l_oPen.width()/2.;
-	QRectF l_oRect = l_oB.adjusted(w, w, -w, -w);
-
-	if (m_bEdit) i_oPainter->setBrush(QColor(255, 255, 255));
-	else i_oPainter->setBrush(brush());
-
-
-	i_oPainter->drawRoundRect(l_oRect, 20, 20);
-	if (m_oControl->m_oSelected.contains(this) and m_oControl->m_oSelected.size() == 1)
-	{
-		QPointF l_oOffset(3, 3);
-		i_oPainter->save();
-
-		QPen l_oPen = i_oPainter->pen();
-		l_oPen.setWidth(1);
-		i_oPainter->setPen(l_oPen);
-
-		i_oPainter->setBrush(QColor(255, 255, 0));
-		QPointF l_o = l_oRect.bottomRight();
-		i_oPainter->drawEllipse(QRectF(l_o - 2*l_oOffset, l_o));
-		i_oPainter->restore();
-	}
-
-
-	i_oPainter->save();
-
-
-	// previously l_oRect
-	m_oDoc->setTextWidth(l_oB.width() - 14.);
-	i_oPainter->translate(
-		(l_oB.width() - m_oDoc->documentLayout()->documentSize().width()) / 2,
-		(l_oB.height() - m_oDoc->documentLayout()->documentSize().height()) / 2);
-
-	QAbstractTextDocumentLayout::PaintContext ctx;
-	ctx.palette = QApplication::palette("QTextControl");
-
-	if (m_bEdit)
-	{
-		ctx.cursorPosition = m_oCursor->position();
-		if (m_oCursor->hasSelection())
-		{
-			QAbstractTextDocumentLayout::Selection selection;
-			selection.cursor = *m_oCursor;
-			QPalette::ColorGroup cg = QPalette::Active;
-			selection.format.setBackground(ctx.palette.brush(cg, QPalette::Highlight));
-			selection.format.setForeground(ctx.palette.brush(cg, QPalette::HighlightedText));
-			ctx.selections.append(selection);
-		}
-	}
-	else
-	{
-		ctx.cursorPosition = -1;
-	}
-
-	m_oDoc->documentLayout()->draw(i_oPainter, ctx);
-	//m_oDoc->drawContents(i_oPainter);
-	i_oPainter->restore();
-}*/
-
-/*
-void box_item::set_pos(QPointF i_oP)
-{
-	set_pos(i_oP.x(), i_oP.y());
-}
-
-void box_item::set_pos(qreal i_iXX, qreal i_iYY)
-{
-	m_iXX = i_iXX;
-	m_iYY = i_iYY;
-	qreal l_iXX = GRID_VALUE * (int) (i_iXX / GRID_VALUE);
-	qreal l_iYY = GRID_VALUE * (int) (i_iYY / GRID_VALUE);
-	QGraphicsRectItem::setPos(l_iXX, l_iYY);
-}
-
-void box_item::move_by(qreal i_iXX, qreal i_iYY)
-{
-	set_pos(m_iXX + i_iXX, m_iYY + i_iYY);
-}
-*/
 
 void box_item::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 	setZValue(100);
