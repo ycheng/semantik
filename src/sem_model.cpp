@@ -1315,5 +1315,9 @@ void sem_model::notify_box_props(int id, const QList<diagram_item*>& items) {
 	emit sig_box_props(id, items);
 }
 
+void sem_model::notify_pos_box(int id, const QList<data_box*>& items) {
+	emit sig_pos_box(id, items);
+}
+
 #include "sem_model.moc"
 

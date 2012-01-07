@@ -73,6 +73,7 @@ class sem_model: public QObject
 		void sig_unlink_box(int, data_link*);
 		void sig_focus(void*);
 		void sig_box_props(int id, const QList<diagram_item*>&);
+		void sig_pos_box(int id, const QList<data_box*>&);
 
 		void enable_undo(bool, bool);
 
@@ -147,6 +148,7 @@ class sem_model: public QObject
 		void notify_link_box(int id, data_link *link);
 		void notify_unlink_box(int id, data_link *link);
 		void notify_box_props(int id, const QList<diagram_item*>&);
+		void notify_pos_box(int id, const QList<data_box*>&);
 
 		void notify_message(const QString& msg, int duration);
 

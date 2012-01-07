@@ -1135,5 +1135,14 @@ void box_view::notify_box_props(int id, const QList<diagram_item*>& items)
 	}
 }
 
+void box_view::notify_pos_box(int id, const QList<data_box*>& items)
+{
+	Q_ASSERT(id == m_iId);
+	foreach (data_box *box, items)
+	{
+		qDebug()<<"moving yow";
+	}
+}
+
 #include "box_view.moc"
 
