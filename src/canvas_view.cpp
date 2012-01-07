@@ -455,7 +455,6 @@ void canvas_view::slot_delete()
 	}
 
 	mem_sel *sel = new mem_sel(m_oControl);
-	sel->sel;
 	sel->unsel = l_oLst;
 	sel->apply();
 
@@ -1579,14 +1578,26 @@ void canvas_view::notify_focus(void* ptr) {
 
 %: include  	"canvas_view.moc" 
 
-void canvas_view::slot_select_subtree()
+
+void recurse_add(int id, QList<int>& sel, const QList<QPoint>& m_oLinks)
 {
-	// ITA
-	qDebug()<<"implement me";
+	sel.append(id);
+	for (int i=0; i < m_oLinks.size(); i++)
+	{
+		QPoint l_oP = m_oLinks.at(i);
+		if (l_oP.x() == id) recurse_add(l_oP.y(), sel, m_oLinks);
+	}
 }
 
+void canvas_view::slot_select_subtree()
+{
+	QList<canvas_item*> seli = selection();
+	Q_ASSERT(seli.size() == 1);
 
-
+	mem_sel *sel = new mem_sel(m_oControl);
+	recurse_add(seli.at(0)->m_iId, sel->sel, m_oControl->m_oLinks);
+	sel->apply();
+}
 
 
 #if 0
