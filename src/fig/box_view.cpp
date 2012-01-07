@@ -432,6 +432,37 @@ void box_view::slot_add_item()
 	// l_o->setPos(m_oLastPoint - QPointF(l_oRect.width()/2, l_oRect.height()/2)); // TODO
 }
 
+void box_view::change_colors(QAction* i_oAct)
+{
+	if (!hasFocus) return;
+	qDebug()<<"implement me";
+	/*
+	static QColor l_oColor;
+
+	int l_iIdx = -1;
+	semantik_win *l_o = (semantik_win*) m_oSemantikWindow;
+	for (int i=1; i<l_o->m_oColorGroup->actions().size(); ++i)
+	{
+		if (l_o->m_oColorGroup->actions()[i]==i_oAct)
+		{
+			l_iIdx = i;
+			if (i==l_o->m_oColorGroup->actions().size()-1)
+			{
+				l_oColor = QColorDialog::getColor(l_oColor, this);
+				if (!l_oColor.isValid()) return;
+			}
+			break;
+		}
+	}
+
+	mem_color* col = new mem_color(m_oControl);
+	col->newColor = l_iIdx;
+	col->apply();
+	*/
+	//mem_prop_box *mem = new mem_prop_box(m_oControl, m_iId);
+	//mem->apply();
+}
+
 void box_view::slot_color()
 {
 	QColor l_oColor = QColorDialog::getColor(l_oColor, this);

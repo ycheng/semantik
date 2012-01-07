@@ -257,9 +257,7 @@ void canvas_view::edit_off() {
 
 void canvas_view::slot_toggle_edit()
 {
-	qDebug()<<"slot toggle edit";
 	if (!hasFocus()) {
-		qDebug()<<"does not have the focus";
 		return;
 	}
 
@@ -718,6 +716,8 @@ void canvas_view::sync_flags() {
 
 void canvas_view::change_colors(QAction* i_oAct)
 {
+	if (! hasFocus()) return;
+
 	static QColor l_oColor;
 
 	int l_iIdx = -1;
