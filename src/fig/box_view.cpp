@@ -1084,7 +1084,7 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 		QGraphicsView::mouseReleaseEvent(i_oEv);
 
 		QPointF p = mapToScene(i_oEv->pos()) - m_oLastPoint;
-		if (qAbs(p.x()) > 1 && qAbs(p.y()) > 1)
+		if (qAbs(p.x()) > 1 || qAbs(p.y()) > 1)
 		{
 			mem_pos_box *mem = new mem_pos_box(m_oControl, m_iId);
 			foreach (QGraphicsItem *l_oI1, scene()->selectedItems()) {
