@@ -156,7 +156,6 @@ QVariant box_item::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 		}
 		else if (i_oChange == ItemPositionHasChanged)
 		{
-			//qDebug()<<"stuff changed, update links";
 			update_links();
 		}
 	}

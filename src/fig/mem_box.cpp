@@ -211,6 +211,7 @@ void mem_pos_box::redo() {
 		box->m_iXX += translation.x();
 		box->m_iYY += translation.y();
 	}
+	model->notify_pos_box(m_iId, items);
 	redo_dirty();
 }
 
@@ -219,6 +220,15 @@ void mem_pos_box::undo() {
 		box->m_iXX -= translation.x();
 		box->m_iYY -= translation.y();
 	}
+	model->notify_pos_box(m_iId, items);
 	undo_dirty();
 }
+
+void mem_pos_box::apply() {
+	while (!model->m_oRedoStack.isEmpty())
+		delete model->m_oRedoStack.pop();
+	model->m_oUndoStack.push(this);
+	model->check_undo(true);
+}
+
 
