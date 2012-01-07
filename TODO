@@ -1,13 +1,6 @@
 Priority:
 ---------
 
-Fix the diagram view
- - recover diagrams
- - undo operations
- - persist links properly
-
-save file - warn about existing files
-
 Display pictures on the canvas
 Fix the crashes when loading other documents (?)
 Fix the custom color

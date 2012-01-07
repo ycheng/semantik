@@ -1,6 +1,7 @@
 // Thomas Nagy 2007-2012 GPLV3
 
 #include <QtGui>
+#include <QFile>
 #include <QTextBrowser>
 #include <QProgressDialog>
 #include <KStatusBar>
@@ -420,6 +421,7 @@ void semantik_win::slot_print()
 
 bool semantik_win::slot_save_as()
 {
+	choose:
 	KUrl l_o = KFileDialog::getSaveUrl(KUrl(notr("kfiledialog:///document")),
 		trUtf8("*.sem|Semantik file (*.sem)"), this,
 		trUtf8("Choose a file name"));
@@ -428,6 +430,21 @@ bool semantik_win::slot_save_as()
 	if (!l_o.path().endsWith(notr(".sem")))
 	{
 		l_o = KUrl(l_o.path()+notr(".sem"));
+	}
+
+	if (m_oControl->m_sLastSaved != l_o.path())
+	{
+		if (l_o.isLocalFile() && QFile::exists(l_o.path()))
+		{
+			int mu = KMessageBox::questionYesNo(NULL, //this,
+			trUtf8("The file \"%1\" already exists.\nOverwrite it?").arg(l_o.path()),
+			trUtf8("Overwrite existing file"),
+			KStandardGuiItem::yes(),
+			KStandardGuiItem::no(),
+			notr("OverwriteExistingFile"));
+			if (!mu)
+				goto choose;
+		}
 	}
 
 	if (m_oControl->save_file(l_o.path()))
