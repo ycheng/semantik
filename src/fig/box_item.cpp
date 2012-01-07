@@ -27,9 +27,6 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oVie
 	//adjustSize();
 
 	//setRect(0, 0, 20, 20);
-	//m_oColor = QColor("#FFFCD5");
-	//m_oColor = s_oColorRoot; //"#ABFBC7");
-	//m_oColorBackup = m_oColor;
 
 	m_oItem = m_oView->m_oControl->m_oItems[m_oView->m_iId];
 	m_oBox = m_oItem->m_oBoxes[m_iId];

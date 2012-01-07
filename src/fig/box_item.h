@@ -23,13 +23,6 @@ class box_item : public QGraphicsTextItem
 		int type() const { return BOX_ITEM_T; }
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
 
-		qreal m_iXX;
-		qreal m_iYY;
-
-		QColor m_oColor;
-		QColor m_oColorBackup;
-		QString m_sLabel;
-
 		QRectF boundingRect() const;
 
 		QRectF rect() const { return boundingRect(); }; // TODO
