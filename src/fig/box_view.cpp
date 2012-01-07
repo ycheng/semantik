@@ -239,7 +239,14 @@ void box_view::notify_add_item(int id)
 
 void box_view::notify_edit_box(int id, int bid)
 {
-
+	Q_ASSERT(id == m_iId);
+	box_item *item = m_oItems.value(bid);
+	Q_ASSERT(item != NULL);
+	data_box *box = item->m_oBox;
+	if (box->m_sText != item->toPlainText())
+	{
+		item->setPlainText(box->m_sText);
+	}
 }
 
 void box_view::notify_select(const QList<int>& unsel, const QList<int>& sel)

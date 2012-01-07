@@ -83,6 +83,7 @@ void mem_add_box::undo()
 mem_edit_box::mem_edit_box(sem_model* mod, int id, int bid) : mem_command(mod) {
 	item = model->m_oItems[id];
 	box = item->m_oBoxes[bid];
+	oldText = box->m_sText;
 }
 
 void mem_edit_box::redo()
