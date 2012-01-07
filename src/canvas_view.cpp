@@ -110,6 +110,11 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsV
 	m_oSelectRightAction = l_o = new QAction(trUtf8("Select right"), this); l_o->setShortcut(notr("Right")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_sel())); addAction(l_o); l_o->setData(QVariant(3));
 
 
+	m_oSelectSubtreeAction = new QAction(trUtf8("Select subtree"), this);
+	connect(m_oSelectSubtreeAction, SIGNAL(triggered()), this, SLOT(slot_select_subtree()));
+	addAction(m_oSelectSubtreeAction);
+
+
 	m_oNextRootAction = l_o = new QAction(trUtf8("Next root"), this); l_o->setShortcut(notr("PgDown")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_next_root())); addAction(l_o); l_o->setData(QVariant(1));
 
 
@@ -128,6 +133,7 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsV
 	m_oMenu->addAction(m_oAddItemAction);
 	//m_oMenu->addAction(m_oEditAction);
 	m_oMenu->addAction(m_oDeleteAction);
+	m_oMenu->addAction(m_oSelectSubtreeAction);
 
 	QAction *fullAction = new QAction(trUtf8("Toggle fullscreen"), this);
 	connect(fullAction, SIGNAL(triggered()), this, SLOT(toggle_fullscreen())); addAction(l_o);
@@ -242,6 +248,7 @@ void canvas_view::edit_off() {
 				m_oSelectDownAction->setEnabled(true);
 				m_oSelectLeftAction->setEnabled(true);
 				m_oSelectRightAction->setEnabled(true);
+				m_oSelectSubtreeAction->setEnabled(true);
 				m_oControl->check_undo(true);
 			}
 		}
@@ -305,6 +312,7 @@ void canvas_view::slot_toggle_edit()
 			m_oSelectDownAction->setEnabled(false);
 			m_oSelectLeftAction->setEnabled(false);
 			m_oSelectRightAction->setEnabled(false);
+			m_oSelectSubtreeAction->setEnabled(false);
 			m_oControl->check_undo(false);
 			return;
 		}
@@ -324,6 +332,7 @@ void canvas_view::slot_toggle_edit()
 	m_oSelectDownAction->setEnabled(true);
 	m_oSelectLeftAction->setEnabled(true);
 	m_oSelectRightAction->setEnabled(true);
+	m_oSelectSubtreeAction->setEnabled(true);
 	m_oControl->check_undo(true);
 }
 
@@ -360,6 +369,7 @@ void canvas_view::slot_cancel_edit()
 	m_oSelectDownAction->setEnabled(true);
 	m_oSelectLeftAction->setEnabled(true);
 	m_oSelectRightAction->setEnabled(true);
+	m_oSelectSubtreeAction->setEnabled(true);
 	m_oControl->check_undo(true);
 }
 
@@ -866,6 +876,7 @@ void canvas_view::enable_menu_actions()
 	//m_oEditAction->setEnabled(sel.size()==1);
 	m_oColorMenu->setEnabled(sel.size()>=1);
 	m_oDataMenu->setEnabled(sel.size()==1);
+	m_oSelectSubtreeAction->setEnabled(sel.size()==1);
 
 	if (sel.size() == 1)
 	{
@@ -1568,9 +1579,11 @@ void canvas_view::notify_focus(void* ptr) {
 
 %: include  	"canvas_view.moc" 
 
-
-
-
+void canvas_view::slot_select_subtree()
+{
+	// ITA
+	qDebug()<<"implement me";
+}
 
 
 

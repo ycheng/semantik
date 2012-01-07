@@ -110,6 +110,7 @@ class canvas_view : public QGraphicsView
 		QAction *m_oSelectDownAction;
 		QAction *m_oSelectLeftAction;
 		QAction *m_oSelectRightAction;
+		QAction *m_oSelectSubtreeAction;
 
 		QAction *m_oInsertSiblingAction;
 		QAction *m_oNextRootAction;
@@ -132,6 +133,7 @@ class canvas_view : public QGraphicsView
 		void zoom_out();
 		void toggle_fullscreen();
 		void update_cursor();
+		void slot_select_subtree();
 
 		void notify_add_item(int id);
 		void notify_delete_item(int id);
