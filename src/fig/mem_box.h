@@ -103,4 +103,18 @@ class mem_prop_box : public mem_command {
 
 };
 
+class mem_pos_box : public mem_command {
+	public:
+		mem_pos_box(sem_model*, int id);
+		void undo();
+		void redo();
+
+		int m_iId;
+		QList<data_box*> items;
+		QPointF translation;
+
+		IType type() { return POS_BOX; }
+};
+
 #endif
+
