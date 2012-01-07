@@ -38,7 +38,7 @@ int main(int i_iArgc, char **i_iArgv)
 	options.add("+[url]", ki18n("A file to open on startup"));
 
 	KAboutData l_o("semantik", 0, ki18n("Semantik"), version, ki18n(description),
-			KAboutData::License_GPL_V3, ki18n("(C) 2007-2010 Thomas Nagy"), KLocalizedString(),
+			KAboutData::License_GPL_V3, ki18n("(C) 2007-2012 Thomas Nagy"), KLocalizedString(),
 			"nomail@nomail.com");
 	l_o.addAuthor(ki18n("Thomas Nagy"), KLocalizedString(), "nomail@nomail.com");
 
