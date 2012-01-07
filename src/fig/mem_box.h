@@ -108,11 +108,10 @@ class mem_pos_box : public mem_command {
 		mem_pos_box(sem_model*, int id);
 		void undo();
 		void redo();
-		void apply();
 
 		int m_iId;
-		QList<data_box*> items;
-		QPointF translation;
+		QHash<data_box*, QPointF> prev_values;
+		QHash<data_box*, QPointF> next_values;
 
 		IType type() { return POS_BOX; }
 };

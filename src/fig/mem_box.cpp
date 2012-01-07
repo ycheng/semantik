@@ -207,28 +207,21 @@ mem_pos_box::mem_pos_box(sem_model* mod, int id) : mem_command(mod)
 }
 
 void mem_pos_box::redo() {
-	foreach (data_box* box, items) {
-		box->m_iXX += translation.x();
-		box->m_iYY += translation.y();
+	foreach (data_box* box, next_values.keys()) {
+		box->m_iXX = next_values[box].x();
+		box->m_iYY = next_values[box].y();
 	}
-	model->notify_pos_box(m_iId, items);
+	model->notify_pos_box(m_iId, next_values.keys());
 	redo_dirty();
 }
 
 void mem_pos_box::undo() {
-	foreach (data_box* box, items) {
-		box->m_iXX -= translation.x();
-		box->m_iYY -= translation.y();
+	foreach (data_box* box, prev_values.keys()) {
+		box->m_iXX = prev_values[box].x();
+		box->m_iYY = prev_values[box].y();
 	}
-	model->notify_pos_box(m_iId, items);
+	model->notify_pos_box(m_iId, prev_values.keys());
 	undo_dirty();
-}
-
-void mem_pos_box::apply() {
-	while (!model->m_oRedoStack.isEmpty())
-		delete model->m_oRedoStack.pop();
-	model->m_oUndoStack.push(this);
-	model->check_undo(true);
 }
 
 
