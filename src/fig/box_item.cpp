@@ -33,13 +33,14 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oVie
 
 	m_oItem = m_oView->m_oControl->m_oItems[m_oView->m_iId];
 	m_oBox = m_oItem->m_oBoxes[m_iId];
+	Q_ASSERT(m_oBox);
 
 	i_oParent->scene()->addItem(this);
 
 	setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
 	setZValue(64);
-	setTextWidth(80);
+	setTextWidth(70);
 	setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
 }
 
@@ -257,6 +258,7 @@ QVariant box_item::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 
 void box_item::update_links()
 {
+	// FIXME
 	foreach (box_link* l_oLink, m_oView->m_oLinks)
 	{
 		l_oLink->update_pos();
