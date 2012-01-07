@@ -209,7 +209,7 @@ mem_pos_box::mem_pos_box(sem_model* mod, int id) : mem_command(mod)
 void mem_pos_box::redo() {
 	foreach (data_box* box, items) {
 		box->m_iXX += translation.x();
-		box->m_iYY += translation.x();
+		box->m_iYY += translation.y();
 	}
 	redo_dirty();
 }
@@ -217,7 +217,7 @@ void mem_pos_box::redo() {
 void mem_pos_box::undo() {
 	foreach (data_box* box, items) {
 		box->m_iXX -= translation.x();
-		box->m_iYY -= translation.x();
+		box->m_iYY -= translation.y();
 	}
 	undo_dirty();
 }

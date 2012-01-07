@@ -1083,20 +1083,22 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 	{
 		QGraphicsView::mouseReleaseEvent(i_oEv);
 
-		QPointF stop_point = mapToScene(i_oEv->pos());
-
-		QList<data_box*> boxes;
-		foreach (QGraphicsItem *l_oI1, scene()->selectedItems()) {
-			if (l_oI1->type() == BOX_ITEM_T) {
-				box_item *box = (box_item*) l_oI1;
-				boxes.append(box->m_oBox);
+		QPointF p = mapToScene(i_oEv->pos()) - m_oLastPoint;
+		if (qAbs(p.x()) > 1 && qAbs(p.y()) > 1)
+		{
+			QList<data_box*> boxes;
+			foreach (QGraphicsItem *l_oI1, scene()->selectedItems()) {
+				if (l_oI1->type() == BOX_ITEM_T) {
+					box_item *box = (box_item*) l_oI1;
+					boxes.append(box->m_oBox);
+				}
 			}
-		}
-		if (boxes.size() > 0) {
-			mem_pos_box *mem = new mem_pos_box(m_oControl, m_iId);
-			mem->items = boxes;
-			mem->translation = stop_point - m_oLastPoint;
-			mem->apply();
+			if (boxes.size() > 0) {
+				mem_pos_box *mem = new mem_pos_box(m_oControl, m_iId);
+				mem->items = boxes;
+				mem->translation = p;
+				mem->apply();
+			}
 		}
 	}
 }
