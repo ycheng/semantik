@@ -11,11 +11,7 @@
 #include "data_item.h"
 
 class sem_model;
-
-// mem_command -> command
-
 class mem_sel;
-
 class mem_command {
 	public:
 		mem_command(sem_model*);
@@ -29,7 +25,7 @@ class mem_command {
 
 		bool was_dirty;
 		enum IType {DELETE, ADD, LINK, UNLINK, SELECT, MOVE, COLOR, FLAG, EDIT, DATATYPE, TEXT, VARS, PIC, TABLE, SORT,
-			ADD_BOX, DEL_BOX, EDIT_BOX, LINK_BOX, UNLINK_BOX, PROP_BOX};
+			ADD_BOX, DEL_BOX, EDIT_BOX, LINK_BOX, UNLINK_BOX, PROP_BOX, POS_BOX};
 		virtual IType type() = 0;
 };
 

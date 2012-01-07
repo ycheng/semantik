@@ -199,4 +199,26 @@ void mem_prop_box::undo() {
 	undo_dirty();
 }
 
+///////////////////////////////////////////////////////////////////
+
+mem_pos_box::mem_pos_box(sem_model* mod, int id) : mem_command(mod)
+{
+	m_iId = id;
+}
+
+void mem_pos_box::redo() {
+	foreach (data_box* box, items) {
+		box->m_iXX += translation.x();
+		box->m_iYY += translation.x();
+	}
+	redo_dirty();
+}
+
+void mem_pos_box::undo() {
+	foreach (data_box* box, items) {
+		box->m_iXX -= translation.x();
+		box->m_iYY -= translation.x();
+	}
+	undo_dirty();
+}
 

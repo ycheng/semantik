@@ -55,7 +55,7 @@ class data_box : public diagram_item
 	double m_iHH;
 };
 
-class data_item //:
+class data_item
 {
 	public:
 		data_item(sem_model *i_oControl, int i_iId);
