@@ -748,6 +748,7 @@ void box_view::notify_link_box(int id, data_link* link)
 		box_link *l_o = new box_link(this);
 		l_o->set_link(link);
 		l_o->update_pos();
+		m_oLinks.push_back(l_o);
 	}
 }
 
