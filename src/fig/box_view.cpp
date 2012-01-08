@@ -434,33 +434,46 @@ void box_view::slot_add_item()
 
 void box_view::change_colors(QAction* i_oAct)
 {
-	if (!hasFocus) return;
-	qDebug()<<"implement me";
-	/*
-	static QColor l_oColor;
+	if (!hasFocus()) return;
+
+	QColor l_oColor;
+	static QColor selected_color;
 
 	int l_iIdx = -1;
-	semantik_win *l_o = (semantik_win*) m_oSemantikWindow;
-	for (int i=1; i<l_o->m_oColorGroup->actions().size(); ++i)
+	for (int i=1; i < i_oAct->actionGroup()->actions().size(); ++i)
 	{
-		if (l_o->m_oColorGroup->actions()[i]==i_oAct)
+		if (i_oAct->actionGroup()->actions()[i] == i_oAct)
 		{
 			l_iIdx = i;
-			if (i==l_o->m_oColorGroup->actions().size()-1)
+			if (i == i_oAct->actionGroup()->actions().size()-1)
 			{
-				l_oColor = QColorDialog::getColor(l_oColor, this);
-				if (!l_oColor.isValid()) return;
+				selected_color = QColorDialog::getColor(selected_color, this);
+				if (!selected_color.isValid())
+				{
+					return;
+				}
+				l_oColor = selected_color;
 			}
 			break;
 		}
 	}
 
-	mem_color* col = new mem_color(m_oControl);
-	col->newColor = l_iIdx;
-	col->apply();
-	*/
-	//mem_prop_box *mem = new mem_prop_box(m_oControl, m_iId);
-	//mem->apply();
+
+	mem_prop_box *mem = new mem_prop_box(m_oControl, m_iId);
+	foreach (QGraphicsItem *l_o, scene()->selectedItems())
+	{
+		if (l_o->type() == BOX_LINK_T)
+		{
+			mem->items.append(((box_link*) l_o)->m_oLink);
+		}
+		else if (l_o->type() == BOX_ITEM_T)
+		{
+			mem->items.append(((box_item*) l_o)->m_oBox);
+		}
+	}
+	mem->change_type = CH_COLOR;
+	mem->new_props.color = l_oColor;
+	mem->apply();
 }
 
 void box_view::slot_color()
