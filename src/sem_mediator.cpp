@@ -65,15 +65,6 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		if (i_oAttrs.value(notr("location")).size()) m_oMediator->m_sOutDir = i_oAttrs.value(notr("location"));
 		if (i_oAttrs.value(notr("dir")).size()) m_oMediator->m_sOutProject = i_oAttrs.value(notr("dir"));
 		if (i_oAttrs.value(notr("output")).size()) m_oMediator->m_sOutTemplate = i_oAttrs.value(notr("output"));
-
-		if (i_oAttrs.value(notr("num_seq")).size())
-		{
-			int num_seq = i_oAttrs.value(notr("num_seq")).toInt();
-			if (num_seq > 1 || num_seq < 1000000000)
-			{
-				m_oMediator->num_seq = num_seq;
-			}
-		}
 	}
 	else if (i_sName == notr("link"))
 	{

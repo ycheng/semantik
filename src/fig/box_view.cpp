@@ -422,8 +422,7 @@ void box_view::enable_actions()
 
 void box_view::slot_add_item()
 {
-	mem_add_box *add = new mem_add_box(m_oMediator);
-	add->init(m_iId);
+	mem_add_box *add = new mem_add_box(m_oMediator, m_iId, next_seq());
 	add->box->m_iXX = m_oLastPoint.x();
 	add->box->m_iYY = m_oLastPoint.y();
 	add->apply();
@@ -884,8 +883,7 @@ void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 	if (i_oEv->modifiers() != Qt::ShiftModifier) {
 		//qDebug()<<"adding a box from double click";
 
-		mem_add_box *add = new mem_add_box(m_oMediator);
-		add->init(m_iId);
+		mem_add_box *add = new mem_add_box(m_oMediator, m_iId, next_seq());
 		add->box->m_iXX = m_oLastPoint.x();
 		add->box->m_iYY = m_oLastPoint.y();
 		add->apply();
@@ -1194,6 +1192,14 @@ void box_view::notify_pos_box(int id, const QList<data_box*>& items)
 	{
 		m_oItems[box->m_iId]->update_data();
 	}
+}
+
+int box_view::next_seq()
+{
+	do {
+		++num_seq;
+	} while (m_oItems.contains(num_seq));
+	return num_seq;
 }
 
 #include "box_view.moc"

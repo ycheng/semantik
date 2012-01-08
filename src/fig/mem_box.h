@@ -26,11 +26,11 @@ class mem_del_box : public mem_command {
 
 class mem_add_box : public mem_command {
 	public:
-		mem_add_box(sem_mediator*);
-		void init(int id);
+		mem_add_box(sem_mediator*, int id, int boxid);
 		void undo();
 		void redo();
 
+		int m_iId;
 		data_item* item;
 		data_box* box;
 

@@ -83,6 +83,9 @@ class box_view : public QGraphicsView
 		box_link *grab_segment_link;
 		int grab_segment_pos;
 
+		int next_seq();
+		int num_seq;
+
 	public slots:
 		void change_colors(QAction* i_oAct);
 		void enable_actions(); // used on focus in

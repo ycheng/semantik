@@ -53,14 +53,13 @@ void mem_del_box::redo()
 
 ///////////////////////////////////////////////////////////////////
 
-mem_add_box::mem_add_box(sem_mediator* mod) : mem_command(mod)
+mem_add_box::mem_add_box(sem_mediator* mod, int id, int boxid) : mem_command(mod)
 {
 	item = NULL;
-}
-
-void mem_add_box::init(int id) {
+	m_iId = id;
 	item = model->m_oItems.value(id);
-	box = new data_box(model->next_seq());
+
+	box = new data_box(boxid);
 	box->color = QColor("#cafeba");
 }
 
