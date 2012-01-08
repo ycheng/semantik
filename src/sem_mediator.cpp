@@ -976,6 +976,14 @@ int sem_mediator::next_seq()
 	return num_seq;
 }
 
+int sem_mediator::next_pic_seq()
+{
+	do {
+		++pic_seq;
+	} while (m_oPixCache.contains(pic_seq));
+	return pic_seq;
+}
+
 void sem_mediator::set_dirty(bool b)
 {
 	if (b != m_bDirty)
@@ -1156,6 +1164,8 @@ bool html_converter::startElement(const QString&, const QString&, const QString&
 sem_mediator::sem_mediator(QObject* i_oParent) : QObject(i_oParent)
 {
 	num_seq = 1;
+	pic_seq = 1;
+
 	m_sOutDir = "";
 	m_iTimerValue = 21 / 4;
 	m_bDirty = false;
@@ -1212,6 +1222,17 @@ void sem_mediator::private_select_item(int id) {
 	mem_sel *sel = new mem_sel(this);
 	sel->sel.append(id);
 	sel->apply();
+}
+
+
+QPixmap sem_mediator::getPix(int id)
+{
+	return QPixmap();
+}
+
+QPixmap sem_mediator::getThumb(int id)
+{
+	return QPixmap();
 }
 
 void sem_mediator::notify_add_item(int id) {

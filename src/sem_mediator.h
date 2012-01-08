@@ -161,6 +161,13 @@ class sem_mediator: public QObject
 		QList<flag_scheme*> m_oFlagSchemes;
 
 		int next_seq();
+		int next_pic_seq();
+
+		QHash<int, QPixmap> m_oPixCache;
+		QHash<int, QPixmap> m_oThumbCache;
+
+		QPixmap getPix(int id);
+		QPixmap getThumb(int id);
 
 		void generate_docs(const QString &i_oFile, const QString &i_sName, const QString &i_sLocation);
 
@@ -190,6 +197,7 @@ class sem_mediator: public QObject
 
 	private:
 		int num_seq;
+		int pic_seq;
 		QTimer *m_oTimer;
 
 	public slots:
