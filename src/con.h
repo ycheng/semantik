@@ -1,4 +1,4 @@
-// Thomas Nagy 2007-2010 GPLV3
+// Thomas Nagy 2007-2012 GPLV3
 
 #ifndef CON
 #define CON

@@ -1156,7 +1156,6 @@ bool html_converter::startElement(const QString&, const QString&, const QString&
 sem_model::sem_model(QObject* i_oParent) : QObject(i_oParent)
 {
 	num_seq = 1;
-	num_seq = 1;
 	m_sOutDir = "";
 	m_iTimerValue = 21 / 4;
 	m_bDirty = false;

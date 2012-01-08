@@ -71,6 +71,8 @@ class data_item
 		QString m_sPicCaption;
 		QString m_sPicComment;
 
+
+		int m_oPixId;
 		QPixmap m_oPix;
 		QPixmap m_oThumbnail;
 

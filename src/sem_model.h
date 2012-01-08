@@ -81,8 +81,6 @@ class sem_model: public QObject
 		sem_model(QObject *i_oParent);
 		~sem_model();
 
-		int seq();
-
 		void undo_purge();
 
 		QString m_sTempDir;
