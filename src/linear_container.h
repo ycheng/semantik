@@ -15,7 +15,7 @@ class linear_container : public QWidget
 	public:
 		linear_container(QWidget *i_oParent, sem_model *i_oControl);
 
-		sem_model *m_oControl;
+		sem_model *m_oMediator;
 		linear_view *m_oView;
 };
 

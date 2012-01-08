@@ -55,7 +55,7 @@ class semantik_win : public KXmlGuiWindow
 		box_view *m_oDiagramView;
 
 		linear_container *m_oTree;
-		sem_model *m_oControl;
+		sem_model *m_oMediator;
 
 		vars_view *m_oVarsView;
 		pre_view *m_oPreView;

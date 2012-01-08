@@ -92,7 +92,7 @@ QString bind_node::get_val(const QString & i_s)
 	}
 	else if (i_s == notr("tree_size"))
 	{
-		return QString::number(m_oItem->m_oControl->size_of(m_oItem->m_iId));
+		return QString::number(m_oItem->m_oMediator->size_of(m_oItem->m_iId));
 	}
 	else if (i_s == notr("pic_w"))
 	{

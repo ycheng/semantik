@@ -55,7 +55,7 @@ void canvas_link::rm_link()
 
 void canvas_link::update_pos()
 {
-	if (m_oFrom->m_oGraph->m_oControl->m_iConnType == 0)
+	if (m_oFrom->m_oGraph->m_oMediator->m_iConnType == 0)
 	{
 		update_triangle();
 	}
@@ -114,7 +114,7 @@ void canvas_link::update_triangle()
 
 	if (_X1 != 0) if (_Y1/_X1 < 0) _deltay *= -1;
 
-	double _s = m_oFrom->m_oGraph->m_oControl->m_dTriSize;
+	double _s = m_oFrom->m_oGraph->m_oMediator->m_dTriSize;
 
 	QPolygonF _polygon;
 	_polygon

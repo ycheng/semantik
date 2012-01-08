@@ -16,7 +16,7 @@
 
 vars_view::vars_view(QWidget *i_oParent, sem_model *i_oControl) : QTextEdit(i_oParent)
 {
-	m_oControl = i_oControl;
+	m_oMediator = i_oControl;
 	/*vars_highlighter *l_o =*/ new vars_highlighter(document());
 	connect(this, SIGNAL(textChanged()), this, SLOT(update_edit()));
 
@@ -90,12 +90,12 @@ void vars_view::notify_vars(int id) {
 	if (id == m_iId) {
 		m_bLockEdit = true;
 		if (id != NO_ITEM) {
-			data_item *sel = *m_oControl + id;
+			data_item *sel = *m_oMediator + id;
 			setText(sel->m_sHints);
 		}
 		else
 		{
-			setText(m_oControl->m_sHints);
+			setText(m_oMediator->m_sHints);
 		}
 		m_bLockEdit = false;
 	}
@@ -106,13 +106,13 @@ void vars_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 	m_bLockEdit = true;
 	if (one) {
 		m_iId = sel.at(0);
-		data_item *l_oData = m_oControl->m_oItems.value(m_iId);
+		data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
 		m_oCompleter = m_oCompleterItem;
 		setText(l_oData->m_sHints);
 	} else {
 		m_iId = NO_ITEM;
 		m_oCompleter = m_oCompleterAll;
-		setText(m_oControl->m_sHints);
+		setText(m_oMediator->m_sHints);
 	}
 	m_bLockEdit = false;
 }
@@ -130,10 +130,10 @@ void vars_view::update_edit()
 	mem_vars* tmp = NULL;
 
 	mem_command *c = NULL;
-	if (!m_oControl->m_oUndoStack.empty())
+	if (!m_oMediator->m_oUndoStack.empty())
 	{
-		c = m_oControl->m_oUndoStack.pop();
-		m_oControl->m_oUndoStack.push(c);
+		c = m_oMediator->m_oUndoStack.pop();
+		m_oMediator->m_oUndoStack.push(c);
 		if (c->type() != mem_command::VARS)
 		{
 			c = NULL;
@@ -143,16 +143,16 @@ void vars_view::update_edit()
 	tmp = (mem_vars*) c;
 	if (!c)
 	{
-		tmp = new mem_vars(m_oControl);
+		tmp = new mem_vars(m_oMediator);
 		tmp->m_iId = m_iId;
 		if (m_iId)
 		{
-			data_item *l_oData = m_oControl->m_oItems.value(m_iId);
+			data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
 			tmp->oldVars = l_oData->m_sHints;
 		}
 		else
 		{
-			tmp->oldVars = m_oControl->m_sHints;
+			tmp->oldVars = m_oMediator->m_sHints;
 		}
 		tmp->add();
 	}
@@ -160,12 +160,12 @@ void vars_view::update_edit()
 
 	if (m_iId)
 	{
-		data_item *l_oData = m_oControl->m_oItems.value(m_iId);
+		data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
 		l_oData->m_sHints = tmp->newVars;
 	}
 	else
 	{
-		m_oControl->m_sHints = tmp->newVars;
+		m_oMediator->m_sHints = tmp->newVars;
 	}
 }
 

@@ -80,7 +80,7 @@ class canvas_view : public QGraphicsView
 
 		//void scaleView(qreal i_oScaleFactor);
 
-		sem_model *m_oControl;
+		sem_model *m_oMediator;
 
 		QVector<canvas_item*> m_oRect;
 

@@ -34,7 +34,7 @@ class semantik_reader : public QXmlDefaultHandler
 	private:
 		QString m_sBuf;
 		int m_iVersion;
-		sem_model *m_oControl;
+		sem_model *m_oMediator;
 		int m_iId;
 		data_link * cur_link;
 
@@ -47,7 +47,7 @@ class semantik_reader : public QXmlDefaultHandler
 
 semantik_reader::semantik_reader(sem_model *i_oControl)
 {
-	m_oControl = i_oControl;
+	m_oMediator = i_oControl;
 	cur_link = NULL;
 	m_iId = NO_ITEM;
 }
@@ -56,33 +56,42 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 {
 	if (i_sName == notr("info"))
 	{
-		//m_oControl->m_sName = i_oAttrs.value("name");
-		//m_oControl->m_sFirstName = i_oAttrs.value("fname");
-		//m_oControl->m_sOrganization = i_oAttrs.value("organization");
-		//m_oControl->m_sEmail = i_oAttrs.value("email");
-		m_oControl->m_sHints = i_oAttrs.value(notr("hints"));
+		//m_oMediator->m_sName = i_oAttrs.value("name");
+		//m_oMediator->m_sFirstName = i_oAttrs.value("fname");
+		//m_oMediator->m_sOrganization = i_oAttrs.value("organization");
+		//m_oMediator->m_sEmail = i_oAttrs.value("email");
+		m_oMediator->m_sHints = i_oAttrs.value(notr("hints"));
 
-		if (i_oAttrs.value(notr("location")).size()) m_oControl->m_sOutDir = i_oAttrs.value(notr("location"));
-		if (i_oAttrs.value(notr("dir")).size()) m_oControl->m_sOutProject = i_oAttrs.value(notr("dir"));
-		if (i_oAttrs.value(notr("output")).size()) m_oControl->m_sOutTemplate = i_oAttrs.value(notr("output"));
+		if (i_oAttrs.value(notr("location")).size()) m_oMediator->m_sOutDir = i_oAttrs.value(notr("location"));
+		if (i_oAttrs.value(notr("dir")).size()) m_oMediator->m_sOutProject = i_oAttrs.value(notr("dir"));
+		if (i_oAttrs.value(notr("output")).size()) m_oMediator->m_sOutTemplate = i_oAttrs.value(notr("output"));
+
+		if (i_oAttrs.value(notr("num_seq")).size())
+		{
+			int num_seq = i_oAttrs.value(notr("num_seq")).toInt();
+			if (num_seq > 1 || num_seq < 1000000000)
+			{
+				m_oMediator->num_seq = num_seq;
+			}
+		}
 	}
 	else if (i_sName == notr("link"))
 	{
 		int a = i_oAttrs.value(notr("p")).toInt();
 		int b = i_oAttrs.value(notr("v")).toInt();
-		if (!m_oControl->m_oItems.contains(a)) return false;
-		if (!m_oControl->m_oItems.contains(b)) return false;
-		m_oControl->m_oLinks.append(QPoint(a, b));
+		if (!m_oMediator->m_oItems.contains(a)) return false;
+		if (!m_oMediator->m_oItems.contains(b)) return false;
+		m_oMediator->m_oLinks.append(QPoint(a, b));
 	}
 	else if (i_sName == notr("tblsettings"))
 	{
-		data_item *l_oItem = m_oControl->m_oItems.value(m_iId);
+		data_item *l_oItem = m_oMediator->m_oItems.value(m_iId);
 		l_oItem->m_iNumRows = i_oAttrs.value(notr("rows")).toInt();
 		l_oItem->m_iNumCols = i_oAttrs.value(notr("cols")).toInt();
 	}
 	else if (i_sName == notr("itembox"))
 	{
-		data_item *l_oItem = m_oControl->m_oItems.value(m_iId);
+		data_item *l_oItem = m_oMediator->m_oItems.value(m_iId);
 		int bid = i_oAttrs.value(notr("id")).toInt();
 		data_box *box = new data_box(bid);
 		l_oItem->m_oBoxes[bid] = box;
@@ -95,7 +104,7 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 	}
 	else if (i_sName == notr("linkbox"))
 	{
-		data_item *l_oItem = m_oControl->m_oItems.value(m_iId);
+		data_item *l_oItem = m_oMediator->m_oItems.value(m_iId);
 		cur_link = new data_link();
 		l_oItem->m_oLinks.append(cur_link);
 		cur_link->m_iParent = i_oAttrs.value(notr("parent")).toInt();
@@ -112,7 +121,7 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 	}
 	else if (i_sName == notr("tbl"))
 	{
-		data_item *l_oItem = m_oControl->m_oItems.value(m_iId);
+		data_item *l_oItem = m_oMediator->m_oItems.value(m_iId);
 		int row = i_oAttrs.value(notr("row")).toInt();
 		int col = i_oAttrs.value(notr("col")).toInt();
 		QPair<int, int> p(row, col);
@@ -123,8 +132,8 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		m_iId = i_oAttrs.value(notr("id")).toInt();
 		if (!m_iId) return false;
 
-		data_item *l_oItem = new data_item(m_oControl, m_iId);
-		m_oControl->m_oItems[m_iId] = l_oItem;
+		data_item *l_oItem = new data_item(m_oMediator, m_iId);
+		m_oMediator->m_oItems[m_iId] = l_oItem;
 
 		l_oItem->m_sSummary = i_oAttrs.value(notr("summary"));
 		l_oItem->m_sText = i_oAttrs.value(notr("text"));
@@ -156,7 +165,7 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 	}
 	else if (i_sName == notr("color_schemes"))
 	{
-		m_oControl->m_oColorSchemes.clear();
+		m_oMediator->m_oColorSchemes.clear();
 	}
 	else if (i_sName == notr("color_scheme"))
 	{
@@ -165,11 +174,11 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		l_o.m_oInnerColor = i_oAttrs.value(notr("inner"));
 		l_o.m_oBorderColor = i_oAttrs.value(notr("border"));
 		l_o.m_oTextColor = i_oAttrs.value(notr("text"));
-		m_oControl->m_oColorSchemes.push_back(l_o);
+		m_oMediator->m_oColorSchemes.push_back(l_o);
 	}
 	else if (i_sName == notr("flag"))
 	{
-		data_item *l_oItem = m_oControl->m_oItems.value(m_iId);
+		data_item *l_oItem = m_oMediator->m_oItems.value(m_iId);
 		l_oItem->m_oFlags.push_back(i_oAttrs.value(notr("id")));
 	}
 	return true;

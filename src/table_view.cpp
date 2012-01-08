@@ -19,7 +19,7 @@ numbered_action::numbered_action(QString x, QWidget *y) : QAction(x, y) {
 
 table_view::table_view(QWidget *i_oParent, sem_model *i_oControl) : QTableWidget(0, 0, i_oParent)
 {
-	m_oControl = i_oControl;
+	m_oMediator = i_oControl;
 	m_bFreeze = false;
 
 	m_oAddRowAct = new numbered_action(trUtf8("Add Row"), this);
@@ -99,7 +99,7 @@ void table_view::cell_changed(int i_iRow, int i_iCol)
 	if (l_oItem) l_sText = l_oItem->text();
 	else l_sText = "";
 
-	data_item *l_oData = m_oControl->m_oItems.value(m_iId);
+	data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
 	QHash<QPair<int, int>, QString> changed;
 
 	for (int i=0; i < rowCount(); ++i)
@@ -111,7 +111,7 @@ void table_view::cell_changed(int i_iRow, int i_iCol)
 	}
 	changed[QPair<int, int>(i_iRow, i_iCol)] = l_sText;
 
-	mem_table *tmp = new mem_table(m_oControl);
+	mem_table *tmp = new mem_table(m_oMediator);
 	tmp->m_iId = m_iId;
 	tmp->oldNRows = tmp->newNRows = l_oData->m_iNumRows;
 	tmp->oldNCols = tmp->newNCols = l_oData->m_iNumCols;
@@ -122,7 +122,7 @@ void table_view::cell_changed(int i_iRow, int i_iCol)
 
 void table_view::add_row()
 {
-	data_item *l_oData = m_oControl->m_oItems.value(m_iId);
+	data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
 	QHash<QPair<int, int>, QString> changed;
 	for (int i=0; i < rowCount() + 1; ++i)
 	{
@@ -135,7 +135,7 @@ void table_view::add_row()
 		}
 	}
 
-	mem_table *tmp = new mem_table(m_oControl);
+	mem_table *tmp = new mem_table(m_oMediator);
 	tmp->m_iId = m_iId;
 	tmp->oldNRows = l_oData->m_iNumRows;
 	tmp->oldNCols = l_oData->m_iNumCols;
@@ -148,7 +148,7 @@ void table_view::add_row()
 
 void table_view::add_column()
 {
-	data_item *l_oData = m_oControl->m_oItems.value(m_iId);
+	data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
 	QHash<QPair<int, int>, QString> changed;
 	for (int i=0; i < rowCount(); ++i)
 	{
@@ -162,7 +162,7 @@ void table_view::add_column()
 		}
 	}
 
-	mem_table *tmp = new mem_table(m_oControl);
+	mem_table *tmp = new mem_table(m_oMediator);
 	tmp->m_iId = m_iId;
 	tmp->oldNRows = l_oData->m_iNumRows;
 	tmp->oldNCols = l_oData->m_iNumCols;
@@ -175,7 +175,7 @@ void table_view::add_column()
 
 void table_view::rm_row()
 {
-	data_item *l_oData = m_oControl->m_oItems.value(m_iId);
+	data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
 	QHash<QPair<int, int>, QString> changed;
 	for (int i=0; i < rowCount(); ++i)
 	{
@@ -188,7 +188,7 @@ void table_view::rm_row()
 		}
 	}
 
-	mem_table *tmp = new mem_table(m_oControl);
+	mem_table *tmp = new mem_table(m_oMediator);
 	tmp->m_iId = m_iId;
 	tmp->oldNRows = l_oData->m_iNumRows;
 	tmp->oldNCols = l_oData->m_iNumCols;
@@ -201,7 +201,7 @@ void table_view::rm_row()
 
 void table_view::rm_column()
 {
-	data_item *l_oData = m_oControl->m_oItems.value(m_iId);
+	data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
 	QHash<QPair<int, int>, QString> changed;
 	for (int i=0; i < rowCount(); ++i)
 	{
@@ -215,7 +215,7 @@ void table_view::rm_column()
 		}
 	}
 
-	mem_table *tmp = new mem_table(m_oControl);
+	mem_table *tmp = new mem_table(m_oMediator);
 	tmp->m_iId = m_iId;
 	tmp->oldNRows = l_oData->m_iNumRows;
 	tmp->oldNCols = l_oData->m_iNumCols;
@@ -233,8 +233,8 @@ void table_view::resize_table()
 	l_oGen.m_oCols->setValue(columnCount());
 	if (l_oGen.exec() == QDialog::Accepted)
 	{
-		data_item *l_oData = m_oControl->m_oItems.value(m_iId);
-		mem_table *tmp = new mem_table(m_oControl);
+		data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
+		mem_table *tmp = new mem_table(m_oMediator);
 		tmp->m_iId = m_iId;
 		tmp->oldNRows = l_oData->m_iNumRows;
 		tmp->oldNCols = l_oData->m_iNumCols;
@@ -253,7 +253,7 @@ void table_view::notify_table(int id)
 	}
 	m_bFreeze = true;
 
-	data_item *l_oData = m_oControl->m_oItems.value(id);
+	data_item *l_oData = m_oMediator->m_oItems.value(id);
 
 	if (l_oData->m_iNumRows != rowCount() || l_oData->m_iNumCols != columnCount())
 	{
@@ -283,7 +283,7 @@ void table_view::notify_select(const QList<int>& unsel, const QList<int>& sel)
 	bool one = (sel.size() == 1);
 	if (one) {
 		m_iId = sel.at(0);
-		data_item *l_oData = m_oControl->m_oItems.value(m_iId);
+		data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
 
 		Q_ASSERT(l_oData!=NULL);
 

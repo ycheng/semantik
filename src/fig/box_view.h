@@ -62,7 +62,7 @@ class box_view : public QGraphicsView
 		void sync_view();
 		void from_string(const QString &);
 
-		sem_model *m_oControl;
+		sem_model *m_oMediator;
 
 		box_link *m_oCurrent;
 

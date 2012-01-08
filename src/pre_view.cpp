@@ -17,7 +17,7 @@
 
 pre_view::pre_view(QWidget *i_oParent, sem_model *i_oControl) : QStackedWidget(i_oParent)
 {
-	m_oControl = i_oControl;
+	m_oMediator = i_oControl;
 
 	m_oLabel = new QLabel(this);
 	m_oLabel->setText(trUtf8("<p align='center'>No preview available<br/>at this time</p>"));

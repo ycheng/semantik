@@ -29,8 +29,7 @@ class html_converter : public QXmlDefaultHandler
 };
 
 
-// sem_model -> mediator
-
+class semantik_reader;
 class data_item;
 class bind_node;
 class sem_model: public QObject
@@ -186,6 +185,8 @@ class sem_model: public QObject
 		int itemSelected();
 
 		void notify_focus(void *);
+
+		friend class semantik_reader;
 
 	private:
 		int num_seq;

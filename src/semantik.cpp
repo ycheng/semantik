@@ -40,7 +40,7 @@
 
 void semantik_win::slot_generate()
 {
-	if (m_oControl->choose_root() <= 0)
+	if (m_oMediator->choose_root() <= 0)
 	{
 		KMessageBox::sorry(this, trUtf8("The map is empty, Semantik\ncannot create documents from it"), trUtf8("Empty map"));
 		return;
@@ -114,17 +114,17 @@ void semantik_win::slot_generate()
 	}
 
 	generator_dialog l_oGen(this, l_oLst);
-	l_oGen.m_oName->setText(m_oControl->m_sOutProject);
-	l_oGen.m_oLocation->setText(m_oControl->m_sOutDir);
+	l_oGen.m_oName->setText(m_oMediator->m_sOutProject);
+	l_oGen.m_oLocation->setText(m_oMediator->m_sOutDir);
 	if (l_oGen.m_oLocation->text().length()<2) l_oGen.m_oLocation->setText(bind_node::get_var(notr("outdir")));
 
-	l_oGen.activate_from_name(m_oControl->m_sOutTemplate);
+	l_oGen.activate_from_name(m_oMediator->m_sOutTemplate);
 	if (l_oGen.exec() == QDialog::Accepted)
 	{
-		m_oControl->m_sOutDir = l_oGen.m_oLocation->text();
-		m_oControl->m_sOutProject = l_oGen.m_oName->text();
-		m_oControl->m_sOutTemplate = l_oGen.m_sShortName;
-		m_oControl->generate_docs(l_oGen.m_sCurrent, l_oGen.m_oName->text(), l_oGen.m_oLocation->text());
+		m_oMediator->m_sOutDir = l_oGen.m_oLocation->text();
+		m_oMediator->m_sOutProject = l_oGen.m_oName->text();
+		m_oMediator->m_sOutTemplate = l_oGen.m_sShortName;
+		m_oMediator->generate_docs(l_oGen.m_sCurrent, l_oGen.m_oName->text(), l_oGen.m_oLocation->text());
 	}
 }
 
@@ -134,14 +134,14 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 
 	//setWindowIcon(QIcon(notr(":images/semantik-32.png")));
 
-	m_oControl = new sem_model(this);
-	connect(m_oControl, SIGNAL(sig_message(const QString&, int)), this, SLOT(slot_message(const QString&, int)));
-	connect(m_oControl, SIGNAL(update_title()), this, SLOT(update_title()));
+	m_oMediator = new sem_model(this);
+	connect(m_oMediator, SIGNAL(sig_message(const QString&, int)), this, SLOT(slot_message(const QString&, int)));
+	connect(m_oMediator, SIGNAL(update_title()), this, SLOT(update_title()));
 
 	QFrame *fr = new QFrame(this);
 	fr->setLineWidth(0);
 	fr->setFrameStyle(QFrame::NoFrame);
-	m_oCanvas = new canvas_view(fr, m_oControl);
+	m_oCanvas = new canvas_view(fr, m_oMediator);
 	setCentralWidget(fr);
 	QGridLayout *ll = new QGridLayout(fr);
 	ll->addWidget(m_oCanvas);
@@ -156,9 +156,9 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	KStandardAction::open(this, SLOT(slot_open()), actionCollection());
 	KStandardAction::print(this, SLOT(slot_print()), actionCollection());
 	KStandardAction::tipOfDay(this, SLOT(slot_tip_of_day()), actionCollection());
-	m_oUndoAct = KStandardAction::undo(m_oControl, SLOT(slot_undo()), actionCollection());
+	m_oUndoAct = KStandardAction::undo(m_oMediator, SLOT(slot_undo()), actionCollection());
 	m_oUndoAct->setEnabled(false);
-	m_oRedoAct = KStandardAction::redo(m_oControl, SLOT(slot_redo()), actionCollection());
+	m_oRedoAct = KStandardAction::redo(m_oMediator, SLOT(slot_redo()), actionCollection());
 	m_oRedoAct->setEnabled(false);
 
 	m_oRecentFilesAct = KStandardAction::openRecent(this, SLOT(slot_recent(const KUrl&)), actionCollection());
@@ -244,28 +244,28 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 
 	QDockWidget *l_oDockData = new QDockWidget(trUtf8("Data"), this);
 	l_oDockData->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::BottomDockWidgetArea);
-	m_oDataView = new data_view(l_oDockData, m_oControl);
+	m_oDataView = new data_view(l_oDockData, m_oMediator);
 	l_oDockData->setWidget(m_oDataView);
 	addDockWidget(Qt::BottomDockWidgetArea, l_oDockData);
 	actionCollection()->addAction(notr("show_dock_data"), l_oDockData->toggleViewAction());
 	l_oDockData->setObjectName(notr("DataDock"));
 
-	m_oTextView = new text_view(m_oDataView, m_oControl);
+	m_oTextView = new text_view(m_oDataView, m_oMediator);
 	m_oDataView->addWidget(m_oTextView);
 
-	m_oImageView = new image_view(m_oDataView, m_oControl);
+	m_oImageView = new image_view(m_oDataView, m_oMediator);
 	m_oDataView->addWidget(m_oImageView);
 
-	m_oTableView = new table_view(m_oDataView, m_oControl);
+	m_oTableView = new table_view(m_oDataView, m_oMediator);
 	m_oDataView->addWidget(m_oTableView);
 
-	m_oDiagramView = new box_view(m_oDataView, m_oControl);
+	m_oDiagramView = new box_view(m_oDataView, m_oMediator);
 	m_oDataView->addWidget(m_oDiagramView);
 	connect(m_oColorGroup, SIGNAL(triggered(QAction*)), m_oDiagramView, SLOT(change_colors(QAction*)));
 
 	QDockWidget *l_oDockVars = new QDockWidget(trUtf8("Variables"), this);
 	l_oDockVars->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::BottomDockWidgetArea);
-	m_oVarsView = new vars_view(l_oDockVars, m_oControl);
+	m_oVarsView = new vars_view(l_oDockVars, m_oMediator);
 	l_oDockVars->setWidget(m_oVarsView);
 	addDockWidget(Qt::BottomDockWidgetArea, l_oDockVars);
 	l_oDockVars->setObjectName(notr("VarsDock"));
@@ -274,7 +274,7 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 
 	QDockWidget *l_oDockPreview = new QDockWidget(trUtf8("Preview"), this);
 	l_oDockPreview->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::BottomDockWidgetArea);
-	m_oPreView = new pre_view(l_oDockPreview, m_oControl);
+	m_oPreView = new pre_view(l_oDockPreview, m_oMediator);
 	l_oDockPreview->setWidget(m_oPreView);
 	addDockWidget(Qt::RightDockWidgetArea, l_oDockPreview);
 	actionCollection()->addAction(notr("show_dock_preview"), l_oDockPreview->toggleViewAction());
@@ -285,7 +285,7 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 
 
 	QDockWidget *l_oDock = new QDockWidget(trUtf8("Linear view"), this);
-	m_oTree = new linear_container(l_oDock, m_oControl);
+	m_oTree = new linear_container(l_oDock, m_oMediator);
 	l_oDock->setWidget(m_oTree);
 	addDockWidget(Qt::LeftDockWidgetArea, l_oDock);
 	actionCollection()->addAction(notr("show_dock_linear"), l_oDock->toggleViewAction());
@@ -295,86 +295,86 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	setXMLFile(notr("semantikui.rc"));
 	setupGUI();
 
-	m_oControl->m_oCurrentUrl = KUrl();
+	m_oMediator->m_oCurrentUrl = KUrl();
 	update_title();
 
 	m_oColorsToolBar = toolBar(notr("colorsToolBar"));
 	m_oFlagsToolBar = toolBar(notr("flagsToolBar"));
 
 	linear_view* ln = m_oTree->m_oView;
-	connect(m_oControl, SIGNAL(sig_preview()), m_oPreView, SLOT(notify_preview()));
-	connect(m_oControl, SIGNAL(sig_add_item(int)), m_oCanvas, SLOT(notify_add_item(int)));
-	connect(m_oControl, SIGNAL(sig_add_item(int)), ln, SLOT(notify_add_item(int)));
-	connect(m_oControl, SIGNAL(sig_add_item(int)), m_oDiagramView, SLOT(notify_add_item(int)));
+	connect(m_oMediator, SIGNAL(sig_preview()), m_oPreView, SLOT(notify_preview()));
+	connect(m_oMediator, SIGNAL(sig_add_item(int)), m_oCanvas, SLOT(notify_add_item(int)));
+	connect(m_oMediator, SIGNAL(sig_add_item(int)), ln, SLOT(notify_add_item(int)));
+	connect(m_oMediator, SIGNAL(sig_add_item(int)), m_oDiagramView, SLOT(notify_add_item(int)));
 
-	connect(m_oControl, SIGNAL(sig_delete_item(int)), m_oCanvas, SLOT(notify_delete_item(int)));
-	connect(m_oControl, SIGNAL(sig_delete_item(int)), ln, SLOT(notify_delete_item(int)));
-	connect(m_oControl, SIGNAL(sig_link_items(int, int)), m_oCanvas, SLOT(notify_link_items(int, int)));
-	connect(m_oControl, SIGNAL(sig_link_items(int, int)), ln, SLOT(notify_link_items(int, int)));
-	connect(m_oControl, SIGNAL(sig_unlink_items(int, int)), m_oCanvas, SLOT(notify_unlink_items(int, int)));
-	connect(m_oControl, SIGNAL(sig_unlink_items(int, int)), ln, SLOT(notify_unlink_items(int, int)));
-	connect(m_oControl, SIGNAL(sig_repaint(int)), m_oCanvas, SLOT(notify_repaint(int)));
-	connect(m_oControl, SIGNAL(sig_repaint(int)), ln, SLOT(notify_repaint(int)));
+	connect(m_oMediator, SIGNAL(sig_delete_item(int)), m_oCanvas, SLOT(notify_delete_item(int)));
+	connect(m_oMediator, SIGNAL(sig_delete_item(int)), ln, SLOT(notify_delete_item(int)));
+	connect(m_oMediator, SIGNAL(sig_link_items(int, int)), m_oCanvas, SLOT(notify_link_items(int, int)));
+	connect(m_oMediator, SIGNAL(sig_link_items(int, int)), ln, SLOT(notify_link_items(int, int)));
+	connect(m_oMediator, SIGNAL(sig_unlink_items(int, int)), m_oCanvas, SLOT(notify_unlink_items(int, int)));
+	connect(m_oMediator, SIGNAL(sig_unlink_items(int, int)), ln, SLOT(notify_unlink_items(int, int)));
+	connect(m_oMediator, SIGNAL(sig_repaint(int)), m_oCanvas, SLOT(notify_repaint(int)));
+	connect(m_oMediator, SIGNAL(sig_repaint(int)), ln, SLOT(notify_repaint(int)));
 
-	connect(m_oControl, SIGNAL(sig_edit(int)), m_oCanvas, SLOT(notify_edit(int)));
-	connect(m_oControl, SIGNAL(sig_edit(int)), ln, SLOT(notify_edit(int)));
-	connect(m_oControl, SIGNAL(sig_text(int)), m_oTextView, SLOT(notify_text(int)));
-	connect(m_oControl, SIGNAL(sig_vars(int)), m_oVarsView, SLOT(notify_vars(int)));
+	connect(m_oMediator, SIGNAL(sig_edit(int)), m_oCanvas, SLOT(notify_edit(int)));
+	connect(m_oMediator, SIGNAL(sig_edit(int)), ln, SLOT(notify_edit(int)));
+	connect(m_oMediator, SIGNAL(sig_text(int)), m_oTextView, SLOT(notify_text(int)));
+	connect(m_oMediator, SIGNAL(sig_vars(int)), m_oVarsView, SLOT(notify_vars(int)));
 
-	connect(m_oControl, SIGNAL(sig_table(int)), m_oTableView, SLOT(notify_table(int)));
+	connect(m_oMediator, SIGNAL(sig_table(int)), m_oTableView, SLOT(notify_table(int)));
 
-	connect(m_oControl, SIGNAL(sig_flag(int)), m_oCanvas, SLOT(notify_flag(int)));
-	connect(m_oControl, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), m_oCanvas, SLOT(notify_select(const QList<int>&, const QList<int>&)));
-	connect(m_oControl, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), ln, SLOT(notify_select(const QList<int>&, const QList<int>&)));
-	connect(m_oControl, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), m_oDataView, SLOT(notify_select(const QList<int>&, const QList<int>&)));
-	connect(m_oControl, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), m_oTextView, SLOT(notify_select(const QList<int>&, const QList<int>&)));
-	connect(m_oControl, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), m_oVarsView, SLOT(notify_select(const QList<int>&, const QList<int>&)));
-	connect(m_oControl, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), m_oImageView, SLOT(notify_select(const QList<int>&, const QList<int>&)));
-	connect(m_oControl, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), m_oTableView, SLOT(notify_select(const QList<int>&, const QList<int>&)));
-	connect(m_oControl, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), m_oDiagramView, SLOT(notify_select(const QList<int>&, const QList<int>&)));
-	connect(m_oControl, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), ln, SLOT(notify_select(const QList<int>&, const QList<int>&)));
+	connect(m_oMediator, SIGNAL(sig_flag(int)), m_oCanvas, SLOT(notify_flag(int)));
+	connect(m_oMediator, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), m_oCanvas, SLOT(notify_select(const QList<int>&, const QList<int>&)));
+	connect(m_oMediator, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), ln, SLOT(notify_select(const QList<int>&, const QList<int>&)));
+	connect(m_oMediator, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), m_oDataView, SLOT(notify_select(const QList<int>&, const QList<int>&)));
+	connect(m_oMediator, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), m_oTextView, SLOT(notify_select(const QList<int>&, const QList<int>&)));
+	connect(m_oMediator, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), m_oVarsView, SLOT(notify_select(const QList<int>&, const QList<int>&)));
+	connect(m_oMediator, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), m_oImageView, SLOT(notify_select(const QList<int>&, const QList<int>&)));
+	connect(m_oMediator, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), m_oTableView, SLOT(notify_select(const QList<int>&, const QList<int>&)));
+	connect(m_oMediator, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), m_oDiagramView, SLOT(notify_select(const QList<int>&, const QList<int>&)));
+	connect(m_oMediator, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), ln, SLOT(notify_select(const QList<int>&, const QList<int>&)));
 
-	connect(m_oControl, SIGNAL(sig_sort(int)), m_oCanvas, SLOT(notify_sort(int)));
-	connect(m_oControl, SIGNAL(sig_sort(int)), ln, SLOT(notify_sort(int)));
+	connect(m_oMediator, SIGNAL(sig_sort(int)), m_oCanvas, SLOT(notify_sort(int)));
+	connect(m_oMediator, SIGNAL(sig_sort(int)), ln, SLOT(notify_sort(int)));
 
 
-	connect(m_oControl, SIGNAL(sig_datatype(int)), m_oDataView, SLOT(notify_datatype(int)));
+	connect(m_oMediator, SIGNAL(sig_datatype(int)), m_oDataView, SLOT(notify_datatype(int)));
 
-	connect(m_oControl, SIGNAL(sig_move(const QList<int>&, const QList<QPointF>&)), m_oCanvas, SLOT(notify_move(const QList<int>&, const QList<QPointF>&)));
+	connect(m_oMediator, SIGNAL(sig_move(const QList<int>&, const QList<QPointF>&)), m_oCanvas, SLOT(notify_move(const QList<int>&, const QList<QPointF>&)));
 
-	connect(m_oControl, SIGNAL(sync_flags()), m_oCanvas, SLOT(sync_flags()));
-	connect(m_oControl, SIGNAL(sync_colors()), m_oCanvas, SLOT(sync_colors()));
+	connect(m_oMediator, SIGNAL(sync_flags()), m_oCanvas, SLOT(sync_flags()));
+	connect(m_oMediator, SIGNAL(sync_colors()), m_oCanvas, SLOT(sync_colors()));
 
 	connect(m_oImageView, SIGNAL(sig_message(const QString&, int)), this, SLOT(slot_message(const QString&, int)));
 
-	connect(m_oControl, SIGNAL(sig_open_map()), m_oCanvas, SLOT(notify_open_map()));
-	connect(m_oControl, SIGNAL(sig_change_data(int)), m_oCanvas, SLOT(notify_change_data(int)));
+	connect(m_oMediator, SIGNAL(sig_open_map()), m_oCanvas, SLOT(notify_open_map()));
+	connect(m_oMediator, SIGNAL(sig_change_data(int)), m_oCanvas, SLOT(notify_change_data(int)));
 
-	connect(m_oControl, SIGNAL(sig_export_item(int)), m_oDiagramView, SLOT(notify_export_item(int)));
+	connect(m_oMediator, SIGNAL(sig_export_item(int)), m_oDiagramView, SLOT(notify_export_item(int)));
 
-	connect(m_oControl, SIGNAL(sig_add_box(int, int)), m_oDiagramView, SLOT(notify_add_box(int, int)));
-	connect(m_oControl, SIGNAL(sig_del_box(int, int)), m_oDiagramView, SLOT(notify_del_box(int, int)));
-	connect(m_oControl, SIGNAL(sig_edit_box(int, int)), m_oDiagramView, SLOT(notify_edit_box(int, int)));
-	connect(m_oControl, SIGNAL(sig_link_box(int, data_link*)), m_oDiagramView, SLOT(notify_link_box(int, data_link*)));
-	connect(m_oControl, SIGNAL(sig_unlink_box(int, data_link*)), m_oDiagramView, SLOT(notify_unlink_box(int, data_link*)));
-	connect(m_oControl, SIGNAL(sig_box_props(int, const QList<diagram_item*>&)), m_oDiagramView, SLOT(notify_box_props(int, const QList<diagram_item*>&)));
-	connect(m_oControl, SIGNAL(sig_pos_box(int, const QList<data_box*>&)), m_oDiagramView, SLOT(notify_pos_box(int, const QList<data_box*>&)));
+	connect(m_oMediator, SIGNAL(sig_add_box(int, int)), m_oDiagramView, SLOT(notify_add_box(int, int)));
+	connect(m_oMediator, SIGNAL(sig_del_box(int, int)), m_oDiagramView, SLOT(notify_del_box(int, int)));
+	connect(m_oMediator, SIGNAL(sig_edit_box(int, int)), m_oDiagramView, SLOT(notify_edit_box(int, int)));
+	connect(m_oMediator, SIGNAL(sig_link_box(int, data_link*)), m_oDiagramView, SLOT(notify_link_box(int, data_link*)));
+	connect(m_oMediator, SIGNAL(sig_unlink_box(int, data_link*)), m_oDiagramView, SLOT(notify_unlink_box(int, data_link*)));
+	connect(m_oMediator, SIGNAL(sig_box_props(int, const QList<diagram_item*>&)), m_oDiagramView, SLOT(notify_box_props(int, const QList<diagram_item*>&)));
+	connect(m_oMediator, SIGNAL(sig_pos_box(int, const QList<data_box*>&)), m_oDiagramView, SLOT(notify_pos_box(int, const QList<data_box*>&)));
 
-	connect(m_oControl, SIGNAL(sig_focus(void*)), m_oCanvas, SLOT(notify_focus(void*)));
-	connect(m_oControl, SIGNAL(sig_focus(void*)), m_oDiagramView, SLOT(notify_focus(void*)));
+	connect(m_oMediator, SIGNAL(sig_focus(void*)), m_oCanvas, SLOT(notify_focus(void*)));
+	connect(m_oMediator, SIGNAL(sig_focus(void*)), m_oDiagramView, SLOT(notify_focus(void*)));
 
 	m_oTree->m_oView->addAction(m_oCanvas->m_oDeleteAction); // FIXME
 
 	//qDebug()<<"instance is "<<l_oInst<<endl;
 
-	m_oControl->init_colors();
-	m_oControl->init_flags();
+	m_oMediator->init_colors();
+	m_oMediator->init_flags();
 
 	read_config();
 	statusBar()->showMessage(trUtf8("Welcome to Semantik"), 2000);
 	setAutoSaveSettings();
 
-	connect(m_oControl, SIGNAL(enable_undo(bool, bool)), this, SLOT(slot_enable_undo(bool, bool)));
+	connect(m_oMediator, SIGNAL(enable_undo(bool, bool)), this, SLOT(slot_enable_undo(bool, bool)));
 	KTipDialog::showTip(this, notr("semantik/tips"));
 }
 
@@ -384,8 +384,8 @@ void semantik_win::read_config()
 	m_oRecentFilesAct->loadEntries(KGlobal::config()->group(notr("Recent Files")));
 	move(l_oConfig.readEntry(notr("winpos"), QPoint(0, 0)));
 	m_oCanvas->setBackgroundBrush(QColor(l_oConfig.readEntry(notr("bgcolor"), notr("#FFFDE8"))));
-	m_oControl->m_sOutDir = l_oConfig.readEntry(notr("outdir"), notr("/tmp/"));
-	bind_node::set_var(notr("outdir"), m_oControl->m_sOutDir);
+	m_oMediator->m_sOutDir = l_oConfig.readEntry(notr("outdir"), notr("/tmp/"));
+	bind_node::set_var(notr("outdir"), m_oMediator->m_sOutDir);
 
 	//QString lang_code(config.readEntry("currentLanguageCode", QVariant(QString())).toString());
 	//if (lang_code.isEmpty()) lang_code = "en_US";  // null-string are saved as empty-strings
@@ -432,7 +432,7 @@ bool semantik_win::slot_save_as()
 		l_o = KUrl(l_o.path()+notr(".sem"));
 	}
 
-	if (m_oControl->m_sLastSaved != l_o.path())
+	if (m_oMediator->m_sLastSaved != l_o.path())
 	{
 		if (l_o.isLocalFile() && QFile::exists(l_o.path()))
 		{
@@ -447,16 +447,16 @@ bool semantik_win::slot_save_as()
 		}
 	}
 
-	if (m_oControl->save_file(l_o.path()))
+	if (m_oMediator->save_file(l_o.path()))
 	{
 		statusBar()->showMessage(trUtf8("Saved '%1'").arg(l_o.path()), 2000);
-		m_oControl->m_oCurrentUrl = l_o;
+		m_oMediator->m_oCurrentUrl = l_o;
 		update_title();
 		return true;
 	}
 	else
 	{
-		m_oControl->m_oCurrentUrl = KUrl();
+		m_oMediator->m_oCurrentUrl = KUrl();
 		update_title();
 	}
 
@@ -465,13 +465,13 @@ bool semantik_win::slot_save_as()
 
 bool semantik_win::slot_save()
 {
-	if (m_oControl->m_sLastSaved.isEmpty())
+	if (m_oMediator->m_sLastSaved.isEmpty())
 	{
 		return slot_save_as();
 	}
-	if (m_oControl->save_file(m_oControl->m_sLastSaved))
+	if (m_oMediator->save_file(m_oMediator->m_sLastSaved))
 	{
-		statusBar()->showMessage(trUtf8("Saved '%1'").arg(m_oControl->m_sLastSaved), 2000);
+		statusBar()->showMessage(trUtf8("Saved '%1'").arg(m_oMediator->m_sLastSaved), 2000);
 		return true;
 	}
 	return false;
@@ -479,7 +479,7 @@ bool semantik_win::slot_save()
 
 void semantik_win::slot_open()
 {
-	if (m_oControl->m_bDirty)
+	if (m_oMediator->m_bDirty)
 	{
 		if (!proceed_save()) return;
 	}
@@ -487,13 +487,13 @@ void semantik_win::slot_open()
 	KUrl l_o = KFileDialog::getOpenUrl(KUrl(notr("kfiledialog:///document")),
 		trUtf8("*.sem *.kdi *.mm *.vym|All Supported Files (*.sem *.kdi *.mm *.vym)"),
 		this, trUtf8("Choose a file name"));
-	if (l_o.isValid() && m_oControl->open_file(l_o.path()))
+	if (l_o.isValid() && m_oMediator->open_file(l_o.path()))
 	{
-		m_oControl->m_oCurrentUrl = l_o;
+		m_oMediator->m_oCurrentUrl = l_o;
 	}
 	else
 	{
-		m_oControl->m_oCurrentUrl = KUrl();
+		m_oMediator->m_oCurrentUrl = KUrl();
 	}
 	update_title();
 }
@@ -501,17 +501,17 @@ void semantik_win::slot_open()
 void semantik_win::update_title()
 {
 	QString mod;
-	if (m_oControl->m_bDirty) mod = trUtf8(" [Modified] ");
+	if (m_oMediator->m_bDirty) mod = trUtf8(" [Modified] ");
 
 	QString txt;
-	if (m_oControl->m_oCurrentUrl.path().isEmpty())
+	if (m_oMediator->m_oCurrentUrl.path().isEmpty())
 	{
 		txt = trUtf8("Semantik %1").arg(mod);
 	}
 	else
 	{
-		txt = trUtf8("%1 %2 - Semantik").arg(m_oControl->m_oCurrentUrl.path(), mod);
-		m_oRecentFilesAct->addUrl(m_oControl->m_oCurrentUrl); // TODO
+		txt = trUtf8("%1 %2 - Semantik").arg(m_oMediator->m_oCurrentUrl.path(), mod);
+		m_oRecentFilesAct->addUrl(m_oMediator->m_oCurrentUrl); // TODO
 	}
 	setWindowTitle(txt);
 
@@ -535,13 +535,13 @@ void semantik_win::slot_properties()
 
 	if (l_oGen.exec() == QDialog::Accepted)
 	{
-		//m_oControl->m_iConnType = l_oGen.m_oConnType->currentIndex();
-		//m_oControl->m_iReorgType = l_oGen.m_oReorgType->currentIndex();
-		l_oSettings.writeEntry(notr("conn"), m_oControl->m_iConnType = l_oGen.m_oConnType->currentIndex());
-		l_oSettings.writeEntry(notr("reorg"), m_oControl->m_iReorgType = l_oGen.m_oReorgType->currentIndex());
-		l_oSettings.writeEntry(notr("auto"), m_oControl->m_iTimerValue = l_oGen.m_oAutoSave->value());
+		//m_oMediator->m_iConnType = l_oGen.m_oConnType->currentIndex();
+		//m_oMediator->m_iReorgType = l_oGen.m_oReorgType->currentIndex();
+		l_oSettings.writeEntry(notr("conn"), m_oMediator->m_iConnType = l_oGen.m_oConnType->currentIndex());
+		l_oSettings.writeEntry(notr("reorg"), m_oMediator->m_iReorgType = l_oGen.m_oReorgType->currentIndex());
+		l_oSettings.writeEntry(notr("auto"), m_oMediator->m_iTimerValue = l_oGen.m_oAutoSave->value());
 		l_oSettings.writeEntry(notr("bgcolor"), l_oGen.m_oColor.name());
-		m_oControl->init_timer();
+		m_oMediator->init_timer();
 
 		m_oCanvas->setBackgroundBrush(l_oGen.m_oColor);
 	}
@@ -550,13 +550,13 @@ void semantik_win::slot_properties()
 bool semantik_win::queryClose()
 {
 	write_config();
-	if (!m_oControl->m_bDirty) return true;
+	if (!m_oMediator->m_bDirty) return true;
 	return proceed_save();
 }
 
 bool semantik_win::proceed_save()
 {
-	QString l_oTitle = m_oControl->m_sLastSaved;
+	QString l_oTitle = m_oMediator->m_sLastSaved;
 	if (l_oTitle.isEmpty()) l_oTitle = trUtf8("Untitled");
 
 	int l_o = KMessageBox::warningYesNoCancel(NULL, //this,
@@ -579,14 +579,14 @@ bool semantik_win::proceed_save()
 void semantik_win::slot_recent(const KUrl& i_oUrl)
 {
 	if (i_oUrl.path().isEmpty()) return;
-	if (m_oControl->m_bDirty)
+	if (m_oMediator->m_bDirty)
 	{
 		if (!proceed_save()) return;
 	}
 
-	if (m_oControl->open_file(i_oUrl.path()))
+	if (m_oMediator->open_file(i_oUrl.path()))
 	{
-		m_oControl->m_oCurrentUrl = i_oUrl;
+		m_oMediator->m_oCurrentUrl = i_oUrl;
 	}
 	update_title();
 }

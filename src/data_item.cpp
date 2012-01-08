@@ -23,7 +23,7 @@ data_item::data_item(sem_model *i_oControl, int i_iId)
 
 	m_iId = i_iId;
 	m_iColor = 0;
-	m_oControl = i_oControl;
+	m_oMediator = i_oControl;
 	m_sSummary = QObject::trUtf8("Empty");
 	m_sText = "";
 	m_sComment = "";
@@ -56,28 +56,28 @@ bool data_item::load_from_path(const QString & i_sPath)
 
 color_scheme& data_item::get_color_scheme()
 {
-	if (m_oControl->parent_of(m_iId) <= 0)
+	if (m_oMediator->parent_of(m_iId) <= 0)
 	{
-		return m_oControl->m_oColorSchemes[0];
+		return m_oMediator->m_oColorSchemes[0];
 	}
 	if (m_iColor < 0)
 	{
 		return m_oCustom;
 	}
-	if (m_iColor == m_oControl->m_oColorSchemes.size())
+	if (m_iColor == m_oMediator->m_oColorSchemes.size())
 	{
 		return m_oCustom;
 	}
-	if (m_iColor > m_oControl->m_oColorSchemes.size())
+	if (m_iColor > m_oMediator->m_oColorSchemes.size())
 	{
 		qDebug()<<"invalid index color scheme "<<m_iColor;
 		return m_oCustom;
 	}
 	if (m_iColor == 0)
 	{
-		return m_oControl->m_oColorSchemes[1];
+		return m_oMediator->m_oColorSchemes[1];
 	}
-	return m_oControl->m_oColorSchemes[m_iColor];
+	return m_oMediator->m_oColorSchemes[m_iColor];
 }
 
 color_scheme& data_item::get_color_scheme_raw()
@@ -86,16 +86,16 @@ color_scheme& data_item::get_color_scheme_raw()
 	{
 		return m_oCustom;
 	}
-	if (m_iColor == m_oControl->m_oColorSchemes.size())
+	if (m_iColor == m_oMediator->m_oColorSchemes.size())
 	{
 		return m_oCustom;
 	}
-	if (m_iColor > m_oControl->m_oColorSchemes.size())
+	if (m_iColor > m_oMediator->m_oColorSchemes.size())
 	{
 		qDebug()<<"invalid index color scheme "<<m_iColor;
 		return m_oCustom;
 	}
-	return m_oControl->m_oColorSchemes[m_iColor];
+	return m_oMediator->m_oColorSchemes[m_iColor];
 }
 
 

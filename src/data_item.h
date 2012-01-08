@@ -59,7 +59,7 @@ class data_item
 {
 	public:
 		data_item(sem_model *i_oControl, int i_iId);
-		sem_model* m_oControl;
+		sem_model* m_oMediator;
 
 		QString m_sSummary;
 		QString m_sText;

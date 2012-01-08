@@ -18,14 +18,14 @@ linear_view::linear_view(QWidget *i_oParent, sem_model *i_oControl) : QTreeWidge
 	setDropIndicatorShown(true);
 	setDragDropMode(QAbstractItemView::InternalMove);
 	header()->hide();
-	m_oControl = i_oControl;
+	m_oMediator = i_oControl;
 	connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(selection_changed()));
 	m_bLockSelect = false;
 }
 
 void linear_view::notify_add_item(int id) {
 	QTreeWidgetItem *l_oItem = new QTreeWidgetItem(this);
-	l_oItem->setText(0, m_oControl->m_oItems.value(id)->m_sSummary);
+	l_oItem->setText(0, m_oMediator->m_oItems.value(id)->m_sSummary);
 	l_oItem->setData(0, Qt::UserRole, id);
 	//l_oItem->setFlags(Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsDropEnabled);
 	addTopLevelItem(l_oItem);
@@ -54,7 +54,7 @@ void linear_view::notify_link_items(int id1, int id2) {
 	l_oItem2->insertChild(l_oItem2->childCount(), l_oItem1);
 	l_oItem2->setExpanded(true);
 
-	data_item *l_o = m_oControl->m_oItems.value(id2);
+	data_item *l_o = m_oMediator->m_oItems.value(id2);
 	l_oItem1->setBackgroundColor(0, l_o->get_color_scheme().m_oInnerColor);
 }
 
@@ -67,7 +67,7 @@ void linear_view::notify_unlink_items(int id1, int id2) {
 		l_oItem2->setExpanded(true);
 		addTopLevelItem(l_oItem1);
 
-		data_item *l_o = m_oControl->m_oItems.value(id1);
+		data_item *l_o = m_oMediator->m_oItems.value(id1);
 		l_oItem1->setBackgroundColor(0, l_o->get_color_scheme().m_oInnerColor);
 	}
 	else if (l_oItem2->parent() == l_oItem1)
@@ -76,7 +76,7 @@ void linear_view::notify_unlink_items(int id1, int id2) {
 		l_oItem1->setExpanded(true);
 		addTopLevelItem(l_oItem2);
 
-		data_item *l_o = m_oControl->m_oItems.value(id2);
+		data_item *l_o = m_oMediator->m_oItems.value(id2);
 		l_oItem2->setBackgroundColor(0, l_o->get_color_scheme().m_oInnerColor);
 	}
 	else
@@ -97,7 +97,7 @@ void linear_view::selection_changed()
 			lst.append(it->data(0, Qt::UserRole).toInt());
 		}
 
-		mem_sel *sel = new mem_sel(m_oControl);
+		mem_sel *sel = new mem_sel(m_oMediator);
 		sel->sel = lst;
 		sel->apply();
 	}
@@ -147,35 +147,35 @@ void linear_view::dropEvent(QDropEvent *i_oEv)
 			int l_iId = l_oChild->data(0, Qt::UserRole).toInt();
 			if (dropIndicatorPosition() == QAbstractItemView::OnItem)
 			{
-				if (m_oControl->parent_of(l_iId))
+				if (m_oMediator->parent_of(l_iId))
 				{
-					mem_unlink *link = new mem_unlink(m_oControl);
+					mem_unlink *link = new mem_unlink(m_oMediator);
 					link->child = l_iId;
-					link->parent = m_oControl->parent_of(l_iId);
+					link->parent = m_oMediator->parent_of(l_iId);
 					link->apply();
 				}
 
 				if (l_oItem != NULL)
 				{
-					m_oControl->link_items(l_oItem->data(0, Qt::UserRole).toInt(), l_iId);
+					m_oMediator->link_items(l_oItem->data(0, Qt::UserRole).toInt(), l_iId);
 				}
 			}
 			else if (l_oItem != NULL)
 			{
 				int j = l_oItem->data(0, Qt::UserRole).toInt();
-				int k = m_oControl->parent_of(j);
+				int k = m_oMediator->parent_of(j);
 
 				// make certain they have the same parent now
-				if (m_oControl->parent_of(l_iId) != k);
+				if (m_oMediator->parent_of(l_iId) != k);
 				{
-					if (m_oControl->parent_of(l_iId))
+					if (m_oMediator->parent_of(l_iId))
 					{
-						mem_unlink *link = new mem_unlink(m_oControl);
+						mem_unlink *link = new mem_unlink(m_oMediator);
 						link->child = l_iId;
-						link->parent = m_oControl->parent_of(l_iId);
+						link->parent = m_oMediator->parent_of(l_iId);
 						link->apply();
 					}
-					m_oControl->link_items(k, l_iId);
+					m_oMediator->link_items(k, l_iId);
 				}
 
 				int z = 1; // offset for re-inserting the item
@@ -185,14 +185,14 @@ void linear_view::dropEvent(QDropEvent *i_oEv)
 				}
 
 				int l = 0; // the index of the item drop
-				for (int i=0; i<m_oControl->m_oLinks.size(); i++)
+				for (int i=0; i<m_oMediator->m_oLinks.size(); i++)
 				{
-					QPoint l_oP = m_oControl->m_oLinks.at(i);
+					QPoint l_oP = m_oMediator->m_oLinks.at(i);
 					if (l_oP.x() == k) // same parent
 					{
 						if (l_oP.y() == j) // item found
 						{
-							mem_sort *srt = new mem_sort(m_oControl);
+							mem_sort *srt = new mem_sort(m_oMediator);
 							srt->init(k, l_iId, l+z);
 							srt->apply();
 
@@ -204,17 +204,17 @@ void linear_view::dropEvent(QDropEvent *i_oEv)
 			}
 			else
 			{
-				if (m_oControl->parent_of(l_iId))
+				if (m_oMediator->parent_of(l_iId))
 				{
-					mem_unlink *link = new mem_unlink(m_oControl);
+					mem_unlink *link = new mem_unlink(m_oMediator);
 					link->child = l_iId;
-					link->parent = m_oControl->parent_of(l_iId);
+					link->parent = m_oMediator->parent_of(l_iId);
 					link->apply();
 				}
 			}
 			QList<int> lst;
 			lst.append(l_iId);
-			mem_sel *sel = new mem_sel(m_oControl);
+			mem_sel *sel = new mem_sel(m_oMediator);
 			sel->sel = lst;
 			sel->apply();
 		}
@@ -249,16 +249,16 @@ void linear_view::notify_select(const QList<int>& unsel, const QList<int>& sel) 
 void linear_view::notify_repaint(int id)
 {
 	QTreeWidgetItem *l_oItem = m_oItems.value(id);
-	data_item *l_o = m_oControl->m_oItems.value(id);
+	data_item *l_o = m_oMediator->m_oItems.value(id);
 	l_oItem->setBackgroundColor(0, l_o->get_color_scheme().m_oInnerColor);
 }
 
 void linear_view::notify_sort(int id) {
 	QTreeWidgetItem *l_oItem = m_oItems.value(id);
 	int l_iCnt = 0;
-	for (int i=0; i<m_oControl->m_oLinks.size(); i++)
+	for (int i=0; i<m_oMediator->m_oLinks.size(); i++)
 	{
-		QPoint l_oP = m_oControl->m_oLinks.at(i);
+		QPoint l_oP = m_oMediator->m_oLinks.at(i);
 		if (l_oP.x() == id)
 		{
 			QTreeWidgetItem *l_oItem2 = m_oItems.value(l_oP.y());
@@ -276,7 +276,7 @@ void linear_view::notify_sort(int id) {
 void linear_view::notify_edit(int id)
 {
 	QTreeWidgetItem *l_oItem = m_oItems.value(id);
-	l_oItem->setText(0, m_oControl->m_oItems.value(id)->m_sSummary);
+	l_oItem->setText(0, m_oMediator->m_oItems.value(id)->m_sSummary);
 }
 
 #include "linear_view.moc"

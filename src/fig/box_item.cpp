@@ -28,7 +28,7 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oVie
 
 	//setRect(0, 0, 20, 20);
 
-	m_oItem = m_oView->m_oControl->m_oItems[m_oView->m_iId];
+	m_oItem = m_oView->m_oMediator->m_oItems[m_oView->m_iId];
 	m_oBox = m_oItem->m_oBoxes[m_iId];
 	Q_ASSERT(m_oBox);
 
@@ -51,7 +51,7 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	painter->save();
 
 	QRectF l_oRect = boundingRect().adjusted(PAD, PAD, -PAD, -PAD);
-	data_item *l_oItem = m_oItem; //m_oGraph->m_oControl->m_oItems.value(Id());
+	data_item *l_oItem = m_oItem; //m_oGraph->m_oMediator->m_oItems.value(Id());
 
 	QPen l_oPen = QPen(Qt::SolidLine);
 

@@ -40,7 +40,7 @@ class box_reader : public QXmlDefaultHandler
 
 	QString m_sBuf;
 	int m_iVersion;
-	box_view *m_oControl;
+	box_view *m_oMediator;
 	box_link *m_oCurrent;
 	int m_iId;
 
@@ -51,7 +51,7 @@ class box_reader : public QXmlDefaultHandler
 
 box_reader::box_reader(box_view *i_oControl)
 {
-	m_oControl = i_oControl;
+	m_oMediator = i_oControl;
 }
 
 bool box_reader::startElement(const QString&, const QString&, const QString& i_sName, const QXmlAttributes& i_oAttrs)
@@ -61,7 +61,7 @@ bool box_reader::startElement(const QString&, const QString&, const QString& i_s
 		int id = i_oAttrs.value(QObject::trUtf8("id")).toInt();
 
 		data_box *box = new data_box(id);
-		m_oControl->m_oControl->m_oItems[m_iId]->m_oBoxes[id] = box;
+		m_oMediator->m_oMediator->m_oItems[m_iId]->m_oBoxes[id] = box;
 		box->m_iXX = i_oAttrs.value(QObject::trUtf8("c1")).toFloat();
 		box->m_iYY = i_oAttrs.value(QObject::trUtf8("c2")).toFloat();
 		box->m_sText = i_oAttrs.value(QObject::trUtf8("text"));
@@ -70,12 +70,12 @@ bool box_reader::startElement(const QString&, const QString&, const QString& i_s
 	}
 	else if (i_sName == QObject::trUtf8("box_link"))
 	{
-		/* box_link *l_o = new box_link(m_oControl);
+		/* box_link *l_o = new box_link(m_oMediator);
 		l_o->m_iParent = i_oAttrs.value(QObject::trUtf8("p1")).toInt();
 		l_o->m_iChild = i_oAttrs.value(QObject::trUtf8("p2")).toInt();
 
 		int l_i = i_oAttrs.value(QObject::trUtf8("c1")).toInt();
-		foreach (box_item* l_oItem, m_oControl->m_oItems)
+		foreach (box_item* l_oItem, m_oMediator->m_oItems)
 		{
 			if (l_oItem->m_iId == l_i)
 			{
@@ -84,7 +84,7 @@ bool box_reader::startElement(const QString&, const QString&, const QString& i_s
 		}
 
 		l_i = i_oAttrs.value(QObject::trUtf8("c2")).toInt();
-		foreach (box_item* l_oItem, m_oControl->m_oItems)
+		foreach (box_item* l_oItem, m_oMediator->m_oItems)
 		{
 			if (l_oItem->m_iId == l_i)
 			{
@@ -104,7 +104,7 @@ bool box_reader::startElement(const QString&, const QString&, const QString& i_s
 			return false;
 		}
 
-		m_oControl->m_oLinks.push_back(l_o);
+		m_oMediator->m_oLinks.push_back(l_o);
 		m_oCurrent = l_o; */
 	}
 	else if (i_sName == QObject::trUtf8("box_link_offset"))
@@ -137,7 +137,7 @@ bool box_reader::characters(const QString &i_s)
 
 box_view::box_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsView(i_oWidget)
 {
-	m_oControl = i_oControl;
+	m_oMediator = i_oControl;
 	m_iId = NO_ITEM;
 
 	QGraphicsScene *l_oScene = new QGraphicsScene(this);
@@ -263,7 +263,7 @@ void box_view::notify_select(const QList<int>& unsel, const QList<int>& sel)
 	else
 	{
 		m_iId = sel.at(0);
-		data_item *l_oData = m_oControl->m_oItems.value(m_iId);
+		data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
 		Q_ASSERT(l_oData);
 		if (l_oData and l_oData->m_iDataType == VIEW_DIAG)
 		{
@@ -284,7 +284,7 @@ void box_view::sync_view()
 {
 	if (!m_iId) return;
 	
-	data_item *item = m_oControl->m_oItems.value(m_iId);
+	data_item *item = m_oMediator->m_oItems.value(m_iId);
 	Q_ASSERT(item);
 	if (item->m_iDataType != VIEW_DIAG)
 	{
@@ -336,7 +336,7 @@ void box_view::notify_export_item(int id)
 	scene()->render(&l_oP, l_oR, l_oRect);
 	l_oP.end();
 
-	l_oImage.save(QString(m_oControl->m_sTempDir + QString("/") +
+	l_oImage.save(QString(m_oMediator->m_sTempDir + QString("/") +
 		QString("pic-%1.png")).arg(QString::number(m_iId)));
 	clear_diagram();
 	m_iId = l_iOldId;
@@ -371,7 +371,7 @@ void box_view::slot_delete()
 	}
 
 	if (boxes.size() > 0 || links.size() > 0) {
-		mem_del_box *del = new mem_del_box(m_oControl, m_iId);
+		mem_del_box *del = new mem_del_box(m_oMediator, m_iId);
 		del->init(boxes, links.toList());
 		del->apply();
 	}
@@ -422,7 +422,7 @@ void box_view::enable_actions()
 
 void box_view::slot_add_item()
 {
-	mem_add_box *add = new mem_add_box(m_oControl);
+	mem_add_box *add = new mem_add_box(m_oMediator);
 	add->init(m_iId);
 	add->box->m_iXX = m_oLastPoint.x();
 	add->box->m_iYY = m_oLastPoint.y();
@@ -455,14 +455,14 @@ void box_view::change_colors(QAction* i_oAct)
 			}
 			else
 			{
-				selected_color = l_oColor = m_oControl->m_oColorSchemes[i].m_oInnerColor;
+				selected_color = l_oColor = m_oMediator->m_oColorSchemes[i].m_oInnerColor;
 
 			}
 			break;
 		}
 	}
 
-	mem_prop_box *mem = new mem_prop_box(m_oControl, m_iId);
+	mem_prop_box *mem = new mem_prop_box(m_oMediator, m_iId);
 	foreach (QGraphicsItem *l_o, scene()->selectedItems())
 	{
 		if (l_o->type() == BOX_LINK_T)
@@ -484,7 +484,7 @@ void box_view::slot_color()
 	if (scene()->selectedItems().size() < 1) return;
 	QColor l_oColor = QColorDialog::getColor(l_oColor, this);
 	if (!l_oColor.isValid()) return;
-	mem_prop_box *mem = new mem_prop_box(m_oControl, m_iId);
+	mem_prop_box *mem = new mem_prop_box(m_oMediator, m_iId);
 	foreach (QGraphicsItem *l_o, scene()->selectedItems())
 	{
 		if (l_o->type() == BOX_LINK_T)
@@ -504,7 +504,7 @@ void box_view::slot_color()
 void box_view::slot_penstyle()
 {
 	int l_i = ((QAction*) QObject::sender())->data().toInt();
-	mem_prop_box *mem = new mem_prop_box(m_oControl, m_iId);
+	mem_prop_box *mem = new mem_prop_box(m_oMediator, m_iId);
 	foreach (QGraphicsItem* l_o, scene()->selectedItems())
 	{
 		if (l_o->type() == BOX_LINK_T)
@@ -520,7 +520,7 @@ void box_view::slot_penstyle()
 void box_view::slot_penwidth()
 {
 	int l_i = ((QAction*) QObject::sender())->data().toInt();
-	mem_prop_box *mem = new mem_prop_box(m_oControl, m_iId);
+	mem_prop_box *mem = new mem_prop_box(m_oMediator, m_iId);
 	foreach (QGraphicsItem* l_o, scene()->selectedItems())
 	{
 		if (l_o->type() == BOX_LINK_T)
@@ -560,8 +560,8 @@ void box_view::slot_toggle_edit()
 				//sel->update_links();
 
 			}*/
-			if (sel->toPlainText() != m_oControl->m_oItems[m_iId]->m_oBoxes[sel->m_iId]->m_sText) {
-				mem_edit_box *ed = new mem_edit_box(m_oControl, m_iId, sel->m_iId);
+			if (sel->toPlainText() != m_oMediator->m_oItems[m_iId]->m_oBoxes[sel->m_iId]->m_sText) {
+				mem_edit_box *ed = new mem_edit_box(m_oMediator, m_iId, sel->m_iId);
 				ed->newText = sel->toPlainText();
 				ed->apply();
 			}
@@ -585,7 +585,7 @@ void box_view::slot_toggle_edit()
 			m_oSelectDownAction->setEnabled(false);
 			m_oSelectLeftAction->setEnabled(false);
 			m_oSelectRightAction->setEnabled(false);
-			m_oControl->check_undo(false);
+			m_oMediator->check_undo(false);
 			*/
 			return;
 		}
@@ -607,7 +607,7 @@ void box_view::slot_toggle_edit()
 	m_oSelectDownAction->setEnabled(true);
 	m_oSelectLeftAction->setEnabled(true);
 	m_oSelectRightAction->setEnabled(true);
-	m_oControl->check_undo(true);
+	m_oMediator->check_undo(true);
 	*/
 }
 
@@ -764,7 +764,7 @@ void box_view::check_canvas_size()
 
 void box_view::focusInEvent(QFocusEvent *i_oEv)
 {
-	m_oControl->notify_focus(this);
+	m_oMediator->notify_focus(this);
 
 	m_oDeleteAction->setEnabled(true);
 	m_oEditAction->setEnabled(true);
@@ -874,7 +874,7 @@ void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 	if (l_oItem && l_oItem->type() == BOX_LINK_T)
 	{
 		box_link *l_oLink = (box_link*) l_oItem;
-		mem_unlink_box *rm = new mem_unlink_box(m_oControl, m_iId);
+		mem_unlink_box *rm = new mem_unlink_box(m_oMediator, m_iId);
 		rm->link = l_oLink->m_oLink;
 		rm->apply();
 
@@ -884,7 +884,7 @@ void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 	if (i_oEv->modifiers() != Qt::ShiftModifier) {
 		//qDebug()<<"adding a box from double click";
 
-		mem_add_box *add = new mem_add_box(m_oControl);
+		mem_add_box *add = new mem_add_box(m_oMediator);
 		add->init(m_iId);
 		add->box->m_iXX = m_oLastPoint.x();
 		add->box->m_iYY = m_oLastPoint.y();
@@ -979,7 +979,7 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 				{
 					l_b = true;
 					l_oLink->m_iControlSegment = i;
-					l_oLink->m_oControlPoint = l_o;
+					l_oLink->m_oMediatorPoint = l_o;
 					break;
 				}
 			}
@@ -1004,7 +1004,7 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 			{
 				grab_segment_link = link;
 				grab_segment_pos = i;
-				grab_segment_link->m_oControlPoint = l_o;
+				grab_segment_link->m_oMediatorPoint = l_o;
 				break;
 			}
 		}
@@ -1049,7 +1049,7 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
                             (grab_segment_link->m_oLst[i].y() + grab_segment_link->m_oLst[i+1].y())/2);
 		--i;
 
-		QPointF l_oNew = m_oLastMovePoint - m_oLastPoint + grab_segment_link->m_oControlPoint - l_oP;
+		QPointF l_oNew = m_oLastMovePoint - m_oLastPoint + grab_segment_link->m_oMediatorPoint - l_oP;
 		grab_segment_link->m_oOffsets[i].setX((int) l_oNew.x());
 		grab_segment_link->m_oOffsets[i].setY((int) l_oNew.y());
 		grab_segment_link->update_ratio(); // no need to update_pos
@@ -1115,7 +1115,7 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 				m_oCurrent->m_oParent = l_oUnder;
 
 			//see notify_link_box();
-			mem_link_box *ln = new mem_link_box(m_oControl, m_iId);
+			mem_link_box *ln = new mem_link_box(m_oMediator, m_iId);
 			ln->init(m_oCurrent->m_oParent->m_iId, 
 				m_oCurrent->m_iParent, m_oCurrent->m_oChild->m_iId, m_oCurrent->m_iChild);
 			ln->apply();
@@ -1134,7 +1134,7 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 		QPointF p = mapToScene(i_oEv->pos()) - m_oLastPoint;
 		if (qAbs(p.x()) > 1 || qAbs(p.y()) > 1)
 		{
-			mem_pos_box *mem = new mem_pos_box(m_oControl, m_iId);
+			mem_pos_box *mem = new mem_pos_box(m_oMediator, m_iId);
 			foreach (QGraphicsItem *l_oI1, scene()->selectedItems()) {
 				if (l_oI1->type() == BOX_ITEM_T) {
 					box_item *item = (box_item*) l_oI1;

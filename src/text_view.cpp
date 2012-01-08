@@ -24,7 +24,7 @@ text_view::text_view(QWidget *i_oParent, sem_model *i_oControl) : QWidget(i_oPar
 	QGridLayout *l_oLayout = new QGridLayout();
 	setLayout(l_oLayout);
 
-	m_oControl = i_oControl;
+	m_oMediator = i_oControl;
 
 	m_oEdit = new KTextEdit(this);
 	m_oEdit->setCheckSpellingEnabled(true);
@@ -70,15 +70,15 @@ text_view::text_view(QWidget *i_oParent, sem_model *i_oControl) : QWidget(i_oPar
 void text_view::update_edit()
 {
 	if (!m_iId) return;
-	data_item *l_oData = m_oControl->m_oItems.value(m_iId);
+	data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
 
 	mem_text* tmp = NULL;
 
 	mem_command *c = NULL;
-	if (!m_oControl->m_oUndoStack.empty())
+	if (!m_oMediator->m_oUndoStack.empty())
 	{
-		c = m_oControl->m_oUndoStack.pop();
-		m_oControl->m_oUndoStack.push(c);
+		c = m_oMediator->m_oUndoStack.pop();
+		m_oMediator->m_oUndoStack.push(c);
 		if (c->type() != mem_command::TEXT)
 		{
 			c = NULL;
@@ -87,7 +87,7 @@ void text_view::update_edit()
 
 	tmp = (mem_text*) c;
 	if (!c) {
-		tmp = new mem_text(m_oControl);
+		tmp = new mem_text(m_oMediator);
 		tmp->sel = l_oData;
 		tmp->oldText = l_oData->m_sText;
 		tmp->add();
@@ -141,7 +141,7 @@ void text_view::char_format_changed(const QTextCharFormat &i_oFormat)
 void text_view::notify_text(int id) {
 	if (id == m_iId) {
 		m_iId = NO_ITEM; // do not trigger the signal changed
-		data_item *sel = *m_oControl + id;
+		data_item *sel = *m_oMediator + id;
 		m_oEdit->setHtml(sel->m_sText);
 		m_iId = id;
 	}
@@ -160,7 +160,7 @@ void text_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 	m_oUnderLineAct->setEnabled(one);
 
 	if (one) {
-		data_item *l_oData = m_oControl->m_oItems.value(sel.at(0));
+		data_item *l_oData = m_oMediator->m_oItems.value(sel.at(0));
 		m_oEdit->setHtml(l_oData->m_sText);
 		m_iId = sel.at(0);
 	} else {

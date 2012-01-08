@@ -15,7 +15,7 @@
 
 linear_container::linear_container(QWidget *i_oParent, sem_model *i_oControl) : QWidget(i_oParent)
 {
-	m_oControl = i_oControl;
+	m_oMediator = i_oControl;
 	QGridLayout *l_oLayout = new QGridLayout();
 	m_oView = new linear_view(this, i_oControl);
 

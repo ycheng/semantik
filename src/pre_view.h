@@ -14,7 +14,7 @@ class pre_view : public QStackedWidget
 	Q_OBJECT
 	public:
 		pre_view(QWidget *i_oParent, sem_model *i_oControl);
-		sem_model *m_oControl;
+		sem_model *m_oMediator;
 
 		QLabel *m_oLabel;
 		browser *m_oBrowser;

@@ -26,7 +26,7 @@
 image_view::image_view(QWidget *i_oParent, sem_model *i_oControl) : QWidget(i_oParent)
 {
 	setCursor(Qt::PointingHandCursor);
-	m_oControl = i_oControl;
+	m_oMediator = i_oControl;
 	m_iId = NO_ITEM;
 
 	setContextMenuPolicy(Qt::CustomContextMenu);
@@ -99,7 +99,7 @@ void image_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 	bool one = (sel.size() == 1);
 	if (one) {
 		m_iId = sel.at(0);
-		data_item *l_oData = m_oControl->m_oItems.value(m_iId);
+		data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
 		m_oPixmap = l_oData->m_oPix;
 	} else {
 		m_oPixmap = QPixmap();
@@ -110,21 +110,21 @@ void image_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 
 void image_view::clear_pic()
 {
-	m_oControl->m_oImgs.removeAll(m_iId);
+	m_oMediator->m_oImgs.removeAll(m_iId);
 	m_oPixmap = QPixmap();
 
-	data_item *l_oData = m_oControl->m_oItems.value(m_iId);
+	data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
 
 	l_oData->m_oPix = QPixmap();
 	l_oData->m_oThumbnail = QPixmap();
 
-	QString l_s = QString(m_oControl->m_sTempDir+"/pic-%1.png").arg(QString::number(m_iId));
+	QString l_s = QString(m_oMediator->m_sTempDir+"/pic-%1.png").arg(QString::number(m_iId));
 	if (QFile::exists(l_s))
 	{
 		QFile l_oFile(l_s);
 		l_oFile.remove();
 	}
-	m_oControl->notify_change_data(m_iId);
+	m_oMediator->notify_change_data(m_iId);
 	repaint();
 }
 
@@ -137,7 +137,7 @@ bool image_view::event(QEvent *i_oEvent)
 		if (m_iId)
 		{
 			QHelpEvent *l_oEv = static_cast<QHelpEvent*>(i_oEvent);
-			data_item *l_oData = m_oControl->m_oItems.value(m_iId);
+			data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
 			QToolTip::showText(l_oEv->globalPos(), l_oData->m_sPicLocation);
 		}
         }
@@ -189,21 +189,21 @@ void image_view::do_change_pic(const QString& l_sText)
 		return;
 	}
 
-	data_item *l_oData = m_oControl->m_oItems.value(m_iId);
+	data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
 	bool l_bRet = l_oData->load_from_path(l_sText);
 	if (!l_bRet)
 	{
 		emit sig_message(trUtf8("something bad happened"), 20000);
 		return;
 	}
-	m_oControl->notify_change_data(m_iId);
+	m_oMediator->notify_change_data(m_iId);
 
 	m_oPixmap = l_oData->m_oPix;
 	repaint();
 	//m_oPixmap->setScaledContents(true);
 
 	QStringList l = l_sText.split(".");
-	QString l_sNameOut = QString(m_oControl->m_sTempDir+"/pic-%1.%2").arg(QString::number(m_iId)).arg(l[l.size()-1]);
+	QString l_sNameOut = QString(m_oMediator->m_sTempDir+"/pic-%1.%2").arg(QString::number(m_iId)).arg(l[l.size()-1]);
 	QFile l_oOutFile(l_sNameOut);
 	if (!l_oOutFile.open(QIODevice::WriteOnly))
 	{
@@ -222,7 +222,7 @@ void image_view::do_change_pic(const QString& l_sText)
 	l_oOutFile.close();
 
 	l_oData->m_sPicLocation = l_sText;
-	if (!m_oControl->m_oImgs.contains(m_iId)) m_oControl->m_oImgs.push_back(m_iId);
+	if (!m_oMediator->m_oImgs.contains(m_iId)) m_oMediator->m_oImgs.push_back(m_iId);
 }
 
 void image_view::dragEnterEvent(QDragEnterEvent *i_o)

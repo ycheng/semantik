@@ -11,7 +11,7 @@
 
 data_view::data_view(QWidget *i_oParent, sem_model *i_oControl) : QStackedWidget(i_oParent)
 {
-	m_oControl = i_oControl;
+	m_oMediator = i_oControl;
 
 	m_oLabel = new QLabel(this);
 	m_oLabel->setText(trUtf8("<p align='center'>No item selected</p>"));
@@ -29,7 +29,7 @@ void data_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 }
 
 void data_view::notify_datatype(int id) {
-	data_item *l_oItem = *m_oControl + id;
+	data_item *l_oItem = *m_oMediator + id;
 	int j = 0;
 	switch (l_oItem->m_iDataType)
 	{

@@ -14,7 +14,7 @@ class image_view : public QWidget
 	Q_OBJECT
 	public:
 		image_view(QWidget*, sem_model*);
-		sem_model *m_oControl;
+		sem_model *m_oMediator;
 		QPixmap m_oPixmap;
 		int m_iId;
 
