@@ -435,16 +435,15 @@ void box_view::slot_add_item()
 void box_view::change_colors(QAction* i_oAct)
 {
 	if (!hasFocus()) return;
+	if (scene()->selectedItems().size() < 1) return;
 
 	QColor l_oColor;
 	static QColor selected_color;
 
-	int l_iIdx = -1;
 	for (int i=1; i < i_oAct->actionGroup()->actions().size(); ++i)
 	{
 		if (i_oAct->actionGroup()->actions()[i] == i_oAct)
 		{
-			l_iIdx = i;
 			if (i == i_oAct->actionGroup()->actions().size()-1)
 			{
 				selected_color = QColorDialog::getColor(selected_color, this);
@@ -454,10 +453,14 @@ void box_view::change_colors(QAction* i_oAct)
 				}
 				l_oColor = selected_color;
 			}
+			else
+			{
+				selected_color = l_oColor = m_oControl->m_oColorSchemes[i].m_oInnerColor;
+
+			}
 			break;
 		}
 	}
-
 
 	mem_prop_box *mem = new mem_prop_box(m_oControl, m_iId);
 	foreach (QGraphicsItem *l_o, scene()->selectedItems())
@@ -478,6 +481,7 @@ void box_view::change_colors(QAction* i_oAct)
 
 void box_view::slot_color()
 {
+	if (scene()->selectedItems().size() < 1) return;
 	QColor l_oColor = QColorDialog::getColor(l_oColor, this);
 	if (!l_oColor.isValid()) return;
 	mem_prop_box *mem = new mem_prop_box(m_oControl, m_iId);
