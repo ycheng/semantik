@@ -173,8 +173,8 @@ class mem_pic: public mem_command {
 		void undo();
 		void redo();
 		data_item *sel;
-		QPixmap oldPix;
-		QPixmap newPix;
+		int m_iOldId;
+		int m_iNewId;
 		IType type() { return PIC; }
 };
 

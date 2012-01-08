@@ -1227,11 +1227,16 @@ void sem_mediator::private_select_item(int id) {
 
 QPixmap sem_mediator::getPix(int id)
 {
+	if (id == NO_ITEM)
+		return QPixmap();
+
 	return QPixmap();
 }
 
 QPixmap sem_mediator::getThumb(int id)
 {
+	if (id == NO_ITEM)
+		return QPixmap();
 	return QPixmap();
 }
 

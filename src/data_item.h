@@ -72,9 +72,12 @@ class data_item
 		QString m_sPicComment;
 
 
-		int m_oPixId;
-		QPixmap m_oPix;
-		QPixmap m_oThumbnail;
+		int m_iPicId;
+		//QPixmap m_oPix;
+		//QPixmap m_oThumbnail;
+
+		QPixmap getPix();
+		QPixmap getThumb();
 
 		int m_iId;
 		bool m_bSelected;
@@ -102,7 +105,7 @@ class data_item
 		QHash<QPair<int, int>, QString> m_oTableData;
 		QString m_sHints;
 
-		bool load_from_path(const QString &);
+		//bool load_from_path(const QString &);
 
 		QHash<int, data_box*> m_oBoxes;
 		QList<data_link*> m_oLinks;

@@ -41,6 +41,18 @@ data_item::data_item(sem_mediator *i_oControl, int i_iId)
 	m_iYY = m_iXX = -200000.0;
 }
 
+QPixmap data_item::getPix()
+{
+	return m_oMediator->getPix(m_iId);
+}
+
+QPixmap data_item::getThumb()
+{
+	return m_oMediator->getThumb(m_iId);
+}
+
+
+/*
 bool data_item::load_from_path(const QString & i_sPath)
 {
 	QPixmap l_oPix;
@@ -53,6 +65,7 @@ bool data_item::load_from_path(const QString & i_sPath)
 
 	return true;
 }
+*/
 
 color_scheme& data_item::get_color_scheme()
 {

@@ -18,6 +18,7 @@ class image_view : public QWidget
 		QPixmap m_oPixmap;
 		int m_iId;
 
+		// yes, we could use a QLabel...
 		void paintEvent(QPaintEvent*);
 
 		QMenu *m_oMenu;

@@ -96,11 +96,11 @@ QString bind_node::get_val(const QString & i_s)
 	}
 	else if (i_s == notr("pic_w"))
 	{
-		return QString::number(m_oItem->m_oPix.width());
+		return QString::number(m_oItem->getPix().width());
 	}
 	else if (i_s == notr("pic_h"))
 	{
-		return QString::number(m_oItem->m_oPix.height());
+		return QString::number(m_oItem->getPix().height());
 	}
 	else if (i_s == notr("type"))
 	{

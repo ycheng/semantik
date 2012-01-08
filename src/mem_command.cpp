@@ -455,14 +455,14 @@ mem_pic::mem_pic(sem_mediator* mod) : mem_command(mod) {
 
 void mem_pic::redo()
 {
-	sel->m_oPix = newPix;
+	sel->m_iPicId = m_iNewId;
 	model->notify_pic(sel->m_iId);
 	redo_dirty();
 }
 
 void mem_pic::undo()
 {
-	sel->m_oPix = oldPix;
+	sel->m_iPicId = m_iOldId;
 	model->notify_pic(sel->m_iId);
 	undo_dirty();
 }
