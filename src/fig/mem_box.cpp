@@ -7,11 +7,11 @@
         #include <stdlib.h> 
  #include "sembind.h"  	
   #include "data_item.h"	
-  %: include "sem_model.h" 
+  %: include "sem_mediator.h" 
 
 #include "mem_box.h"
 
-mem_del_box::mem_del_box(sem_model* mod, int id) : mem_command(mod)
+mem_del_box::mem_del_box(sem_mediator* mod, int id) : mem_command(mod)
 {
 	m_iId = id;
 }
@@ -53,7 +53,7 @@ void mem_del_box::redo()
 
 ///////////////////////////////////////////////////////////////////
 
-mem_add_box::mem_add_box(sem_model* mod) : mem_command(mod)
+mem_add_box::mem_add_box(sem_mediator* mod) : mem_command(mod)
 {
 	item = NULL;
 }
@@ -80,7 +80,7 @@ void mem_add_box::undo()
 
 ///////////////////////////////////////////////////////////////////
 
-mem_edit_box::mem_edit_box(sem_model* mod, int id, int bid) : mem_command(mod) {
+mem_edit_box::mem_edit_box(sem_mediator* mod, int id, int bid) : mem_command(mod) {
 	item = model->m_oItems[id];
 	box = item->m_oBoxes[bid];
 	oldText = box->m_sText;
@@ -102,7 +102,7 @@ void mem_edit_box::undo()
 
 ///////////////////////////////////////////////////////////////////
 
-mem_link_box::mem_link_box(sem_model* mod, int id) : mem_command(mod) {
+mem_link_box::mem_link_box(sem_mediator* mod, int id) : mem_command(mod) {
 	m_iId = id;
 }
 
@@ -130,7 +130,7 @@ void mem_link_box::undo() {
 
 ///////////////////////////////////////////////////////////////////
 
-mem_unlink_box::mem_unlink_box(sem_model* mod, int id) : mem_command(mod) {
+mem_unlink_box::mem_unlink_box(sem_mediator* mod, int id) : mem_command(mod) {
 	m_iId = id;
 }
 
@@ -154,7 +154,7 @@ void mem_unlink_box::undo() {
 #define CH_BORDER 2
 #define CH_PENST 4
 
-mem_prop_box::mem_prop_box(sem_model* mod, int id) : mem_command(mod) {
+mem_prop_box::mem_prop_box(sem_mediator* mod, int id) : mem_command(mod) {
 	m_iId = id;
 }
 
@@ -201,7 +201,7 @@ void mem_prop_box::undo() {
 
 ///////////////////////////////////////////////////////////////////
 
-mem_pos_box::mem_pos_box(sem_model* mod, int id) : mem_command(mod)
+mem_pos_box::mem_pos_box(sem_mediator* mod, int id) : mem_command(mod)
 {
 	m_iId = id;
 }

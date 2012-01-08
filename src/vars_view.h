@@ -27,8 +27,8 @@ class vars_view : public QTextEdit
 {
 	Q_OBJECT
 	public:
-		vars_view(QWidget *i_oParent, sem_model *i_oControl);
-		sem_model *m_oMediator;
+		vars_view(QWidget *i_oParent, sem_mediator *i_oControl);
+		sem_mediator *m_oMediator;
 		int m_iId;
 		bool m_bLockEdit;
 		QCompleter *m_oCompleter;

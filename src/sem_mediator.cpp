@@ -23,18 +23,18 @@
         #include <stdlib.h> 
  #include "sembind.h"  	
   #include "data_item.h"	
-  %: include "sem_model.h" 
+  %: include "sem_mediator.h" 
 #include <KMessageBox>
 
 class semantik_reader : public QXmlDefaultHandler
 {
 	public:
-		semantik_reader(sem_model*);
+		semantik_reader(sem_mediator*);
 
 	private:
 		QString m_sBuf;
 		int m_iVersion;
-		sem_model *m_oMediator;
+		sem_mediator *m_oMediator;
 		int m_iId;
 		data_link * cur_link;
 
@@ -45,7 +45,7 @@ class semantik_reader : public QXmlDefaultHandler
 
 };
 
-semantik_reader::semantik_reader(sem_model *i_oControl)
+semantik_reader::semantik_reader(sem_mediator *i_oControl)
 {
 	m_oMediator = i_oControl;
 	cur_link = NULL;
@@ -195,7 +195,7 @@ bool semantik_reader::characters(const QString &i_s)
     return true;
 }
 
-sem_model::~sem_model()
+sem_mediator::~sem_mediator()
 {
 	destroy_timer();
 	clean_temp_dir();
@@ -205,7 +205,7 @@ sem_model::~sem_model()
 	}
 }
 
-void sem_model::init_timer()
+void sem_mediator::init_timer()
 {
 	destroy_timer();
 	if (m_iTimerValue<1) return;
@@ -215,14 +215,14 @@ void sem_model::init_timer()
 	m_oTimer->start();
 }
 
-void sem_model::destroy_timer()
+void sem_mediator::destroy_timer()
 {
 	if (m_oTimer) m_oTimer->stop();
 	delete m_oTimer;
 	m_oTimer = NULL;
 }
 
-void sem_model::slot_autosave()
+void sem_mediator::slot_autosave()
 {
 	// autosave for the last used save name
 	qDebug()<<"autosave"<<m_sLastSaved;
@@ -237,7 +237,7 @@ void sem_model::slot_autosave()
 	}
 }
 
-void sem_model::init_colors()
+void sem_mediator::init_colors()
 {
 	m_oColorSchemes.clear();
 
@@ -266,7 +266,7 @@ void sem_model::init_colors()
 	emit sync_colors();
 }
 
-void sem_model::init_flags()
+void sem_mediator::init_flags()
 {
 	while (!m_oFlagSchemes.empty())
 	{
@@ -282,7 +282,7 @@ void sem_model::init_flags()
 	emit sync_flags();
 }
 
-void sem_model::init_temp_dir()
+void sem_mediator::init_temp_dir()
 {
 	char sfn[16] = "";
 	strcpy(sfn, "/tmp/sem.XXXXXX");
@@ -293,9 +293,9 @@ void sem_model::init_temp_dir()
 	Q_ASSERT(QFile::exists(m_sTempDir));
 }
 
-void sem_model::clean_temp_dir()
+void sem_mediator::clean_temp_dir()
 {
-	//qDebug()<<"sem_model::clean_temp_dir";
+	//qDebug()<<"sem_mediator::clean_temp_dir";
 	QProcess l_oP;
 	QStringList l_oArgs;
 	l_oArgs<<notr("-rf")<<m_sTempDir;
@@ -362,7 +362,7 @@ QByteArray new_header(const QString & i_oName, int i_iLen)
 }
 
 #if 0
-void sem_model::do_reorganize()
+void sem_mediator::do_reorganize()
 {
 	hash_params l_oCmd;
 	l_oCmd.insert(data_commande, QVariant(cmd_save_data));
@@ -417,7 +417,7 @@ void sem_model::do_reorganize()
 }
 #endif
 
-QString sem_model::doc_to_xml()
+QString sem_mediator::doc_to_xml()
 {
 	QStringList l_oS;
 
@@ -550,7 +550,7 @@ QString sem_model::doc_to_xml()
 	return l_oS.join("");
 }
 
-bool sem_model::save_file(QString i_sUrl)
+bool sem_mediator::save_file(QString i_sUrl)
 {
 	Q_ASSERT(i_sUrl.endsWith(".sem"));
 
@@ -583,7 +583,7 @@ bool sem_model::save_file(QString i_sUrl)
 	return true;
 }
 
-void sem_model::purge_document()
+void sem_mediator::purge_document()
 {
 	while (!m_oUndoStack.isEmpty())
 		delete m_oUndoStack.pop();
@@ -594,7 +594,7 @@ void sem_model::purge_document()
 	del->apply();
 }
 
-void sem_model::undo_purge() {
+void sem_mediator::undo_purge() {
 	m_oItems.clear();
 	m_oLinks.clear();
 	while (!m_oUndoStack.isEmpty()) {
@@ -605,7 +605,7 @@ void sem_model::undo_purge() {
 		delete m_oRedoStack.pop();
 }
 
-void sem_model::check_undo(bool enable) {
+void sem_mediator::check_undo(bool enable) {
 	if (!enable) {
 		emit enable_undo(false, false);
 	} else {
@@ -613,7 +613,7 @@ void sem_model::check_undo(bool enable) {
 	}
 }
 
-bool sem_model::open_file(const QString& i_sUrl)
+bool sem_mediator::open_file(const QString& i_sUrl)
 {
 	purge_document();
 
@@ -704,7 +704,7 @@ bool sem_model::open_file(const QString& i_sUrl)
 	return true;
 }
 
-bool sem_model::read_xml_file(const QString &l_oBa)
+bool sem_mediator::read_xml_file(const QString &l_oBa)
 {
 	semantik_reader l_oHandler(this);
 	QXmlInputSource l_oSource;
@@ -721,7 +721,7 @@ bool sem_model::read_xml_file(const QString &l_oBa)
 	return true;
 }
 
-bool sem_model::link_items(int i_iParent, int i_iChild)
+bool sem_mediator::link_items(int i_iParent, int i_iChild)
 {
 	Q_ASSERT(m_oItems.contains(i_iParent) && m_oItems.contains(i_iChild));
 
@@ -761,7 +761,7 @@ bool sem_model::link_items(int i_iParent, int i_iChild)
 	return true;
 }
 
-QList<int> sem_model::all_roots()
+QList<int> sem_mediator::all_roots()
 {
 	QList<int> l_o = QList<int> ();
 	foreach (int l_iVal, m_oItems.keys())
@@ -778,7 +778,7 @@ QList<int> sem_model::all_roots()
 	return l_o;
 }
 
-int sem_model::root_of(int i_iId)
+int sem_mediator::root_of(int i_iId)
 {
 	if (i_iId==NO_ITEM) return NO_ITEM;
 	for (int i=0; i<m_oLinks.size(); i++)
@@ -789,7 +789,7 @@ int sem_model::root_of(int i_iId)
 	return i_iId;
 }
 
-int sem_model::itemSelected() {
+int sem_mediator::itemSelected() {
 	foreach (int l_iVal, m_oItems.keys())
 	{
 		if (m_oItems[l_iVal]->m_bSelected)
@@ -798,7 +798,7 @@ int sem_model::itemSelected() {
 	return NO_ITEM;
 }
 
-void sem_model::next_root()
+void sem_mediator::next_root()
 {
 	QList<int> l_o = all_roots();
 	if (l_o.size() == 0) return;
@@ -820,7 +820,7 @@ void sem_model::next_root()
 	}
 }
 
-void sem_model::prev_root()
+void sem_mediator::prev_root()
 {
 	QList<int> l_o = all_roots();
 
@@ -841,7 +841,7 @@ void sem_model::prev_root()
 	}
 }
 
-void sem_model::select_root_item(int i_iId)
+void sem_mediator::select_root_item(int i_iId)
 {
 	if (i_iId == NO_ITEM)
 	{
@@ -855,7 +855,7 @@ void sem_model::select_root_item(int i_iId)
 	}
 }
 
-void sem_model::select_item_keyboard(int l_iId, int l_iDirection)
+void sem_mediator::select_item_keyboard(int l_iId, int l_iDirection)
 {
 	if (l_iId == NO_ITEM)
 	{
@@ -977,7 +977,7 @@ void sem_model::select_item_keyboard(int l_iId, int l_iDirection)
 	};
 }
 
-int sem_model::next_seq()
+int sem_mediator::next_seq()
 {
 	do {
 		++num_seq;
@@ -985,7 +985,7 @@ int sem_model::next_seq()
 	return num_seq;
 }
 
-void sem_model::set_dirty(bool b)
+void sem_mediator::set_dirty(bool b)
 {
 	if (b != m_bDirty)
 	{
@@ -995,7 +995,7 @@ void sem_model::set_dirty(bool b)
 	}
 }
 
-int sem_model::parent_of(int i_oId)
+int sem_mediator::parent_of(int i_oId)
 {
         for (int i=0; i<m_oLinks.size(); i++)
         {
@@ -1006,7 +1006,7 @@ int sem_model::parent_of(int i_oId)
 	return NO_ITEM;
 }
 
-int sem_model::num_children(int i_iParent)
+int sem_mediator::num_children(int i_iParent)
 {
 	int l_iCnt = 0;
 	for (int i=0; i<m_oLinks.size(); i++)
@@ -1018,7 +1018,7 @@ int sem_model::num_children(int i_iParent)
 	return l_iCnt;
 }
 
-void sem_model::generate_docs(const QString &i_oFile, const QString &i_sDirName, const QString &i_sLocation)
+void sem_mediator::generate_docs(const QString &i_oFile, const QString &i_sDirName, const QString &i_sLocation)
 {
 	int l_iRoot = choose_root();
 	if (l_iRoot == NO_ITEM)
@@ -1075,7 +1075,7 @@ void sem_model::generate_docs(const QString &i_oFile, const QString &i_sDirName,
 	emit sig_preview();
 }
 
-bind_node* sem_model::create_tree(int i_i)
+bind_node* sem_mediator::create_tree(int i_i)
 {
 	Q_ASSERT(i_i!=0);
 	bind_node * l_oNode = new bind_node();
@@ -1095,7 +1095,7 @@ bind_node* sem_model::create_tree(int i_i)
 	return l_oNode;
 }
 
-int sem_model::choose_root()
+int sem_mediator::choose_root()
 {
 	int l_oCand = NO_ITEM;
 	int l_oCandSize = 0;
@@ -1118,7 +1118,7 @@ int sem_model::choose_root()
 	return l_oCand;
 }
 
-int sem_model::size_of(int i_i)
+int sem_mediator::size_of(int i_i)
 {
 	// warning, recursive
 	int l_i = 0;
@@ -1162,7 +1162,7 @@ bool html_converter::startElement(const QString&, const QString&, const QString&
 	return true;
 }
 
-sem_model::sem_model(QObject* i_oParent) : QObject(i_oParent)
+sem_mediator::sem_mediator(QObject* i_oParent) : QObject(i_oParent)
 {
 	num_seq = 1;
 	m_sOutDir = "";
@@ -1194,12 +1194,12 @@ bool html_converter::characters(const QString &i_s)
         return true;
 }
 
-data_item* sem_model::operator+(const int y)
+data_item* sem_mediator::operator+(const int y)
 {
 	return m_oItems.value(y);
 }
 
-void sem_model::slot_undo() {
+void sem_mediator::slot_undo() {
 	if (!m_oUndoStack.isEmpty()) {
 		mem_command *t = m_oUndoStack.pop();
 		t->undo();
@@ -1208,7 +1208,7 @@ void sem_model::slot_undo() {
 	check_undo(true);
 }
 
-void sem_model::slot_redo() {
+void sem_mediator::slot_redo() {
 	if (!m_oRedoStack.isEmpty()) {
 		mem_command *t = m_oRedoStack.pop();
 		t->redo();
@@ -1217,115 +1217,115 @@ void sem_model::slot_redo() {
 	check_undo(true);
 }
 
-void sem_model::private_select_item(int id) {
+void sem_mediator::private_select_item(int id) {
 	mem_sel *sel = new mem_sel(this);
 	sel->sel.append(id);
 	sel->apply();
 }
 
-void sem_model::notify_add_item(int id) {
+void sem_mediator::notify_add_item(int id) {
 	emit sig_add_item(id);
 }
 
-void sem_model::notify_delete_item(int id) {
+void sem_mediator::notify_delete_item(int id) {
 	emit sig_delete_item(id);
 }
 
-void sem_model::notify_link_items(int id1, int id2) {
+void sem_mediator::notify_link_items(int id1, int id2) {
 	emit sig_link_items(id1, id2);
 }
 
-void sem_model::notify_unlink_items(int id1, int id2) {
+void sem_mediator::notify_unlink_items(int id1, int id2) {
 	emit sig_unlink_items(id1, id2);
 }
 
-void sem_model::notify_select(const QList<int>& unsel, const QList<int>& sel) {
+void sem_mediator::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 	emit sig_select(unsel, sel);
 }
 
-void sem_model::notify_move(const QList<int>&sel, const QList<QPointF>&pos) {
+void sem_mediator::notify_move(const QList<int>&sel, const QList<QPointF>&pos) {
 	emit sig_move(sel, pos);
 }
 
-void sem_model::notify_repaint(int id) {
+void sem_mediator::notify_repaint(int id) {
 	emit sig_repaint(id);
 }
 
-void sem_model::notify_edit(int id) {
+void sem_mediator::notify_edit(int id) {
 	emit sig_edit(id);
 }
 
-void sem_model::notify_flag(int id) {
+void sem_mediator::notify_flag(int id) {
 	emit sig_flag(id);
 }
 
-void sem_model::notify_datatype(int id) {
+void sem_mediator::notify_datatype(int id) {
 	emit sig_datatype(id);
 }
 
-void sem_model::notify_text(int id) {
+void sem_mediator::notify_text(int id) {
 	emit sig_text(id);
 }
 
-void sem_model::notify_vars(int id) {
+void sem_mediator::notify_vars(int id) {
 	emit sig_vars(id);
 }
 
-void sem_model::notify_pic(int id) {
+void sem_mediator::notify_pic(int id) {
 	emit sig_pic(id);
 }
 
-void sem_model::notify_table(int id) {
+void sem_mediator::notify_table(int id) {
 	emit sig_table(id);
 }
 
-void sem_model::notify_sort(int id) {
+void sem_mediator::notify_sort(int id) {
 	emit sig_sort(id);
 }
 
-void sem_model::notify_change_data(int id) {
+void sem_mediator::notify_change_data(int id) {
 	emit sig_change_data(id);
 }
 
-void sem_model::notify_export_item(int id) {
+void sem_mediator::notify_export_item(int id) {
 	emit sig_export_item(id);
 }
 
-void sem_model::notify_add_box(int id, int box) {
+void sem_mediator::notify_add_box(int id, int box) {
 	emit sig_add_box(id, box);
 }
 
-void sem_model::notify_del_box(int id, int box) {
+void sem_mediator::notify_del_box(int id, int box) {
 	emit sig_del_box(id, box);
 }
 
-void sem_model::notify_edit_box(int id, int box) {
+void sem_mediator::notify_edit_box(int id, int box) {
 	emit sig_edit_box(id, box);
 }
 
-void sem_model::notify_link_box(int id, data_link*link) {
+void sem_mediator::notify_link_box(int id, data_link*link) {
 	emit sig_link_box(id, link);
 }
 
-void sem_model::notify_unlink_box(int id, data_link*link) {
+void sem_mediator::notify_unlink_box(int id, data_link*link) {
 	emit sig_unlink_box(id, link);
 }
 
-void sem_model::notify_message(const QString& msg, int duration) {
+void sem_mediator::notify_message(const QString& msg, int duration) {
 	emit sig_message(msg, duration);
 }
 
-void sem_model::notify_focus(void* ptr) {
+void sem_mediator::notify_focus(void* ptr) {
 	emit sig_focus(ptr);
 }
 
-void sem_model::notify_box_props(int id, const QList<diagram_item*>& items) {
+void sem_mediator::notify_box_props(int id, const QList<diagram_item*>& items) {
 	emit sig_box_props(id, items);
 }
 
-void sem_model::notify_pos_box(int id, const QList<data_box*>& items) {
+void sem_mediator::notify_pos_box(int id, const QList<data_box*>& items) {
 	emit sig_pos_box(id, items);
 }
 
-#include "sem_model.moc"
+#include "sem_mediator.moc"
 

@@ -10,12 +10,12 @@
 
 #include "data_item.h"
 
-class sem_model;
+class sem_mediator;
 class mem_sel;
 class mem_command {
 	public:
-		mem_command(sem_model*);
-		sem_model *model;
+		mem_command(sem_mediator*);
+		sem_mediator *model;
 		virtual void undo() = 0;
 		virtual void redo() = 0;
 		virtual void apply();
@@ -31,7 +31,7 @@ class mem_command {
 
 class mem_delete : public mem_command {
 	public:
-		mem_delete(sem_model*);
+		mem_delete(sem_mediator*);
 		void init(QList<int> ids);
 		void undo();
 		void redo();
@@ -44,7 +44,7 @@ class mem_delete : public mem_command {
 
 class mem_add : public mem_command {
 	public:
-		mem_add(sem_model*);
+		mem_add(sem_mediator*);
 		void init();
 		void undo();
 		void redo();
@@ -59,7 +59,7 @@ class mem_add : public mem_command {
 
 class mem_link : public mem_command {
 	public:
-		mem_link(sem_model*);
+		mem_link(sem_mediator*);
 		void undo();
 		void redo();
 
@@ -71,7 +71,7 @@ class mem_link : public mem_command {
 
 class mem_unlink : public mem_command {
 	public:
-		mem_unlink(sem_model*);
+		mem_unlink(sem_mediator*);
 		void undo();
 		void redo();
 
@@ -82,7 +82,7 @@ class mem_unlink : public mem_command {
 
 class mem_sel : public mem_command {
 	public:
-		mem_sel(sem_model*);
+		mem_sel(sem_mediator*);
 		void undo();
 		void redo();
 		void apply();
@@ -93,7 +93,7 @@ class mem_sel : public mem_command {
 
 class mem_move : public mem_command {
 	public:
-		mem_move(sem_model*);
+		mem_move(sem_mediator*);
 		void undo();
 		void redo();
 		QList<int> sel;
@@ -104,7 +104,7 @@ class mem_move : public mem_command {
 
 class mem_color : public mem_command {
 	public:
-		mem_color(sem_model*);
+		mem_color(sem_mediator*);
 		void undo();
 		void redo();
 		QMap<int, int> prevColors;
@@ -114,7 +114,7 @@ class mem_color : public mem_command {
 
 class mem_flag : public mem_command {
 	public:
-		mem_flag(sem_model*);
+		mem_flag(sem_mediator*);
 		void undo();
 		void redo();
 		bool add;
@@ -125,7 +125,7 @@ class mem_flag : public mem_command {
 
 class mem_edit: public mem_command {
 	public:
-		mem_edit(sem_model*);
+		mem_edit(sem_mediator*);
 		void undo();
 		void redo();
 		data_item *sel;
@@ -136,7 +136,7 @@ class mem_edit: public mem_command {
 
 class mem_datatype: public mem_command {
 	public:
-		mem_datatype(sem_model*);
+		mem_datatype(sem_mediator*);
 		void undo();
 		void redo();
 		data_item *sel;
@@ -147,7 +147,7 @@ class mem_datatype: public mem_command {
 
 class mem_text: public mem_command {
 	public:
-		mem_text(sem_model*);
+		mem_text(sem_mediator*);
 		void undo();
 		void redo();
 		data_item *sel;
@@ -158,7 +158,7 @@ class mem_text: public mem_command {
 
 class mem_vars: public mem_command {
 	public:
-		mem_vars(sem_model*);
+		mem_vars(sem_mediator*);
 		void undo();
 		void redo();
 		int m_iId;
@@ -169,7 +169,7 @@ class mem_vars: public mem_command {
 
 class mem_pic: public mem_command {
 	public:
-		mem_pic(sem_model*);
+		mem_pic(sem_mediator*);
 		void undo();
 		void redo();
 		data_item *sel;
@@ -180,7 +180,7 @@ class mem_pic: public mem_command {
 
 class mem_table: public mem_command {
 	public:
-		mem_table(sem_model*);
+		mem_table(sem_mediator*);
 		void undo();
 		void redo();
 
@@ -196,7 +196,7 @@ class mem_table: public mem_command {
 
 class mem_sort: public mem_command {
 	public:
-		mem_sort(sem_model*);
+		mem_sort(sem_mediator*);
 		void init(int i_iParent, int i_iChild, int i_iNum);
 		void undo();
 		void redo();

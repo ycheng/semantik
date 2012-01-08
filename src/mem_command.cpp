@@ -5,13 +5,13 @@
 
 #include "data_item.h"
 #include "mem_command.h"
-#include "sem_model.h"
+#include "sem_mediator.h"
 
 inline uint qHash(const QPoint &p) {
 	return p.x() + p.y();
 }
 
-mem_command::mem_command(sem_model* mod) {
+mem_command::mem_command(sem_mediator* mod) {
 	model = mod;
 }
 
@@ -41,7 +41,7 @@ void mem_command::undo_dirty() {
 
 ///////////////////////////////////////////////////////////////////
 
-mem_delete::mem_delete(sem_model* mod) : mem_command(mod) {
+mem_delete::mem_delete(sem_mediator* mod) : mem_command(mod) {
 
 }
 
@@ -87,7 +87,7 @@ void mem_delete::undo() {
 
 ///////////////////////////////////////////////////////////////////
 
-mem_add::mem_add(sem_model* mod) : mem_command(mod) {
+mem_add::mem_add(sem_mediator* mod) : mem_command(mod) {
 	parent = NO_ITEM;
 }
 
@@ -131,7 +131,7 @@ void mem_add::undo() {
 
 ///////////////////////////////////////////////////////////////////
 
-mem_link::mem_link(sem_model* mod) : mem_command(mod) {
+mem_link::mem_link(sem_mediator* mod) : mem_command(mod) {
 
 }
 
@@ -153,7 +153,7 @@ void mem_link::undo() {
 
 ///////////////////////////////////////////////////////////////////
 
-mem_unlink::mem_unlink(sem_model* mod) : mem_command(mod) {
+mem_unlink::mem_unlink(sem_mediator* mod) : mem_command(mod) {
 
 }
 
@@ -175,7 +175,7 @@ void mem_unlink::undo() {
 
 ///////////////////////////////////////////////////////////////////
 
-mem_sel::mem_sel(sem_model* mod) : mem_command(mod) {
+mem_sel::mem_sel(sem_mediator* mod) : mem_command(mod) {
 	foreach (data_item* t, model->m_oItems.values()) {
 		if (t->m_bSelected) {
 			unsel.append(t->m_iId);
@@ -244,7 +244,7 @@ void mem_sel::undo() {
 
 ///////////////////////////////////////////////////////////////////
 
-mem_move::mem_move(sem_model* mod) : mem_command(mod) {
+mem_move::mem_move(sem_mediator* mod) : mem_command(mod) {
 	foreach (data_item* t, model->m_oItems.values()) {
 		if (t->m_bSelected) {
 			sel.append(t->m_iId);
@@ -276,7 +276,7 @@ void mem_move::undo() {
 
 ///////////////////////////////////////////////////////////////////
 
-mem_color::mem_color(sem_model* mod) : mem_command(mod) {
+mem_color::mem_color(sem_mediator* mod) : mem_command(mod) {
 	foreach (data_item* t, model->m_oItems.values()) {
 		if (t->m_bSelected) {
 			prevColors[t->m_iId] = t->m_iColor;
@@ -308,7 +308,7 @@ void mem_color::undo() {
 
 ///////////////////////////////////////////////////////////////////
 
-mem_flag::mem_flag(sem_model* mod) : mem_command(mod) {
+mem_flag::mem_flag(sem_mediator* mod) : mem_command(mod) {
 	add = true;
 	foreach (data_item* t, model->m_oItems.values()) {
 		if (t->m_bSelected) {
@@ -348,7 +348,7 @@ void mem_flag::undo() {
 
 ///////////////////////////////////////////////////////////////////
 
-mem_edit::mem_edit(sem_model* mod) : mem_command(mod) {
+mem_edit::mem_edit(sem_mediator* mod) : mem_command(mod) {
 	foreach (data_item* t, model->m_oItems.values()) {
 		if (t->m_bSelected) {
 			sel = t;
@@ -371,7 +371,7 @@ void mem_edit::undo() {
 
 ///////////////////////////////////////////////////////////////////
 
-mem_datatype::mem_datatype(sem_model* mod) : mem_command(mod) {
+mem_datatype::mem_datatype(sem_mediator* mod) : mem_command(mod) {
 	sel = NULL;
 	foreach (data_item* t, model->m_oItems.values()) {
 		if (t->m_bSelected) {
@@ -396,7 +396,7 @@ void mem_datatype::undo() {
 
 ///////////////////////////////////////////////////////////////////
 
-mem_text::mem_text(sem_model* mod) : mem_command(mod) {
+mem_text::mem_text(sem_mediator* mod) : mem_command(mod) {
 }
 
 void mem_text::redo()
@@ -415,7 +415,7 @@ void mem_text::undo()
 
 ///////////////////////////////////////////////////////////////////
 
-mem_vars::mem_vars(sem_model* mod) : mem_command(mod) {
+mem_vars::mem_vars(sem_mediator* mod) : mem_command(mod) {
 }
 
 void mem_vars::redo()
@@ -450,7 +450,7 @@ void mem_vars::undo()
 
 ///////////////////////////////////////////////////////////////////
 
-mem_pic::mem_pic(sem_model* mod) : mem_command(mod) {
+mem_pic::mem_pic(sem_mediator* mod) : mem_command(mod) {
 }
 
 void mem_pic::redo()
@@ -469,7 +469,7 @@ void mem_pic::undo()
 
 ///////////////////////////////////////////////////////////////////
 
-mem_table::mem_table(sem_model* mod) : mem_command(mod) {
+mem_table::mem_table(sem_mediator* mod) : mem_command(mod) {
 }
 
 void mem_table::redo()
@@ -496,7 +496,7 @@ void mem_table::undo()
 
 ///////////////////////////////////////////////////////////////////
 
-mem_sort::mem_sort(sem_model* mod) : mem_command(mod) {
+mem_sort::mem_sort(sem_mediator* mod) : mem_command(mod) {
 }
 
 void mem_sort::init(int i_iParent, int i_iChild, int i_iNum)

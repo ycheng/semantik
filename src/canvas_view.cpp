@@ -3,7 +3,7 @@
 #include "canvas_flag.h"
 #include "data_item.h"
 #include  <QtGlobal>
-#include "sem_model.h"
+#include "sem_mediator.h"
 #include "canvas_view.h"
 #include  <QMenu> 
 #include <QToolTip>
@@ -31,7 +31,7 @@
 
 #include <math.h>
 
-canvas_view::canvas_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsView(i_oWidget)
+canvas_view::canvas_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView(i_oWidget)
 {
 	m_oSemantikWindow = i_oWidget;
 	m_iSortId = NO_ITEM;

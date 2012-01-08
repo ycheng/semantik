@@ -11,7 +11,7 @@ class data_link;
 
 class mem_del_box : public mem_command {
 	public:
-		mem_del_box(sem_model*, int id);
+		mem_del_box(sem_mediator*, int id);
 		void init(QList<data_box*>, QList<data_link*>);
 		void undo();
 		void redo();
@@ -26,7 +26,7 @@ class mem_del_box : public mem_command {
 
 class mem_add_box : public mem_command {
 	public:
-		mem_add_box(sem_model*);
+		mem_add_box(sem_mediator*);
 		void init(int id);
 		void undo();
 		void redo();
@@ -42,7 +42,7 @@ class mem_add_box : public mem_command {
 
 class mem_edit_box: public mem_command {
 	public:
-		mem_edit_box(sem_model*, int id, int box);
+		mem_edit_box(sem_mediator*, int id, int box);
 		void undo();
 		void redo();
 
@@ -56,7 +56,7 @@ class mem_edit_box: public mem_command {
 
 class mem_link_box : public mem_command {
 	public:
-		mem_link_box(sem_model*, int id);
+		mem_link_box(sem_mediator*, int id);
 		void init(int, int, int, int);
 		void undo();
 		void redo();
@@ -69,7 +69,7 @@ class mem_link_box : public mem_command {
 
 class mem_unlink_box : public mem_command {
 	public:
-		mem_unlink_box(sem_model*, int id);
+		mem_unlink_box(sem_mediator*, int id);
 		void undo();
 		void redo();
 
@@ -85,7 +85,7 @@ class mem_unlink_box : public mem_command {
 
 class mem_prop_box : public mem_command {
 	public:
-		mem_prop_box(sem_model*, int id);
+		mem_prop_box(sem_mediator*, int id);
 		void undo();
 		void redo();
 
@@ -105,7 +105,7 @@ class mem_prop_box : public mem_command {
 
 class mem_pos_box : public mem_command {
 	public:
-		mem_pos_box(sem_model*, int id);
+		mem_pos_box(sem_mediator*, int id);
 		void undo();
 		void redo();
 

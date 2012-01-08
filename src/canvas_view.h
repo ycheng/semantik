@@ -14,14 +14,14 @@
 
 class QMenu;
 class canvas_link;
-class sem_model;
+class sem_mediator;
 class canvas_item;
 class rubber_line;
 class canvas_view : public QGraphicsView
 {
 	Q_OBJECT
 	public:
-		canvas_view(QWidget *i_oWidget, sem_model* i_oControl);
+		canvas_view(QWidget *i_oWidget, sem_mediator* i_oControl);
 		void item_moved();
 
 		QMap<int, canvas_item*> m_oItems;
@@ -80,7 +80,7 @@ class canvas_view : public QGraphicsView
 
 		//void scaleView(qreal i_oScaleFactor);
 
-		sem_model *m_oMediator;
+		sem_mediator *m_oMediator;
 
 		QVector<canvas_item*> m_oRect;
 

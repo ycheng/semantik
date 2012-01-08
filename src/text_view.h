@@ -17,8 +17,8 @@ class text_view : public QWidget
 {
 	Q_OBJECT
 	public:
-		text_view(QWidget *i_oParent, sem_model *i_oControl);
-		sem_model *m_oMediator;
+		text_view(QWidget *i_oParent, sem_mediator *i_oControl);
+		sem_mediator *m_oMediator;
 		KTextEdit *m_oEdit;
 
 		int m_iId;

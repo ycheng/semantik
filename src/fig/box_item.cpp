@@ -15,7 +15,7 @@
 #include "box_view.h"
  #include "box_link.h"
 #include "data_item.h"
-#include "sem_model.h"
+#include "sem_mediator.h"
 
 #define PAD 2
 #define GRID 10

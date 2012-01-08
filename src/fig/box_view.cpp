@@ -25,7 +25,7 @@
 #include "con.h"
 
 #include <math.h>
-#include "sem_model.h"
+#include "sem_mediator.h"
 #include "box_item.h"
 #include "box_link.h"
 #include "data_item.h"
@@ -135,7 +135,7 @@ bool box_reader::characters(const QString &i_s)
 	return true;
 }
 
-box_view::box_view(QWidget *i_oWidget, sem_model *i_oControl) : QGraphicsView(i_oWidget)
+box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView(i_oWidget)
 {
 	m_oMediator = i_oControl;
 	m_iId = NO_ITEM;

@@ -4,12 +4,12 @@
 #include <QLabel>
 #include <QCoreApplication>
 #include "data_item.h"
-#include "sem_model.h"
+#include "sem_mediator.h"
 #include "data_view.h"
 #include "con.h" 
 #include "sembind.h" 
 
-data_view::data_view(QWidget *i_oParent, sem_model *i_oControl) : QStackedWidget(i_oParent)
+data_view::data_view(QWidget *i_oParent, sem_mediator *i_oControl) : QStackedWidget(i_oParent)
 {
 	m_oMediator = i_oControl;
 

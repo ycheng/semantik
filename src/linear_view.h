@@ -16,8 +16,8 @@ class linear_view : public QTreeWidget
 {
 	Q_OBJECT
 	public:
-		linear_view(QWidget *i_oParent, sem_model *i_oControl);
-		sem_model *m_oMediator;
+		linear_view(QWidget *i_oParent, sem_mediator *i_oControl);
+		sem_mediator *m_oMediator;
 
 		QMap<int, QTreeWidgetItem*> m_oItems;
 

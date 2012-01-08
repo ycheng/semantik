@@ -10,14 +10,14 @@
 #include "con.h"
 #include "table_dialog.h"
 #include "data_item.h"
-#include "sem_model.h"
+#include "sem_mediator.h"
 #include "table_view.h"
 
 numbered_action::numbered_action(QString x, QWidget *y) : QAction(x, y) {
 
 }
 
-table_view::table_view(QWidget *i_oParent, sem_model *i_oControl) : QTableWidget(0, 0, i_oParent)
+table_view::table_view(QWidget *i_oParent, sem_mediator *i_oControl) : QTableWidget(0, 0, i_oParent)
 {
 	m_oMediator = i_oControl;
 	m_bFreeze = false;

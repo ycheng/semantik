@@ -8,12 +8,12 @@
 #include <QLineEdit>
 #include <QSizePolicy>
 
-#include  "sem_model.h"
+#include  "sem_mediator.h"
 #include  "linear_container.h"
 #include  "linear_view.h"
 #include  "con.h"
 
-linear_container::linear_container(QWidget *i_oParent, sem_model *i_oControl) : QWidget(i_oParent)
+linear_container::linear_container(QWidget *i_oParent, sem_mediator *i_oControl) : QWidget(i_oParent)
 {
 	m_oMediator = i_oControl;
 	QGridLayout *l_oLayout = new QGridLayout();

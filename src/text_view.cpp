@@ -15,11 +15,11 @@
 //#include "aux.h"
 //#include "con.h"
 #include "data_item.h"
-#include "sem_model.h"
+#include "sem_mediator.h"
 #include "text_view.h"
 #include "semantik.h"
 
-text_view::text_view(QWidget *i_oParent, sem_model *i_oControl) : QWidget(i_oParent)
+text_view::text_view(QWidget *i_oParent, sem_mediator *i_oControl) : QWidget(i_oParent)
 {
 	QGridLayout *l_oLayout = new QGridLayout();
 	setLayout(l_oLayout);

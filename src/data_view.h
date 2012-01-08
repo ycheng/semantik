@@ -11,8 +11,8 @@ class data_view : public QStackedWidget
 {
 	Q_OBJECT
 	public:
-		data_view(QWidget *i_oParent, sem_model *i_oControl);
-		sem_model *m_oMediator;
+		data_view(QWidget *i_oParent, sem_mediator *i_oControl);
+		sem_mediator *m_oMediator;
 		QLabel *m_oLabel;
 
 	public slots:

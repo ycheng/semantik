@@ -23,8 +23,8 @@ class table_view : public QTableWidget
 {
 	Q_OBJECT
 	public:
-		table_view(QWidget *i_oParent, sem_model *i_oControl);
-		sem_model *m_oMediator;
+		table_view(QWidget *i_oParent, sem_mediator *i_oControl);
+		sem_mediator *m_oMediator;
 
 		void mousePressEvent(QMouseEvent *i_oEv);
 

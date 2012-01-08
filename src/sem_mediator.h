@@ -32,7 +32,7 @@ class html_converter : public QXmlDefaultHandler
 class semantik_reader;
 class data_item;
 class bind_node;
-class sem_model: public QObject
+class sem_mediator: public QObject
 {
 	Q_OBJECT
 
@@ -77,8 +77,8 @@ class sem_model: public QObject
 		void enable_undo(bool, bool);
 
 	public:
-		sem_model(QObject *i_oParent);
-		~sem_model();
+		sem_mediator(QObject *i_oParent);
+		~sem_mediator();
 
 		void undo_purge();
 

@@ -14,7 +14,7 @@
 #include "color_scheme.h"
 #include "con.h"
 
-class sem_model;
+class sem_mediator;
 
 class diagram_item
 {
@@ -58,8 +58,8 @@ class data_box : public diagram_item
 class data_item
 {
 	public:
-		data_item(sem_model *i_oControl, int i_iId);
-		sem_model* m_oMediator;
+		data_item(sem_mediator *i_oControl, int i_iId);
+		sem_mediator* m_oMediator;
 
 		QString m_sSummary;
 		QString m_sText;

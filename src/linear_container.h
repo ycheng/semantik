@@ -8,14 +8,14 @@
 #include "con.h"
 
 class QWidget;
-class sem_model;
+class sem_mediator;
 class linear_view;
 class linear_container : public QWidget
 {
 	public:
-		linear_container(QWidget *i_oParent, sem_model *i_oControl);
+		linear_container(QWidget *i_oParent, sem_mediator *i_oControl);
 
-		sem_model *m_oMediator;
+		sem_mediator *m_oMediator;
 		linear_view *m_oView;
 };
 

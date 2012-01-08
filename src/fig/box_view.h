@@ -15,12 +15,12 @@ class box_link;
 class data_link;
 class data_box;
 class diagram_item;
-class sem_model;
+class sem_mediator;
 class box_view : public QGraphicsView
 {
 	Q_OBJECT
 	public:
-		box_view(QWidget*, sem_model *);
+		box_view(QWidget*, sem_mediator *);
 		~box_view();
 
 
@@ -62,7 +62,7 @@ class box_view : public QGraphicsView
 		void sync_view();
 		void from_string(const QString &);
 
-		sem_model *m_oMediator;
+		sem_mediator *m_oMediator;
 
 		box_link *m_oCurrent;
 

@@ -23,7 +23,7 @@
 #include  "sembind.h"
 #include "semantik.h"
 #include  "canvas_view.h"
-#include   "sem_model.h"
+#include   "sem_mediator.h"
 #include    "image_view.h"
 #include "config_dialog.h"
 #include   "text_view.h"
@@ -134,7 +134,7 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 
 	//setWindowIcon(QIcon(notr(":images/semantik-32.png")));
 
-	m_oMediator = new sem_model(this);
+	m_oMediator = new sem_mediator(this);
 	connect(m_oMediator, SIGNAL(sig_message(const QString&, int)), this, SLOT(slot_message(const QString&, int)));
 	connect(m_oMediator, SIGNAL(update_title()), this, SLOT(update_title()));
 
