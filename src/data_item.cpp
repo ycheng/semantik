@@ -52,21 +52,6 @@ QPixmap data_item::getThumb()
 }
 
 
-/*
-bool data_item::load_from_path(const QString & i_sPath)
-{
-	QPixmap l_oPix;
-	l_oPix.load(i_sPath);
-	if (l_oPix.isNull()) return false;
-
-	//m_oPix = l_oPix.scaledToHeight(300);
-	m_oPix = l_oPix;
-	m_oThumbnail = l_oPix.scaledToHeight(32);
-
-	return true;
-}
-*/
-
 color_scheme& data_item::get_color_scheme()
 {
 	if (m_oMediator->parent_of(m_iId) <= 0)

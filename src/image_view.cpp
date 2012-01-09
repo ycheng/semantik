@@ -100,7 +100,7 @@ void image_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 	if (one) {
 		m_iId = sel.at(0);
 		data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
-		m_oPixmap = l_oData->m_oPix;
+		m_oPixmap = l_oData->getPix();
 	} else {
 		m_oPixmap = QPixmap();
 		m_iId = NO_ITEM;
@@ -110,7 +110,15 @@ void image_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 
 void image_view::clear_pic()
 {
-	m_oMediator->m_oImgs.removeAll(m_iId);
+	data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
+
+	mem_pic *mem = new mem_pic(m_oMediator);
+	mem->sel = l_oData;
+	mem->m_iOldId = l_oData->m_iPicId;
+	mem->m_iNewId = NO_ITEM;
+	mem->apply();
+
+	/*m_oMediator->m_oImgs.removeAll(m_iId);
 	m_oPixmap = QPixmap();
 
 	data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
@@ -125,7 +133,7 @@ void image_view::clear_pic()
 		l_oFile.remove();
 	}
 	m_oMediator->notify_change_data(m_iId);
-	repaint();
+	repaint();*/
 }
 
 #include "image_view.moc"
@@ -150,8 +158,8 @@ void image_view::context_menu(const QPoint& i_o)
 	if (!m_oMenu)
 	{
 		m_oMenu = new QMenu(this);
-        m_oMenu->addAction(m_oChangePictureAction);
-        m_oMenu->addAction(m_oClearPictureAction);
+		m_oMenu->addAction(m_oChangePictureAction);
+		m_oMenu->addAction(m_oClearPictureAction);
 	}
 	m_oMenu->popup(mapToGlobal(i_o));
 }
@@ -176,6 +184,7 @@ void image_view::change_pic()
 
 void image_view::do_change_pic(const QString& l_sText)
 {
+	/*
 	if (!QFile::exists(l_sText))
 	{
 		emit sig_message(trUtf8("File %1 does not exist").arg(l_sText), 20000);
@@ -223,6 +232,7 @@ void image_view::do_change_pic(const QString& l_sText)
 
 	l_oData->m_sPicLocation = l_sText;
 	if (!m_oMediator->m_oImgs.contains(m_iId)) m_oMediator->m_oImgs.push_back(m_iId);
+	*/
 }
 
 void image_view::dragEnterEvent(QDragEnterEvent *i_o)

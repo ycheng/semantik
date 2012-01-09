@@ -131,6 +131,11 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		l_oItem->m_iTextLength = i_oAttrs.value(notr("len")).toInt();
 		l_oItem->m_sComment = i_oAttrs.value(notr("comment"));
 
+		if (i_oAttrs.index(notr("pic_id")) != -1)
+			l_oItem->m_iPicId = i_oAttrs.value(notr("pic_id")).toInt();
+		else
+			l_oItem->m_iPicId = NO_ITEM;
+
 		l_oItem->m_sPicLocation = i_oAttrs.value(notr("pic_location"));
 		l_oItem->m_sPicCaption = i_oAttrs.value(notr("pic_caption"));
 		l_oItem->m_sPicComment = i_oAttrs.value(notr("pic_comment"));
@@ -659,7 +664,8 @@ bool sem_mediator::open_file(const QString& i_sUrl)
 
 		QString l_sNew = l_oInfo.absoluteFilePath();
 		if (l_oData)
-		l_oData->load_from_path(l_sNew);
+			if (!load_picture(l_sNew, l_iVal))
+				return false;
 	}
 
 	// now update all items created
@@ -1229,6 +1235,9 @@ QPixmap sem_mediator::getPix(int id)
 {
 	if (id == NO_ITEM)
 		return QPixmap();
+	data_pic *pic = m_oPixCache.value(id);
+	if (pic)
+		return pic->m_oPix;
 
 	return QPixmap();
 }
@@ -1237,7 +1246,25 @@ QPixmap sem_mediator::getThumb(int id)
 {
 	if (id == NO_ITEM)
 		return QPixmap();
+	data_pic *pic = m_oPixCache.value(id);
+	if (pic)
+		return pic->m_oThumb;
 	return QPixmap();
+}
+
+bool sem_mediator::load_picture(const QString & i_sPath, int id)
+{
+	QPixmap l_oPix;
+	l_oPix.load(i_sPath);
+	if (l_oPix.isNull()) return false;
+
+	// l_oPix.scaledToHeight(300);
+	data_pic *pic = m_oPixCache[id];
+	if (!pic)
+		pic = new data_pic();
+	pic->m_oPix = l_oPix;
+	pic->m_oThumb = l_oPix.scaledToHeight(32);
+	return true;
 }
 
 void sem_mediator::notify_add_item(int id) {

@@ -55,6 +55,16 @@ class data_box : public diagram_item
 	double m_iHH;
 };
 
+class data_pic
+{
+	public:
+	QPixmap m_oPix;
+	QPixmap m_oThumb;
+	//QString m_sPicLocation; // keep them on the item?
+	//QString m_sPicCaption;
+	//QString m_sPicComment;
+};
+
 class data_item
 {
 	public:
@@ -70,11 +80,10 @@ class data_item
 		QString m_sPicLocation;
 		QString m_sPicCaption;
 		QString m_sPicComment;
-
-
-		int m_iPicId;
 		//QPixmap m_oPix;
 		//QPixmap m_oThumbnail;
+
+		int m_iPicId; // references a data_pic
 
 		QPixmap getPix();
 		QPixmap getThumb();

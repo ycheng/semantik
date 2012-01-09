@@ -163,11 +163,12 @@ class sem_mediator: public QObject
 		int next_seq();
 		int next_pic_seq();
 
-		QHash<int, QPixmap> m_oPixCache;
-		QHash<int, QPixmap> m_oThumbCache;
+		QHash<int, data_pic*> m_oPixCache;
 
 		QPixmap getPix(int id);
 		QPixmap getThumb(int id);
+		bool load_picture(const QString&, int);
+
 
 		void generate_docs(const QString &i_oFile, const QString &i_sName, const QString &i_sLocation);
 

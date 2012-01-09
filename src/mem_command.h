@@ -15,6 +15,7 @@ class mem_sel;
 class mem_command {
 	public:
 		mem_command(sem_mediator*);
+		virtual ~mem_command() {};
 		sem_mediator *model;
 		virtual void undo() = 0;
 		virtual void redo() = 0;
