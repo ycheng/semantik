@@ -184,7 +184,6 @@ void image_view::change_pic()
 
 void image_view::do_change_pic(const QString& l_sText)
 {
-	/*
 	if (!QFile::exists(l_sText))
 	{
 		emit sig_message(trUtf8("File %1 does not exist").arg(l_sText), 20000);
@@ -199,18 +198,24 @@ void image_view::do_change_pic(const QString& l_sText)
 	}
 
 	data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
-	bool l_bRet = l_oData->load_from_path(l_sText);
+	int id = m_oMediator->next_pic_seq();
+
+	bool l_bRet = m_oMediator->load_picture(l_sText, id);
 	if (!l_bRet)
 	{
-		emit sig_message(trUtf8("something bad happened"), 20000);
+		emit sig_message(trUtf8("Could not load the picture"), 20000);
 		return;
 	}
-	m_oMediator->notify_change_data(m_iId);
 
-	m_oPixmap = l_oData->m_oPix;
-	repaint();
-	//m_oPixmap->setScaledContents(true);
+	mem_pic *mem = new mem_pic(m_oMediator);
+	mem->sel = l_oData;
+	mem->m_iOldId = l_oData->m_iPicId;
+	mem->m_iNewId = id;
+	mem->apply();
 
+	// FIXME copy the picture to the temporary directory
+
+	/*
 	QStringList l = l_sText.split(".");
 	QString l_sNameOut = QString(m_oMediator->m_sTempDir+"/pic-%1.%2").arg(QString::number(m_iId)).arg(l[l.size()-1]);
 	QFile l_oOutFile(l_sNameOut);
