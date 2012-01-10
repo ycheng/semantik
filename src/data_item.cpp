@@ -37,18 +37,19 @@ data_item::data_item(sem_mediator *i_oControl, int i_iId)
 
 	m_iNumRows = 3;
 	m_iNumCols = 3;
+	m_iPicId = NO_ITEM;
 
 	m_iYY = m_iXX = -200000.0;
 }
 
 QPixmap data_item::getPix()
 {
-	return m_oMediator->getPix(m_iId);
+	return m_oMediator->getPix(m_iPicId);
 }
 
 QPixmap data_item::getThumb()
 {
-	return m_oMediator->getThumb(m_iId);
+	return m_oMediator->getThumb(m_iPicId);
 }
 
 

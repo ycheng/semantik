@@ -1285,6 +1285,7 @@ bool sem_mediator::load_picture(const QString & i_sPath, int id)
 		pic = new data_pic();
 	pic->m_oPix = l_oPix;
 	pic->m_oThumb = l_oPix.scaledToHeight(32);
+	m_oPixCache[id] = pic;
 	return true;
 }
 
