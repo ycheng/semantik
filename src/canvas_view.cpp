@@ -683,6 +683,11 @@ void canvas_view::sync_colors() {
 	}
 }
 
+void canvas_view::notify_pic(int id)
+{
+	qDebug()<<"canvas_view::notify_pic to be implemented";
+}
+
 void canvas_view::sync_flags() {
 	semantik_win *l_o = (semantik_win*) m_oSemantikWindow;
 	l_o->m_oFlagsToolBar->clear();

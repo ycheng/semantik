@@ -135,6 +135,7 @@ class canvas_view : public QGraphicsView
 		void update_cursor();
 		void slot_select_subtree();
 
+		void notify_pic(int id);
 		void notify_add_item(int id);
 		void notify_delete_item(int id);
 		void notify_link_items(int id1, int id2);

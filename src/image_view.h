@@ -42,6 +42,7 @@ class image_view : public QWidget
 	public slots:
 		void clear_pic();
 		void change_pic();
+		void notify_pic(int id);
 		void context_menu(const QPoint&);
 		void notify_select(const QList<int>& unsel, const QList<int>& sel);
 };

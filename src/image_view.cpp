@@ -118,23 +118,6 @@ void image_view::clear_pic()
 	mem->m_iOldId = l_oData->m_iPicId;
 	mem->m_iNewId = NO_ITEM;
 	mem->apply();
-
-	/*m_oMediator->m_oImgs.removeAll(m_iId);
-	m_oPixmap = QPixmap();
-
-	data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
-
-	l_oData->m_oPix = QPixmap();
-	l_oData->m_oThumbnail = QPixmap();
-
-	QString l_s = QString(m_oMediator->m_sTempDir+"/pic-%1.png").arg(QString::number(m_iId));
-	if (QFile::exists(l_s))
-	{
-		QFile l_oFile(l_s);
-		l_oFile.remove();
-	}
-	m_oMediator->notify_change_data(m_iId);
-	repaint();*/
 }
 
 #include "image_view.moc"
@@ -251,3 +234,12 @@ void image_view::dragLeaveEvent(QDragLeaveEvent *i_o)
 	i_o->accept();
 }
 
+void image_view::notify_pic(int id)
+{
+	if (m_iId == id)
+	{
+		data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
+		m_oPixmap = l_oData->getPix();
+		repaint();
+	}
+}
