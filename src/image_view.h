@@ -7,6 +7,7 @@
 #include <QSplitter>
 #include "c\
 on.h"
+#include <KUrl>
 
 class QMenu;
 class image_view : public QWidget
@@ -28,7 +29,7 @@ class image_view : public QWidget
 
 		bool event(QEvent*);
 		void mouseReleaseEvent(QMouseEvent*);
-		void do_change_pic(const QString&);
+		void do_change_pic(const KUrl&);
 
 		void dragEnterEvent(QDragEnterEvent*);
 		void dragMoveEvent(QDragMoveEvent*);

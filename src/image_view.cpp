@@ -15,6 +15,7 @@
 #include <QDirModel>
 #include <QGridLayout>
 #include <QCoreApplication>
+#include  <KFileDialog>
 
 #include "con.h"
 #include "data_item.h"
@@ -177,30 +178,18 @@ void image_view::mouseReleaseEvent(QMouseEvent *i_o)
 
 void image_view::change_pic()
 {
-	QString l_sText = QFileDialog::getOpenFileName(this, trUtf8("Choose a file"), QString(),
-		trUtf8("Image files (*.png *.jpg *.jpeg *.gif)"));
-	do_change_pic(l_sText);
+	KUrl l_o = KFileDialog::getOpenUrl(KUrl(notr("kfiledialog:///image")),
+                trUtf8("*.png *.jpg *.jpeg *.gif|Image Files (*.png *.jpg *.jpeg *.gif)"),
+                this, trUtf8("Choose a picture"));
+	do_change_pic(l_o);
 }
 
-void image_view::do_change_pic(const QString& l_sText)
+void image_view::do_change_pic(const KUrl& l_sText)
 {
-	if (!QFile::exists(l_sText))
-	{
-		emit sig_message(trUtf8("File %1 does not exist").arg(l_sText), 20000);
-		return;
-	}
-
-	QFile l_oInFile(l_sText);
-	if (!l_oInFile.open(QIODevice::ReadOnly))
-	{
-		emit sig_message(trUtf8("File %1 could not be opened").arg(l_sText), 20000);
-		return;
-	}
-
 	data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
 	int id = m_oMediator->next_pic_seq();
 
-	bool l_bRet = m_oMediator->load_picture(l_sText, id);
+	bool l_bRet = m_oMediator->save_and_load_picture(l_sText, id);
 	if (!l_bRet)
 	{
 		emit sig_message(trUtf8("Could not load the picture"), 20000);
@@ -212,32 +201,6 @@ void image_view::do_change_pic(const QString& l_sText)
 	mem->m_iOldId = l_oData->m_iPicId;
 	mem->m_iNewId = id;
 	mem->apply();
-
-	// FIXME copy the picture to the temporary directory
-
-	/*
-	QStringList l = l_sText.split(".");
-	QString l_sNameOut = QString(m_oMediator->m_sTempDir+"/pic-%1.%2").arg(QString::number(m_iId)).arg(l[l.size()-1]);
-	QFile l_oOutFile(l_sNameOut);
-	if (!l_oOutFile.open(QIODevice::WriteOnly))
-	{
-		emit sig_message(trUtf8("something worse happened"), 20000);
-		return;
-	}
-
-	char l_oBuf[8192];
-	while (1)
-	{
-		int l_oLen = l_oInFile.read(l_oBuf, 8192);
-		if (l_oLen == 0) break;
-		l_oOutFile.write(l_oBuf, l_oLen);
-	}
-	l_oInFile.close();
-	l_oOutFile.close();
-
-	l_oData->m_sPicLocation = l_sText;
-	if (!m_oMediator->m_oImgs.contains(m_iId)) m_oMediator->m_oImgs.push_back(m_iId);
-	*/
 }
 
 void image_view::dragEnterEvent(QDragEnterEvent *i_o)

@@ -7,6 +7,7 @@
 #include <QStack>
 #include <QXmlDefaultHandler>
 #include<KUrl> 
+#include <kio/netaccess.h>
 
 #include "aux.h"
 #include "con.h"
@@ -165,9 +166,11 @@ class sem_mediator: public QObject
 
 		QHash<int, data_pic*> m_oPixCache;
 
+
 		QPixmap getPix(int id);
 		QPixmap getThumb(int id);
 		bool load_picture(const QString&, int);
+		bool save_and_load_picture(const KUrl& i_sPath, int id);
 
 
 		void generate_docs(const QString &i_oFile, const QString &i_sName, const QString &i_sLocation);
