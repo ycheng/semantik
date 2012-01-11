@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # encoding: utf-8
-# Thomas Nagy, 2007 (ita)
+# Thomas Nagy, 2007-2012
 
 import os, sys, tarfile, string
 
@@ -50,17 +50,13 @@ def parse_file(infile):
 	tar.close()
 
 	try:
-		file = open('con.xml', 'rb')
-		txt = file.read()
-		file.close()
+		with open('con.xml', 'rb') as f:
+			txt = f.read()
 		os.remove('con.xml')
-	except:
+	except Exception:
 		# will remove this at version >= 0.7
-		file = open('com.xml', 'rb')
-		txt = file.read()
-		txt = filter(txt)
-		file.close()
+		with open('com.xml', 'rb') as f:
+			txt = filter(file.read())
 		os.remove('com.xml')
-
 	return txt
 

@@ -1,7 +1,8 @@
 #sem:name: semantik document generator
 #sem:tip: used for saving semantik documents
 
-# Thomas Nagy, 2007 (ita)
+# Thomas Nagy, 2007-2012
+
 import os, tarfile
 from cStringIO import StringIO
 
@@ -17,10 +18,12 @@ tar.addfile(tarinfo, stuff)
 #debug(doc.encode('utf-8'))
 
 os.chdir(sembind.get_var('temp_dir'))
-lst = os.listdir('.')
-for i in lst:
-	if -1 == i.rfind('pic-'): continue
-	tar.add(i, i)
 
+tmp = str(sembind.get_var('pics')).split(",")
+lst = os.listdir('.')
+for name in lst:
+	f = k.split('.')[0].replace('pic-', '')
+	if f in tmp:
+		tar.add(name, name)
 tar.close()
 

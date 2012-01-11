@@ -22,8 +22,6 @@
 #include "sem_mediator.h"
 #include "image_view.h"
 
-// FIXME change the pictures
-
 image_view::image_view(QWidget *i_oParent, sem_mediator *i_oControl) : QWidget(i_oParent)
 {
 	setCursor(Qt::PointingHandCursor);

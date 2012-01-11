@@ -97,7 +97,6 @@ class sem_mediator: public QObject
 		bool save_file(QString);
 		bool open_file(const QString&);
 		void purge_document();
-		bool read_xml_file(const QString &l_oBa);
 
 		void init_colors();
 		void init_flags();

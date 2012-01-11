@@ -561,12 +561,20 @@ bool sem_mediator::save_file(QString i_sUrl)
 	QByteArray l_oBa = l_o2.readAll();
 	l_o2.close();
 
+	QStringList lst;
+	foreach (data_item *d, m_oItems.values()) {
+		if (d->m_iPicId != NO_ITEM) {
+			lst << QString::number(d->m_iPicId);
+		}
+	}
+
 	bind_node::set_var(notr("temp_dir"), m_sTempDir);
 	bind_node::set_var(notr("outfile"), i_sUrl);
 	bind_node::set_var(notr("fulldoc"), doc_to_xml());
 	bind_node::set_var(notr("hints"), m_sHints);
 	bind_node::set_var(notr("namet"), "");
 	bind_node::set_var(notr("outdir"), "");
+	bind_node::set_var(notr("pics"), lst.join(","));
 
 	if (!init_py())
 	{
@@ -643,19 +651,24 @@ bool sem_mediator::open_file(const QString& i_sUrl)
 
 	//qDebug()<<"full text "<<bind_node::fulldoc()<<endl;
 
-	bool l_bResult = read_xml_file(bind_node::get_var(notr("fulldoc")));
-	if (!l_bResult) {
+	semantik_reader l_oHandler(this);
+	QXmlInputSource l_oSource;
+	l_oSource.setData(bind_node::get_var(notr("fulldoc")));
+	QXmlSimpleReader l_oReader;
+	l_oReader.setContentHandler(&l_oHandler);
+
+	if (!l_oReader.parse(l_oSource)) {
 		undo_purge();
 		KMessageBox::sorry(NULL, trUtf8("Could not load the document %1").arg(bind_node::get_var(notr("fulldoc"))), trUtf8("Broken document"));
 		return false;
 	}
 
 	QDir l_oDir(m_sTempDir);
+
 	QFileInfoList l_oLst = l_oDir.entryInfoList();
 
 	// this is for the pictures
-	foreach (QFileInfo l_oInfo, l_oLst)
-	{
+	foreach (QFileInfo l_oInfo, l_oLst) {
 		QString l_sName = l_oInfo.fileName();
 		if (!l_sName.contains(notr("pic-"))) continue;
 		l_sName = l_sName.section(QRegExp(notr("[.-]")), 1, 1);
@@ -663,20 +676,23 @@ bool sem_mediator::open_file(const QString& i_sUrl)
 		int l_iVal = l_sName.toInt();
 		data_item *l_oData = m_oItems.value(l_iVal);
 
-		QString l_sNew = l_oInfo.absoluteFilePath();
-		if (l_oData)
-			if (!load_picture(l_sNew, l_iVal))
-				return false;
+		if (l_oData) {
+			if (load_picture(l_oInfo.absoluteFilePath(), l_iVal)) {
+				l_oData->m_iPicId = l_iVal;
+			} else {
+				l_oData->m_iPicId = NO_ITEM;
+			}
+		}
 	}
 
 	// now update all items created
 	foreach (int i, m_oItems.keys()) {
 		notify_add_item(i);
 	}
+
 	foreach (QPoint p, m_oLinks) {
 		notify_link_items(p.x(), p.y());
 	}
-
 
 	QList<int> lst;
 	mem_sel *sel = new mem_sel(this);
@@ -699,23 +715,6 @@ bool sem_mediator::open_file(const QString& i_sUrl)
 	sel->apply();
 
 	set_dirty(false);
-	return true;
-}
-
-bool sem_mediator::read_xml_file(const QString &l_oBa)
-{
-	semantik_reader l_oHandler(this);
-	QXmlInputSource l_oSource;
-	l_oSource.setData(l_oBa);
-	QXmlSimpleReader l_oReader;
-	l_oReader.setContentHandler(&l_oHandler);
-
-	if (!l_oReader.parse(l_oSource))
-	{
-		qDebug()<<"parse error";
-		return false;
-	}
-
 	return true;
 }
 
