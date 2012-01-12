@@ -31,6 +31,7 @@ class semantik_reader : public QXmlDefaultHandler
 {
 	public:
 		semantik_reader(sem_mediator*);
+		bool pictures_are_by_item;
 
 	private:
 		QString m_sBuf;
@@ -51,6 +52,7 @@ semantik_reader::semantik_reader(sem_mediator *i_oControl)
 	m_oMediator = i_oControl;
 	cur_link = NULL;
 	m_iId = NO_ITEM;
+	pictures_are_by_item = false;
 }
 
 bool semantik_reader::startElement(const QString&, const QString&, const QString& i_sName, const QXmlAttributes& i_oAttrs)
@@ -66,6 +68,10 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		if (i_oAttrs.value(notr("location")).size()) m_oMediator->m_sOutDir = i_oAttrs.value(notr("location"));
 		if (i_oAttrs.value(notr("dir")).size()) m_oMediator->m_sOutProject = i_oAttrs.value(notr("dir"));
 		if (i_oAttrs.value(notr("output")).size()) m_oMediator->m_sOutTemplate = i_oAttrs.value(notr("output"));
+		if (i_oAttrs.value(notr("version")).size()) {
+			if (i_oAttrs.value(notr("version")).toInt() == 1)
+				pictures_are_by_item = true;
+		}
 	}
 	else if (i_sName == notr("link"))
 	{
@@ -419,7 +425,7 @@ QString sem_mediator::doc_to_xml()
 	QStringList l_oS;
 
 	l_oS<<notr("<?xml version=\"1.0\" encoding=\"utf8\"?>\n");
-	l_oS<<notr("<semantik version=\"1\">\n");
+	l_oS<<notr("<semantik version=\"2\">\n");
 	l_oS<<notr("\t<info");
 	//l_oS<<QString(" name=\"%1\"").arg(bind_node::protectXML(m_sName));
 	//l_oS<<QString(" fname=\"%1\"").arg(bind_node::protectXML(m_sFirstName));
@@ -674,13 +680,12 @@ bool sem_mediator::open_file(const QString& i_sUrl)
 		l_sName = l_sName.section(QRegExp(notr("[.-]")), 1, 1);
 
 		int l_iVal = l_sName.toInt();
-		data_item *l_oData = m_oItems.value(l_iVal);
 
-		if (l_oData) {
-			if (load_picture(l_oInfo.absoluteFilePath(), l_iVal)) {
+		if (load_picture(l_oInfo.absoluteFilePath(), l_iVal)) {
+			if (l_oHandler.pictures_are_by_item)
+			{
+				data_item *l_oData = m_oItems.value(l_iVal);
 				l_oData->m_iPicId = l_iVal;
-			} else {
-				l_oData->m_iPicId = NO_ITEM;
 			}
 		}
 	}
