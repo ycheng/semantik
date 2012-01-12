@@ -22,7 +22,7 @@ os.chdir(sembind.get_var('temp_dir'))
 tmp = str(sembind.get_var('pics')).split(",")
 lst = os.listdir('.')
 for name in lst:
-	f = k.split('.')[0].replace('pic-', '')
+	f = name.split('.')[0].replace('pic-', '')
 	if f in tmp:
 		tar.add(name, name)
 tar.close()

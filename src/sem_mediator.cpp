@@ -1264,9 +1264,10 @@ bool sem_mediator::save_and_load_picture(const KUrl& i_sPath, int id)
 	if (sp.size() < 2) return false;
 	QString dest = QString(m_sTempDir+"/pic-%1.%2").arg(QString::number(id)).arg(sp[sp.size()-1]);
 	
-	bool ok = KIO::NetAccess::download(i_sPath, dest, NULL);
+	bool ok = KIO::NetAccess::file_copy(i_sPath, KUrl(dest), NULL);
 	if (!ok)
 		goto cleanup;
+
 	ok = load_picture(dest, id);
 	if (!ok)
 		goto cleanup;
