@@ -460,6 +460,7 @@ QString sem_mediator::doc_to_xml()
 		l_oS<<notr(" len=\"%1\"").arg(QString::number(l_oItem->m_iTextLength));
 		l_oS<<notr(" comment=\"%1\"").arg(bind_node::protectXML(l_oItem->m_sComment));
 
+		l_oS<<notr(" pic_id=\"%1\"").arg(QString::number(l_oItem->m_iPicId));
 		l_oS<<notr(" pic_location=\"%1\"").arg(bind_node::protectXML(l_oItem->m_sPicLocation));
 		l_oS<<notr(" pic_caption=\"%1\"").arg(bind_node::protectXML(l_oItem->m_sPicCaption));
 		l_oS<<notr(" pic_comment=\"%1\"").arg(bind_node::protectXML(l_oItem->m_sPicComment));
