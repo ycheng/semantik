@@ -601,6 +601,10 @@ void sem_mediator::purge_document()
 		delete m_oUndoStack.pop();
 	while (!m_oRedoStack.isEmpty())
 		delete m_oRedoStack.pop();
+
+	mem_sel *sel = new mem_sel(this);
+	sel->apply();
+
 	mem_delete* del = new mem_delete(this);
 	del->init(m_oItems.keys());
 	del->apply();
@@ -1059,9 +1063,7 @@ void sem_mediator::generate_docs(const QString &i_oFile, const QString &i_sDirNa
 	bind_node::set_var(notr("namet"), i_oFile);
 	bind_node::set_var(notr("preview"), ""); // leave this right here! get the file generated
 
-	QList<int> lst;
 	mem_sel *sel = new mem_sel(this);
-	sel->sel = lst;
 	sel->apply();
 
 	foreach (int l_iVal, m_oItems.keys())

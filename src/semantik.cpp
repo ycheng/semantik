@@ -494,10 +494,6 @@ void semantik_win::slot_open()
 	{
 		m_oMediator->m_oCurrentUrl = l_o;
 	}
-	else
-	{
-		m_oMediator->m_oCurrentUrl = KUrl();
-	}
 	update_title();
 }
 
