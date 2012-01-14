@@ -973,6 +973,7 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 	*/
 
 	QGraphicsView::mousePressEvent(i_oEv);
+	edit_off();
 
 	QList<QGraphicsItem*> it = scene()->selectedItems();
 	if (it.size() == 1 && it.at(0)->type() == BOX_LINK_T)
