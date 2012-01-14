@@ -25,7 +25,7 @@ box_link::box_link(box_view* i_oParent) : QGraphicsRectItem()
 	m_oLink = NULL;
 
 	i_oParent->scene()->addItem(this);
-	setZValue(60);
+	setZValue(98);
 
 	setFlags(ItemIsSelectable);
 }
@@ -572,4 +572,22 @@ void box_link::set_link(data_link* link)
 	m_oParent = m_oView->m_oItems.value(link->m_iParent);
 	m_oLink = link;
 }
+
+QVariant box_link::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue)
+{
+	QVariant l_oRet = QGraphicsItem::itemChange(i_oChange, i_oValue);
+	if (scene())
+	{
+		if (i_oChange == ItemSelectedHasChanged)
+		{
+			if (isSelected())
+				setZValue(102);
+			else
+				setZValue(98);
+		}
+	}
+
+	return QGraphicsItem::itemChange(i_oChange, i_oValue);
+}
+
 

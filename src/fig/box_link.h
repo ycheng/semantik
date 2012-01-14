@@ -37,8 +37,9 @@ class box_link : public QGraphicsRectItem
 		box_view *m_oView;
 
 		void update_pos();
-
 		void draw_triangle(QPainter *i_oPainter, int i_iPosition, QPointF i_oP);
+
+		QVariant itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue);
 
 		QPainterPath shape() const;
 		QPainterPath inner_shape;

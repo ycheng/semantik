@@ -36,7 +36,7 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oVie
 
 	setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
-	setZValue(64);
+	setZValue(100);
 	setTextWidth(70);
 	setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
 }
@@ -157,6 +157,13 @@ QVariant box_item::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 		else if (i_oChange == ItemPositionHasChanged)
 		{
 			update_links();
+		}
+		else if (i_oChange == ItemSelectedHasChanged)
+		{
+			if (isSelected())
+				setZValue(101);
+			else
+				setZValue(100);
 		}
 	}
 
