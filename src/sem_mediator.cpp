@@ -534,7 +534,7 @@ QString sem_mediator::doc_to_xml()
 				QString::number(link->pen_style)
 				);
 			foreach (QPoint p, link->m_oOffsets) {
-				l_oS<<notr("<linkbox_offset x=\"%1\" y=\"%2\">").arg(QString::number(p.x()), QString::number(p.y()));
+				l_oS<<notr("    <linkbox_offset x=\"%1\" y=\"%2\"/>\n").arg(QString::number(p.x()), QString::number(p.y()));
 			}
 			l_oS<<notr("</linkbox>\n");			
 

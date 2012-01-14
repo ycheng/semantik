@@ -111,7 +111,7 @@ bool box_reader::startElement(const QString&, const QString&, const QString& i_s
 	{
 		if (m_oCurrent)
 		{
-			m_oCurrent->m_oOffsets.append(
+			m_oCurrent->m_oLink->m_oOffsets.append(
 				QPoint(i_oAttrs.value(QObject::trUtf8("x")).toInt(), i_oAttrs.value(QObject::trUtf8("y")).toInt()));
 		}
 	}
@@ -1036,8 +1036,8 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 		--i;
 
 		QPointF l_oNew = m_oLastMovePoint - m_oLastPoint + grab_segment_link->m_oMediatorPoint - l_oP;
-		grab_segment_link->m_oOffsets[i].setX((int) l_oNew.x());
-		grab_segment_link->m_oOffsets[i].setY((int) l_oNew.y());
+		grab_segment_link->m_oLink->m_oOffsets[i].setX((int) l_oNew.x());
+		grab_segment_link->m_oLink->m_oOffsets[i].setY((int) l_oNew.y());
 		grab_segment_link->update_ratio(); // no need to update_pos
 		grab_segment_link->update();
 	}

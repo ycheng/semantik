@@ -406,7 +406,6 @@ void box_link::update_pos()
 
 #define JUST 2
 
-	// ITA
 	if (m_oParent)
 	{
 		l_oR1 = m_oParent->rect().translated(m_oParent->pos()).adjusted(JUST, JUST, -JUST, -JUST);
@@ -476,15 +475,6 @@ void box_link::update_ratio()
 	// here we reset the offsets if necessary
 	int ret = m_oLst.size();
 
-	if (m_oOffsets.size() != ret - 3)
-	{
-		m_oOffsets.clear();
-		for (int i=1; i < ret - 2; ++i)
-		{
-			m_oOffsets.append(QPoint(0, 0));
-		}
-	}
-
 	if (m_oGood.size() != ret)
 	{
 		m_oGood.clear();
@@ -495,21 +485,33 @@ void box_link::update_ratio()
 		for (int i=0; i<ret; ++i) m_oGood[i] = m_oLst[i];
 	}
 
-	for (int i=0; i < m_oOffsets.size(); ++i)
+	if (m_oLink)
 	{
-		if (m_oLst[i+1].x() == m_oLst[i+2].x())
+		if (m_oLink->m_oOffsets.size() != ret - 3)
 		{
-			int v = m_oOffsets[i].x() + m_oLst[i+1].x();
-			v = int_val2(v);
-			m_oGood[i+1].setX(v);
-			m_oGood[i+2].setX(v);
+			m_oLink->m_oOffsets.clear();
+			for (int i=1; i < ret - 2; ++i)
+			{
+				m_oLink->m_oOffsets.append(QPoint(0, 0));
+			}
 		}
-		else if (m_oLst[i+1].y() == m_oLst[i+2].y())
+
+		for (int i=0; i < m_oLink->m_oOffsets.size(); ++i)
 		{
-			int v = m_oOffsets[i].y() + m_oLst[i+1].y();
-			v = int_val2(v);
-			m_oGood[i+1].setY(v);
-                        m_oGood[i+2].setY(v);
+			if (m_oLst[i+1].x() == m_oLst[i+2].x())
+			{
+				int v = m_oLink->m_oOffsets[i].x() + m_oLst[i+1].x();
+				v = int_val2(v);
+				m_oGood[i+1].setX(v);
+				m_oGood[i+2].setX(v);
+			}
+			else if (m_oLst[i+1].y() == m_oLst[i+2].y())
+			{
+				int v = m_oLink->m_oOffsets[i].y() + m_oLst[i+1].y();
+				v = int_val2(v);
+				m_oGood[i+1].setY(v);
+				m_oGood[i+2].setY(v);
+			}
 		}
 	}
 
@@ -517,7 +519,7 @@ void box_link::update_ratio()
 	mx1 = mx2 = m_oGood[0].x();
 	my1 = my2 = m_oGood[0].y();
 
-	for (int i=1; i<ret; ++i)
+	for (int i = 1; i < ret; ++i)
 	{
 		int nx = m_oGood[i].x(), ny = m_oGood[i].y();
 		mx1 = qMin(mx1, nx);
@@ -537,7 +539,7 @@ void box_link::update_ratio()
 
 
 	QPainterPath p;
-	for (int i=0; i<m_oGood.size() - 1; ++i)
+	for (int i = 0; i < m_oGood.size() - 1; ++i)
 	{
 		int x1 = qMin(m_oGood[i].x(), m_oGood[i+1].x());
 		int x2 = qMax(m_oGood[i].x(), m_oGood[i+1].x());
