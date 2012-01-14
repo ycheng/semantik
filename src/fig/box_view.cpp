@@ -1106,11 +1106,8 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 			ln->apply();
 		}
 
-		if (m_oCurrent)
-		{
-			delete m_oCurrent;
-			m_oCurrent = NULL;
-		}
+		delete m_oCurrent;
+		m_oCurrent = NULL;
 	}
 	else
 	{
