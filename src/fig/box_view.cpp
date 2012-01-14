@@ -896,21 +896,8 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 {
 	if (i_oEv->button() == Qt::RightButton)
 	{
-		// select the item under the cursor if available and show the popup menu
+		edit_off();
 		m_oLastPoint = mapToScene(i_oEv->pos());
-		/*QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
-		if (l_oItem && (l_oItem->type() == BOX_ITEM_T || l_oItem->type() == BOX_LINK_T))
-		{
-			if (!m_oSelected.contains(l_oItem))
-			{
-				deselect_all();
-				add_select(l_oItem);
-			}
-		}
-		else
-		{
-			deselect_all();
-		}*/
 		enable_menu_actions();
 		m_oMenu->popup(i_oEv->globalPos());
 		return;
@@ -1148,6 +1135,27 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 			else
 			{
 				delete mem;
+			}
+		}
+	}
+}
+
+void box_view::edit_off() {
+	box_item* sel = NULL;
+	foreach (QGraphicsItem *tmp, items()) {
+		if (tmp->type() == BOX_ITEM_T) {
+			sel = (box_item*) tmp;
+			if (sel->textInteractionFlags() & Qt::TextEditorInteraction)
+			{
+				sel->setTextInteractionFlags(Qt::NoTextInteraction);
+				if (sel->toPlainText() != m_oMediator->m_oItems[m_iId]->m_oBoxes[sel->m_iId]->m_sText) {
+					mem_edit_box *ed = new mem_edit_box(m_oMediator, m_iId, sel->m_iId);
+					ed->newText = sel->toPlainText();
+					ed->apply();
+				}
+				m_oAddItemAction->setEnabled(true);
+				m_oDeleteAction->setEnabled(true);
+				m_oCancelEditAction->setEnabled(false);
 			}
 		}
 	}

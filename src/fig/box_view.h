@@ -83,6 +83,8 @@ class box_view : public QGraphicsView
 		box_link *grab_segment_link;
 		int grab_segment_pos;
 
+		void edit_off();
+
 		int next_seq();
 		int num_seq;
 
