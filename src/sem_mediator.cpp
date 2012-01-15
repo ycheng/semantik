@@ -575,6 +575,7 @@ bool sem_mediator::save_file(QString i_sUrl)
 		}
 	}
 
+	bind_node::init(this);
 	bind_node::set_var(notr("temp_dir"), m_sTempDir);
 	bind_node::set_var(notr("outfile"), i_sUrl);
 	bind_node::set_var(notr("fulldoc"), doc_to_xml());
@@ -656,9 +657,6 @@ bool sem_mediator::open_file(const QString& i_sUrl)
 		return false;
 	}
 	PyRun_SimpleString(l_oBa.constData());
-
-	delete bind_node::_root;
-	bind_node::_root = NULL;
 
 	//qDebug()<<"full text "<<bind_node::fulldoc()<<endl;
 
@@ -1081,30 +1079,7 @@ void sem_mediator::generate_docs(const QString &i_oFile, const QString &i_sDirNa
 	}
 	PyRun_SimpleString(l_oBa.constData());
 
-	delete bind_node::_root;
-	bind_node::_root = NULL;
-
 	emit sig_preview();
-}
-
-bind_node* sem_mediator::create_tree(int i_i)
-{
-	Q_ASSERT(i_i!=0);
-	bind_node * l_oNode = new bind_node();
-	l_oNode->m_oItem = m_oItems[i_i];
-	//l_oNode->_id = i_i;
-	//fill_from_node(l_oNode);
-
-        for (int i=0; i<m_oLinks.size(); i++)
-        {
-                QPoint l_oP = m_oLinks.at(i);
-                if (l_oP.x() != i_i) continue;
-
-		bind_node *l_oNew = create_tree(l_oP.y());
-		l_oNode->_children.push_back(l_oNew);
-        }
-
-	return l_oNode;
 }
 
 int sem_mediator::choose_root()

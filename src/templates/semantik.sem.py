@@ -23,12 +23,14 @@ tmp = str(sembind.get_item_ids()).split(",")
 for x in tmp:
 	item = sembind.get_item_by_id(int(x))
 	if not item:
-		debug("Could not get an object for %r" % tmp)
+		debug("Could not get an object for %r" % x)
 	else:
 		s = 'pic-%s' % item.get_var("pic_id")
 		for pic in lst:
 			if pic.startswith(s):
 				tar.add(pic, pic)
 				break
+		else:
+			debug("Could not find the picture %r" % x)
 tar.close()
 

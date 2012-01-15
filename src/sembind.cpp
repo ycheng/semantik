@@ -179,6 +179,7 @@ QString bind_node::protectHTML(const QString &i_s)
 
 QString bind_node::get_item_ids()
 {
+	Q_ASSERT(_model != NULL);
 	QStringList lst;
 	foreach (int id, _model->m_oItems.keys()) {
 		lst << QString::number(id);
@@ -188,8 +189,28 @@ QString bind_node::get_item_ids()
 
 bind_node* bind_node::get_item_by_id(int id)
 {
-	bind_node * l_oNode = new bind_node(); // certainly leaks memory
+	bind_node *l_oNode = _cache.value(id);
+	if (l_oNode) return l_oNode;
+	l_oNode = _cache[id] = new bind_node();
 	l_oNode->m_oItem = _model->m_oItems.value(id);
+	return l_oNode;
+}
+
+
+bind_node* create_tree(sem_mediator *model, int i_i)
+{
+	Q_ASSERT(i_i!=0);
+	bind_node * l_oNode = new bind_node();
+	l_oNode->m_oItem = model->m_oItems.value(i_i);
+
+        for (int i=0; i < model->m_oLinks.size(); i++)
+        {
+                QPoint l_oP = model->m_oLinks.at(i);
+                if (l_oP.x() != i_i) continue;
+
+		bind_node *l_oNew = create_tree(model, l_oP.y());
+		l_oNode->_children.push_back(l_oNew);
+        }
 	return l_oNode;
 }
 
@@ -198,9 +219,10 @@ void bind_node::init(sem_mediator* med)
 	foreach (bind_node * node, _cache.values()) {
 		delete node;
 	}
-	bind_node::_cache.clear();
+	delete bind_node::_root;
 	bind_node::_model = med;
-	bind_node::_root = _model->create_tree(_model->choose_root());
+	bind_node::_root = create_tree(_model, _model->choose_root());
+	bind_node::_cache.clear();
 	bind_node::s_oVars.clear();
 }
 

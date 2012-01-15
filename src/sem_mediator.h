@@ -176,7 +176,6 @@ class sem_mediator: public QObject
 		int m_iTimerValue;
 		int parent_of(int i_iId);
 		int size_of(int i_iId);
-		bind_node* create_tree(int);
 		int choose_root();
 
 		void init_timer();
