@@ -1,9 +1,10 @@
 Priority:
 ---------
 
-fix the text interaction with keypress/keyrelease
+export the diagrams as pictures
 resize the diagram scene properly
 display pictures on the canvas
+fix the mouse interaction with the items (select text on canvas and diagram)
 load previous semantik documents
 
 Ideas:
