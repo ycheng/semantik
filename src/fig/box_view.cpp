@@ -771,6 +771,12 @@ void box_view::focusInEvent(QFocusEvent *i_oEv)
 	QGraphicsView::focusInEvent(i_oEv);
 }
 
+void box_view::focusOutEvent(QFocusEvent *i_oEv)
+{
+	edit_off();
+	QGraphicsView::focusOutEvent(i_oEv);
+}
+
 void box_view::notify_add_box(int id, int box)
 {
 	box_item *l_o = new box_item(this, box);

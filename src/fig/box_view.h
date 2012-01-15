@@ -54,6 +54,7 @@ class box_view : public QGraphicsView
 		QAction *m_oMoveDownAction;
 
 		void focusInEvent(QFocusEvent *);
+		void focusOutEvent(QFocusEvent *);
 
 		void enable_menu_actions(); // like check_actions, but only for the popup menu
 

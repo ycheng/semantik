@@ -1573,6 +1573,12 @@ void canvas_view::focusInEvent(QFocusEvent *i_oEv)
 	QGraphicsView::focusInEvent(i_oEv);
 }
 
+void canvas_view::focusOutEvent(QFocusEvent *i_oEv)
+{
+	edit_off();
+	QGraphicsView::focusOutEvent(i_oEv);
+}
+
 void canvas_view::notify_focus(void* ptr) {
 	if (ptr != this) {
 		edit_off();
