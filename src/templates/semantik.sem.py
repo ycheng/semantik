@@ -25,12 +25,12 @@ for x in tmp:
 	if not item:
 		debug("Could not get an object for %r" % x)
 	else:
-		s = 'pic-%s' % sembind.get_val(item, "pic_id")
+		s = 'img-%s' % sembind.get_val(item, "pic_id")
 		for pic in lst:
 			if pic.startswith(s):
 				tar.add(pic, pic)
 				break
 		else:
-			debug("Could not find the picture %r" % x)
+			debug("Could not find the picture %r in %r" % (x, sembind.get_var('temp_dir')))
 tar.close()
 

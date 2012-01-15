@@ -31,7 +31,6 @@ class semantik_reader : public QXmlDefaultHandler
 {
 	public:
 		semantik_reader(sem_mediator*);
-		bool pictures_are_by_item;
 
 	private:
 		QString m_sBuf;
@@ -52,7 +51,6 @@ semantik_reader::semantik_reader(sem_mediator *i_oControl)
 	m_oMediator = i_oControl;
 	cur_link = NULL;
 	m_iId = NO_ITEM;
-	pictures_are_by_item = false;
 }
 
 bool semantik_reader::startElement(const QString&, const QString&, const QString& i_sName, const QXmlAttributes& i_oAttrs)
@@ -68,10 +66,6 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		if (i_oAttrs.value(notr("location")).size()) m_oMediator->m_sOutDir = i_oAttrs.value(notr("location"));
 		if (i_oAttrs.value(notr("dir")).size()) m_oMediator->m_sOutProject = i_oAttrs.value(notr("dir"));
 		if (i_oAttrs.value(notr("output")).size()) m_oMediator->m_sOutTemplate = i_oAttrs.value(notr("output"));
-		if (i_oAttrs.value(notr("version")).size()) {
-			if (i_oAttrs.value(notr("version")).toInt() == 1)
-				pictures_are_by_item = true;
-		}
 	}
 	else if (i_sName == notr("link"))
 	{
@@ -679,17 +673,27 @@ bool sem_mediator::open_file(const QString& i_sUrl)
 	// this is for the pictures
 	foreach (QFileInfo l_oInfo, l_oLst) {
 		QString l_sName = l_oInfo.fileName();
-		if (!l_sName.contains(notr("pic-"))) continue;
-		l_sName = l_sName.section(QRegExp(notr("[.-]")), 1, 1);
-
-		int l_iVal = l_sName.toInt();
-
-		if (load_picture(l_oInfo.absoluteFilePath(), l_iVal)) {
-			if (l_oHandler.pictures_are_by_item)
+		if (l_sName.startsWith(notr("pic-")))
+		{
+			l_sName = l_sName.section(QRegExp(notr("[.-]")), 1, 1);
+			int l_iVal = l_sName.toInt();
+			int seq = next_pic_seq();
+			if (load_picture(l_oInfo.absoluteFilePath(), seq))
 			{
 				data_item *l_oData = m_oItems.value(l_iVal);
-				l_oData->m_iPicId = l_iVal;
+				l_oData->m_iPicId = seq;
+
+				QFile f(l_oInfo.absoluteFilePath());
+				QString name = f.fileName().replace(QRegExp(notr("/pic-\\d+")), QString("/img-%1").arg(QString::number(seq)));
+				qDebug()<<"trying to rename"<<f.fileName()<<name;
+				qDebug()<<f.rename(name); // ITA
 			}
+		}
+		else if (l_sName.startsWith(notr("img-")))
+		{
+			l_sName = l_sName.section(QRegExp(notr("[.-]")), 1, 1);
+			int l_iVal = l_sName.toInt();
+			load_picture(l_oInfo.absoluteFilePath(), l_iVal);
 		}
 	}
 
@@ -1238,7 +1242,7 @@ bool sem_mediator::save_and_load_picture(const KUrl& i_sPath, int id)
 {
 	QStringList sp = i_sPath.path().split(".");
 	if (sp.size() < 2) return false;
-	QString dest = QString(m_sTempDir+"/pic-%1.%2").arg(QString::number(id)).arg(sp[sp.size()-1]);
+	QString dest = QString(m_sTempDir+"/img-%1.%2").arg(QString::number(id)).arg(sp[sp.size()-1]);
 	
 	bool ok = KIO::NetAccess::file_copy(i_sPath, KUrl(dest), NULL);
 	if (!ok)
