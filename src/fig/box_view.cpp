@@ -794,7 +794,7 @@ void box_view::notify_link_box(int id, data_link* link)
 	{
 		m_oLinks.push_back(m_oCurrent);
 		m_oCurrent->m_oLink = link;
-		m_oCurrent->update();
+		m_oCurrent->update_pos();
 		m_oCurrent = NULL;
 	}
 	else
@@ -1036,6 +1036,9 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 		--i;
 
 		QPointF l_oNew = m_oLastMovePoint - m_oLastPoint + grab_segment_link->m_oMediatorPoint - l_oP;
+
+		Q_ASSERT(grab_segment_link->m_oLink);
+		Q_ASSERT(grab_segment_link->m_oLink->m_oOffsets.size() > i);
 		grab_segment_link->m_oLink->m_oOffsets[i].setX((int) l_oNew.x());
 		grab_segment_link->m_oLink->m_oOffsets[i].setY((int) l_oNew.y());
 		grab_segment_link->update_ratio(); // no need to update_pos
