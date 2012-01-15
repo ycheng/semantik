@@ -13,6 +13,7 @@ de "sem_mediator.h"
 
 bind_node* bind_node::_root = NULL;
 sem_mediator * bind_node::_model = NULL;
+QHash<int, bind_node*> bind_node::_cache = QHash<int, bind_node*>();
 
 QMap<QString, QString> bind_node::s_oVars = QMap<QString, QString>();
 
@@ -190,5 +191,15 @@ bind_node* bind_node::get_item_by_id(int id)
 	bind_node * l_oNode = new bind_node(); // certainly leaks memory
 	l_oNode->m_oItem = _model->m_oItems.value(id);
 	return l_oNode;
+}
+
+void bind_node::init(sem_mediator* med)
+{
+	foreach (bind_node * node, _cache.values()) {
+		delete node;
+	}
+	bind_node::_cache.clear();
+	bind_node::_model = med;
+	bind_node::_root = _model->create_tree(_model->choose_root());
 }
 

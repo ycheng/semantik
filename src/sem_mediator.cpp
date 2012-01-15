@@ -1035,8 +1035,7 @@ int sem_mediator::num_children(int i_iParent)
 
 void sem_mediator::generate_docs(const QString &i_oFile, const QString &i_sDirName, const QString &i_sLocation)
 {
-	int l_iRoot = choose_root();
-	if (l_iRoot == NO_ITEM)
+	if (choose_root() == NO_ITEM)
 	{
 		//qDebug()<<"root is -1";
 		return;
@@ -1054,8 +1053,7 @@ void sem_mediator::generate_docs(const QString &i_oFile, const QString &i_sDirNa
 
 	m_sOutDir = i_sLocation;
 
-	bind_node::_root = create_tree(l_iRoot);
-	bind_node::_model = this;
+	bind_node::init(this);
 	bind_node::set_var(notr("temp_dir"), m_sTempDir);
 	bind_node::set_var(notr("outdir"), i_sLocation);
 	bind_node::set_var(notr("pname"), i_sDirName);

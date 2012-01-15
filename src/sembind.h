@@ -5,6 +5,7 @@
 
 #include <QString>
 #include <QList>
+#include <QHash>
 
 class data_item;
 class sem_mediator;
@@ -43,12 +44,14 @@ class bind_node
 
 	//protected:
 
+		static void init(sem_mediator*);
 		bind_node();
 		~bind_node();
 		static QMap<QString, QString> s_oVars;
 		static bind_node* _root;
-		QList<bind_node*> _children;
+		static QHash<int, bind_node*> _cache;
 		static sem_mediator* _model;
+		QList<bind_node*> _children;
 		data_item *m_oItem;
 };
 
