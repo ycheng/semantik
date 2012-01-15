@@ -678,59 +678,10 @@ void box_view::clear_diagram()
 	m_oItems.clear();
 }
 
-/*
-QString box_view::to_string()
-{
-	QStringList l;
-	l<<QObject::trUtf8("<sem_diagram>");
-	foreach (box_item *l_oBox, m_oItems.values())
-	{
-		l<<QObject::trUtf8("<box_item id=\"%1\"").arg(QString::number(l_oBox->m_iId));
-		l<<QObject::trUtf8(" text=\"%1\"").arg(bind_node::protectXML(l_oBox->toPlainText()));
-		l<<QObject::trUtf8(" c1=\"%1\" c2=\"%2\" c3=\"%3\" c4=\"%4\"").arg(
-				QString::number(l_oBox->pos().x()),
-				QString::number(l_oBox->pos().y()),
-				QString::number(l_oBox->rect().width()),
-				QString::number(l_oBox->rect().height()));
-		l<<QObject::trUtf8(" col=\"%1\"").arg(l_oBox->brush().color().name());
-		l<<QObject::trUtf8("/>\n");
-	}
-
-	foreach (box_link *l_oLink, m_oLinks)
-	{
-		l<<QObject::trUtf8("<box_link id=\"%1\" ").arg(QString::number(l_oLink->m_iId));
-		l<<QObject::trUtf8(" p1=\"%1\" ").arg(QString::number(l_oLink->m_iParent));
-		l<<QObject::trUtf8(" p2=\"%1\" ").arg(QString::number(l_oLink->m_iChild));
-		l<<QObject::trUtf8(" wl=\"%1\" ").arg(QString::number(l_oLink->pen().width()));
-		l<<QObject::trUtf8(" sl=\"%1\" ").arg(QString::number(l_oLink->pen().style()));
-
-		if (l_oLink->m_oParent && l_oLink->m_oChild)
-		{
-			l<<QObject::trUtf8(" c1=\"%1\" ").arg(QString::number(l_oLink->m_oParent->m_iId));
-			l<<QObject::trUtf8(" c2=\"%1\" ").arg(QString::number(l_oLink->m_oChild->m_iId));
-		}
-		l<<QObject::trUtf8(">\n");
-		for (int i=0; i<l_oLink->m_oOffsets.size(); ++i)
-		{
-			l<<QObject::trUtf8("   <box_link_offset x=\"%1\" y=\"%2\"/>\n").arg(
-				QString::number(l_oLink->m_oOffsets[i].x()),
-				QString::number(l_oLink->m_oOffsets[i].y()));
-		}
-		l<<QObject::trUtf8("</box_link>\n");
-	}
-
-	l<<QObject::trUtf8("</sem_diagram>");
-
-	return l.join("");
-}*/
-
 void box_view::check_canvas_size()
 {
-	/*
-	QWidget *l_oW = viewport();
-	QRect l_oRect = l_oW->rect();
-
-	if (m_oItems.size() < 1)
+	QRect l_oRect = viewport()->rect();
+	if (m_oItems.size() < 1) // no rectangle
 	{
 		scene()->setSceneRect(QRectF(mapToScene(l_oRect.topLeft()), mapToScene(l_oRect.bottomRight())));
 		return;
@@ -739,25 +690,27 @@ void box_view::check_canvas_size()
 	QRectF l_oR2;
 
 	qreal x, y, z, t;
-	box_item *l_o = m_oItems[0];
 
-	x = z = l_o->x() + l_o->rect().width()/2;
-	y = t = l_o->y() + l_o->rect().height()/2;
+	QGraphicsItem *l_o = items().at(0);
 
-	foreach (box_item *l_oItem, m_oItems)
-	{
+	x = z = l_o->x() + l_o->boundingRect().width()/2;
+	y = t = l_o->y() + l_o->boundingRect().height()/2;
+
+	foreach (QGraphicsItem *l_oItem, items()) {
+		QRectF rect = l_oItem->boundingRect();
 		if (l_oItem->x() < x) x = l_oItem->x();
 		if (l_oItem->y() < y) y = l_oItem->y();
-		if (l_oItem->x() > z) z = l_oItem->x() + l_oItem->rect().width();
-		if (l_oItem->y() > t) t = l_oItem->y() + l_oItem->rect().height();
+		if (l_oItem->x() + rect.width() > z) z = l_oItem->x() + rect.width();
+		if (l_oItem->y() + rect.height() > z) z = l_oItem->y() + rect.height();
 	}
-	x -=100; y -= 100; z+=100, t += 100;
+
+	x -=GAP; y -= GAP; z += GAP, t += GAP;
 
 	l_oR2 = QRectF(QPointF(x, y), QPointF(z, t));
-	l_oR2 = l_oR2.united(QRectF(mapToScene(l_oRect.topLeft()), mapToScene(l_oRect.bottomRight())));
+	l_oR2 = l_oR2.united(QRectF(mapToScene(l_oRect.topLeft()) + QPointF(-10, -10), mapToScene(l_oRect.bottomRight()) + QPointF(10, 10)));
+
 	if (l_oR2 == sceneRect()) return;
 	scene()->setSceneRect(l_oR2);
-	*/
 }
 
 void box_view::focusInEvent(QFocusEvent *i_oEv)
@@ -1079,6 +1032,7 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 
 void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 {
+	check_canvas_size();
 	grab_segment_link = 0;
 
 	if (m_bScroll)
