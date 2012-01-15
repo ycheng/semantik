@@ -685,8 +685,7 @@ bool sem_mediator::open_file(const QString& i_sUrl)
 
 				QFile f(l_oInfo.absoluteFilePath());
 				QString name = f.fileName().replace(QRegExp(notr("/pic-\\d+")), QString("/img-%1").arg(QString::number(seq)));
-				qDebug()<<"trying to rename"<<f.fileName()<<name;
-				qDebug()<<f.rename(name); // ITA
+				f.rename(name);
 			}
 		}
 		else if (l_sName.startsWith(notr("img-")))
@@ -1055,6 +1054,17 @@ void sem_mediator::generate_docs(const QString &i_oFile, const QString &i_sDirNa
 
 	m_sOutDir = i_sLocation;
 
+	mem_sel *sel = new mem_sel(this);
+	sel->apply();
+
+	foreach (int l_iVal, m_oItems.keys())
+	{
+		data_item *l_oData = m_oItems.value(l_iVal);
+		// the diagram view is the only one for now
+		if (l_oData->m_iDataType == VIEW_DIAG || l_oData->m_iDataType == VIEW_IMG)
+			notify_export_item(l_oData->m_iId);
+	}
+
 	bind_node::init(this);
 	bind_node::set_var(notr("temp_dir"), m_sTempDir);
 	bind_node::set_var(notr("outdir"), i_sLocation);
@@ -1063,18 +1073,6 @@ void sem_mediator::generate_docs(const QString &i_oFile, const QString &i_sDirNa
 	bind_node::set_var(notr("hints"), m_sHints);
 	bind_node::set_var(notr("namet"), i_oFile);
 	bind_node::set_var(notr("preview"), ""); // leave this right here! get the file generated
-
-	mem_sel *sel = new mem_sel(this);
-	sel->apply();
-
-	foreach (int l_iVal, m_oItems.keys())
-	{
-		data_item *l_oData = m_oItems.value(l_iVal);
-		// the diagram view is the only one for now
-		if (l_oData->m_iDataType != VIEW_DIAG)
-			continue;
-		notify_export_item(l_oData->m_iId);
-	}
 
 	if (!init_py())
 	{

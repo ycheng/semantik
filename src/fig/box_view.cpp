@@ -314,6 +314,8 @@ void box_view::sync_view()
 void box_view::notify_export_item(int id)
 {
 	int l_iOldId = m_iId;
+	if (m_oMediator->m_oItems.value(id)->m_iDataType != VIEW_DIAG)
+		return;
 	clear_diagram();
 
 	m_iId = id;

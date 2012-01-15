@@ -7,6 +7,8 @@
 #include <QLabel>
 #include <QMenu>
 #include <QList>
+#include <QFile>
+#include   <QFileInfo>
 #include <QUrl>
 #include <QFileDialog>
 #include <QLineEdit>
@@ -241,3 +243,26 @@ void image_view::notify_pic(int id)
 		repaint();
 	}
 }
+
+void image_view::notify_export_item(int id)
+{
+	data_item *l_oData = m_oMediator->m_oItems.value(id);
+	if (l_oData->m_iDataType != VIEW_IMG)
+		return;
+	if (l_oData->m_iPicId != NO_ITEM)
+	{
+		QDir l_oDir(m_oMediator->m_sTempDir);
+		QFileInfoList l_oLst = l_oDir.entryInfoList();
+		foreach (QFileInfo l_oInfo, l_oLst) {
+			QString l_sName = l_oInfo.fileName();
+			if (l_sName.startsWith(notr("img-%1").arg(QString::number(l_oData->m_iPicId))))
+			{
+				QFile f(l_oInfo.absoluteFilePath());
+				QString newName = l_oInfo.fileName().replace(QRegExp("img-\\d+"), QString("diag-%1").arg(QString::number(id)));
+				f.copy(newName); // TODO works for now
+				break;
+			}
+		}
+	}
+}
+
