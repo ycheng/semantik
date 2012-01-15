@@ -12,35 +12,31 @@ $ waf --view
 '''
 
 import os
-import Options
+from waflib import Options
 
 VERSION = '0.0.1'
 APPNAME = 'pdf'
 
-srcdir = '.'
-blddir = 'build'
+top = '.'
+out = 'build'
 
-def set_options(opts):
+def options(opts):
 	opts.add_option('--view', action='store_true', default=False, help='View the document')
 
 def configure(conf):
-        conf.check_tool('tex')
+        conf.load('tex')
 	if not conf.env['PDFLATEX']:
 		conf.fatal('install pdflatex!')
 
+	conf.find_program(['okular', 'kpdf', 'xpdf', 'gnome-open'], var='VIEW', mandatory=False)
+
+
 def build(bld) :
-	bld.new_task_gen(features='tex pdflatex', source='main.tex')
+	bld(features='tex', type='pdflatex', source='main.tex')
 
-def shutdown():
-	def exists(cmd):
-		try:
-			txt = os.popen("which %s 2>/dev/null "%cmd).read().strip()
-			return len(txt)>=len(cmd)
-		except:
-			return None
+	def view(ctx):
+		ctx.exec_command('%s build/main.pdf' % ctx.env.VIEW)
 
-	if Options.options.view:
-		for i in ["kpdf", "gnome-open", "xpdf"]:
-			if exists(i):
-				os.popen("%s build/default/main.pdf" % i)
-				break
+	if bld.env.VIEW and bld.options.view:
+		bld.add_post_fun(view)
+

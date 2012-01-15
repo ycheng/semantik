@@ -1,7 +1,8 @@
 #sem:name: S5 presentation
 #sem:tip: Generates a xhtml presentation using s5
 
-# Thomas Nagy, 2007 (ita)
+# Thomas Nagy, 2007-2012
+
 import os, shutil, time
 
 outdir = sembind.get_var('outdir')+'/'+sembind.get_var('pname')

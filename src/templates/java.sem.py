@@ -2,7 +2,8 @@
 #sem:tip: Generates a web applet in java (requires java)
 #sem:picture
 
-# Thomas Nagy, 2007 (ita)
+# Thomas Nagy, 2007-2012
+
 import os, shutil, time
 
 # TODO for the moment it does not work

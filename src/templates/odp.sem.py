@@ -1,7 +1,8 @@
 #sem:name: OpenDocument Presentation
 #sem:tip: Generates presentations for Kpresenter or OpenOffice.org Impress
 
-# Thomas Nagy, 2007 (ita)
+# Thomas Nagy, 2007-2012
+
 mimetype = "application/vnd.oasis.opendocument.presentation"
 
 import os, shutil, time, zipfile, sys, StringIO

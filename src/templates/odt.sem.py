@@ -1,7 +1,8 @@
 #sem:name: OpenDocument Text
 #sem:tip: Generates text documents for Kword or OpenOffice.org Writer
 
-# Thomas Nagy, 2007 (ita)
+# Thomas Nagy, 2007-2012
+
 mimetype = "application/vnd.oasis.opendocument.text"
 
 import os, shutil, time, zipfile, sys, StringIO

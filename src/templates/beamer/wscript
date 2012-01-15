@@ -20,8 +20,7 @@ def options(opt):
 	opt.add_option('--view', action='store_true', default=False, help='View the document')
 
 def configure(conf):
-	conf.check_tool('tex')
-	lat = conf.env['LATEX']
+	conf.load('tex')
 	cwd = os.getcwd()
 	cc = cwd + '/beamermindist/'
 
@@ -31,7 +30,7 @@ def configure(conf):
 	for x in "themes/color themes/font themes/inner themes/outer themes/theme art".split():
 		lst.append(cc+x)
 	u = ":".join(lst)
-	conf.env['LATEX'] = "; export TEXINPUTS=%s:$TEXINPUTS; export GS_OPTIONS=\"-sPAPERSIZE=a4\"; %s" % (u, lat)
+	conf.env.LATEX = "; export TEXINPUTS=%s:$TEXINPUTS; export GS_OPTIONS=\"-sPAPERSIZE=a4\"; %s" % (u, conf.env.LATEX)
 
 def build(bld) :
 	bld(features='tex', type='pdflatex', source='main.tex')
@@ -40,5 +39,5 @@ def build(bld) :
 		ctx.exec_command('%s build/main.pdf' % ctx.env.VIEW)
 
 	if bld.env.VIEW and bld.options.view:
-		bld.add_post_fun(viewdoc)
+		bld.add_post_fun(view)
 
