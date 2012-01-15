@@ -790,24 +790,6 @@ void box_view::wheelEvent(QWheelEvent *i_oEvent)
 	centerOn(l_o + mapToScene(viewport()->rect().center()) - mapToScene(i_oEvent->pos()));
 }
 
-/*
-void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
-{
-	if (i_oEv->button() != Qt::LeftButton) return;
-	QPointF m_oLastPoint = mapToScene(i_oEv->pos());
-
-	QGraphicsItem *l_oItem = itemAt(i_oEv->pos());
-	if (l_oItem and l_oItem->type() == BOX_LINK_T)
-	{
-		box_link *l_oLink = (box_link*) l_oItem;
-		m_oLinks.removeAll(l_oLink);
-		m_oSelected.removeAll(l_oLink);
-		delete l_oLink;
-		return;
-	}
-
-}*/
-
 void box_view::keyPressEvent(QKeyEvent *i_oEvent)
 {
 	QGraphicsView::keyPressEvent(i_oEvent);
