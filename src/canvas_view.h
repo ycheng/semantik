@@ -151,7 +151,6 @@ class canvas_view : public QGraphicsView
 		void notify_change_data(int id);
 		void sync_flags();
 		void sync_colors();
-		void notify_focus(void*);
 
 		void slot_change_data();
 		void reorganize();

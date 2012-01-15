@@ -1389,10 +1389,6 @@ void sem_mediator::notify_message(const QString& msg, int duration) {
 	emit sig_message(msg, duration);
 }
 
-void sem_mediator::notify_focus(void* ptr) {
-	emit sig_focus(ptr);
-}
-
 void sem_mediator::notify_box_props(int id, const QList<diagram_item*>& items) {
 	emit sig_box_props(id, items);
 }

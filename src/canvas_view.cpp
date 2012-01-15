@@ -1564,8 +1564,6 @@ void canvas_view::notify_sort(int id) {
 
 void canvas_view::focusInEvent(QFocusEvent *i_oEv)
 {
-	m_oMediator->notify_focus(this);
-
 	m_oAddItemAction->setEnabled(true);
 	m_oDeleteAction->setEnabled(true);
 	m_oEditAction->setEnabled(true);
@@ -1576,16 +1574,11 @@ void canvas_view::focusInEvent(QFocusEvent *i_oEv)
 void canvas_view::focusOutEvent(QFocusEvent *i_oEv)
 {
 	edit_off();
-	QGraphicsView::focusOutEvent(i_oEv);
-}
+	m_oDeleteAction->setEnabled(false);
+	m_oEditAction->setEnabled(false);
+	m_oAddItemAction->setEnabled(false);
 
-void canvas_view::notify_focus(void* ptr) {
-	if (ptr != this) {
-		edit_off();
-		m_oAddItemAction->setEnabled(false);
-		m_oDeleteAction->setEnabled(false);
-		m_oEditAction->setEnabled(false);
-	}
+	QGraphicsView::focusOutEvent(i_oEv);
 }
 
 %: include  	"canvas_view.moc" 

@@ -762,8 +762,6 @@ void box_view::check_canvas_size()
 
 void box_view::focusInEvent(QFocusEvent *i_oEv)
 {
-	m_oMediator->notify_focus(this);
-
 	m_oDeleteAction->setEnabled(true);
 	m_oEditAction->setEnabled(true);
 	m_oAddItemAction->setEnabled(true);
@@ -774,6 +772,10 @@ void box_view::focusInEvent(QFocusEvent *i_oEv)
 void box_view::focusOutEvent(QFocusEvent *i_oEv)
 {
 	edit_off();
+	m_oDeleteAction->setEnabled(false);
+	m_oEditAction->setEnabled(false);
+	m_oAddItemAction->setEnabled(false);
+
 	QGraphicsView::focusOutEvent(i_oEv);
 }
 
@@ -1164,15 +1166,6 @@ void box_view::edit_off() {
 				m_oCancelEditAction->setEnabled(false);
 			}
 		}
-	}
-}
-
-void box_view::notify_focus(void* ptr) {
-	if (ptr != this) {
-		edit_off();
-		m_oDeleteAction->setEnabled(false);
-		m_oEditAction->setEnabled(false);
-		m_oAddItemAction->setEnabled(false);
 	}
 }
 

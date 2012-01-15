@@ -1,10 +1,10 @@
 Priority:
 ---------
 
-Display pictures on the canvas
-Fix the crashes when loading other documents (?)
-Fix the custom color
-Use KIO::put
+fix the text interaction with keypress/keyrelease
+resize the diagram scene properly
+display pictures on the canvas
+load previous semantik documents
 
 Ideas:
 ------

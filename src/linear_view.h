@@ -26,7 +26,6 @@ class linear_view : public QTreeWidget
 		void dropEvent(QDropEvent *);
 
 		bool m_bLockSelect;
-		void focusInEvent(QFocusEvent *i_oEv);
 
 	public slots:
 		void filter_slot(const QString & i_oS);
