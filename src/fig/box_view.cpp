@@ -335,8 +335,7 @@ void box_view::notify_export_item(int id)
 	scene()->render(&l_oP, l_oR, l_oRect);
 	l_oP.end();
 
-	l_oImage.save(QString(m_oMediator->m_sTempDir + QString("/") +
-		QString("pic-%1.png")).arg(QString::number(m_iId)));
+	l_oImage.save(QString(m_oMediator->m_sTempDir + QString("/") + QString("diag-%1.png")).arg(QString::number(m_iId)));
 	clear_diagram();
 	m_iId = l_iOldId;
 	if (m_iId != NO_ITEM)

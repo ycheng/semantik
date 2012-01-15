@@ -64,10 +64,10 @@ cwd = os.getcwd()
 os.chdir(sembind.get_var('temp_dir'))
 pics = {} # map the id to the picture
 lst = os.listdir('.')
-for i in lst:
-	if -1 == i.rfind('pic-'): continue
-	pics[ i.replace('pic-', '').split('.')[0] ] = i
-	shutil.copy2(i, outdir+'/Pictures')
+for x in lst:
+	if x.startswith('diag-'):
+		pics[ i.replace('diag-', '').split('.')[0] ] = x
+		shutil.copy2(x, outdir + '/Pictures')
 os.chdir(cwd)
 
 try: os.mkdir(outdir+'/META-INF')

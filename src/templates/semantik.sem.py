@@ -10,7 +10,6 @@ tar = tarfile.open(sembind.get_var('outfile'), 'w:gz')
 
 doc = sembind.get_var('fulldoc')
 stuff = StringIO(doc)
-#stuff = StringIO(doc)
 tarinfo = tarfile.TarInfo('con.xml')
 tarinfo.size = len(doc)
 tar.addfile(tarinfo, stuff)
@@ -21,6 +20,10 @@ os.chdir(sembind.get_var('temp_dir'))
 
 tmp = str(sembind.get_var('pics')).split(",")
 lst = os.listdir('.')
+#for x in lst:
+#	if x.startswith('diag-'):
+#	pics[ i.replace('diag-', '').split('.')[0] ] = x
+#	shutil.copy2(x, outdir)
 for name in lst:
 	f = name.split('.')[0].replace('pic-', '')
 	if f in tmp:
