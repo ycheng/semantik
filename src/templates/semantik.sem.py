@@ -25,7 +25,7 @@ for x in tmp:
 	if not item:
 		debug("Could not get an object for %r" % x)
 	else:
-		s = 'pic-%s' % item.get_var("pic_id")
+		s = 'pic-%s' % sembind.get_val(item, "pic_id")
 		for pic in lst:
 			if pic.startswith(s):
 				tar.add(pic, pic)

@@ -170,6 +170,7 @@ PyObject *Node_get_item_by_id(PyObject *i_s, PyObject *i_oArgs)
 	int id = 0;
 	if (!PyArg_ParseTuple(i_oArgs, "i", &id)) { Q_ASSERT(false); return NULL; }
 	bind_node *l_oFils = bind_node::get_item_by_id(id);
+	Q_ASSERT(l_oFils);
         return PyCObject_FromVoidPtr(l_oFils, NULL);
 }
 

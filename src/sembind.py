@@ -129,8 +129,7 @@ def transform(template, outfile, map):
 def debug(x):
 	try:
 		#sys.stderr.write(x.__repr__())
-		sys.stderr.write(x)
-		sys.stderr.write("\n")
+		sys.stderr.write("%s\n" % x)
 	except:
 		debug("erreur d'encodage utf8 ? :-/")
 
@@ -152,7 +151,7 @@ def protect_tex(s):
 		else: lst.append(x)
 	return "".join(lst)
 
-class Node:
+class Node(object):
 	def __init__(self, bind):
 		if not bind:
 			debug("error!! node takes a parameter")
