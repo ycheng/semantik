@@ -201,5 +201,6 @@ void bind_node::init(sem_mediator* med)
 	bind_node::_cache.clear();
 	bind_node::_model = med;
 	bind_node::_root = _model->create_tree(_model->choose_root());
+	bind_node::s_oVars.clear();
 }
 

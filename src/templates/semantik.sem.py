@@ -17,16 +17,18 @@ tar.addfile(tarinfo, stuff)
 #debug(doc.encode('utf-8'))
 
 os.chdir(sembind.get_var('temp_dir'))
-
-tmp = str(sembind.get_var('pics')).split(",")
 lst = os.listdir('.')
-#for x in lst:
-#	if x.startswith('diag-'):
-#	pics[ i.replace('diag-', '').split('.')[0] ] = x
-#	shutil.copy2(x, outdir)
-for name in lst:
-	f = name.split('.')[0].replace('pic-', '')
-	if f in tmp:
-		tar.add(name, name)
+
+tmp = str(sembind.get_item_ids()).split(",")
+for x in tmp:
+	item = sembind.get_item_by_id(int(x))
+	if not item:
+		debug("Could not get an object for %r" % tmp)
+	else:
+		s = 'pic-%s' % item.get_var("pic_id")
+		for pic in lst:
+			if pic.startswith(s):
+				tar.add(pic, pic)
+				break
 tar.close()
 
