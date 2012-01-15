@@ -7,6 +7,7 @@
 #include <QList>
 
 class data_item;
+class sem_mediator;
 class bind_node
 {
 	public:
@@ -14,6 +15,9 @@ class bind_node
 
 		static QString get_var(const QString &);
 		static void set_var(const QString &, const QString &);
+
+		static QString get_item_ids();
+		static bind_node* get_item_by_id(int i);
 
 		// tree manipulation
 		int child_count();
@@ -44,6 +48,7 @@ class bind_node
 		static QMap<QString, QString> s_oVars;
 		static bind_node* _root;
 		QList<bind_node*> _children;
+		static sem_mediator* _model;
 		data_item *m_oItem;
 };
 

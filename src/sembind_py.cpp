@@ -159,6 +159,20 @@ PyObject *Node_protectHTML(PyObject *i_s, PyObject *i_oArgs)
 	return from_qstring(l_sRet);
 }
 
+PyObject *Node_get_item_ids(PyObject *i_s, PyObject *i_oArgs)
+{
+	QString ids = bind_node::get_item_ids();
+	return from_qstring(ids);
+}
+
+PyObject *Node_get_item_by_id(PyObject *i_s, PyObject *i_oArgs)
+{
+	int id = 0;
+	if (!PyArg_ParseTuple(i_oArgs, "i", &id)) { Q_ASSERT(false); return NULL; }
+	bind_node *l_oFils = bind_node::get_item_by_id(id);
+        return PyCObject_FromVoidPtr(l_oFils, NULL);
+}
+
 static PyMethodDef methods[] = {
 	// node methods
 	{"child_count", Node_child_count, METH_VARARGS, NULL},
@@ -175,6 +189,9 @@ static PyMethodDef methods[] = {
 	{"instance", Node_instance, METH_VARARGS, NULL},
 	{"get_var",  Node_get_var, METH_VARARGS, NULL},
 	{"set_var",  Node_set_var, METH_VARARGS, NULL},
+
+	{"get_item_ids", Node_get_item_ids, METH_VARARGS, NULL},
+	{"get_item_by_id", Node_get_item_by_id, METH_VARARGS, NULL},
 
 	// utilities
 	{"protectXML", Node_protectXML, METH_VARARGS, NULL},

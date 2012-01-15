@@ -132,7 +132,7 @@ def debug(x):
 		sys.stderr.write(x)
 		sys.stderr.write("\n")
 	except:
-		debug("erreur d'encodage de utf8 ? :-/")
+		debug("erreur d'encodage utf8 ? :-/")
 
 def protect_tex(s):
 	lst = []
