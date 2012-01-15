@@ -279,5 +279,10 @@ void linear_view::notify_edit(int id)
 	l_oItem->setText(0, m_oMediator->m_oItems.value(id)->m_sSummary);
 }
 
+void linear_view::focusInEvent(QFocusEvent *i_oEv)
+{
+        m_oMediator->notify_focus(this);
+}
+
 #include "linear_view.moc"
 

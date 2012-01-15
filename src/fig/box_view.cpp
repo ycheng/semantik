@@ -276,7 +276,6 @@ void box_view::notify_select(const QList<int>& unsel, const QList<int>& sel)
 			check_canvas_size();
 		}
 		setEnabled(true);
-		m_oEditAction->setEnabled(true);
 	}
 }
 
@@ -1164,6 +1163,7 @@ void box_view::edit_off() {
 
 void box_view::notify_focus(void* ptr) {
 	if (ptr != this) {
+		edit_off();
 		m_oDeleteAction->setEnabled(false);
 		m_oEditAction->setEnabled(false);
 		m_oAddItemAction->setEnabled(false);

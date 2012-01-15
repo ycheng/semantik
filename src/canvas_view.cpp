@@ -1575,6 +1575,7 @@ void canvas_view::focusInEvent(QFocusEvent *i_oEv)
 
 void canvas_view::notify_focus(void* ptr) {
 	if (ptr != this) {
+		edit_off();
 		m_oAddItemAction->setEnabled(false);
 		m_oDeleteAction->setEnabled(false);
 		m_oEditAction->setEnabled(false);
