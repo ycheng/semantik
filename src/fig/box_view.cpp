@@ -224,6 +224,9 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 
 	grab_segment_link = NULL;
 	grab_segment_pos = 0;
+
+	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 }
 
 box_view::~box_view()
@@ -961,11 +964,6 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 		return;
 	}
 
-	QRectF l_oRect;
-	l_oRect.setTopLeft(m_oLastMovePoint);
-	m_oLastMovePoint = mapToScene(i_oEv->pos());
-	l_oRect.setBottomRight(m_oLastMovePoint);
-
 	if (m_oCurrent)
 	{
 		m_oCurrent->update_pos();
@@ -1015,7 +1013,6 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 
 void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 {
-	check_canvas_size();
 	grab_segment_link = 0;
 
 	if (m_bScroll)
@@ -1026,6 +1023,8 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 		viewport()->setCursor(Qt::ArrowCursor);
 		return;
 	}
+
+	QGraphicsView::mouseReleaseEvent(i_oEv);
 
 	m_bPressed = false;
 	if (m_oCurrent)
@@ -1059,8 +1058,6 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 	}
 	else
 	{
-		QGraphicsView::mouseReleaseEvent(i_oEv);
-
 		QPointF p = mapToScene(i_oEv->pos()) - m_oLastPoint;
 		if (qAbs(p.x()) > 1 || qAbs(p.y()) > 1)
 		{
@@ -1083,6 +1080,7 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 			}
 		}
 	}
+	check_canvas_size();
 }
 
 void box_view::edit_off() {

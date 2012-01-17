@@ -144,7 +144,6 @@ void box_item::keyReleaseEvent(QKeyEvent* e) {
 
 QVariant box_item::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue)
 {
-	QVariant l_oRet = QGraphicsItem::itemChange(i_oChange, i_oValue);
 	if (scene())
 	{
 		if (i_oChange == ItemPositionChange)
