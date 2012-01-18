@@ -892,34 +892,6 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 		}
 	}
 
-
-	/*else if (l_oItem && l_oItem->type() == BOX_LINK_T)
-	{
-		box_link *l_oLink = (box_link*) l_oItem;
-		else if (m_oSelected.contains(l_oLink) and m_oSelected.size() == 1)
-		{
-			// check if a control point is hit for changing the segment position
-			bool l_b = false; // found
-			for (int i=1; i<l_oLink->m_oGood.size() - 2; ++i)
-			{
-				QPointF l_o = QPointF((l_oLink->m_oGood[i].x()+l_oLink->m_oGood[i+1].x())/2,
-						(l_oLink->m_oGood[i].y()+l_oLink->m_oGood[i+1].y())/2);
-				QPointF l_oP = mapToScene(i_oEv->pos());
-				l_oP.setX(l_o.x() - l_oP.x());
-				l_oP.setY(l_o.y() - l_oP.y());
-				qreal l_i = l_oP.x() * l_oP.x() + l_oP.y() * l_oP.y();
-				if (l_i < 100) // if the click is close to the control point
-				{
-					l_b = true;
-					l_oLink->m_iControlSegment = i;
-					l_oLink->m_oMediatorPoint = l_o;
-					break;
-				}
-			}
-
-	}
-	*/
-
 	QGraphicsView::mousePressEvent(i_oEv);
 	edit_off();
 

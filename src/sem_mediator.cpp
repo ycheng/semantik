@@ -1114,7 +1114,7 @@ QPair<int, int> sem_mediator::hint_size_diagram(int id)
 
 	data_item *item = m_oItems.value(id);
 	Q_ASSERT(item);
-	if (item->m_sHint.size() > 4)
+	if (item->m_sHints.size() > 4)
 	{
 		if (!init_py())
 		{
