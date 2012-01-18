@@ -1,7 +1,10 @@
 Priority:
 ---------
 
-export the diagrams as pictures
+
+broken links
+export the diagrams as pictures - fix the picture size from the vars view
+
 resize the diagram scene properly
 display pictures on the canvas
 fix the mouse interaction with the items (select text on canvas and diagram)
