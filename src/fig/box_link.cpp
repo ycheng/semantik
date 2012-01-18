@@ -414,6 +414,7 @@ void box_link::update_pos()
 	{
 		l_oR1 = l_oUnder->rect().translated(l_oUnder->pos()).adjusted(JUST, JUST, -JUST, -JUST);
 		m_iParent = pos_inrect(l_oUnder->rect(), l_oUnder->pos() - l_oP);
+		if (l_oUnder == m_oChild && m_iParent == m_iChild) m_iParent = (m_iParent + 2) % 4;
 	}
 
 	if (m_oChild)
@@ -424,6 +425,7 @@ void box_link::update_pos()
 	{
 		l_oR2 = l_oUnder->rect().translated(l_oUnder->pos()).adjusted(JUST, JUST, -JUST, -JUST);
 		m_iChild = pos_inrect(l_oUnder->rect(), l_oUnder->pos() - l_oP);
+		if (l_oUnder == m_oParent && m_iParent == m_iChild) m_iChild = (m_iChild + 2) % 4;
 	}
 
 	if (!l_oUnder && (!m_oParent || !m_oChild))
