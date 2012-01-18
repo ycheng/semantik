@@ -1123,7 +1123,7 @@ QPair<int, int> sem_mediator::hint_size_diagram(int id)
 		else
 		{
 			// TODO
-			PyRun_SimpleString("print 0 100");
+			PyRun_SimpleString("print 0, 100");
 		}
 	}
 	return QPair<int, int>(width, height);
