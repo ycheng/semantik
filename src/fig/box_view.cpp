@@ -938,6 +938,7 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 		return;
 	}
 
+	m_oLastMovePoint = mapToScene(i_oEv->pos());
 	if (m_oCurrent)
 	{
 		m_oCurrent->update_pos();
