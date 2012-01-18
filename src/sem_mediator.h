@@ -162,6 +162,7 @@ class sem_mediator: public QObject
 		int next_seq();
 		int next_pic_seq();
 
+		QPair<int, int> hint_size_diagram(int);
 		QHash<int, data_pic*> m_oPixCache;
 
 

@@ -6,6 +6,7 @@
 #include <QApplication>
 #include<QList>
 #include <QSet>
+#include <QRegExp>
 #include <QScrollBar>
 #include <QMenu>
 #include<QTextDocument>
@@ -329,6 +330,7 @@ void box_view::notify_export_item(int id)
 
 	QRectF l_oR(0, 0, l_oRect.width(), l_oRect.height());
 
+	QPair<int, int> p = m_oMediator->hint_size_diagram(id);
 
 	// fill with white
 	QImage l_oImage((int) l_oR.width(), (int) l_oR.height(), QImage::Format_RGB32);

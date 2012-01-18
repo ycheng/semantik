@@ -1107,6 +1107,28 @@ int sem_mediator::choose_root()
 	return l_oCand;
 }
 
+QPair<int, int> sem_mediator::hint_size_diagram(int id)
+{
+	int width = 0;
+	int height = 0;
+
+	data_item *item = m_oItems.value(id);
+	Q_ASSERT(item);
+	if (item->m_sHint.size() > 4)
+	{
+		if (!init_py())
+		{
+			emit sig_message(trUtf8("Missing bindings for opening files"), 5000);
+		}
+		else
+		{
+			// TODO
+			PyRun_SimpleString("print 0 100");
+		}
+	}
+	return QPair<int, int>(width, height);
+}
+
 int sem_mediator::size_of(int i_i)
 {
 	// warning, recursive
