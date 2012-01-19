@@ -2,12 +2,12 @@
 <html>
 <h3>1. Essential commands</h3>
 <ul>
- <li>double click to add a concept</li>
- <li>double click on a leaf or use the link mode to connect concepts</li>
- <li>double click on a link to remove it</li>
- <li>middle button + move to scroll on the map</li>
- <li>scroll wheel for zooming</li>
- <li>when a concept is selected, press enter to start editing it</li>
+ <li>Double click to add a concept</li>
+ <li>Double click on a leaf or use the link mode to connect concepts</li>
+ <li>Double click on a link to remove it</li>
+ <li>Middle button + move to scroll on the map</li>
+ <li>Scroll wheel for zooming</li>
+ <li>When a concept is selected, press enter to start editing it</li>
  <li>Control+R to reorganize the map</li>
  <li>Control+H to center the zoom</li>
  <li>When a map is ready, use Ctrl+G to generate a document</li>
@@ -47,8 +47,8 @@
 <h3>4. Data types</h3>
 <ul>
  <li>Right-click on a map item and set the data type</li>
- <li>A graph may be created in the diagram panel</li>
- <li>Pictures may be added in the image panel</li>
+ <li>Graphs can be created in the diagram panel</li>
+ <li>Pictures can be added in the image panel</li>
 </ul>
 </html>
 </tip>
@@ -57,9 +57,8 @@
 <html>
 <h3>5. Diagrams</h3>
 <ul>
- <li>to connect diagram elements, maintain the control key pressed, select an item, and drag to the element to connect</li>
- <li>right-click on a link to change the style</li>
- <li>right-click on a box to change its color</li>
+ <li>To connect diagram elements, drag the pointer from one box to another while maintaining the shift key pressed</li>
+ <li>Right-click on a link or on a box to change the properties</li>
 </ul>
 </html>
 </tip>
@@ -68,8 +67,17 @@
 <html>
 <h3>6. LaTeX export</h3>
 <p>
-Set 'all_latex=1' to let the beamer and pdf templates parse LaTeX commands
+Set <b>all_latex=1</b> in the variables view to let the beamer and pdf templates use LaTeX commands.
 </p>
 </html>
+
+<tip category="semantik">
+<html>
+<h3>7. Diagram size</h3>
+<p>
+The size of the diagrams exported can be tuned by specific values in the variables view:<br>
+<b>diagram_width</b>=200<br>
+<b>diagram_height</b>=500<br>
+</p>
 </tip>
 

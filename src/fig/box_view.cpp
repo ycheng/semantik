@@ -332,7 +332,18 @@ void box_view::notify_export_item(int id)
 
 	QPair<int, int> p = m_oMediator->hint_size_diagram(id);
 
-	qDebug()<<p;
+	if (p.first != 0) {
+		l_oR.setWidth(p.first);
+		if (p.second == 0) {
+			l_oR.setHeight((p.first * l_oRect.height()) / (double) l_oRect.width());
+		}
+	}
+	if (p.second != 0) {
+		l_oR.setHeight(p.second);
+		if (p.first == 0) {
+			l_oR.setWidth((p.second * l_oRect.width()) / (double) l_oRect.height());
+		}
+	}
 
 	// fill with white
 	QImage l_oImage((int) l_oR.width(), (int) l_oR.height(), QImage::Format_RGB32);
@@ -341,7 +352,8 @@ void box_view::notify_export_item(int id)
 	QPainter l_oP;
 	l_oP.begin(&l_oImage);
 	l_oP.setRenderHints(QPainter::Antialiasing);
-	scene()->render(&l_oP, l_oR, l_oRect);
+	Qt::AspectRatioMode rat = (p.first == 0 || p.second == 0) ? Qt::KeepAspectRatio : Qt::IgnoreAspectRatio;
+	scene()->render(&l_oP, l_oR, l_oRect, rat);
 	l_oP.end();
 
 	l_oImage.save(QString(m_oMediator->m_sTempDir + QString("/") + QString("diag-%1.png")).arg(QString::number(m_iId)));
