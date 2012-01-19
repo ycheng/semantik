@@ -1057,6 +1057,8 @@ void sem_mediator::generate_docs(const QString &i_oFile, const QString &i_sDirNa
 	mem_sel *sel = new mem_sel(this);
 	sel->apply();
 
+	bind_node::init(this);
+
 	foreach (int l_iVal, m_oItems.keys())
 	{
 		data_item *l_oData = m_oItems.value(l_iVal);
@@ -1065,7 +1067,6 @@ void sem_mediator::generate_docs(const QString &i_oFile, const QString &i_sDirNa
 			notify_export_item(l_oData->m_iId);
 	}
 
-	bind_node::init(this);
 	bind_node::set_var(notr("temp_dir"), m_sTempDir);
 	bind_node::set_var(notr("outdir"), i_sLocation);
 	bind_node::set_var(notr("pname"), i_sDirName);
@@ -1122,8 +1123,13 @@ QPair<int, int> sem_mediator::hint_size_diagram(int id)
 		}
 		else
 		{
-			// TODO
-			PyRun_SimpleString("print 0, 100");
+			bind_node::s_oResults.clear();
+			QString s = QString("compute_hints(%1)").arg(id);
+			QByteArray ba = s.toAscii();
+			PyRun_SimpleString(ba.constData());
+
+			width = bind_node::s_oResults.value("diagram_width").toInt();
+			height = bind_node::s_oResults.value("diagram_height").toInt();
 		}
 	}
 	return QPair<int, int>(width, height);

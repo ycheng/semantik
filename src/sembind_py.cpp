@@ -141,6 +141,18 @@ PyObject *Node_set_var(PyObject *i_s, PyObject *i_oArgs)
 	return Py_None;
 }
 
+PyObject *Node_set_result(PyObject *i_s, PyObject *i_oArgs)
+{
+	PyObject *i_oObj1 = NULL;
+	PyObject *l_oObj2 = NULL;
+	if (!PyArg_ParseTuple(i_oArgs, "OO", &i_oObj1, &l_oObj2)) { Q_ASSERT(false); return NULL; }
+	QString l_sKey = from_unicode(i_oObj1);
+	QString l_sVal = from_unicode(l_oObj2);
+
+	bind_node::set_result(l_sKey, l_sVal);
+	return Py_None;
+}
+
 PyObject *Node_protectXML(PyObject *i_s, PyObject *i_oArgs)
 {
 	PyObject *i_oObj1 = NULL;
@@ -190,6 +202,8 @@ static PyMethodDef methods[] = {
 	{"instance", Node_instance, METH_VARARGS, NULL},
 	{"get_var",  Node_get_var, METH_VARARGS, NULL},
 	{"set_var",  Node_set_var, METH_VARARGS, NULL},
+
+	{"set_result",  Node_set_result, METH_VARARGS, NULL},
 
 	{"get_item_ids", Node_get_item_ids, METH_VARARGS, NULL},
 	{"get_item_by_id", Node_get_item_by_id, METH_VARARGS, NULL},

@@ -151,6 +151,15 @@ def protect_tex(s):
 		else: lst.append(x)
 	return "".join(lst)
 
+def compute_hints(x):
+	k = int(x)
+	item = sembind.get_item_by_id(int(x))
+	if item:
+		m = read_properties(sembind.get_val(item, "hints"))
+		sembind.set_result("diagram_width", m.get('diagram_width', '0'))
+		sembind.set_result("diagram_height", m.get('diagram_height', '0'))
+		
+
 class Node(object):
 	def __init__(self, bind):
 		if not bind:

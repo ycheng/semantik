@@ -332,6 +332,8 @@ void box_view::notify_export_item(int id)
 
 	QPair<int, int> p = m_oMediator->hint_size_diagram(id);
 
+	qDebug()<<p;
+
 	// fill with white
 	QImage l_oImage((int) l_oR.width(), (int) l_oR.height(), QImage::Format_RGB32);
 	l_oImage.fill(qRgb(255,255,255));
@@ -1028,6 +1030,9 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 			ln->apply();
 		}
 
+		if (m_oCurrent->m_oLink != NULL) {
+			// TODO
+		}
 		delete m_oCurrent;
 		m_oCurrent = NULL;
 	}

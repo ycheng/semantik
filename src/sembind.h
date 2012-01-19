@@ -16,6 +16,7 @@ class bind_node
 
 		static QString get_var(const QString &);
 		static void set_var(const QString &, const QString &);
+		static void set_result(const QString &, const QString &);
 
 		static QString get_item_ids();
 		static bind_node* get_item_by_id(int i);
@@ -48,6 +49,7 @@ class bind_node
 		bind_node();
 		~bind_node();
 		static QMap<QString, QString> s_oVars;
+		static QMap<QString, QString> s_oResults;
 		static bind_node* _root;
 		static QHash<int, bind_node*> _cache;
 		static sem_mediator* _model;

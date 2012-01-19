@@ -15,6 +15,7 @@ bind_node* bind_node::_root = NULL;
 sem_mediator * bind_node::_model = NULL;
 QHash<int, bind_node*> bind_node::_cache = QHash<int, bind_node*>();
 
+QMap<QString, QString> bind_node::s_oResults = QMap<QString, QString>();
 QMap<QString, QString> bind_node::s_oVars = QMap<QString, QString>();
 
 bind_node::bind_node()
@@ -189,6 +190,7 @@ QString bind_node::get_item_ids()
 
 bind_node* bind_node::get_item_by_id(int id)
 {
+	Q_ASSERT(_model != NULL);
 	bind_node *l_oNode = _cache.value(id);
 	if (l_oNode) return l_oNode;
 	l_oNode = _cache[id] = new bind_node();
@@ -226,3 +228,7 @@ void bind_node::init(sem_mediator* med)
 	bind_node::s_oVars.clear();
 }
 
+void bind_node::set_result(const QString& k, const QString& v)
+{
+	s_oResults[k] = v;
+}
