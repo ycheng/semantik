@@ -814,55 +814,6 @@ void canvas_view::deselect_all(bool i_oSignal)
 	}
 }
 
-#if 0
-void canvas_view::add_select(canvas_item* i_oItem, bool i_oSignal)
-{
-	/*
-	Q_ASSERT(i_oItem != NULL);
-
-	if (m_oSelected.size() == 1)
-	{
-		QFocusEvent l_oEv = QFocusEvent(QEvent::FocusOut);
-		//m_oSelected[0]->focus_out(&l_oEv);
-	}
-
-	m_iSortCursor = 0;
-	m_oSelected.push_back(i_oItem);
-	i_oItem->set_selected(true);
-	i_oItem->setZValue(100);
-	i_oItem->update();
-
-	notify_select(i_oSignal);
-	*/
-}
-
-void canvas_view::rm_select(canvas_item* i_oItem, bool i_oSignal)
-{
-	/*
-	Q_ASSERT(i_oItem != NULL);
-	i_oItem->set_selected(false);
-	i_oItem->setZValue(99);
-	i_oItem->update();
-	m_oSelected.removeAll(i_oItem);
-
-	notify_select(i_oSignal);
-	*/
-}
-
-void canvas_view::notify_select(bool i_oSignal)
-{
-	/*
-	enable_actions();
-
-	if (!i_oSignal) return;
-	if (m_oSelected.size()==1)
-		m_oMediator->select_item(m_oSelected[0]->Id(), VIEW_CANVAS);
-	else
-		m_oMediator->select_item(NO_ITEM, VIEW_CANVAS);
-	*/
-}
-#endif
-
 void canvas_view::enable_actions()
 {
 	foreach (QAction* l_o, actions())
