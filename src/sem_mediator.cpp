@@ -1192,6 +1192,11 @@ sem_mediator::sem_mediator(QObject* i_oParent) : QObject(i_oParent)
 	m_sOutProject = "";
 	m_sOutTemplate = "";
 	init_temp_dir();
+
+	if (!QFile::exists(SEMANTIK_DIR "/templates/waf")) {
+		qDebug()<<"You cannot use Semantik if it is not installed";
+		Q_ASSERT(false);
+	}
 }
 
 bool html_converter::endElement(const QString&, const QString&, const QString& i_sName)

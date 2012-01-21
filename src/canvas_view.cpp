@@ -1435,7 +1435,8 @@ void canvas_view::notify_add_item(int id) {
 
 void canvas_view::notify_change_data(int id)
 {
-	qDebug()<<"FIXME data has changed!!!";
+	//canvas_item* l_oR = m_oItems.value(id);
+	//qDebug()<<"FIXME data has changed!!!";
 }
 
 void canvas_view::notify_delete_item(int id) {
