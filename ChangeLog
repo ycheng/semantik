@@ -1,7 +1,8 @@
 Semantik 0.8.0
 --------------
 
-* implement the undo/redo actions
+* undo/redo actions
+* select subtrees
 
 Semantik 0.7.3
 --------------

@@ -66,9 +66,16 @@ More help in about->help
 
 GPL V3
 
-Do not port Semantik to proprietary platforms (Windows, Mac). You may be free
+Semantik does not Endorse non-free systems and uber-free systems:
+
+- Do not port Semantik to proprietary platforms (Windows, Mac). You may be free
 to do it, but the author is also free to stop the development, or to keep the
 next versions for himself.
+
+- Semantik cannot be redistributed on Debian and derivated systems
+due to questionable new Debian policies regarding "binary" files. The
+Waf file is a critical element required for building documents, but it
+has been flagged by the Debian nazis as "not source enough".
 
 -----------------------------------------------
 
