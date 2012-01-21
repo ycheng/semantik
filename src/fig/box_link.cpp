@@ -90,9 +90,8 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 		box_item *l_oUnder = NULL;
 		foreach (QGraphicsItem *l_oI1, scene()->items(m_oView->m_oLastMovePoint))
 		{
-			if (l_oI1->type() == BOX_ITEM_T)
+			if (l_oUnder = dynamic_cast<box_item*>(l_oI1))
 			{
-				l_oUnder = (box_item*) l_oI1;
 				break;
 			}
 		}
@@ -110,9 +109,8 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 		box_item *l_oUnder = NULL;
 		foreach (QGraphicsItem *l_oI1, scene()->items(m_oView->m_oLastMovePoint))
 		{
-			if (l_oI1->type() == BOX_ITEM_T)
+			if (l_oUnder = dynamic_cast<box_item*>(l_oI1))
 			{
-				l_oUnder = (box_item*) l_oI1;
 				break;
 			}
 		}
@@ -397,9 +395,8 @@ void box_link::update_pos()
 	box_item *l_oUnder = NULL;
         foreach (QGraphicsItem *l_oI1, scene()->items(m_oView->m_oLastMovePoint))
         {
-                if (l_oI1->type() == BOX_ITEM_T)
+                if (l_oUnder = dynamic_cast<box_item*>(l_oI1))
                 {
-                        l_oUnder = (box_item*) l_oI1;
 			break;
                 }
         }

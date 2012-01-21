@@ -344,10 +344,8 @@ void box_view::slot_delete()
 	QList<data_box*> boxes;
 	QSet<data_link*> links;
 	foreach (QGraphicsItem* el, scene()->selectedItems()) {
-		if (el->type() == BOX_ITEM_T) {
-			box_item *bit = (box_item*) el;
+		if (box_item *bit = dynamic_cast<box_item*>(el)) {
 			boxes.append(bit->m_oBox);
-
 			foreach (box_link* l, m_oLinks)
 			{
 				if (l->m_oLink->m_iParent == bit->m_oBox->m_iId || l->m_oLink->m_iChild == bit->m_oBox->m_iId)
@@ -356,8 +354,7 @@ void box_view::slot_delete()
 				}
 			}
 
-		} else if (el->type() == BOX_LINK_T) {
-			box_link *l = (box_link*) el;
+		} else if (box_link *l = dynamic_cast<box_link*>(el)) {
 			links << l->m_oLink;
 			Q_ASSERT(l->m_oLink);
 		}
@@ -370,16 +367,6 @@ void box_view::slot_delete()
 	}
 }
 
-/*QList<box_item*> box_view::selection() {
-	QList<box_item*> ret;
-	foreach (QGraphicsItem *tmp, scene()->selectedItems()) {
-		if (tmp->type() == BOX_ITEM_T) {
-			ret.append((box_item*) tmp);
-		}
-	}
-	return ret;
-}*/
-
 void box_view::enable_menu_actions()
 {
 	QList<QGraphicsItem*> selection = scene()->selectedItems();
@@ -389,15 +376,15 @@ void box_view::enable_menu_actions()
 	m_oDeleteAction->setEnabled(selected >= 1);
 	m_oColorAction->setEnabled(selected >= 1);
 
-	m_oEditAction->setEnabled(selected == 1 and selection.at(0)->type() == BOX_ITEM_T);
+	m_oEditAction->setEnabled(selected == 1 and dynamic_cast<box_item*>(selection.at(0)));
 
-	m_oWidthMenu->setEnabled(selected >= 1 and selection.at(0)->type() == BOX_LINK_T);
+	m_oWidthMenu->setEnabled(selected >= 1 and dynamic_cast<box_link*>(selection.at(0)));
 	foreach(QAction* l_o, m_oWidthGroup->actions())
 	{
 		l_o->setEnabled(selected >= 1);
 	}
 
-	m_oStyleMenu->setEnabled(selected >= 1 and selection.at(0)->type() == BOX_LINK_T);
+	m_oStyleMenu->setEnabled(selected >= 1 and dynamic_cast<box_link*>(selection.at(0)));
 	foreach(QAction* l_o, m_oStyleGroup->actions())
 	{
 		l_o->setEnabled(selected >= 1);
@@ -457,13 +444,13 @@ void box_view::change_colors(QAction* i_oAct)
 	mem_prop_box *mem = new mem_prop_box(m_oMediator, m_iId);
 	foreach (QGraphicsItem *l_o, scene()->selectedItems())
 	{
-		if (l_o->type() == BOX_LINK_T)
+		if (box_link *k = dynamic_cast<box_link*>(l_o))
 		{
 			mem->items.append(((box_link*) l_o)->m_oLink);
 		}
-		else if (l_o->type() == BOX_ITEM_T)
+		else if (box_item* t = dynamic_cast<box_item*>(l_o))
 		{
-			mem->items.append(((box_item*) l_o)->m_oBox);
+			mem->items.append(t->m_oBox);
 		}
 	}
 	mem->change_type = CH_COLOR;
@@ -479,13 +466,13 @@ void box_view::slot_color()
 	mem_prop_box *mem = new mem_prop_box(m_oMediator, m_iId);
 	foreach (QGraphicsItem *l_o, scene()->selectedItems())
 	{
-		if (l_o->type() == BOX_LINK_T)
+		if (box_link *k = dynamic_cast<box_link*>(l_o))
 		{
-			mem->items.append(((box_link*) l_o)->m_oLink);
+			mem->items.append(k->m_oLink);
 		}
-		else if (l_o->type() == BOX_ITEM_T)
+		else if (box_item *k = dynamic_cast<box_item*>(l_o))
 		{
-			mem->items.append(((box_item*) l_o)->m_oBox);
+			mem->items.append(k->m_oBox);
 		}
 	}
 	mem->change_type = CH_COLOR;
@@ -499,9 +486,9 @@ void box_view::slot_penstyle()
 	mem_prop_box *mem = new mem_prop_box(m_oMediator, m_iId);
 	foreach (QGraphicsItem* l_o, scene()->selectedItems())
 	{
-		if (l_o->type() == BOX_LINK_T)
+		if (box_link *k = dynamic_cast<box_link*>(l_o))
 		{
-			mem->items.append(((box_link*) l_o)->m_oLink);
+			mem->items.append(k->m_oLink);
 		}
 	}
 	mem->change_type = CH_PENST;
@@ -515,9 +502,9 @@ void box_view::slot_penwidth()
 	mem_prop_box *mem = new mem_prop_box(m_oMediator, m_iId);
 	foreach (QGraphicsItem* l_o, scene()->selectedItems())
 	{
-		if (l_o->type() == BOX_LINK_T)
+		if (box_link *k = dynamic_cast<box_link*>(l_o))
 		{
-			mem->items.append(((box_link*) l_o)->m_oLink);
+			mem->items.append(k->m_oLink);
 		}
 	}
 	mem->change_type = CH_BORDER;
@@ -532,13 +519,16 @@ void box_view::slot_toggle_edit()
 	}
 
 	box_item* sel = NULL;
-	foreach (QGraphicsItem *tmp, items()) {
-		if (tmp->type() == BOX_ITEM_T && tmp->isSelected()) {
+	foreach (QGraphicsItem *tmp, items())
+	{
+		box_item* k;
+		if (tmp->isSelected() && (k = dynamic_cast<box_item*>(tmp)))
+		{
 			if (sel) {
 				sel = NULL;
 				break;
 			} else {
-				sel = (box_item*) tmp;
+				sel = k;
 			}
 		}
 	}
@@ -608,12 +598,14 @@ void box_view::slot_cancel_edit()
 	//qDebug()<<"slot cancel edit";
 	box_item* sel = NULL;
 	foreach (QGraphicsItem *tmp, items()) {
-		if (tmp->type() == BOX_ITEM_T && tmp->isSelected()) {
+		box_item *k;
+		if (tmp->isSelected() && (k = dynamic_cast<box_item*>(tmp)))
+		{
 			if (sel) {
 				sel = NULL;
 				break;
 			} else {
-				sel = (box_item*) tmp;
+				sel = k;
 			}
 		}
 	}
@@ -789,9 +781,9 @@ void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 
 	QPointF m_oLastPoint = mapToScene(i_oEv->pos());
 	QGraphicsItem *l_oItem = itemAt(i_oEv->pos());
-	if (l_oItem && l_oItem->type() == BOX_LINK_T)
+	box_link *l_oLink;
+	if (l_oItem && (l_oLink = dynamic_cast<box_link*>(l_oItem)))
 	{
-		box_link *l_oLink = (box_link*) l_oItem;
 		mem_unlink_box *rm = new mem_unlink_box(m_oMediator, m_iId);
 		rm->link = l_oLink->m_oLink;
 		rm->apply();
@@ -835,7 +827,8 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 	}
 
 	QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
-	if (l_oItem && l_oItem->type() == BOX_ITEM_T)
+	box_item *k;
+	if (l_oItem && (k = dynamic_cast<box_item*>(l_oItem)))
 	{
 		box_item *l_oRect = (box_item*) l_oItem;
 		if (QApplication::keyboardModifiers() & Qt::ShiftModifier)
@@ -867,9 +860,9 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 	edit_off();
 
 	QList<QGraphicsItem*> it = scene()->selectedItems();
-	if (it.size() == 1 && it.at(0)->type() == BOX_LINK_T)
+	box_link* link;
+	if (it.size() == 1 && (link = dynamic_cast<box_link*>(it.at(0))))
 	{
-		box_link* link = (box_link*) it.at(0);
 		for (int i=1; i < link->m_oGood.size() - 2; ++i)
 		{
 			QPointF l_o = QPointF((link->m_oGood[i].x()+link->m_oGood[i+1].x())/2, (link->m_oGood[i].y()+link->m_oGood[i+1].y())/2);
@@ -956,9 +949,8 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 		box_item *l_oUnder = NULL;
 		foreach (QGraphicsItem *l_oI1, scene()->items(m_oLastMovePoint))
 		{
-			if (l_oI1->type() == BOX_ITEM_T)
+			if (l_oUnder = dynamic_cast<box_item*>(l_oI1))
 			{
-				l_oUnder = (box_item*) l_oI1;
 				break;
 			}
 		}
@@ -989,9 +981,10 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 		if (qAbs(p.x()) > 1 || qAbs(p.y()) > 1)
 		{
 			mem_pos_box *mem = new mem_pos_box(m_oMediator, m_iId);
-			foreach (QGraphicsItem *l_oI1, scene()->selectedItems()) {
-				if (l_oI1->type() == BOX_ITEM_T) {
-					box_item *item = (box_item*) l_oI1;
+			foreach (QGraphicsItem *l_oI1, scene()->selectedItems())
+			{
+				if (box_item* item = dynamic_cast<box_item*>(l_oI1))
+				{
 					data_box *box = item->m_oBox;
 					mem->prev_values[box] = QPointF(box->m_iXX, box->m_iYY);
 					mem->next_values[box] = item->pos();
@@ -1013,7 +1006,8 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 void box_view::edit_off() {
 	box_item* sel = NULL;
 	foreach (QGraphicsItem *tmp, items()) {
-		if (tmp->type() == BOX_ITEM_T) {
+		if (sel = dynamic_cast<box_item*>(tmp))
+		{
 			sel = (box_item*) tmp;
 			if (sel->textInteractionFlags() & Qt::TextEditorInteraction)
 			{

@@ -20,7 +20,6 @@ class box_item : public QGraphicsTextItem
 		box_item(box_view*, int i_iId);
 		~box_item();
 
-		int type() const { return BOX_ITEM_T; }
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
 
 		QRectF boundingRect() const;
