@@ -707,30 +707,12 @@ void box_view::check_canvas_size()
 		return;
 	}
 
-	QRectF l_oR2;
+	QRectF br = scene()->itemsBoundingRect();
+	br.adjust(-GAP, -GAP, GAP, GAP);
 
-	qreal x, y, z, t;
-
-	QGraphicsItem *l_o = items().at(0);
-
-	x = z = l_o->x() + l_o->boundingRect().width()/2;
-	y = t = l_o->y() + l_o->boundingRect().height()/2;
-
-	foreach (QGraphicsItem *l_oItem, items()) {
-		QRectF rect = l_oItem->boundingRect();
-		if (l_oItem->x() < x) x = l_oItem->x();
-		if (l_oItem->y() < y) y = l_oItem->y();
-		if (l_oItem->x() + rect.width() > z) z = l_oItem->x() + rect.width();
-		if (l_oItem->y() + rect.height() > z) z = l_oItem->y() + rect.height();
-	}
-
-	x -=GAP; y -= GAP; z += GAP, t += GAP;
-
-	l_oR2 = QRectF(QPointF(x, y), QPointF(z, t));
-	l_oR2 = l_oR2.united(QRectF(mapToScene(l_oRect.topLeft()) + QPointF(-10, -10), mapToScene(l_oRect.bottomRight()) + QPointF(10, 10)));
-
-	if (l_oR2 == sceneRect()) return;
-	scene()->setSceneRect(l_oR2);
+	QRectF sc = br.united(QRectF(mapToScene(l_oRect.topLeft()), mapToScene(l_oRect.bottomRight())));
+	if (sc == sceneRect()) return;
+	scene()->setSceneRect(sc);
 }
 
 void box_view::focusInEvent(QFocusEvent *i_oEv)
@@ -808,6 +790,7 @@ void box_view::wheelEvent(QWheelEvent *i_oEvent)
 	if (i_rFactor < 0.01 || i_rFactor > 1000) return;
 	scale(i_iScaleFactor, i_iScaleFactor);
 	centerOn(l_o + mapToScene(viewport()->rect().center()) - mapToScene(i_oEvent->pos()));
+	check_canvas_size();
 }
 
 void box_view::keyPressEvent(QKeyEvent *i_oEvent)
