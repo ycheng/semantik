@@ -42,7 +42,7 @@ class box_reader : public QXmlDefaultHandler
 	QString m_sBuf;
 	int m_iVersion;
 	box_view *m_oMediator;
-	box_link *m_oCurrent;
+	data_link *m_oCurrent;
 	int m_iId;
 
 	bool startElement(const QString&, const QString&, const QString&, const QXmlAttributes&);
@@ -53,6 +53,8 @@ class box_reader : public QXmlDefaultHandler
 box_reader::box_reader(box_view *i_oControl)
 {
 	m_oMediator = i_oControl;
+	m_iId = m_oMediator->m_iId;
+	m_oCurrent = NULL;
 }
 
 bool box_reader::startElement(const QString&, const QString&, const QString& i_sName, const QXmlAttributes& i_oAttrs)
@@ -62,6 +64,7 @@ bool box_reader::startElement(const QString&, const QString&, const QString& i_s
 		int id = i_oAttrs.value(QObject::trUtf8("id")).toInt();
 
 		data_box *box = new data_box(id);
+		data_item *item = m_oMediator->m_oMediator->m_oItems[m_iId];
 		m_oMediator->m_oMediator->m_oItems[m_iId]->m_oBoxes[id] = box;
 		box->m_iXX = i_oAttrs.value(QObject::trUtf8("c1")).toFloat();
 		box->m_iYY = i_oAttrs.value(QObject::trUtf8("c2")).toFloat();
@@ -71,49 +74,21 @@ bool box_reader::startElement(const QString&, const QString&, const QString& i_s
 	}
 	else if (i_sName == QObject::trUtf8("box_link"))
 	{
-		/* box_link *l_o = new box_link(m_oMediator);
-		l_o->m_iParent = i_oAttrs.value(QObject::trUtf8("p1")).toInt();
-		l_o->m_iChild = i_oAttrs.value(QObject::trUtf8("p2")).toInt();
-
-		int l_i = i_oAttrs.value(QObject::trUtf8("c1")).toInt();
-		foreach (box_item* l_oItem, m_oMediator->m_oItems)
-		{
-			if (l_oItem->m_iId == l_i)
-			{
-				l_o->m_oParent = l_oItem; break;
-			}
-		}
-
-		l_i = i_oAttrs.value(QObject::trUtf8("c2")).toInt();
-		foreach (box_item* l_oItem, m_oMediator->m_oItems)
-		{
-			if (l_oItem->m_iId == l_i)
-			{
-				l_o->m_oChild = l_oItem; break;
-			}
-		}
-
-		QPen l_oPen;
-		l_oPen.setWidth(i_oAttrs.value(QObject::trUtf8("wl")).toInt());
-		l_oPen.setStyle((Qt::PenStyle) i_oAttrs.value(QObject::trUtf8("sl")).toInt());
-		if (l_oPen.style() == Qt::NoPen) l_oPen.setStyle(Qt::SolidLine);
-		l_o->setPen(l_oPen);
-
-		if (!l_o->m_oChild or !l_o->m_oParent)
-		{
-			delete l_o;
-			return false;
-		}
-
-		m_oMediator->m_oLinks.push_back(l_o);
-		m_oCurrent = l_o; */
+		data_link *link = new data_link();
+		link->m_iParentPos = i_oAttrs.value(QObject::trUtf8("p1")).toInt();
+		link->m_iParent    = i_oAttrs.value(QObject::trUtf8("c1")).toInt();
+		link->m_iChildPos  = i_oAttrs.value(QObject::trUtf8("p2")).toInt();
+		link->m_iChild     = i_oAttrs.value(QObject::trUtf8("c2")).toInt();
+		link->pen_style = (Qt::PenStyle) i_oAttrs.value(QObject::trUtf8("sl")).toInt();
+		link->border_width = i_oAttrs.value(QObject::trUtf8("wl")).toInt();
+		m_oCurrent = link;
+		m_oMediator->m_oMediator->m_oItems.value(m_iId)->m_oLinks.append(link);
 	}
 	else if (i_sName == QObject::trUtf8("box_link_offset"))
 	{
 		if (m_oCurrent)
 		{
-			m_oCurrent->m_oLink->m_oOffsets.append(
-				QPoint(i_oAttrs.value(QObject::trUtf8("x")).toInt(), i_oAttrs.value(QObject::trUtf8("y")).toInt()));
+			m_oCurrent->m_oOffsets.append(QPoint(i_oAttrs.value(QObject::trUtf8("x")).toInt(), i_oAttrs.value(QObject::trUtf8("y")).toInt()));
 		}
 	}
 
@@ -124,7 +99,6 @@ bool box_reader::endElement(const QString&, const QString&, const QString& i_sNa
 {
 	if (i_sName == QObject::trUtf8("box_link"))
 	{
-		if (m_oCurrent) m_oCurrent->update_pos();
 		m_oCurrent = NULL;
 	}
 	return true;
@@ -631,7 +605,7 @@ void box_view::slot_toggle_edit()
 
 void box_view::slot_cancel_edit()
 {
-	qDebug()<<"slot cancel edit";
+	//qDebug()<<"slot cancel edit";
 	box_item* sel = NULL;
 	foreach (QGraphicsItem *tmp, items()) {
 		if (tmp->type() == BOX_ITEM_T && tmp->isSelected()) {
@@ -645,7 +619,7 @@ void box_view::slot_cancel_edit()
 	}
 
 	if (sel && sel->textInteractionFlags() & Qt::TextEditorInteraction) {
-		qDebug()<<"cancel edit!"<<sel;
+		//qDebug()<<"cancel edit!"<<sel;
 		sel->setTextInteractionFlags(Qt::NoTextInteraction);
 		sel->update_data();
 	}
