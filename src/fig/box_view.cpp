@@ -932,28 +932,6 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 		grab_segment_link->update();
 	}
 
-	/*else
-	{
-		else if (m_oSelected.size() == 1 and m_oSelected[0]->type() == BOX_ITEM_T and
-			m_oOffsetPoint.x()>0 and m_oOffsetPoint.y()>0 )
-		{
-			QPointF l_o = m_oLastMovePoint - m_oLastPoint + m_oOffsetPoint;
-			box_item *l_oItem = (box_item*) m_oSelected[0];
-			l_o.setX(qMax(GRID_VALUE, l_o.x()));
-			l_o.setY(qMax(GRID_VALUE, l_o.y()));
-			l_oItem->setRect(0, 0, int_val(l_o.x()), int_val(l_o.y()));
-
-			// then update the links
-			foreach (box_link *l_oLink, m_oLinks)
-			{
-				// either the parent or the child
-				if (l_oLink->m_oParent == l_oItem or l_oLink->m_oChild == l_oItem)
-					l_oLink->update_pos();
-			}
-		}
-	}*/
-	//check_canvas_size();
-
 	QGraphicsView::mouseMoveEvent(i_oEv);
 }
 
