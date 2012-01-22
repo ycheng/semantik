@@ -53,6 +53,10 @@ class data_box : public diagram_item
 	double m_iYY;
 	double m_iWW;
 	double m_iHH;
+	bool m_bIsEnd;
+	bool m_bIsVertical;
+	enum IType { TEXT=1, ACTIVITY_START=2, ACTIVITY_PARALLEL=3 };
+	data_box::IType m_iType;
 };
 
 class data_pic

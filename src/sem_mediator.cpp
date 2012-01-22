@@ -92,6 +92,9 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		box->m_iYY = i_oAttrs.value(notr("y")).toFloat();
 		box->m_iWW = i_oAttrs.value(notr("w")).toFloat();
 		box->m_iHH = i_oAttrs.value(notr("h")).toFloat();
+		box->m_iType = (data_box::IType) i_oAttrs.value(notr("t")).toInt();
+		box->m_bIsVertical = i_oAttrs.value(notr("v")).toInt();
+		box->m_bIsEnd = i_oAttrs.value(notr("e")).toInt();
 		box->color = QColor(i_oAttrs.value(notr("color")));
 	}
 	else if (i_sName == notr("linkbox"))
@@ -504,14 +507,19 @@ QString sem_mediator::doc_to_xml()
 
 		foreach (data_box *box, l_oItem->m_oBoxes)
 		{
-			l_oS<<notr("<itembox id=\"%1\" text=\"%2\" x=\"%3\" y=\"%4\" w=\"%5\" h=\"%6\" color=\"%7\">\n").arg(
+			l_oS<<notr("<itembox id=\"%1\" text=\"%2\" x=\"%3\" y=\"%4\" w=\"%5\" h=\"%6\" color=\"%7\" t=\"%8\" %9>\n").arg(
 				QString::number(box->m_iId),
 				bind_node::protectXML(box->m_sText),
 				QString::number(box->m_iXX),
 				QString::number(box->m_iYY),
 				QString::number(box->m_iWW),
 				QString::number(box->m_iHH),
-				box->color.name()
+				box->color.name(),
+				QString::number((int) box->m_iType),
+				QString(" v=\"%1\" e=\"%2\"").arg(
+					QString::number((int) box->m_bIsVertical),
+					QString::number((int) box->m_bIsEnd)
+				)
 			);
 			l_oS<<notr("</itembox>\n");
 		}

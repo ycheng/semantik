@@ -28,6 +28,7 @@
 #include <math.h>
 #include "sem_mediator.h"
 #include "box_item.h"
+#include "box_dot.h"
 #include "box_link.h"
 #include "data_item.h"
 #include "box_view.h"
