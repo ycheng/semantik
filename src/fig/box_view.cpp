@@ -827,28 +827,32 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 	}
 
 	QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
-	box_item *k;
-	if (l_oItem && (k = dynamic_cast<box_item*>(l_oItem)))
+
+	connectable* kk;
+	if (l_oItem && (kk = dynamic_cast<connectable*>(l_oItem)))
 	{
-		box_item *l_oRect = (box_item*) l_oItem;
 		if (QApplication::keyboardModifiers() & Qt::ShiftModifier)
 		{
 			if (m_oCurrent) return;
 			m_oCurrent = new box_link(this);
-			m_oCurrent->m_oParent = l_oRect;
+			m_oCurrent->m_oParent = kk;
 			m_oCurrent->m_oChild = NULL;
-			m_oCurrent->m_iParent = box_link::pos_inrect(l_oRect->rect(), l_oRect->pos() - m_oLastMovePoint);
+			m_oCurrent->m_iParent = box_link::pos_inrect(kk->rect(), l_oItem->pos() - m_oLastMovePoint);
 			m_oCurrent->m_iChild = 0;
 			m_oCurrent->update_pos();
 			return;
 		}
+	}
 
+	box_item *k;
+	if (l_oItem && (k = dynamic_cast<box_item*>(l_oItem)))
+	{
 		QPointF l_o = l_oItem->pos();
 		// TODO used by the handle for resizing the boxes - check that the click was on the handle
 		if (m_oLastPoint.x() + m_oLastPoint.y() - l_o.x() - l_o.y() >
-			l_oRect->rect().width() + l_oRect->rect().height() - 2*GRID_VALUE)
+			k->rect().width() + k->rect().height() - 2*GRID_VALUE)
 		{
-			m_oOffsetPoint = QPointF(l_oRect->rect().width(), l_oRect->rect().height());
+			m_oOffsetPoint = QPointF(k->rect().width(), k->rect().height());
 		}
 		else
 		{
@@ -946,10 +950,10 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 	m_bPressed = false;
 	if (m_oCurrent)
 	{
-		box_item *l_oUnder = NULL;
+		connectable *l_oUnder = NULL;
 		foreach (QGraphicsItem *l_oI1, scene()->items(m_oLastMovePoint))
 		{
-			if (l_oUnder = dynamic_cast<box_item*>(l_oI1))
+			if (l_oUnder = dynamic_cast<connectable*>(l_oI1))
 			{
 				break;
 			}
@@ -964,14 +968,11 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 
 			//see notify_link_box();
 			mem_link_box *ln = new mem_link_box(m_oMediator, m_iId);
-			ln->init(m_oCurrent->m_oParent->m_iId, 
-				m_oCurrent->m_iParent, m_oCurrent->m_oChild->m_iId, m_oCurrent->m_iChild);
+			ln->init(m_oCurrent->m_oParent->m_iId, m_oCurrent->m_iParent, m_oCurrent->m_oChild->m_iId, m_oCurrent->m_iChild);
 			ln->apply();
 		}
 
-		if (m_oCurrent->m_oLink == NULL) {
-			delete m_oCurrent;
-		}
+		delete m_oCurrent;
 		m_oCurrent = NULL;
 	}
 	else
