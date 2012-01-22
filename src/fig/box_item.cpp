@@ -37,7 +37,7 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), connec
 	setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
 	setZValue(100);
-	setTextWidth(70);
+	setTextWidth(80);
 	setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
 }
 
