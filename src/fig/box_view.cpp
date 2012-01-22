@@ -299,11 +299,12 @@ void box_view::sync_view()
 			l_o->setPos(QPointF(box->m_iXX, box->m_iYY));
 			l_o->update_data();
 		}
-		else if (box->m_iType == data_box::ACTIVITY_START) {
+		else if (box->m_iType == data_box::ACTIVITY_START)
+		{
 			box_dot *l_o = new box_dot(this, box->m_iId);
 			m_oItems[box->m_iId] = l_o;
 			l_o->setPos(QPointF(box->m_iXX, box->m_iYY));
-			l_o->setRect(QRectF(l_o->pos(), QSizeF(20, 20)));
+			l_o->setRect(QRectF(QPointF(0, 0), QSizeF(20, 20)));
 			l_o->update_data();
 		}
 		else if (box->m_iType == data_box::ACTIVITY_PARALLEL)
@@ -773,7 +774,7 @@ void box_view::notify_add_box(int id, int box)
 	else if (db->m_iType == data_box::ACTIVITY_START)
 	{
 		box_dot *tmp = new box_dot(this, box);
-		tmp->setRect(QRectF(tmp->pos(), QSizeF(20, 20)));
+		tmp->setRect(QRectF(QPointF(0, 0), QSizeF(20, 20)));
 		l_o = tmp;
 	}
 	else if (db->m_iType == data_box::ACTIVITY_PARALLEL)
