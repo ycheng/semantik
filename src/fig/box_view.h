@@ -10,6 +10,7 @@
 #include "con.h"
 
 class QActionGroup;
+class connectable;
 class box_item;
 class box_link;
 class data_link;
@@ -29,7 +30,7 @@ class box_view : public QGraphicsView
 
 		QList<box_link*> m_oLinks;
 
-		QMap<int, box_item*> m_oItems;
+		QMap<int, connectable*> m_oItems;
 
 
 		QPointF m_oLastPoint;

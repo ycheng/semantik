@@ -29,7 +29,6 @@ class box_item : public QGraphicsTextItem, public connectable
 		void setRect(int, int, int, int) { }
 
 		box_view *m_oView;
-		data_box *m_oBox;
 		data_item *m_oItem;
 
 		void mousePressEvent(QGraphicsSceneMouseEvent* e);

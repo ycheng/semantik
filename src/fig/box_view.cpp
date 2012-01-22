@@ -234,7 +234,7 @@ void box_view::notify_add_item(int id)
 void box_view::notify_edit_box(int id, int bid)
 {
 	Q_ASSERT(id == m_iId);
-	box_item *item = m_oItems.value(bid);
+	box_item *item = (box_item*) m_oItems.value(bid); // TODO
 	Q_ASSERT(item != NULL);
 	data_box *box = item->m_oBox;
 	if (box->m_sText != item->toPlainText())
@@ -423,7 +423,8 @@ void box_view::slot_add_item()
 	add->box->m_iYY = m_oLastPoint.y();
 	add->apply();
 
-	m_oItems.value(add->box->m_iId)->setSelected(true);
+	box_item *l_o = (box_item*) m_oItems.value(add->box->m_iId);
+	l_o->setSelected(true);
 	// l_o->setPos(m_oLastPoint - QPointF(l_oRect.width()/2, l_oRect.height()/2)); // TODO
 }
 
@@ -530,7 +531,8 @@ void box_view::slot_add_element()
 	}
 	add->apply();
 
-	m_oItems.value(add->box->m_iId)->setSelected(true);
+	QGraphicsItem *l_o = dynamic_cast<QGraphicsItem*>(m_oItems.value(add->box->m_iId));
+	l_o->setSelected(true);
 }
 
 void box_view::slot_penwidth()
@@ -694,8 +696,8 @@ void box_view::clear_diagram()
 		delete l_o;
 	}
 	m_oLinks.clear();
-	foreach (box_item *l_o, m_oItems.values()) {
-		scene()->removeItem(l_o);
+	foreach (connectable *l_o, m_oItems.values()) {
+		scene()->removeItem(dynamic_cast<QGraphicsItem*>(l_o));
 		delete l_o;
 	}
 	m_oItems.clear();
@@ -739,16 +741,32 @@ void box_view::focusOutEvent(QFocusEvent *i_oEv)
 
 void box_view::notify_add_box(int id, int box)
 {
-	box_item *l_o = new box_item(this, box);
+	Q_ASSERT(m_iId == id);
+	data_item *item = m_oMediator->m_oItems.value(m_iId);
+	data_box *db = item->m_oBoxes[box];
+	connectable *l_o = NULL;
+	if (db->m_iType == data_box::TEXT)
+	{
+		l_o = new box_item(this, box);
+	}
+	else if (db->m_iType == data_box::ACTIVITY_START)
+	{
+		l_o = new box_dot(this, box);
+	}
+	else if (db->m_iType == data_box::ACTIVITY_PARALLEL)
+	{
+
+	}
+	Q_ASSERT(l_o != NULL);
 	m_oItems[box] = l_o;
 	l_o->update_data();
 }
 
 void box_view::notify_del_box(int id, int box)
 {
-	box_item *l_o = m_oItems.value(box);
+	connectable *l_o = m_oItems.value(box);
         Q_ASSERT(l_o!=NULL);
-        scene()->removeItem(l_o);
+        scene()->removeItem(dynamic_cast<QGraphicsItem*>(l_o));
 	m_oItems.remove(box);
 	delete l_o;
 }
@@ -836,7 +854,8 @@ void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 		add->box->m_iYY = m_oLastPoint.y();
 		add->apply();
 
-		m_oItems.value(add->box->m_iId)->setSelected(true);
+		QGraphicsItem *l_o = dynamic_cast<QGraphicsItem*>(m_oItems.value(add->box->m_iId));
+		l_o->setSelected(true);
 	}
 }
 
@@ -1074,10 +1093,10 @@ void box_view::notify_box_props(int id, const QList<diagram_item*>& items)
 			}
 		}
 
-		foreach (box_item *box, m_oItems.values())
+		foreach (connectable *box, m_oItems.values())
 		{
 			if (box->m_oBox == it) {
-				box->update();
+				(dynamic_cast<QGraphicsItem*>(box))->update();
 				goto end;
 			}
 		}
