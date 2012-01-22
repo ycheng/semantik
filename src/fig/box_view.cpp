@@ -485,7 +485,7 @@ void box_view::change_colors(QAction* i_oAct)
 		{
 			mem->items.append(((box_link*) l_o)->m_oLink);
 		}
-		else if (box_item* t = dynamic_cast<box_item*>(l_o))
+		else if (connectable* t = dynamic_cast<connectable*>(l_o))
 		{
 			mem->items.append(t->m_oBox);
 		}
@@ -507,7 +507,7 @@ void box_view::slot_color()
 		{
 			mem->items.append(k->m_oLink);
 		}
-		else if (box_item *k = dynamic_cast<box_item*>(l_o))
+		else if (connectable *k = dynamic_cast<connectable*>(l_o))
 		{
 			mem->items.append(k->m_oBox);
 		}
@@ -775,6 +775,7 @@ void box_view::notify_add_box(int id, int box)
 
 	}
 	Q_ASSERT(l_o != NULL);
+	l_o->m_oBox = db;
 	m_oItems[box] = l_o;
 	l_o->update_data();
 }
@@ -1056,11 +1057,11 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 			mem_pos_box *mem = new mem_pos_box(m_oMediator, m_iId);
 			foreach (QGraphicsItem *l_oI1, scene()->selectedItems())
 			{
-				if (box_item* item = dynamic_cast<box_item*>(l_oI1))
+				if (connectable* item = dynamic_cast<connectable*>(l_oI1))
 				{
 					data_box *box = item->m_oBox;
 					mem->prev_values[box] = QPointF(box->m_iXX, box->m_iYY);
-					mem->next_values[box] = item->pos();
+					mem->next_values[box] = l_oI1->pos();
 				}
 			}
 			if (mem->prev_values.size() > 0)

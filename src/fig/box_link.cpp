@@ -7,7 +7,6 @@
 #include "CON.h"
 #include "box_link.h"
 #include "box_view.h"
-#include "box_item.h"
 #include "data_item.h"
 
 #define pad 25
@@ -88,10 +87,10 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 		i_oPainter->setBrush(QColor(255, 255, 0));
 		QPointF l_o = m_oGood[m_oGood.size()-1];
 		i_oPainter->drawEllipse(QRectF(l_o + l_oOffset, l_o - l_oOffset));
-		box_item *l_oUnder = NULL;
+		connectable *l_oUnder = NULL;
 		foreach (QGraphicsItem *l_oI1, scene()->items(m_oView->m_oLastMovePoint))
 		{
-			if (l_oUnder = dynamic_cast<box_item*>(l_oI1))
+			if (l_oUnder = dynamic_cast<connectable*>(l_oI1))
 			{
 				break;
 			}
@@ -107,10 +106,10 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 		i_oPainter->setBrush(QColor(255, 255, 0));
 		QPointF l_o = m_oGood[0];
 		i_oPainter->drawEllipse(QRectF(l_o + l_oOffset, l_o - l_oOffset));
-		box_item *l_oUnder = NULL;
+		connectable *l_oUnder = NULL;
 		foreach (QGraphicsItem *l_oI1, scene()->items(m_oView->m_oLastMovePoint))
 		{
-			if (l_oUnder = dynamic_cast<box_item*>(l_oI1))
+			if (l_oUnder = dynamic_cast<connectable*>(l_oI1))
 			{
 				break;
 			}
@@ -392,11 +391,10 @@ void box_link::update_pos()
 	QRectF l_oR1, l_oR2;
 	QPointF l_oP = m_oView->m_oLastMovePoint;
 
-	// FIXME ITA  find the box_item under the pointer
-	box_item *l_oUnder = NULL;
+	connectable *l_oUnder = NULL;
         foreach (QGraphicsItem *l_oI1, scene()->items(m_oView->m_oLastMovePoint))
         {
-                if (l_oUnder = dynamic_cast<box_item*>(l_oI1))
+                if (l_oUnder = dynamic_cast<connectable*>(l_oI1))
                 {
 			break;
                 }
@@ -409,7 +407,7 @@ void box_link::update_pos()
 	else if (l_oUnder)
 	{
 		l_oR1 = l_oUnder->rect();
-		m_iParent = pos_inrect(l_oUnder->rect(), l_oUnder->pos() - l_oP);
+		m_iParent = pos_inrect(l_oUnder->rect(), (dynamic_cast<QGraphicsItem*>(l_oUnder))->pos() - l_oP);
 		if (l_oUnder == m_oChild && m_iParent == m_iChild) m_iParent = (m_iParent + 2) % 4;
 	}
 
@@ -420,7 +418,7 @@ void box_link::update_pos()
 	else if (l_oUnder)
 	{
 		l_oR2 = l_oUnder->rect();
-		m_iChild = pos_inrect(l_oUnder->rect(), l_oUnder->pos() - l_oP);
+		m_iChild = pos_inrect(l_oUnder->rect(), (dynamic_cast<QGraphicsItem*>(l_oUnder))->pos() - l_oP);
 		if (l_oUnder == m_oParent && m_iParent == m_iChild) m_iChild = (m_iChild + 2) % 4;
 	}
 
