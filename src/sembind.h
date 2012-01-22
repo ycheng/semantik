@@ -46,6 +46,7 @@ class bind_node
 	//protected:
 
 		static void init(sem_mediator*);
+		static bind_node* create_tree(sem_mediator *model, int i_i);
 		bind_node();
 		~bind_node();
 		static QMap<QString, QString> s_oVars;

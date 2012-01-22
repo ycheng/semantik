@@ -1066,6 +1066,7 @@ void sem_mediator::generate_docs(const QString &i_oFile, const QString &i_sDirNa
 	sel->apply();
 
 	bind_node::init(this);
+	bind_node::_root = bind_node::create_tree(this, choose_root());
 
 	foreach (int l_iVal, m_oItems.keys())
 	{
