@@ -1514,23 +1514,24 @@ void canvas_view::notify_sort(int id) {
 	show_sort(id, m_iMode == sort_mode);
 }
 
+void canvas_view::notify_focus(void* ptr)
+{
+	bool cond = ptr == this;
+	m_oAddItemAction->setEnabled(cond);
+	m_oDeleteAction->setEnabled(cond);
+	m_oEditAction->setEnabled(cond);
+}
+
 void canvas_view::focusInEvent(QFocusEvent *i_oEv)
 {
-	m_oAddItemAction->setEnabled(true);
-	m_oDeleteAction->setEnabled(true);
-	m_oEditAction->setEnabled(true);
-
 	QGraphicsView::focusInEvent(i_oEv);
+	m_oMediator->notify_focus(this);
 }
 
 void canvas_view::focusOutEvent(QFocusEvent *i_oEv)
 {
-	edit_off();
-	m_oDeleteAction->setEnabled(false);
-	m_oEditAction->setEnabled(false);
-	m_oAddItemAction->setEnabled(false);
-
 	QGraphicsView::focusOutEvent(i_oEv);
+	edit_off();
 }
 
 %: include  	"canvas_view.moc" 

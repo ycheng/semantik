@@ -114,6 +114,7 @@ class box_view : public QGraphicsView
 
 		void slot_add_element();
 
+		void notify_focus(void* ptr);
 		void notify_add_item(int);
 		void notify_add_box(int, int);
 		void notify_del_box(int, int);

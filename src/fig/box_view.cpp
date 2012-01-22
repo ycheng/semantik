@@ -744,21 +744,14 @@ void box_view::check_canvas_size()
 
 void box_view::focusInEvent(QFocusEvent *i_oEv)
 {
-	m_oDeleteAction->setEnabled(true);
-	m_oEditAction->setEnabled(true);
-	m_oAddItemAction->setEnabled(true);
-
 	QGraphicsView::focusInEvent(i_oEv);
+	m_oMediator->notify_focus(this);
 }
 
 void box_view::focusOutEvent(QFocusEvent *i_oEv)
 {
-	edit_off();
-	m_oDeleteAction->setEnabled(false);
-	m_oEditAction->setEnabled(false);
-	m_oAddItemAction->setEnabled(false);
-
 	QGraphicsView::focusOutEvent(i_oEv);
+	edit_off();
 }
 
 void box_view::notify_add_box(int id, int box)
@@ -1144,6 +1137,14 @@ int box_view::next_seq()
 		++num_seq;
 	} while (m_oItems.contains(num_seq));
 	return num_seq;
+}
+
+void box_view::notify_focus(void* ptr)
+{
+	bool cond = ptr == this;
+	m_oAddItemAction->setEnabled(cond);
+	m_oDeleteAction->setEnabled(cond);
+	m_oEditAction->setEnabled(cond);
 }
 
 #include "box_view.moc"

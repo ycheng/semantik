@@ -1414,5 +1414,10 @@ void sem_mediator::notify_pos_box(int id, const QList<data_box*>& items) {
 	emit sig_pos_box(id, items);
 }
 
+void sem_mediator::notify_focus(void *ptr)
+{
+	emit sig_focus(ptr);
+}
+
 #include "sem_mediator.moc"
 
