@@ -289,12 +289,31 @@ void box_view::sync_view()
 		item->m_sDiag = "";
 	}
 
-	foreach (data_box *box, item->m_oBoxes.values()) {
-		box_item *l_o = new box_item(this, box->m_iId);
-		m_oItems[box->m_iId] = l_o;
-		l_o->setPlainText(box->m_sText);
-		l_o->setPos(QPointF(box->m_iXX, box->m_iYY));
-		l_o->update_data();
+	foreach (data_box *box, item->m_oBoxes.values())
+	{
+		if (box->m_iType == data_box::TEXT)
+		{
+			box_item *l_o = new box_item(this, box->m_iId);
+			m_oItems[box->m_iId] = l_o;
+			l_o->setPlainText(box->m_sText);
+			l_o->setPos(QPointF(box->m_iXX, box->m_iYY));
+			l_o->update_data();
+		}
+		else if (box->m_iType == data_box::ACTIVITY_START) {
+			box_dot *l_o = new box_dot(this, box->m_iId);
+			m_oItems[box->m_iId] = l_o;
+			l_o->setPos(QPointF(box->m_iXX, box->m_iYY));
+			l_o->setRect(QRectF(l_o->pos(), QSizeF(20, 20)));
+			l_o->update_data();
+		}
+		else if (box->m_iType == data_box::ACTIVITY_PARALLEL)
+		{
+			Q_ASSERT(false);
+		}
+		else
+		{
+			Q_ASSERT(false);
+		}
 	}
 
 	foreach (data_link *link, item->m_oLinks) {
