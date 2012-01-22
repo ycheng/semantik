@@ -26,7 +26,7 @@ class box_dot : public QGraphicsRectItem, public connectable
 		//QRectF boundingRect() const;
 
 		QRectF rect() const { return boundingRect().translated(pos()).adjusted(JUST, JUST, -JUST, -JUST); };
-		void setRect(int, int, int, int) { }
+		//void setRect(int, int, int, int) { }
 
 		box_view *m_oView;
 		data_box *m_oBox;

@@ -53,11 +53,8 @@ void box_dot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 	l_oPen.setWidth(1);
 
 	painter->setPen(l_oPen);
-
 	painter->setBrush(m_oBox->color);
-
-	painter->drawRoundRect(l_oRect, 20, 20);
-
+	painter->drawEllipse(l_oRect);
 	painter->restore();
 }
 

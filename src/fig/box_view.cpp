@@ -525,9 +525,11 @@ void box_view::slot_add_element()
 	
 	if (sender == m_oAddDotEnd || sender == m_oAddDotStart) {
 		add->box->m_iType = data_box::ACTIVITY_START;
+		add->box->color = QColor(Qt::black);
 	}
 	if (sender == m_oAddParallelHorizontal || sender == m_oAddParallelVertical) {
 		add->box->m_iType = data_box::ACTIVITY_PARALLEL;
+		add->box->color = QColor(Qt::black);
 	}
 	add->apply();
 
@@ -751,7 +753,9 @@ void box_view::notify_add_box(int id, int box)
 	}
 	else if (db->m_iType == data_box::ACTIVITY_START)
 	{
-		l_o = new box_dot(this, box);
+		box_dot *tmp = new box_dot(this, box);
+		tmp->setRect(QRectF(tmp->pos(), QSizeF(20, 20)));
+		l_o = tmp;
 	}
 	else if (db->m_iType == data_box::ACTIVITY_PARALLEL)
 	{
