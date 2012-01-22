@@ -969,10 +969,9 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 			ln->apply();
 		}
 
-		if (m_oCurrent->m_oLink != NULL) {
-			// TODO
+		if (m_oCurrent->m_oLink == NULL) {
+			delete m_oCurrent;
 		}
-		delete m_oCurrent;
 		m_oCurrent = NULL;
 	}
 	else

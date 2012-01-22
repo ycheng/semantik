@@ -6,6 +6,7 @@
 
 #include <QGraphicsRectItem>
 #include <QBrush>
+#include "CON.h"
 #include "con.h"
 
 #define OFF 3
@@ -14,7 +15,7 @@ class QTextDocument;
 class box_view;
 class data_item;
 class data_box;
-class box_item : public QGraphicsTextItem
+class box_item : public QGraphicsTextItem, public connectable
 {
 	public:
 		box_item(box_view*, int i_iId);
@@ -24,10 +25,8 @@ class box_item : public QGraphicsTextItem
 
 		QRectF boundingRect() const;
 
-		QRectF rect() const { return boundingRect(); }; // TODO
+		QRectF rect() const { return boundingRect().translated(pos()).adjusted(JUST, JUST, -JUST, -JUST); };
 		void setRect(int, int, int, int) { }
-
-		int m_iId;
 
 		box_view *m_oView;
 		data_box *m_oBox;

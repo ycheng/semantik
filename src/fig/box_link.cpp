@@ -4,6 +4,7 @@
 #include <QApplication>
 #include <QPainter>
 #include <QtDebug>
+#include "CON.h"
 #include "box_link.h"
 #include "box_view.h"
 #include "box_item.h"
@@ -401,26 +402,24 @@ void box_link::update_pos()
                 }
         }
 
-#define JUST 2
-
 	if (m_oParent)
 	{
-		l_oR1 = m_oParent->rect().translated(m_oParent->pos()).adjusted(JUST, JUST, -JUST, -JUST);
+		l_oR1 = m_oParent->rect();
 	}
 	else if (l_oUnder)
 	{
-		l_oR1 = l_oUnder->rect().translated(l_oUnder->pos()).adjusted(JUST, JUST, -JUST, -JUST);
+		l_oR1 = l_oUnder->rect();
 		m_iParent = pos_inrect(l_oUnder->rect(), l_oUnder->pos() - l_oP);
 		if (l_oUnder == m_oChild && m_iParent == m_iChild) m_iParent = (m_iParent + 2) % 4;
 	}
 
 	if (m_oChild)
 	{
-		l_oR2 = m_oChild->rect().translated(m_oChild->pos()).adjusted(JUST, JUST, -JUST, -JUST);
+		l_oR2 = m_oChild->rect();
 	}
 	else if (l_oUnder)
 	{
-		l_oR2 = l_oUnder->rect().translated(l_oUnder->pos()).adjusted(JUST, JUST, -JUST, -JUST);
+		l_oR2 = l_oUnder->rect();
 		m_iChild = pos_inrect(l_oUnder->rect(), l_oUnder->pos() - l_oP);
 		if (l_oUnder == m_oParent && m_iParent == m_iChild) m_iChild = (m_iChild + 2) % 4;
 	}
@@ -431,12 +430,12 @@ void box_link::update_pos()
 
 		if (!m_oParent)
 		{
-			if (!l_oUnder) m_iParent = pos_heuristic(l_oR2, m_iChild, l_oP - m_oChild->pos());
+			//if (!l_oUnder) m_iParent = pos_heuristic(l_oR2, m_iChild, l_oP - m_oChild->pos()); TODO
 			l_oR1 = l_o;
 		}
 		if (!m_oChild)
 		{
-			if (!l_oUnder) m_iChild = pos_heuristic(l_oR1, m_iParent, l_oP - m_oParent->pos());
+			//if (!l_oUnder) m_iChild = pos_heuristic(l_oR1, m_iParent, l_oP - m_oParent->pos()); TODO
 			l_oR2 = l_o;
 		}
 	}

@@ -29,8 +29,8 @@ class box_link : public QGraphicsRectItem
 
 		data_link *m_oLink;
 
-		box_item *m_oParent;
-		box_item *m_oChild;
+		connectable *m_oParent;
+		connectable *m_oChild;
 
 		box_view *m_oView;
 
@@ -41,8 +41,6 @@ class box_link : public QGraphicsRectItem
 
 		QPainterPath shape() const;
 		QPainterPath inner_shape;
-
-		//int m_iId;
 
 		QList<QPoint> m_oGood;
 		QList<QPoint> m_oLst;
