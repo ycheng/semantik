@@ -9,7 +9,7 @@
 class connectable
 {
 	public:
-		connectable() {};
+		connectable() { m_oBox = NULL; };
 		virtual ~connectable() {};
 		int m_iId;
 		virtual QRectF rect() const { return QRectF(); }

@@ -295,7 +295,6 @@ void box_view::sync_view()
 		{
 			box_item *l_o = new box_item(this, box->m_iId);
 			m_oItems[box->m_iId] = l_o;
-			l_o->m_oBox = box;
 			l_o->setPlainText(box->m_sText);
 			l_o->setPos(QPointF(box->m_iXX, box->m_iYY));
 			l_o->update_data();
@@ -304,7 +303,6 @@ void box_view::sync_view()
 		{
 			box_dot *l_o = new box_dot(this, box->m_iId);
 			m_oItems[box->m_iId] = l_o;
-			l_o->m_oBox = box;
 			l_o->setPos(QPointF(box->m_iXX, box->m_iYY));
 			l_o->setRect(QRectF(QPointF(0, 0), QSizeF(20, 20)));
 			l_o->update_data();
@@ -777,7 +775,6 @@ void box_view::notify_add_box(int id, int box)
 
 	}
 	Q_ASSERT(l_o != NULL);
-	l_o->m_oBox = db;
 	m_oItems[box] = l_o;
 	l_o->update_data();
 }
