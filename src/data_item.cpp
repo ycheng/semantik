@@ -110,6 +110,8 @@ data_box::data_box(int id) : diagram_item()
 	m_bIsEnd = false;
 	m_bIsVertical = false;
 	m_iType = TEXT;
+	m_iWW = 0;
+	m_iHH = 0;
 	color = QColor("#cafeba");
 }
 

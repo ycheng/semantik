@@ -49,10 +49,10 @@ class data_box : public diagram_item
 	data_box(int id);
 	int m_iId;
 	QString m_sText;
-	double m_iXX;
-	double m_iYY;
-	double m_iWW;
-	double m_iHH;
+	int m_iXX;
+	int m_iYY;
+	int m_iWW;
+	int m_iHH;
 	bool m_bIsEnd;
 	bool m_bIsVertical;
 	enum IType { TEXT=1, ACTIVITY_START=2, ACTIVITY_PARALLEL=3 };

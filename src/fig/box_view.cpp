@@ -159,9 +159,24 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	connect(m_oMoveDownAction, SIGNAL(triggered()), this, SLOT(slot_move_down()));
 	addAction(m_oMoveDownAction);
 
+	m_oAddDotStart = new QAction(QObject::trUtf8("Activity start"), this);
+	connect(m_oAddDotStart, SIGNAL(triggered()), this, SLOT(slot_add_element()));
+	m_oAddDotEnd = new QAction(QObject::trUtf8("Activity end"), this);
+	connect(m_oAddDotEnd, SIGNAL(triggered()), this, SLOT(slot_add_element()));
+	m_oAddParallelHorizontal = new QAction(QObject::trUtf8("Horizontal fork/join"), this);
+	connect(m_oAddParallelHorizontal, SIGNAL(triggered()), this, SLOT(slot_add_element()));
+	m_oAddParallelVertical = new QAction(QObject::trUtf8("Vertical fork/join"), this);
+	connect(m_oAddParallelVertical, SIGNAL(triggered()), this, SLOT(slot_add_element()));
 
 	m_oMenu = new QMenu(this);
 	m_oMenu->addAction(m_oAddItemAction);
+
+	m_oAddBoxMenu = m_oMenu->addMenu(QObject::trUtf8("Add element"));
+	m_oAddBoxMenu->addAction(m_oAddDotStart);
+	m_oAddBoxMenu->addAction(m_oAddDotEnd);
+	//m_oAddBoxMenu->addAction(m_oAddParallelHorizontal); // TODO
+	//m_oAddBoxMenu->addAction(m_oAddParallelVertical); // TODO
+
 	m_oMenu->addAction(m_oEditAction);
 	m_oMenu->addAction(m_oDeleteAction);
 	m_oMenu->addAction(m_oColorAction);
@@ -495,6 +510,27 @@ void box_view::slot_penstyle()
 	mem->change_type = CH_PENST;
 	mem->new_props.pen_style = (Qt::PenStyle) l_i;
 	mem->apply();
+}
+
+void box_view::slot_add_element()
+{
+	QAction *sender = (QAction*) QObject::sender();
+	mem_add_box *add = new mem_add_box(m_oMediator, m_iId, next_seq());
+	add->box->m_iXX = m_oLastPoint.x();
+	add->box->m_iYY = m_oLastPoint.y();
+
+	add->box->m_bIsVertical = sender == m_oAddParallelVertical;
+	add->box->m_bIsEnd = sender == m_oAddDotEnd;
+	
+	if (sender == m_oAddDotEnd || sender == m_oAddDotStart) {
+		add->box->m_iType = data_box::ACTIVITY_START;
+	}
+	if (sender == m_oAddParallelHorizontal || sender == m_oAddParallelVertical) {
+		add->box->m_iType = data_box::ACTIVITY_PARALLEL;
+	}
+	add->apply();
+
+	m_oItems.value(add->box->m_iId)->setSelected(true);
 }
 
 void box_view::slot_penwidth()

@@ -44,8 +44,15 @@ class box_view : public QGraphicsView
 		QMenu* m_oMenu;
 		QMenu* m_oWidthMenu;
 		QMenu* m_oStyleMenu;
+		QMenu* m_oAddBoxMenu;
 
 		QAction *m_oAddItemAction;
+		QAction *m_oAddDotStart;
+		QAction *m_oAddDotEnd;
+		QAction *m_oAddParallelHorizontal;
+		QAction *m_oAddParallelVertical;
+
+
 		QAction *m_oEditAction;
 		QAction *m_oCancelEditAction;
 		QAction *m_oDeleteAction;
@@ -103,6 +110,8 @@ class box_view : public QGraphicsView
 
 		void slot_penstyle();
 		void slot_penwidth();
+
+		void slot_add_element();
 
 		void notify_add_item(int);
 		void notify_add_box(int, int);
