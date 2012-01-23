@@ -29,6 +29,7 @@
 #include "sem_mediator.h"
 #include "box_item.h"
 #include "box_dot.h"
+#include "box_fork.h"
 #include "box_link.h"
 #include "data_item.h"
 #include "box_view.h"
@@ -174,8 +175,8 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	m_oAddBoxMenu = m_oMenu->addMenu(QObject::trUtf8("Add element"));
 	m_oAddBoxMenu->addAction(m_oAddDotStart);
 	m_oAddBoxMenu->addAction(m_oAddDotEnd);
-	//m_oAddBoxMenu->addAction(m_oAddParallelHorizontal); // TODO
-	//m_oAddBoxMenu->addAction(m_oAddParallelVertical); // TODO
+	m_oAddBoxMenu->addAction(m_oAddParallelHorizontal);
+	m_oAddBoxMenu->addAction(m_oAddParallelVertical);
 
 	m_oMenu->addAction(m_oEditAction);
 	m_oMenu->addAction(m_oDeleteAction);
@@ -309,7 +310,14 @@ void box_view::sync_view()
 		}
 		else if (box->m_iType == data_box::ACTIVITY_PARALLEL)
 		{
-			Q_ASSERT(false);
+			box_fork *l_o = new box_fork(this, box->m_iId);
+			m_oItems[box->m_iId] = l_o;
+			QSizeF size(FORK_LENGTH, FORK_WIDTH);
+			if (box->m_bIsVertical)
+				size.transpose();
+			l_o->setPos(QPointF(box->m_iXX, box->m_iYY));
+			l_o->setRect(QRectF(QPointF(0, 0), size));
+			l_o->update_data();
 		}
 		else
 		{
@@ -772,7 +780,12 @@ void box_view::notify_add_box(int id, int box)
 	}
 	else if (db->m_iType == data_box::ACTIVITY_PARALLEL)
 	{
-
+		box_fork *tmp = new box_fork(this, box);
+		QSizeF size(FORK_LENGTH, FORK_WIDTH);
+		if (db->m_bIsVertical)
+			size.transpose();
+		tmp->setRect(QRectF(QPointF(0, 0), size));
+		l_o = tmp;
 	}
 	Q_ASSERT(l_o != NULL);
 	m_oItems[box] = l_o;
