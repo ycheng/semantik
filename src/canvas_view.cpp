@@ -409,6 +409,8 @@ void canvas_view::slot_add_item()
 		l_iId = sel[0]->Id();
 	}
 
+	deselect_all();
+
 	mem_add *add = new mem_add(m_oMediator);
 	add->init();
 	add->item->m_iXX = m_oLastPoint.x();
@@ -416,10 +418,7 @@ void canvas_view::slot_add_item()
 	add->parent = l_iId;
 	add->apply();
 
-	// FIXME probably
 	reorganize(); // this was here before
-	deselect_all();
-	m_oItems.value(add->item->m_iId)->setSelected(true);
 }
 
 void canvas_view::slot_add_sibling()
