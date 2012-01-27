@@ -16,7 +16,9 @@ class box_control_point : public QGraphicsRectItem
 {
 	public:
 		box_control_point(box_view*);
-		bool is_connection;
+		bool m_bIsSegment;
+		bool m_bMoveX;
+		int m_iOffset;
 		box_link *m_oLink;
 		box_view *m_oView;
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);

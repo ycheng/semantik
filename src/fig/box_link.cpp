@@ -574,14 +574,18 @@ QVariant box_link::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 				for (int i = 0; i < m_oGood.size() - 3; ++i)
 				{
 					box_control_point * b = m_oControlPoints.at(i);
+					b->m_oLink = this;
+					b->m_iOffset = i;
+
 					QPointF p(m_oGood.at(i+1));
 					if (m_oGood.at(i+2).x() == p.x()) {
 						p.setY((p.y() + m_oGood.at(i+2).y()) / 2);
+						b->m_bMoveX = true;
 					} else {
 						p.setX((p.x() + m_oGood.at(i+2).x()) / 2);
+						b->m_bMoveX = false;
 					}
-					QRectF br = b->boundingRect();
-					b->setPos(p - QPointF(br.width()/2, br.height()/2));
+					b->setPos(p);
 					b->show();
 				}
 			}

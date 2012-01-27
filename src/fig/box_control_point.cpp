@@ -24,14 +24,14 @@
 
 box_control_point::box_control_point(box_view* i_oParent) : QGraphicsRectItem(), m_oView(i_oParent)
 {
-	setRect(0, 0, CTRLSIZE, CTRLSIZE);
-	is_connection = false;
+	setRect(-CTRLSIZE/2., -CTRLSIZE/2., CTRLSIZE, CTRLSIZE);
+	m_bIsSegment = true;
 	m_oLink = NULL;
 	i_oParent->scene()->addItem(this);
 	setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
 	setZValue(110);
-	setFlags(ItemIsMovable);
+	setFlags(ItemIsMovable | ItemSendsGeometryChanges);
 }
 
 void box_control_point::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -65,10 +65,20 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 	{
 		if (i_oChange == ItemPositionChange)
 		{
-			QPointF np = i_oValue.toPointF();
-			np.setX(((int) np.x() / GRID) * GRID);
-			np.setY(((int) np.y() / GRID) * GRID);
-			return np;
+			if (m_bIsSegment)
+			{
+				QPointF np = i_oValue.toPointF();
+				if (m_bMoveX) {
+					np.setX(((int) np.x() / GRID) * GRID);
+					if (m_oLink->m_oGood.size() > m_iOffset)
+						np.setY((m_oLink->m_oGood[m_iOffset + 1].y() + m_oLink->m_oGood[m_iOffset + 2].y()) / 2.);
+				} else {
+					np.setY(((int) np.y() / GRID) * GRID);
+					if (m_oLink->m_oGood.size() > m_iOffset)
+						np.setX((m_oLink->m_oGood[m_iOffset + 1].x() + m_oLink->m_oGood[m_iOffset + 2].x()) / 2.);
+				}
+				return np;
+			}
 		}
 		else if (i_oChange == ItemPositionHasChanged)
 		{
