@@ -89,9 +89,6 @@ class box_view : public QGraphicsView
 		void mouseDoubleClickEvent(QMouseEvent*);
 		void wheelEvent(QWheelEvent*);
 
-		box_link *grab_segment_link;
-		int grab_segment_pos;
-
 		void edit_off();
 
 		int next_seq();

@@ -214,9 +214,6 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	m_bPressed = false;
 	m_bScroll = false;
 
-	grab_segment_link = NULL;
-	grab_segment_pos = 0;
-
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 }
@@ -948,27 +945,6 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 
 	QGraphicsView::mousePressEvent(i_oEv);
 	edit_off();
-
-	QList<QGraphicsItem*> it = scene()->selectedItems();
-	box_link* link;
-	if (it.size() == 1 && (link = dynamic_cast<box_link*>(it.at(0))))
-	{
-		for (int i=1; i < link->m_oGood.size() - 2; ++i)
-		{
-			QPointF l_o = QPointF((link->m_oGood[i].x()+link->m_oGood[i+1].x())/2, (link->m_oGood[i].y()+link->m_oGood[i+1].y())/2);
-			QPointF l_oP = mapToScene(i_oEv->pos());
-			l_oP.setX(l_o.x() - l_oP.x());
-			l_oP.setY(l_o.y() - l_oP.y());
-			qreal l_i = l_oP.x() * l_oP.x() + l_oP.y() * l_oP.y();
-			if (l_i < 100)
-			{
-				grab_segment_link = link;
-				grab_segment_pos = i;
-				grab_segment_link->m_oMediatorPoint = l_o;
-				break;
-			}
-		}
-	}
 }
 
 void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
@@ -998,30 +974,12 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 		m_oCurrent->update_pos();
 		return;
 	}
-	else if (grab_segment_link)
-	{
-		int i = grab_segment_pos;
-		QPoint l_oP((grab_segment_link->m_oLst[i].x() + grab_segment_link->m_oLst[i+1].x())/2,
-                            (grab_segment_link->m_oLst[i].y() + grab_segment_link->m_oLst[i+1].y())/2);
-		--i;
-
-		QPointF l_oNew = m_oLastMovePoint - m_oLastPoint + grab_segment_link->m_oMediatorPoint - l_oP;
-
-		Q_ASSERT(grab_segment_link->m_oLink);
-		Q_ASSERT(grab_segment_link->m_oLink->m_oOffsets.size() > i);
-		grab_segment_link->m_oLink->m_oOffsets[i].setX((int) l_oNew.x());
-		grab_segment_link->m_oLink->m_oOffsets[i].setY((int) l_oNew.y());
-		grab_segment_link->update_ratio(); // no need to update_pos
-		grab_segment_link->update();
-	}
 
 	QGraphicsView::mouseMoveEvent(i_oEv);
 }
 
 void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 {
-	grab_segment_link = 0;
-
 	if (m_bScroll)
 	{
 		QGraphicsView::mouseReleaseEvent(i_oEv);
