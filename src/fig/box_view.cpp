@@ -923,7 +923,7 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 			m_oCurrent = new box_link(this);
 			m_oCurrent->m_oParent = kk;
 			m_oCurrent->m_oChild = NULL;
-			m_oCurrent->m_iParent = box_link::pos_inrect(kk->rect(), l_oItem->pos() - m_oLastMovePoint);
+			m_oCurrent->m_iParent = kk->choose_position(m_oLastMovePoint); // box_link::pos_inrect(kk->rect(), l_oItem->pos() - m_oLastMovePoint);
 			m_oCurrent->m_iChild = 0;
 			m_oCurrent->update_pos();
 			return;

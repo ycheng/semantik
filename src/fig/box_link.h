@@ -48,9 +48,7 @@ class box_link : public QGraphicsRectItem
 		void update_ratio();
 		void set_link(data_link*);
 
-		static int pos_inrect(const QRectF&, const QPointF&);
 		int pos_heuristic(const QRectF&, int, const QPointF&);
-
 
 		// This shows how to abuse the qt containers :-)
 		QList<int> ver;

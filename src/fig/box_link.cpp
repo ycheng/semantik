@@ -203,24 +203,6 @@ int box_link::pos_heuristic(const QRectF & i_oR, int i_iPos, const QPointF & i_o
 	return 2;
 }
 
-int box_link::pos_inrect(const QRectF & i_oR, const QPointF & i_oP)
-{
-	QPointF l_o = i_oP + QPointF(i_oR.width()/2, i_oR.height()/2);
-	double c_x = l_o.x() * i_oR.height();
-	double c_y = l_o.y() * i_oR.width();
-	if (qAbs(c_x) > qAbs(c_y))
-	{
-		return (c_x > 0) ? 1 : 3;
-	}
-	else
-	{
-		return (c_y > 0) ? 0 : 2;
-	}
-	return 0;
-}
-
-
-
 void box_link::set_rectangles(int ax1, int ax2, int ay1, int ay2, int ap, int bx1, int bx2, int by1, int by2, int bp)
 {
 	hor.clear();
@@ -392,7 +374,7 @@ void box_link::update_pos()
 	QPointF l_oP = m_oView->m_oLastMovePoint;
 
 	connectable *l_oUnder = NULL;
-        foreach (QGraphicsItem *l_oI1, scene()->items(m_oView->m_oLastMovePoint))
+        foreach (QGraphicsItem *l_oI1, scene()->items(l_oP))
         {
                 if (l_oUnder = dynamic_cast<connectable*>(l_oI1))
                 {
@@ -407,7 +389,7 @@ void box_link::update_pos()
 	else if (l_oUnder)
 	{
 		l_oR1 = l_oUnder->rect();
-		m_iParent = pos_inrect(l_oUnder->rect(), (dynamic_cast<QGraphicsItem*>(l_oUnder))->pos() - l_oP);
+		m_iParent = l_oUnder->choose_position(l_oP);
 		if (l_oUnder == m_oChild && m_iParent == m_iChild) m_iParent = (m_iParent + 2) % 4;
 	}
 
@@ -418,7 +400,7 @@ void box_link::update_pos()
 	else if (l_oUnder)
 	{
 		l_oR2 = l_oUnder->rect();
-		m_iChild = pos_inrect(l_oUnder->rect(), (dynamic_cast<QGraphicsItem*>(l_oUnder))->pos() - l_oP);
+		m_iChild = l_oUnder->choose_position(l_oP);
 		if (l_oUnder == m_oParent && m_iParent == m_iChild) m_iChild = (m_iChild + 2) % 4;
 	}
 
@@ -428,12 +410,16 @@ void box_link::update_pos()
 
 		if (!m_oParent)
 		{
-			//if (!l_oUnder) m_iParent = pos_heuristic(l_oR2, m_iChild, l_oP - m_oChild->pos()); TODO
+			if (!l_oUnder) {
+				m_iParent = pos_heuristic(l_oR2, m_iChild, l_oP - (dynamic_cast<QGraphicsItem*>(m_oChild))->pos());
+			}
 			l_oR1 = l_o;
 		}
 		if (!m_oChild)
 		{
-			//if (!l_oUnder) m_iChild = pos_heuristic(l_oR1, m_iParent, l_oP - m_oParent->pos()); TODO
+			if (!l_oUnder) {
+				m_iChild = pos_heuristic(l_oR1, m_iParent, l_oP - (dynamic_cast<QGraphicsItem*>(m_oParent))->pos());
+			}
 			l_oR2 = l_o;
 		}
 	}

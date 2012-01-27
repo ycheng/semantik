@@ -28,6 +28,7 @@ class box_item : public QGraphicsTextItem, public connectable
 		QRectF rect() const { return boundingRect().translated(pos()).adjusted(JUST, JUST, -JUST, -JUST); };
 		void setRect(int, int, int, int) { }
 
+
 		box_view *m_oView;
 		data_item *m_oItem;
 
@@ -40,6 +41,8 @@ class box_item : public QGraphicsTextItem, public connectable
 		void update_links();
 
 		QVariant itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue);
+
+		virtual int choose_position(const QPointF&p, int id=-1);
 };
 
 #endif // BOX_ITEM_H

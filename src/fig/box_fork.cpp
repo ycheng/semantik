@@ -107,3 +107,20 @@ void box_fork::update_links()
 	}
 }
 
+int box_fork::choose_position(const QPointF& i_oP, int id)
+{
+	QRectF r = rect();
+	QPointF l_o = pos() - i_oP + QPointF(r.width()/2, r.height()/2);
+	double c_x = l_o.x() * r.height();
+	double c_y = l_o.y() * r.width();
+	if (qAbs(c_x) > qAbs(c_y))
+	{
+		return (c_x > 0) ? 1 : 3;
+	}
+	else
+	{
+		return (c_y > 0) ? 0 : 2;
+	}
+	return 0;
+}
+
