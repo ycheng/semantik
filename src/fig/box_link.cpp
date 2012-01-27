@@ -1,6 +1,5 @@
 // Thomas Nagy 2007-2012 GPLV3
 
-
 #include <QApplication>
 #include <QPainter>
 #include <QtDebug>
@@ -8,6 +7,7 @@
 #include "box_link.h"
 #include "box_view.h"
 #include "data_item.h"
+#include <box_control_point.h>
 
 #define pad 25
 #define MAX 2000000000
@@ -32,7 +32,9 @@ box_link::box_link(box_view* i_oParent) : QGraphicsRectItem()
 
 box_link::~box_link()
 {
-
+	foreach (box_control_point *b, m_oControlPoints) {
+		delete b;
+	}
 }
 
 void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *option, QWidget * i_oW)
@@ -133,11 +135,11 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 		i_oPainter->drawEllipse(QRectF(l_o + l_oOffset, l_o - l_oOffset));
 
 		// show the control points on all the segments except the borders
-		for (int i=1; i<m_oGood.size() - 2; ++i)
+		/*for (int i=1; i<m_oGood.size() - 2; ++i)
 		{
 			QPointF l_o((m_oGood[i].x() + m_oGood[i+1].x())/2, (m_oGood[i].y() + m_oGood[i+1].y())/2);
 			i_oPainter->drawEllipse(QRectF(l_o + l_oOffset, l_o - l_oOffset));
-		}
+		}*/
 	}
 }
 
@@ -563,13 +565,37 @@ QVariant box_link::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 		if (i_oChange == ItemSelectedHasChanged)
 		{
 			if (isSelected())
+			{
 				setZValue(102);
+				while (m_oControlPoints.size() < m_oGood.size() - 3)
+				{
+					m_oControlPoints.append(new box_control_point(m_oView));
+				}
+				for (int i = 0; i < m_oGood.size() - 3; ++i)
+				{
+					box_control_point * b = m_oControlPoints.at(i);
+					QPointF p(m_oGood.at(i+1));
+					if (m_oGood.at(i+2).x() == p.x()) {
+						p.setY((p.y() + m_oGood.at(i+2).y()) / 2);
+					} else {
+						p.setX((p.x() + m_oGood.at(i+2).x()) / 2);
+					}
+					QRectF br = b->boundingRect();
+					b->setPos(p - QPointF(br.width()/2, br.height()/2));
+					b->show();
+				}
+			}
 			else
+			{
 				setZValue(98);
+				foreach(box_control_point *b, m_oControlPoints)
+				{
+					b->hide();
+				}
+			}
 		}
 	}
 
 	return QGraphicsItem::itemChange(i_oChange, i_oValue);
 }
-
 
