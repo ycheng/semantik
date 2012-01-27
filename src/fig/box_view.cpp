@@ -215,7 +215,7 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	m_bScroll = false;
 
 	grab_segment_link = NULL;
-	grab_segment_pos = -1;
+	grab_segment_pos = 0;
 
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
@@ -923,7 +923,7 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 			m_oCurrent = new box_link(this);
 			m_oCurrent->m_oParent = kk;
 			m_oCurrent->m_oChild = NULL;
-			m_oCurrent->m_iParent = kk->choose_position(m_oLastMovePoint);
+			m_oCurrent->m_iParent = kk->choose_position(m_oLastMovePoint); // box_link::pos_inrect(kk->rect(), l_oItem->pos() - m_oLastMovePoint);
 			m_oCurrent->m_iChild = 0;
 			m_oCurrent->update_pos();
 			return;
@@ -953,7 +953,7 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 	box_link* link;
 	if (it.size() == 1 && (link = dynamic_cast<box_link*>(it.at(0))))
 	{
-		for (int i=0; i < link->m_oGood.size() - 1; ++i)
+		for (int i=1; i < link->m_oGood.size() - 2; ++i)
 		{
 			QPointF l_o = QPointF((link->m_oGood[i].x()+link->m_oGood[i+1].x())/2, (link->m_oGood[i].y()+link->m_oGood[i+1].y())/2);
 			QPointF l_oP = mapToScene(i_oEv->pos());
@@ -1003,6 +1003,7 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 		int i = grab_segment_pos;
 		QPoint l_oP((grab_segment_link->m_oLst[i].x() + grab_segment_link->m_oLst[i+1].x())/2,
                             (grab_segment_link->m_oLst[i].y() + grab_segment_link->m_oLst[i+1].y())/2);
+		--i;
 
 		QPointF l_oNew = m_oLastMovePoint - m_oLastPoint + grab_segment_link->m_oMediatorPoint - l_oP;
 

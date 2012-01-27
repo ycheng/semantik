@@ -133,7 +133,7 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 		i_oPainter->drawEllipse(QRectF(l_o + l_oOffset, l_o - l_oOffset));
 
 		// show the control points on all the segments except the borders
-		for (int i=0; i<m_oGood.size() - 1; ++i)
+		for (int i=1; i<m_oGood.size() - 2; ++i)
 		{
 			QPointF l_o((m_oGood[i].x() + m_oGood[i+1].x())/2, (m_oGood[i].y() + m_oGood[i+1].y())/2);
 			i_oPainter->drawEllipse(QRectF(l_o + l_oOffset, l_o - l_oOffset));
@@ -469,10 +469,10 @@ void box_link::update_ratio()
 
 	if (m_oLink)
 	{
-		if (m_oLink->m_oOffsets.size() != ret - 1)
+		if (m_oLink->m_oOffsets.size() != ret - 3)
 		{
 			m_oLink->m_oOffsets.clear();
-			for (int i=1; i < ret; ++i)
+			for (int i=1; i < ret - 2; ++i)
 			{
 				m_oLink->m_oOffsets.append(QPoint(0, 0));
 			}
@@ -480,19 +480,19 @@ void box_link::update_ratio()
 
 		for (int i=0; i < m_oLink->m_oOffsets.size(); ++i)
 		{
-			if (m_oLst[i].x() == m_oLst[i+1].x())
+			if (m_oLst[i+1].x() == m_oLst[i+2].x())
 			{
 				int v = m_oLink->m_oOffsets[i].x() + m_oLst[i+1].x();
 				v = int_val2(v);
-				m_oGood[i].setX(v);
 				m_oGood[i+1].setX(v);
+				m_oGood[i+2].setX(v);
 			}
-			else if (m_oLst[i].y() == m_oLst[i+1].y())
+			else if (m_oLst[i+1].y() == m_oLst[i+2].y())
 			{
 				int v = m_oLink->m_oOffsets[i].y() + m_oLst[i+1].y();
 				v = int_val2(v);
-				m_oGood[i].setY(v);
 				m_oGood[i+1].setY(v);
+				m_oGood[i+2].setY(v);
 			}
 		}
 	}
