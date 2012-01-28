@@ -107,6 +107,8 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		cur_link->m_iChild = i_oAttrs.value(notr("child")).toInt();
 		cur_link->m_iChildPos = i_oAttrs.value(notr("childpos")).toInt();
 		cur_link->color = QColor(i_oAttrs.value(notr("color")));
+		cur_link->m_oStartPoint = QPoint(i_oAttrs.value(notr("startx")).toInt(), i_oAttrs.value(notr("starty")).toInt());
+		cur_link->m_oEndPoint = QPoint(i_oAttrs.value(notr("endx")).toInt(), i_oAttrs.value(notr("endy")).toInt());
 		cur_link->border_width = i_oAttrs.value(notr("border_width")).toInt();
 		cur_link->pen_style = (Qt::PenStyle) i_oAttrs.value(notr("pen_style")).toInt();
 	}
@@ -526,14 +528,20 @@ QString sem_mediator::doc_to_xml()
 
 		foreach (data_link *link, l_oItem->m_oLinks)
 		{
-			l_oS<<notr("<linkbox parent=\"%1\" parentpos=\"%2\" child=\"%3\" childpos=\"%4\" color=\"%5\" border_width=\"%6\" pen_style=\"%7\">\n").arg(
+			l_oS<<notr("<linkbox parent=\"%1\" parentpos=\"%2\" child=\"%3\" childpos=\"%4\" color=\"%5\" border_width=\"%6\" pen_style=\"%7\" %8>\n").arg(
 				QString::number(link->m_iParent),
 				QString::number(link->m_iParentPos),
 				QString::number(link->m_iChild),
 				QString::number(link->m_iChildPos),
 				link->color.name(),
 				QString::number(link->border_width),
-				QString::number(link->pen_style)
+				QString::number(link->pen_style),
+				QString("\n    startx=\"%1\" starty=\"%1\" endx=\"%1\" endy=\"%1\"").arg(
+					QString::number(link->m_oStartPoint.x()),
+					QString::number(link->m_oStartPoint.y()),
+					QString::number(link->m_oEndPoint.x()),
+					QString::number(link->m_oEndPoint.y())
+					)
 				);
 			foreach (QPoint p, link->m_oOffsets) {
 				l_oS<<notr("    <linkbox_offset x=\"%1\" y=\"%2\"/>\n").arg(QString::number(p.x()), QString::number(p.y()));
