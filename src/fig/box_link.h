@@ -21,15 +21,10 @@ class box_link : public QGraphicsRectItem
 		box_link(box_view*);
 		~box_link();
 
-		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
-
-		int m_iParent;
-		int m_iChild;
-
 		QPointF m_oMediatorPoint;
 
 		data_link *m_oLink;
-		data_link m_oCurrentLink;
+		data_link m_oInnerLink;
 
 		connectable *m_oParent;
 		connectable *m_oChild;
@@ -38,6 +33,7 @@ class box_link : public QGraphicsRectItem
 
 		void update_pos();
 		void draw_triangle(QPainter *i_oPainter, int i_iPosition, QPointF i_oP);
+		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
 
 		QVariant itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue);
 

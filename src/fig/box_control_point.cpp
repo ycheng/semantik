@@ -79,7 +79,7 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 				if (m_bMoveX) {
 					int dec = int_val2(np.x());
 					np.setX(dec);
-					if (m_oLink->m_oLst.size() > m_iOffset)
+					if (m_oLink->m_oLst.size() > m_iOffset + 1)
 					{
 						np.setY((m_oLink->m_oGood[m_iOffset + 1].y() + m_oLink->m_oGood[m_iOffset + 2].y()) / 2.);
 						if (m_oLink->m_oGood[m_iOffset + 1].x() != dec)
@@ -91,7 +91,7 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 				} else {
 					int dec = int_val2(np.y());
 					np.setY(dec);
-					if (m_oLink->m_oLst.size() > m_iOffset)
+					if (m_oLink->m_oLst.size() > m_iOffset + 1)
 					{
 						np.setX((m_oLink->m_oGood[m_iOffset + 1].x() + m_oLink->m_oGood[m_iOffset + 2].x()) / 2.);
 						if (m_oLink->m_oGood[m_iOffset + 1].y() != dec)

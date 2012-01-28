@@ -15,8 +15,8 @@
 
 box_link::box_link(box_view* i_oParent) : QGraphicsRectItem()
 {
-	m_iParent = 0;
-	m_iChild = 0;
+	m_oInnerLink.m_iParentPos = 0;
+	m_oInnerLink.m_iChildPos = 0;
 
 	m_oParent = NULL;
 	m_oChild = NULL;
@@ -34,6 +34,7 @@ box_link::box_link(box_view* i_oParent) : QGraphicsRectItem()
 	m_oStartPoint->hide();
 	m_oStartPoint->m_bIsSegment = false;
 	m_oStartPoint->m_oLink = this;
+	m_oStartPoint->setZValue(117);
 
 	m_oEndPoint = new box_control_point(m_oView);
 	m_oEndPoint->hide();
@@ -92,7 +93,7 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
       	l_oPen.setStyle(Qt::SolidLine);
 
 	//draw_triangle(i_oPainter, m_iParent, m_oGood[0]);
-	draw_triangle(i_oPainter, m_iChild, m_oGood[m_oGood.size()-1]);
+	draw_triangle(i_oPainter, m_oInnerLink.m_iChildPos, m_oGood[m_oGood.size()-1]);
 }
 
 
@@ -343,8 +344,9 @@ void box_link::update_pos()
 	else if (l_oUnder)
 	{
 		l_oR1 = l_oUnder->rect();
-		m_iParent = l_oUnder->choose_position(l_oP);
-		if (l_oUnder == m_oChild && m_iParent == m_iChild) m_iParent = (m_iParent + 2) % 4;
+		m_oInnerLink.m_iParentPos = l_oUnder->choose_position(l_oP);
+		if (l_oUnder == m_oChild && m_oInnerLink.m_iParentPos == m_oInnerLink.m_iChildPos)
+			m_oInnerLink.m_iParentPos = (m_oInnerLink.m_iParentPos + 2) % 4;
 	}
 
 	if (m_oChild)
@@ -354,8 +356,8 @@ void box_link::update_pos()
 	else if (l_oUnder)
 	{
 		l_oR2 = l_oUnder->rect();
-		m_iChild = l_oUnder->choose_position(l_oP);
-		if (l_oUnder == m_oParent && m_iParent == m_iChild) m_iChild = (m_iChild + 2) % 4;
+		m_oInnerLink.m_iChildPos = l_oUnder->choose_position(l_oP);
+		if (l_oUnder == m_oParent && m_oInnerLink.m_iParentPos == m_oInnerLink.m_iChildPos) m_oInnerLink.m_iChildPos = (m_oInnerLink.m_iChildPos + 2) % 4;
 	}
 
 	if (!l_oUnder && (!m_oParent || !m_oChild))
@@ -365,14 +367,14 @@ void box_link::update_pos()
 		if (!m_oParent)
 		{
 			if (!l_oUnder) {
-				m_iParent = pos_heuristic(l_oR2, m_iChild, l_oP - (dynamic_cast<QGraphicsItem*>(m_oChild))->pos());
+				m_oInnerLink.m_iParentPos = pos_heuristic(l_oR2, m_oInnerLink.m_iChildPos, l_oP - (dynamic_cast<QGraphicsItem*>(m_oChild))->pos());
 			}
 			l_oR1 = l_o;
 		}
 		if (!m_oChild)
 		{
 			if (!l_oUnder) {
-				m_iChild = pos_heuristic(l_oR1, m_iParent, l_oP - (dynamic_cast<QGraphicsItem*>(m_oParent))->pos());
+				m_oInnerLink.m_iChildPos = pos_heuristic(l_oR1, m_oInnerLink.m_iParentPos, l_oP - (dynamic_cast<QGraphicsItem*>(m_oParent))->pos());
 			}
 			l_oR2 = l_o;
 		}
@@ -388,7 +390,7 @@ void box_link::update_pos()
 	int by1 = (int) l_oR2.y();
 	int by2 = (int) (l_oR2.y()+l_oR2.height());
 
-	set_rectangles(ax1, ax2, ay1, ay2, m_iParent, bx1, bx2, by1, by2, m_iChild);
+	set_rectangles(ax1, ax2, ay1, ay2, m_oInnerLink.m_iParentPos, bx1, bx2, by1, by2, m_oInnerLink.m_iChildPos);
 
 	/*
 	//qDebug()<<"begin dump";
@@ -522,8 +524,8 @@ QPainterPath box_link::shape() const
 
 void box_link::set_link(data_link* link)
 {
-	m_iParent = link->m_iParentPos;
-	m_iChild = link->m_iChildPos;
+	m_oInnerLink.m_iParentPos = link->m_iParentPos;
+	m_oInnerLink.m_iChildPos = link->m_iChildPos;
 	m_oChild = m_oView->m_oItems.value(link->m_iChild);
 	m_oParent = m_oView->m_oItems.value(link->m_iParent);
 	m_oLink = link;

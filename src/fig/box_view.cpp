@@ -804,20 +804,14 @@ void box_view::notify_del_box(int id, int box)
 
 void box_view::notify_link_box(int id, data_link* link)
 {
-	if (m_oCurrent)
+	box_link *l_o = m_oCurrent;
+	if (!l_o)
 	{
-		m_oLinks.push_back(m_oCurrent);
-		m_oCurrent->m_oLink = link;
-		m_oCurrent->update_pos();
-		m_oCurrent = NULL;
-	}
-	else
-	{
-		box_link *l_o = new box_link(this);
-		l_o->set_link(link);
-		l_o->update_pos();
+		l_o = new box_link(this);
 		m_oLinks.push_back(l_o);
 	}
+	l_o->set_link(link);
+	l_o->update_pos();
 }
 
 void box_view::notify_unlink_box(int id, data_link* link)
@@ -921,12 +915,24 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 		if (QApplication::keyboardModifiers() & Qt::ShiftModifier)
 		{
 			if (m_oCurrent) return;
+
+			QPoint p = QPoint(m_oLastPoint.x(), m_oLastPoint.y());
+
 			m_oCurrent = new box_link(this);
 			m_oCurrent->m_oParent = kk;
+			m_oCurrent->m_oInnerLink.m_iParentPos = kk->choose_position(m_oLastMovePoint);
+			m_oCurrent->m_oInnerLink.m_oStartPoint = m_oCurrent->m_oInnerLink.m_oEndPoint = p;
+
 			m_oCurrent->m_oChild = NULL;
-			m_oCurrent->m_iParent = kk->choose_position(m_oLastMovePoint); // box_link::pos_inrect(kk->rect(), l_oItem->pos() - m_oLastMovePoint);
-			m_oCurrent->m_iChild = 0;
-			m_oCurrent->update_pos();
+			m_oCurrent->m_oInnerLink.m_iChildPos = 0;
+
+			mem_link_box *ln = new mem_link_box(m_oMediator, m_iId);
+			ln->init(m_oCurrent->m_oParent->m_iId, m_oCurrent->m_oInnerLink.m_iParentPos,
+				m_oCurrent->m_oChild->m_iId, m_oCurrent->m_oInnerLink.m_iChildPos);
+			ln->link->m_oStartPoint = ln->link->m_oEndPoint = p;
+			ln->apply();
+
+			m_oCurrent->setSelected(true);
 			return;
 		}
 	}
@@ -973,12 +979,6 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 	}
 
 	m_oLastMovePoint = mapToScene(i_oEv->pos());
-	if (m_oCurrent)
-	{
-		m_oCurrent->update_pos();
-		return;
-	}
-
 	QGraphicsView::mouseMoveEvent(i_oEv);
 }
 
@@ -996,7 +996,7 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 	QGraphicsView::mouseReleaseEvent(i_oEv);
 
 	m_bPressed = false;
-	if (m_oCurrent)
+	/*if (m_oCurrent)
 	{
 		connectable *l_oUnder = NULL;
 		foreach (QGraphicsItem *l_oI1, scene()->items(m_oLastMovePoint))
@@ -1023,7 +1023,7 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 		delete m_oCurrent;
 		m_oCurrent = NULL;
 	}
-	else
+	else*/
 	{
 		QPointF p = mapToScene(i_oEv->pos()) - m_oLastPoint;
 		if (qAbs(p.x()) > 1 || qAbs(p.y()) > 1)

@@ -40,6 +40,8 @@ class data_link : public diagram_item
 	int m_iChild;
 	int m_iParentPos;
 	int m_iChildPos;
+	QPoint m_oStartPoint;
+	QPoint m_oEndPoint;
 	QList<QPoint> m_oOffsets;
 };
 
