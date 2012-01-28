@@ -436,8 +436,6 @@ void canvas_view::slot_add_sibling()
 	add->parent = l_iId;
 	add->apply();
 	reorganize(); // this was here before
-	deselect_all();
-	m_oItems.value(add->item->m_iId)->setSelected(true);
 }
 
 void canvas_view::slot_delete()

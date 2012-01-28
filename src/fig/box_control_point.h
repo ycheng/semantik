@@ -25,6 +25,8 @@ class box_control_point : public QGraphicsRectItem
 		void update_pos();
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
 		QVariant itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue);
+	private:
+		bool m_bChanged;
 };
 
 #endif // BOX_CTRL_H

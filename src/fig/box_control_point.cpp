@@ -31,6 +31,7 @@ box_control_point::box_control_point(box_view* i_oParent) : QGraphicsRectItem(),
 	setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
 	setZValue(110);
+	m_bChanged = false;
 	setFlags(ItemIsMovable | ItemSendsGeometryChanges);
 }
 
@@ -77,7 +78,7 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 						if (m_oLink->m_oGood[m_iOffset + 1].x() != dec)
 						{
 							m_oLink->m_oLink->m_oOffsets[m_iOffset].setX(dec - m_oLink->m_oLst[m_iOffset + 1].x());
-							m_oLink->update_ratio();
+							m_bChanged = true;
 						}
 					}
 				} else {
@@ -89,7 +90,7 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 						if (m_oLink->m_oGood[m_iOffset + 1].y() != dec)
 						{
 							m_oLink->m_oLink->m_oOffsets[m_iOffset].setY(dec - m_oLink->m_oLst[m_iOffset + 1].y());
-							m_oLink->update_ratio();
+							m_bChanged = true;
 						}
 					}
 				}
@@ -98,7 +99,11 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 		}
 		else if (i_oChange == ItemPositionHasChanged)
 		{
-			//m_oLink->update_offset(pos(), m_iOffset);
+			if (m_bIsSegment && m_bChanged && m_oLink->m_oLst.size() > m_iOffset)
+			{
+				m_oLink->update_offset(pos(), m_iOffset);
+				m_bChanged = false;
+			}
 		}
 		else if (i_oChange == ItemSelectedHasChanged)
 		{
