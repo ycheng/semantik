@@ -66,9 +66,9 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 	{
 		if (i_oChange == ItemPositionChange)
 		{
+			QPointF np = i_oValue.toPointF();
 			if (m_bIsSegment)
 			{
-				QPointF np = i_oValue.toPointF();
 				if (m_bMoveX) {
 					int dec = int_val2(np.x());
 					np.setX(dec);
@@ -93,6 +93,24 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 							m_bChanged = true;
 						}
 					}
+				}
+				return np;
+			}
+			else
+			{
+				connectable *l_oUnder = NULL; // TODO do something with the z-index
+				foreach (QGraphicsItem *l_oI1, scene()->items(np))
+				{
+					if (l_oUnder = dynamic_cast<connectable*>(l_oI1))
+					{
+						break;
+					}
+				}
+				if (l_oUnder)
+				{
+					int pos = l_oUnder->choose_position(np);
+					QPointF p = l_oUnder->get_point(pos);
+					return p;
 				}
 				return np;
 			}

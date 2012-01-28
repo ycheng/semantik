@@ -195,4 +195,20 @@ int box_item::choose_position(const QPointF& i_oP, int id)
 	return 0;
 }
 
+QPoint box_item::get_point(int i_oP)
+{
+	QRectF r = rect();
+	switch (i_oP) {
+		case 0:
+			return QPoint(r.x() + r.width() / 2., r.y());
+		case 1:
+			return QPoint(r.x(), r.y() + r.height() / 2);
+		case 2:
+			return QPoint(r.x() + r.width()/2., r.y() + r.height());
+		case 3:
+			return QPoint(r.x() + r.width(), r.y() + r.height()/2.);
+	}
+
+	return QPoint(0, 0);
+}
 
