@@ -30,8 +30,15 @@ box_link::box_link(box_view* i_oParent) : QGraphicsRectItem()
 	setFlags(ItemIsSelectable);
 	m_bReentrantLock = false;
 
-	m_oStartPoint = NULL;
-	m_oEndPoint = NULL;
+	m_oStartPoint = new box_control_point(m_oView);
+	m_oStartPoint->hide();
+	m_oStartPoint->m_bIsSegment = false;
+	m_oStartPoint->m_oLink = this;
+
+	m_oEndPoint = new box_control_point(m_oView);
+	m_oEndPoint->hide();
+	m_oEndPoint->m_bIsSegment = false;
+	m_oEndPoint->m_oLink = this;
 }
 
 box_link::~box_link()
@@ -395,6 +402,9 @@ void box_link::update_pos()
 	}*/
 	//qDebug()<<"end dump";
 
+	m_oStartPoint->setPos(m_oLst[0]);
+	m_oEndPoint->setPos(m_oLst[m_oLst.length() - 1]);
+
 	update_ratio();
 }
 
@@ -542,18 +552,7 @@ QVariant box_link::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 					b->show();
 				}
 
-				if (m_oStartPoint == NULL) {
-					m_oStartPoint = new box_control_point(m_oView);
-				}
-				m_oStartPoint->m_bIsSegment = false;
-				m_oStartPoint->m_oLink = this;
 				m_oStartPoint->show();
-
-				if (m_oEndPoint == NULL) {
-					m_oEndPoint = new box_control_point(m_oView);
-				}
-				m_oEndPoint->m_bIsSegment = false;
-				m_oEndPoint->m_oLink = this;
 				m_oEndPoint->show();
 			}
 			else
@@ -563,12 +562,8 @@ QVariant box_link::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 				{
 					b->hide();
 				}
-				if (m_oStartPoint != NULL) {
-					m_oStartPoint->hide();
-				}
-				if (m_oEndPoint != NULL) {
-                                        m_oEndPoint->hide();
-                                }
+				m_oStartPoint->hide();
+				m_oEndPoint->hide();
 			}
 		}
 	}
