@@ -34,12 +34,12 @@ box_link::box_link(box_view* i_oParent) : QGraphicsRectItem()
 	m_oStartPoint->hide();
 	m_oStartPoint->m_bIsSegment = false;
 	m_oStartPoint->m_oLink = this;
-	m_oStartPoint->setZValue(117);
 
 	m_oEndPoint = new box_control_point(m_oView);
 	m_oEndPoint->hide();
 	m_oEndPoint->m_bIsSegment = false;
 	m_oEndPoint->m_oLink = this;
+	m_oEndPoint->setZValue(117);
 }
 
 box_link::~box_link()
