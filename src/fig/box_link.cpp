@@ -28,6 +28,7 @@ box_link::box_link(box_view* i_oParent) : QGraphicsRectItem()
 	setZValue(98);
 
 	setFlags(ItemIsSelectable);
+	m_bReentrantLock = false;
 }
 
 box_link::~box_link()
@@ -454,6 +455,19 @@ void box_link::update_pos()
 }
 
 
+void box_link::update_offset(const QPoint& i_oP, int i_iIdx)
+{
+	if (m_bReentrantLock) return;
+	m_bReentrantLock = true;
+
+	foreach(box_control_point* b, m_oControlPoints) {
+		if (b->m_iOffset != i_iIdx) {
+			b->update_pos();
+		}
+	}
+	m_bReentrantLock = false;
+}
+
 void box_link::update_ratio()
 {
 	// here we reset the offsets if necessary
@@ -576,16 +590,7 @@ QVariant box_link::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 					box_control_point * b = m_oControlPoints.at(i);
 					b->m_oLink = this;
 					b->m_iOffset = i;
-
-					QPointF p(m_oGood.at(i+1));
-					if (m_oGood.at(i+2).x() == p.x()) {
-						p.setY((p.y() + m_oGood.at(i+2).y()) / 2);
-						b->m_bMoveX = true;
-					} else {
-						p.setX((p.x() + m_oGood.at(i+2).x()) / 2);
-						b->m_bMoveX = false;
-					}
-					b->setPos(p);
+					b->update_pos();
 					b->show();
 				}
 			}

@@ -48,9 +48,11 @@ class box_link : public QGraphicsRectItem
 		QList<QPoint> m_oGood;
 		QList<QPoint> m_oLst;
 
+		void update_offset(const QPoint& i_oP, int i_iIdx);
 		void update_ratio();
 		void set_link(data_link*);
 
+		bool m_bReentrantLock;
 		int pos_heuristic(const QRectF&, int, const QPointF&);
 
 		// This shows how to abuse the qt containers :-)

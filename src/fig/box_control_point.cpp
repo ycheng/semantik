@@ -82,7 +82,7 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 		}
 		else if (i_oChange == ItemPositionHasChanged)
 		{
-			//update_links();
+			//m_oLink->update_offset(pos(), m_iOffset);
 		}
 		else if (i_oChange == ItemSelectedHasChanged)
 		{
@@ -94,5 +94,20 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 	}
 
 	return QGraphicsItem::itemChange(i_oChange, i_oValue);
+}
+
+void box_control_point::update_pos()
+{
+	Q_ASSERT(m_oLink);
+	int i = m_iOffset;
+	QPointF p(m_oLink->m_oGood.at(i+1));
+	if (m_oLink->m_oGood.at(i+2).x() == p.x()) {
+		p.setY((p.y() + m_oLink->m_oGood.at(i+2).y()) / 2);
+		m_bMoveX = true;
+	} else {
+		p.setX((p.x() + m_oLink->m_oGood.at(i+2).x()) / 2);
+		m_bMoveX = false;
+	}
+	setPos(p);
 }
 
