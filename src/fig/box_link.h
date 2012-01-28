@@ -48,7 +48,7 @@ class box_link : public QGraphicsRectItem
 		QList<QPoint> m_oGood;
 		QList<QPoint> m_oLst;
 
-		void update_offset(const QPoint& i_oP, int i_iIdx);
+		void update_offset(const QPointF& i_oP, int i_iIdx);
 		void update_ratio();
 		void set_link(data_link*);
 

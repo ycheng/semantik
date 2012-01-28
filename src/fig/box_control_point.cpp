@@ -69,15 +69,29 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 			{
 				QPointF np = i_oValue.toPointF();
 				if (m_bMoveX) {
-					//np.setX(((int) np.x() / GRID) * GRID);
-					np.setX(int_val2(np.x()));
+					int dec = int_val2(np.x());
+					np.setX(dec);
 					if (m_oLink->m_oLst.size() > m_iOffset)
+					{
 						np.setY((m_oLink->m_oLst[m_iOffset + 1].y() + m_oLink->m_oLst[m_iOffset + 2].y()) / 2.);
+						if (m_oLink->m_oGood[m_iOffset + 1].x() != dec)
+						{
+							m_oLink->m_oLink->m_oOffsets[m_iOffset].setX(dec - m_oLink->m_oLst[m_iOffset + 1].x());
+							m_oLink->update_ratio();
+						}
+					}
 				} else {
-					//np.setY(((int) np.y() / GRID) * GRID);
-					np.setY(int_val2(np.y()));
+					int dec = int_val2(np.y());
+					np.setY(dec);
 					if (m_oLink->m_oLst.size() > m_iOffset)
+					{
 						np.setX((m_oLink->m_oLst[m_iOffset + 1].x() + m_oLink->m_oLst[m_iOffset + 2].x()) / 2.);
+						if (m_oLink->m_oGood[m_iOffset + 1].y() != dec)
+						{
+							m_oLink->m_oLink->m_oOffsets[m_iOffset].setY(dec - m_oLink->m_oLst[m_iOffset + 1].y());
+							m_oLink->update_ratio();
+						}
+					}
 				}
 				return np;
 			}

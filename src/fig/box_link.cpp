@@ -455,15 +455,36 @@ void box_link::update_pos()
 }
 
 
-void box_link::update_offset(const QPoint& i_oP, int i_iIdx)
+void box_link::update_offset(const QPointF& i_oP, int i_iIdx)
 {
 	if (m_bReentrantLock) return;
 	m_bReentrantLock = true;
 
-	foreach(box_control_point* b, m_oControlPoints) {
-		if (b->m_iOffset != i_iIdx) {
-			b->update_pos();
-		}
+	box_control_point *ab = m_oControlPoints.at(i_iIdx);
+	bool changed = false;
+	if (ab->m_bMoveX)
+	{
+		int x = m_oLink->m_oOffsets[i_iIdx].x();
+		m_oLink->m_oOffsets[i_iIdx].setX(- ab->pos().x() + m_oLst[i_iIdx].x());
+		changed = x != m_oLink->m_oOffsets[i_iIdx].x();
+	}
+	else
+	{
+		int y = m_oLink->m_oOffsets[i_iIdx].y();
+		m_oLink->m_oOffsets[i_iIdx].setY( - ab->pos().y() + m_oLst[i_iIdx].y());
+		changed = y != m_oLink->m_oOffsets[i_iIdx].y();
+	}
+
+	if (changed)
+	{
+		update_ratio();
+		/*for (int i = 0; i < m_oLst.size() - 3; ++i)
+		{
+			box_control_point * b = m_oControlPoints.at(i);
+			if (i  != i_iIdx) {
+				b->update_pos();
+			}
+		}*/
 	}
 	m_bReentrantLock = false;
 }
