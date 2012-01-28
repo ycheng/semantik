@@ -29,6 +29,9 @@ box_link::box_link(box_view* i_oParent) : QGraphicsRectItem()
 
 	setFlags(ItemIsSelectable);
 	m_bReentrantLock = false;
+
+	m_oStartPoint = NULL;
+	m_oEndPoint = NULL;
 }
 
 box_link::~box_link()
@@ -36,6 +39,8 @@ box_link::~box_link()
 	foreach (box_control_point *b, m_oControlPoints) {
 		delete b;
 	}
+	delete m_oStartPoint;
+	delete m_oEndPoint;
 }
 
 void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *option, QWidget * i_oW)
@@ -81,67 +86,6 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 
 	//draw_triangle(i_oPainter, m_iParent, m_oGood[0]);
 	draw_triangle(i_oPainter, m_iChild, m_oGood[m_oGood.size()-1]);
-
-	l_oPen.setWidth(1);
-
-	QPointF l_oOffset(3, 3);
-	if (!m_oParent && m_oChild)
-	{
-		i_oPainter->setBrush(QColor(255, 255, 0));
-		QPointF l_o = m_oGood[m_oGood.size()-1];
-		i_oPainter->drawEllipse(QRectF(l_o + l_oOffset, l_o - l_oOffset));
-		connectable *l_oUnder = NULL;
-		foreach (QGraphicsItem *l_oI1, scene()->items(m_oView->m_oLastMovePoint))
-		{
-			if (l_oUnder = dynamic_cast<connectable*>(l_oI1))
-			{
-				break;
-			}
-		}
-		if (l_oUnder)
-		{
-			l_o = m_oGood[0];
-			i_oPainter->drawEllipse(QRectF(l_o + l_oOffset, l_o - l_oOffset));
-		}
-	}
-	else if (!m_oChild && m_oParent)
-	{
-		i_oPainter->setBrush(QColor(255, 255, 0));
-		QPointF l_o = m_oGood[0];
-		i_oPainter->drawEllipse(QRectF(l_o + l_oOffset, l_o - l_oOffset));
-		connectable *l_oUnder = NULL;
-		foreach (QGraphicsItem *l_oI1, scene()->items(m_oView->m_oLastMovePoint))
-		{
-			if (l_oUnder = dynamic_cast<connectable*>(l_oI1))
-			{
-				break;
-			}
-		}
-		if (l_oUnder)
-		{
-			l_o = m_oGood[m_oGood.size()-1];
-			i_oPainter->drawEllipse(QRectF(l_o + l_oOffset, l_o - l_oOffset));
-		}
-	}
-	else if (m_oChild && m_oParent && isSelected())
-	{
-		// if the link is selected
-		l_oPen.setColor(QColor(Qt::black));
-		i_oPainter->setPen(l_oPen);
-
-		i_oPainter->setBrush(QColor(255, 255, 0));
-		QPointF l_o = m_oGood[0];
-		i_oPainter->drawEllipse(QRectF(l_o + l_oOffset, l_o - l_oOffset));
-		l_o = m_oGood[m_oGood.size()-1];
-		i_oPainter->drawEllipse(QRectF(l_o + l_oOffset, l_o - l_oOffset));
-
-		// show the control points on all the segments except the borders
-		/*for (int i=1; i<m_oGood.size() - 2; ++i)
-		{
-			QPointF l_o((m_oGood[i].x() + m_oGood[i+1].x())/2, (m_oGood[i].y() + m_oGood[i+1].y())/2);
-			i_oPainter->drawEllipse(QRectF(l_o + l_oOffset, l_o - l_oOffset));
-		}*/
-	}
 }
 
 
@@ -597,6 +541,20 @@ QVariant box_link::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 					b->init_pos();
 					b->show();
 				}
+
+				if (m_oStartPoint == NULL) {
+					m_oStartPoint = new box_control_point(m_oView);
+				}
+				m_oStartPoint->m_bIsSegment = false;
+				m_oStartPoint->m_oLink = this;
+				m_oStartPoint->show();
+
+				if (m_oEndPoint == NULL) {
+					m_oEndPoint = new box_control_point(m_oView);
+				}
+				m_oEndPoint->m_bIsSegment = false;
+				m_oEndPoint->m_oLink = this;
+				m_oEndPoint->show();
 			}
 			else
 			{
@@ -605,6 +563,12 @@ QVariant box_link::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 				{
 					b->hide();
 				}
+				if (m_oStartPoint != NULL) {
+					m_oStartPoint->hide();
+				}
+				if (m_oEndPoint != NULL) {
+                                        m_oEndPoint->hide();
+                                }
 			}
 		}
 	}

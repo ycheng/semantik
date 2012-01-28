@@ -44,6 +44,8 @@ class box_link : public QGraphicsRectItem
 		QPainterPath inner_shape;
 
 		QList<box_control_point*> m_oControlPoints;
+		box_control_point* m_oStartPoint;
+		box_control_point* m_oEndPoint;
 
 		QList<QPoint> m_oGood;
 		QList<QPoint> m_oLst;
