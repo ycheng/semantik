@@ -29,6 +29,7 @@ class box_link : public QGraphicsRectItem
 		QPointF m_oMediatorPoint;
 
 		data_link *m_oLink;
+		data_link m_oCurrentLink;
 
 		connectable *m_oParent;
 		connectable *m_oChild;
