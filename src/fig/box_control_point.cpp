@@ -74,7 +74,7 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 					np.setX(dec);
 					if (m_oLink->m_oLst.size() > m_iOffset)
 					{
-						np.setY((m_oLink->m_oLst[m_iOffset + 1].y() + m_oLink->m_oLst[m_iOffset + 2].y()) / 2.);
+						np.setY((m_oLink->m_oGood[m_iOffset + 1].y() + m_oLink->m_oGood[m_iOffset + 2].y()) / 2.);
 						if (m_oLink->m_oGood[m_iOffset + 1].x() != dec)
 						{
 							m_oLink->m_oLink->m_oOffsets[m_iOffset].setX(dec - m_oLink->m_oLst[m_iOffset + 1].x());
@@ -86,7 +86,7 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 					np.setY(dec);
 					if (m_oLink->m_oLst.size() > m_iOffset)
 					{
-						np.setX((m_oLink->m_oLst[m_iOffset + 1].x() + m_oLink->m_oLst[m_iOffset + 2].x()) / 2.);
+						np.setX((m_oLink->m_oGood[m_iOffset + 1].x() + m_oLink->m_oGood[m_iOffset + 2].x()) / 2.);
 						if (m_oLink->m_oGood[m_iOffset + 1].y() != dec)
 						{
 							m_oLink->m_oLink->m_oOffsets[m_iOffset].setY(dec - m_oLink->m_oLst[m_iOffset + 1].y());
@@ -117,16 +117,17 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 	return QGraphicsItem::itemChange(i_oChange, i_oValue);
 }
 
-void box_control_point::update_pos()
+void box_control_point::init_pos()
 {
 	Q_ASSERT(m_oLink);
 	int i = m_iOffset;
-	QPointF p(m_oLink->m_oLst.at(i+1));
-	if (m_oLink->m_oLst.at(i+2).x() == p.x()) {
-		p.setY((p.y() + m_oLink->m_oLst.at(i+2).y()) / 2);
+
+	QPointF p(m_oLink->m_oGood.at(i+1));
+	if (m_oLink->m_oGood.at(i+2).x() == p.x()) {
+		p.setY((p.y() + m_oLink->m_oGood.at(i+2).y()) / 2);
 		m_bMoveX = true;
 	} else {
-		p.setX((p.x() + m_oLink->m_oLst.at(i+2).x()) / 2);
+		p.setX((p.x() + m_oLink->m_oGood.at(i+2).x()) / 2);
 		m_bMoveX = false;
 	}
 	setPos(p);

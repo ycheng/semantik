@@ -465,7 +465,7 @@ void box_link::update_offset(const QPointF& i_oP, int i_iIdx)
 	{
 		box_control_point * b = m_oControlPoints.at(i);
 		if (i != i_iIdx) {
-			b->update_pos();
+			b->init_pos();
 		}
 	}
 	m_bReentrantLock = false;
@@ -594,7 +594,7 @@ QVariant box_link::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 					box_control_point * b = m_oControlPoints.at(i);
 					b->m_oLink = this;
 					b->m_iOffset = i;
-					b->update_pos();
+					b->init_pos();
 					b->show();
 				}
 			}

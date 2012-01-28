@@ -22,7 +22,7 @@ class box_control_point : public QGraphicsRectItem
 		box_link *m_oLink;
 		box_view *m_oView;
 
-		void update_pos();
+		void init_pos();
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
 		QVariant itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue);
 	private:
