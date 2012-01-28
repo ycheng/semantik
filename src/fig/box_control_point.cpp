@@ -44,7 +44,14 @@ void box_control_point::paint(QPainter *painter, const QStyleOptionGraphicsItem 
 	l_oPen.setColor(Qt::black);
 	l_oPen.setCosmetic(false);
 	l_oPen.setWidth(1);
-	painter->setBrush(QColor("#FF8000")); // orangizer.com
+	if (m_bIsSegment)
+	{
+		painter->setBrush(QColor("#FFFF00"));
+	}
+	else
+	{
+		painter->setBrush(QColor("#00FF00"));
+	}
 	painter->drawRect(l_oRect);
 	painter->restore();
 }
