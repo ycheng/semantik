@@ -123,17 +123,15 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 					m_iPosition = l_oUnder->choose_position(l_o);
 					if (l_oUnder)
 					{
-						if (l_oUnder->m_iId == m_oLink->m_oInnerLink.m_iParent
-							&& m_iPosition == m_oLink->m_oInnerLink.m_iChildPos
-							&& m_oLink->m_oInnerLink.m_iChild != NO_ITEM) 
+						if (m_oLink->m_oStartPoint == this)
 						{
-							goto not_connected;
+							if (m_iPosition == m_oLink->m_oInnerLink.m_iChildPos && m_oLink->m_oInnerLink.m_iChild == l_oUnder->m_iId)
+								goto not_connected;
 						}
-						else if (l_oUnder->m_iId == m_oLink->m_oInnerLink.m_iChild
-							&& m_iPosition == m_oLink->m_oInnerLink.m_iParentPos
-							&& m_oLink->m_oInnerLink.m_iParent != NO_ITEM)
+						else if (m_oLink->m_oEndPoint == this)
 						{
-							goto not_connected;
+							if (m_iPosition == m_oLink->m_oInnerLink.m_iParentPos && m_oLink->m_oInnerLink.m_iParent == l_oUnder->m_iId)
+								goto not_connected;
 						}
 					}
 
