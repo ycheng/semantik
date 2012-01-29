@@ -925,14 +925,14 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 			m_oCurrent->m_oInnerLink.m_iParentPos = kk->choose_position(m_oLastMovePoint);
 			m_oCurrent->m_oInnerLink.m_iParent = kk->m_iId;
 			m_oCurrent->m_oInnerLink.m_iParent = NO_ITEM;
-			m_oCurrent->m_oInnerLink.m_iChildPos = 0;
+			m_oCurrent->m_oInnerLink.m_iChildPos = data_link::NORTH;
 
 			mem_link_box *ln = new mem_link_box(m_oMediator, m_iId);
 			ln->link = new data_link();
 			ln->link->m_iParent = kk->m_iId;
 			ln->link->m_iParentPos = m_oCurrent->m_oInnerLink.m_iParentPos;
 			ln->link->m_iChild = NO_ITEM;
-			ln->link->m_iChildPos = 0;
+			ln->link->m_iChildPos = data_link::NORTH;
 			ln->link->m_oStartPoint = ln->link->m_oEndPoint = p;
 
 			ln->apply();

@@ -33,7 +33,7 @@ class diagram_item
 class data_link : public diagram_item
 {
 	public:
-	enum Direction { NORTH=1, WEST=2, SOUTH=4, EAST=8, COORD=16 };
+	enum Direction { NORTH=1, WEST=2, SOUTH=4, EAST=8, COORD=15 };
 	data_link();
 	QString m_sLink;
 	QString m_sCaption;

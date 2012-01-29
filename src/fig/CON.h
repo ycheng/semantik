@@ -14,7 +14,7 @@ class connectable
 		int m_iId;
 		virtual QRectF rect() const { return QRectF(); }
 		virtual void update_data() {};
-		virtual int choose_position(const QPointF&p, int id=-1) { return 0; };
+		virtual int choose_position(const QPointF&p, int id=-1) { Q_ASSERT(false); };
 		virtual QPoint get_point(int position) { return QPoint(0, 0); };
 		data_box *m_oBox;
 

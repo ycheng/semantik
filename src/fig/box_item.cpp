@@ -208,7 +208,7 @@ QPoint box_item::get_point(int i_oP)
 		case data_link::EAST:
 			return QPoint(r.x() + r.width(), r.y() + r.height()/2.);
 	}
-	qDebug()<<"case not handled";
+	Q_ASSERT(false);
 	return QPoint(0, 0);
 }
 
