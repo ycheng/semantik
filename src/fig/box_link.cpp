@@ -18,8 +18,6 @@ box_link::box_link(box_view* i_oParent) : QGraphicsRectItem()
 	m_oInnerLink.m_iParentPos = 0;
 	m_oInnerLink.m_iChildPos = 0;
 
-	m_oParent = NULL;
-	m_oChild = NULL;
 	m_oView = i_oParent;
 
 	m_oLink = NULL;
@@ -53,8 +51,6 @@ box_link::~box_link()
 
 void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *option, QWidget * i_oW)
 {
-	if (!m_oParent)
-		return;
 	//i_oPainter->setPen(pen());
 	//QGraphicsRectItem::paint(i_oPainter, option, i_oW);
 
@@ -322,15 +318,12 @@ int box_link::may_use(QPair<int, int> cand, QPair<int, int> p, int ax1, int ax2,
 
 void box_link::update_pos()
 {
-	//if (!m_oParent || !m_oChild) return;
-	// now we are about certain we can work
-
 	QRectF l_oR1, l_oR2;
 	//QPointF l_oP = m_oView->m_oLastMovePoint;
 
-	if (m_oParent)
+	if (connectable *start = m_oView->m_oItems.value(m_oInnerLink.m_iParent))
 	{
-		l_oR1 = m_oParent->rect();
+		l_oR1 = start->rect();
 	}
 	else
 	{
@@ -338,9 +331,9 @@ void box_link::update_pos()
 		l_oR1 = QRectF(l_oP - QPointF(1, 1), l_oP + QPointF(1, 1));
 	}
 
-	if (m_oChild)
+	if (connectable *end = m_oView->m_oItems.value(m_oInnerLink.m_iChild))
 	{
-		l_oR2 = m_oChild->rect();
+		l_oR2 = end->rect();
 	}
 	else
 	{

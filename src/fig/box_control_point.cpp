@@ -123,11 +123,11 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 					QPoint p = l_oUnder->get_point(m_iPosition);
 					if (l_oUnder)
 					{
-						if (l_oUnder == m_oLink->m_oParent     && m_iPosition == m_oLink->m_oInnerLink.m_iParentPos) 
+						if (l_oUnder->m_iId == m_oLink->m_oInnerLink.m_iParent && m_iPosition == m_oLink->m_oInnerLink.m_iParentPos) 
 						{
 							return m_oRealPosition = QPoint(np.x(), np.y());
 						}
-						else if (l_oUnder == m_oLink->m_oChild && m_iPosition == m_oLink->m_oInnerLink.m_iChildPos)
+						else if (l_oUnder->m_iId == m_oLink->m_oInnerLink.m_iChild && m_iPosition == m_oLink->m_oInnerLink.m_iChildPos)
 						{
 							return m_oRealPosition = QPoint(np.x(), np.y());
 						}

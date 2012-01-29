@@ -921,11 +921,10 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 			QPoint p = QPoint(m_oLastPoint.x(), m_oLastPoint.y());
 
 			m_oCurrent = new box_link(this);
-			m_oCurrent->m_oParent = kk;
 			m_oCurrent->m_oInnerLink.m_oStartPoint = m_oCurrent->m_oInnerLink.m_oEndPoint = p;
 			m_oCurrent->m_oInnerLink.m_iParentPos = kk->choose_position(m_oLastMovePoint);
-
-			m_oCurrent->m_oChild = NULL;
+			m_oCurrent->m_oInnerLink.m_iParent = kk->m_iId;
+			m_oCurrent->m_oInnerLink.m_iParent = NO_ITEM;
 			m_oCurrent->m_oInnerLink.m_iChildPos = 0;
 
 			mem_link_box *ln = new mem_link_box(m_oMediator, m_iId);

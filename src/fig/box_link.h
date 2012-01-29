@@ -26,9 +26,6 @@ class box_link : public QGraphicsRectItem
 		data_link *m_oLink;
 		data_link m_oInnerLink;
 
-		connectable *m_oParent;
-		connectable *m_oChild;
-
 		box_view *m_oView;
 
 		void update_pos();
