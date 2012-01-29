@@ -55,7 +55,7 @@ class box_link : public QGraphicsRectItem
 		QSet<QPair<int, int> > graph;
 		QHash<QPair<int, int>, QPair<int, int> > prev;
 		QHash<QPair<int, int>, int> dist;
-		void set_rectangles(int ax1, int ax2, int ay1, int ay2, int ap, int bx1, int bx2, int by1, int by2, int bp);
+		void set_rectangles(int ax1, int ax2, int ay1, int ay2, int ap, QPoint&, int bx1, int bx2, int by1, int by2, int bp, QPoint&);
 		int may_use(QPair<int, int> cand, QPair<int, int> p, int ax1, int ax2, int ay1, int ay2, int bx1, int bx2, int by1, int by2);
 }; 
 

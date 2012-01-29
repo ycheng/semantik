@@ -141,7 +141,7 @@ void box_link::draw_triangle(QPainter *i_oPainter, int i_iPos, QPointF i_oP)
 	i_oPainter->drawPolygon(l_oPol);
 }
 
-void box_link::set_rectangles(int ax1, int ax2, int ay1, int ay2, int ap, int bx1, int bx2, int by1, int by2, int bp)
+void box_link::set_rectangles(int ax1, int ax2, int ay1, int ay2, int ap, QPoint& apos, int bx1, int bx2, int by1, int by2, int bp, QPoint& bpos)
 {
 	hor.clear();
 	ver.clear();
@@ -150,52 +150,13 @@ void box_link::set_rectangles(int ax1, int ax2, int ay1, int ay2, int ap, int bx
 	dist.clear();
 	m_oLst.clear();
 
-	ap = ap & data_link::COORD;
-	bp = bp & data_link::COORD;
+	hor.append(apos.x());
+	ver.append(apos.y());
+	QPair<int,int> init_p(apos.x(), apos.y());
 
-	switch (ap) {
-		case data_link::NORTH:
-			hor.append((ax1 + ax2) / 2);
-			ver.append(ay1);
-			break;
-		case data_link::WEST:
-			hor.append(ax1);
-			ver.append((ay1 + ay2) / 2);
-			break;
-		case data_link::SOUTH:
-			ver.append(ay2);
-			hor.append((ax1 + ax2) / 2);
-			break;
-		case data_link::EAST:
-			hor.append(ax2);
-			ver.append((ay1 + ay2) / 2);
-			break;
-		default:
-			Q_ASSERT(false);
-	}
-	QPair<int,int> init_p(hor.at(0), ver.at(0));
-
-	switch (bp) {
-		case data_link::NORTH:
-			hor.append((bx1 + bx2) / 2);
-			ver.append(by1);
-			break;
-		case data_link::WEST:
-			hor.append(bx1);
-			ver.append((by1 + by2) / 2);
-			break;
-		case data_link::SOUTH:
-			ver.append(by2);
-			hor.append((bx1 + bx2) / 2);
-			break;
-		case data_link::EAST:
-			hor.append(bx2);
-			ver.append((by1 + by2) / 2);
-			break;
-		default:
-			Q_ASSERT(false);
-	}
-	QPair<int, int> end_p(hor.at(1), ver.at(1));
+	hor.append(bpos.x());
+	ver.append(bpos.y());
+	QPair<int, int> end_p(bpos.x(), bpos.y());
 
 	if (ap == data_link::WEST && bp == data_link::EAST && bx2 >= ax1 - pad)
 	{
@@ -313,28 +274,63 @@ int box_link::may_use(QPair<int, int> cand, QPair<int, int> p, int ax1, int ax2,
 void box_link::update_pos()
 {
 	QRectF l_oR1, l_oR2;
+	QPoint apos, bpos;
 
 	if (connectable *start = m_oView->m_oItems.value(m_oInnerLink.m_iParent))
 	{
-		m_oInnerLink.m_oStartPoint = start->get_point(m_oInnerLink.m_iParentPos);
+		m_oInnerLink.m_oStartPoint = apos = start->get_point(m_oInnerLink.m_iParentPos);
 		l_oR1 = start->rect();
 	}
 	else
 	{
-		QPointF l_oP = m_oInnerLink.m_oStartPoint;
+		QPoint l_oP = m_oInnerLink.m_oStartPoint;
 		l_oR1 = QRectF(l_oP - QPointF(1, 1), l_oP + QPointF(1, 1));
+		switch (m_oInnerLink.m_iParentPos & data_link::COORD) {
+			case data_link::NORTH:
+				apos = QPoint(l_oP.x(), l_oP.y() + 1);
+				break;
+			case data_link::WEST:
+				apos = QPoint(l_oP.x() - 1, l_oP.y());
+				break;
+			case data_link::SOUTH:
+				apos = QPoint(l_oP.x(), l_oP.y() - 1);
+				break;
+			case data_link::EAST:
+				apos = QPoint(l_oP.x() + 1, l_oP.y());
+				break;
+			default:
+				Q_ASSERT(false);
+		}
 	}
+
 	m_oStartPoint->force_position(m_oInnerLink.m_oStartPoint);
 
 	if (connectable *end = m_oView->m_oItems.value(m_oInnerLink.m_iChild))
 	{
-		m_oInnerLink.m_oEndPoint = end->get_point(m_oInnerLink.m_iChildPos);
+		m_oInnerLink.m_oEndPoint = bpos = end->get_point(m_oInnerLink.m_iChildPos);
 		l_oR2 = end->rect();
 	}
 	else
 	{
-		QPointF l_oP = m_oInnerLink.m_oEndPoint;
+		QPoint l_oP = m_oInnerLink.m_oEndPoint;
 		l_oR2 = QRectF(l_oP - QPointF(1, 1), l_oP + QPointF(1, 1));
+		switch (m_oInnerLink.m_iChildPos & data_link::COORD) {
+			case data_link::NORTH:
+				bpos = QPoint(l_oP.x(), l_oP.y() + 1);
+				break;
+			case data_link::WEST:
+				bpos = QPoint(l_oP.x() - 1, l_oP.y());
+				break;
+			case data_link::SOUTH:
+				bpos = QPoint(l_oP.x(), l_oP.y() - 1);
+				break;
+			case data_link::EAST:
+				bpos = QPoint(l_oP.x() + 1, l_oP.y());
+				break;
+			default:
+				Q_ASSERT(false);
+		}
+
 	}
 	m_oEndPoint->force_position(m_oInnerLink.m_oEndPoint);
 
@@ -348,7 +344,7 @@ void box_link::update_pos()
 	int by1 = (int) l_oR2.y();
 	int by2 = (int) (l_oR2.y()+l_oR2.height());
 
-	set_rectangles(ax1, ax2, ay1, ay2, m_oInnerLink.m_iParentPos, bx1, bx2, by1, by2, m_oInnerLink.m_iChildPos);
+	set_rectangles(ax1, ax2, ay1, ay2, m_oInnerLink.m_iParentPos, apos, bx1, bx2, by1, by2, m_oInnerLink.m_iChildPos, bpos);
 
 	/*
 	//qDebug()<<"begin dump";
