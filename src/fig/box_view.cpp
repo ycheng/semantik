@@ -929,6 +929,11 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 		{
 			if (m_oCurrent) return;
 
+			foreach (QGraphicsItem *l_o, scene()->selectedItems())
+			{
+				l_o->setSelected(false);
+			}
+
 			QPoint p = QPoint(m_oLastPoint.x(), m_oLastPoint.y());
 
 			m_oCurrent = new box_link(this);
@@ -945,7 +950,6 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 
 			l_oItem->setSelected(false);
 			m_oCurrent->setSelected(true);
-			m_oCurrent = NULL;
 		}
 	}
 
@@ -1003,6 +1007,12 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 		m_bScroll = false;
 		viewport()->setCursor(Qt::ArrowCursor);
 		return;
+	}
+
+	if (m_oCurrent)
+	{
+		m_oCurrent->m_oLink->copy_from(m_oCurrent->m_oInnerLink);
+		m_oCurrent = NULL;
 	}
 
 	QGraphicsView::mouseReleaseEvent(i_oEv);
