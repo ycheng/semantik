@@ -49,7 +49,6 @@ class box_link : public QGraphicsRectItem
 
 		void update_offset(const QPointF& i_oP, int i_iIdx);
 		void update_ratio();
-		void set_link(data_link*);
 
 		bool m_bReentrantLock;
 		int pos_heuristic(const QRectF&, int, const QPointF&);

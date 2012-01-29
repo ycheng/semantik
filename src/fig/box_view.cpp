@@ -324,7 +324,8 @@ void box_view::sync_view()
 
 	foreach (data_link *link, item->m_oLinks) {
 		box_link *l_o = new box_link(this);
-		l_o->set_link(link);
+		l_o->m_oInnerLink.copy_from(*link);
+		l_o->m_oLink = link;
 		l_o->update_pos();
 		m_oLinks.append(l_o);
 	}
@@ -810,7 +811,8 @@ void box_view::notify_link_box(int id, data_link* link)
 		l_o = new box_link(this);
 		m_oLinks.push_back(l_o);
 	}
-	l_o->set_link(link);
+	l_o->m_oInnerLink.copy_from(*link);
+	l_o->m_oLink = link;
 	l_o->update_pos();
 }
 

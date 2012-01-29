@@ -543,17 +543,6 @@ QPainterPath box_link::shape() const
 	return inner_shape;
 }
 
-void box_link::set_link(data_link* link)
-{
-	m_oInnerLink.copy_from(*link);
-
-	//m_oInnerLink.m_iParentPos = link->m_iParentPos;
-	//m_oInnerLink.m_iChildPos = link->m_iChildPos;
-	//m_oChild = m_oView->m_oItems.value(link->m_iChild);
-	//m_oParent = m_oView->m_oItems.value(link->m_iParent);
-	m_oLink = link;
-}
-
 QVariant box_link::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue)
 {
 	QVariant l_oRet = QGraphicsItem::itemChange(i_oChange, i_oValue);
