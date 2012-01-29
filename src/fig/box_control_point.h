@@ -19,7 +19,6 @@ class box_control_point : public QGraphicsRectItem
 		bool m_bIsSegment;
 		bool m_bMoveX;
 
-		int m_iPosition;
 		int m_iOffset;
 		box_link *m_oLink;
 		box_view *m_oView;

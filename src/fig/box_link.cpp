@@ -111,56 +111,33 @@ void box_link::draw_triangle(QPainter *i_oPainter, int i_iPos, QPointF i_oP)
 	l_oPol<<i_oP;
 	switch (i_iPos)
 	{
-		case 0:
+		case data_link::NORTH:
 			{
 				l_oPol<<i_oP+QPointF(-xw, -yw);
 				l_oPol<<i_oP+QPointF( xw, -yw);
 			}
 			break;
-		case 1:
+		case data_link::WEST:
 			{
 				l_oPol<<i_oP+QPointF(-yw, -xw);
 				l_oPol<<i_oP+QPointF(-yw,  xw);
 			}
 			break;
-		case 2:
+		case data_link::SOUTH:
 			{
                                 l_oPol<<i_oP+QPointF(-xw, yw);
                                 l_oPol<<i_oP+QPointF( xw, yw);
                         }
 			break;
-		case 3:
+		case data_link::EAST:
+		default:
 			{
                                 l_oPol<<i_oP+QPointF(yw, -xw);
                                 l_oPol<<i_oP+QPointF(yw,  xw);
                         }
 			break;
-		default:
-			break;
 	}
 	i_oPainter->drawPolygon(l_oPol);
-}
-
-int box_link::pos_heuristic(const QRectF & i_oR, int i_iPos, const QPointF & i_oP)
-{
-	switch (i_iPos)
-	{
-		case 0:
-			return (i_oP.y() > 0) ? 0 : 2;
-			break;
-		case 1:
-			return (i_oP.x() < 0) ? 3 : 1;
-			break;
-		case 2:
-			return (i_oP.y() < i_oR.height()) ? 2 : 0;
-			break;
-		case 3:
-			return (i_oP.x() > i_oR.width()) ? 1 : 3;
-			break;
-		default:
-			break;
-	}
-	return 2;
 }
 
 void box_link::set_rectangles(int ax1, int ax2, int ay1, int ay2, int ap, int bx1, int bx2, int by1, int by2, int bp)
@@ -172,20 +149,24 @@ void box_link::set_rectangles(int ax1, int ax2, int ay1, int ay2, int ap, int bx
 	dist.clear();
 	m_oLst.clear();
 
+	ap = ap & data_link::COORD;
+	bp = bp & data_link::COORD;
+
 	switch (ap) {
-		case 0:
+		case data_link::NORTH:
 			hor.append((ax1 + ax2) / 2);
 			ver.append(ay1);
 			break;
-		case 1:
+		case data_link::WEST:
 			hor.append(ax1);
 			ver.append((ay1 + ay2) / 2);
 			break;
-		case 2:
+		case data_link::SOUTH:
 			ver.append(ay2);
 			hor.append((ax1 + ax2) / 2);
 			break;
-		case 3:
+		case data_link::EAST:
+		default:
 			hor.append(ax2);
 			ver.append((ay1 + ay2) / 2);
 			break;
@@ -193,41 +174,42 @@ void box_link::set_rectangles(int ax1, int ax2, int ay1, int ay2, int ap, int bx
 	QPair<int,int> init_p(hor.at(0), ver.at(0));
 
 	switch (bp) {
-		case 0:
+		case data_link::NORTH:
 			hor.append((bx1 + bx2) / 2);
 			ver.append(by1);
 			break;
-		case 1:
+		case data_link::WEST:
 			hor.append(bx1);
 			ver.append((by1 + by2) / 2);
 			break;
-		case 2:
+		case data_link::SOUTH:
 			ver.append(by2);
 			hor.append((bx1 + bx2) / 2);
 			break;
-		case 3:
+		case data_link::EAST:
+		default:
 			hor.append(bx2);
 			ver.append((by1 + by2) / 2);
 			break;
 	}
 	QPair<int, int> end_p(hor.at(1), ver.at(1));
 
-	if (ap == 1 && bp == 3 && bx2 >= ax1 - pad)
+	if (ap == data_link::WEST && bp == data_link::EAST && bx2 >= ax1 - pad)
 	{
 		hor.append(ax1 - pad);
 		hor.append(bx2 + pad);
 	}
-	else if (ap == 3 && bp == 1 && ax2 >= bx1 - pad)
+	else if (ap == data_link::EAST && bp == data_link::WEST && ax2 >= bx1 - pad)
 	{
 		hor.append(bx1 - pad);
 		hor.append(ax2 + pad);
 	}
-	else if (ap == 0 && bp == 2 && by2 >= ay1 - pad)
+	else if (ap == data_link::NORTH && bp == data_link::SOUTH && by2 >= ay1 - pad)
 	{
 		ver.append(ay1 - pad);
 		ver.append(by2 + pad);
 	}
-	else if (ap == 2 && bp == 0 && ay2 >= by1 - pad)
+	else if (ap == data_link::SOUTH && bp == data_link::NORTH && ay2 >= by1 - pad)
 	{
 		ver.append(by1 - pad);
 		ver.append(ay2 + pad);
@@ -328,7 +310,6 @@ int box_link::may_use(QPair<int, int> cand, QPair<int, int> p, int ax1, int ax2,
 void box_link::update_pos()
 {
 	QRectF l_oR1, l_oR2;
-	//QPointF l_oP = m_oView->m_oLastMovePoint;
 
 	if (connectable *start = m_oView->m_oItems.value(m_oInnerLink.m_iParent))
 	{
@@ -353,59 +334,6 @@ void box_link::update_pos()
 		l_oR2 = QRectF(l_oP - QPointF(1, 1), l_oP + QPointF(1, 1));
 	}
 	m_oEndPoint->force_position(m_oInnerLink.m_oEndPoint);
-
-	/*
-	connectable *l_oUnder = NULL;
-        foreach (QGraphicsItem *l_oI1, scene()->items(l_oP))
-        {
-                if (l_oUnder = dynamic_cast<connectable*>(l_oI1))
-                {
-			break;
-                }
-        }
-
-	if (m_oParent)
-	{
-		l_oR1 = m_oParent->rect();
-	}
-	else if (l_oUnder)
-	{
-		l_oR1 = l_oUnder->rect();
-		m_oInnerLink.m_iParentPos = l_oUnder->choose_position(l_oP);
-		if (l_oUnder == m_oChild && m_oInnerLink.m_iParentPos == m_oInnerLink.m_iChildPos)
-			m_oInnerLink.m_iParentPos = (m_oInnerLink.m_iParentPos + 2) % 4;
-	}
-
-	if (m_oChild)
-	{
-		l_oR2 = m_oChild->rect();
-	}
-	else if (l_oUnder)
-	{
-		l_oR2 = l_oUnder->rect();
-		m_oInnerLink.m_iChildPos = l_oUnder->choose_position(l_oP);
-		if (l_oUnder == m_oParent && m_oInnerLink.m_iParentPos == m_oInnerLink.m_iChildPos) m_oInnerLink.m_iChildPos = (m_oInnerLink.m_iChildPos + 2) % 4;
-	}
-
-	if (!l_oUnder && (!m_oParent || !m_oChild))
-	{
-		QRectF l_o = QRectF(l_oP - QPointF(1, 1), l_oP + QPointF(1, 1));
-
-		if (!m_oParent)
-		{
-			if (!l_oUnder) {
-				m_oInnerLink.m_iParentPos = pos_heuristic(l_oR2, m_oInnerLink.m_iChildPos, l_oP - (dynamic_cast<QGraphicsItem*>(m_oChild))->pos());
-			}
-			l_oR1 = l_o;
-		}
-		if (!m_oChild)
-		{
-			if (!l_oUnder) {
-				m_oInnerLink.m_iChildPos = pos_heuristic(l_oR1, m_oInnerLink.m_iParentPos, l_oP - (dynamic_cast<QGraphicsItem*>(m_oParent))->pos());
-			}
-			l_oR2 = l_o;
-		}
-	}*/
 
 	int ax1 = (int) l_oR1.x();
 	int ax2 = (int) (l_oR1.x()+l_oR1.width());
@@ -432,8 +360,8 @@ void box_link::update_pos()
 	//qDebug()<<"end dump";
 
 	update_ratio();
+	update();
 }
-
 
 void box_link::update_offset(const QPointF& i_oP, int i_iIdx)
 {

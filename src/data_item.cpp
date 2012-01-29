@@ -133,6 +133,8 @@ void diagram_item::setColor(QColor co)
 data_link::data_link() : diagram_item()
 {
 	color = QColor(Qt::black);
+	m_iParentPos = NORTH;
+	m_iChildPos = NORTH;
 }
 
 void data_link::copy_from(const data_link& i_oLink)

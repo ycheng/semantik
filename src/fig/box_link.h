@@ -48,7 +48,6 @@ class box_link : public QGraphicsRectItem
 		void update_ratio();
 
 		bool m_bReentrantLock;
-		int pos_heuristic(const QRectF&, int, const QPointF&);
 
 		// This shows how to abuse the qt containers :-)
 		QList<int> ver;

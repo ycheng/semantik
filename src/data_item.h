@@ -33,13 +33,16 @@ class diagram_item
 class data_link : public diagram_item
 {
 	public:
+	enum Direction { NORTH=1, WEST=2, SOUTH=4, EAST=8, COORD=16 };
 	data_link();
 	QString m_sLink;
 	QString m_sCaption;
+
 	int m_iParent;
 	int m_iChild;
 	int m_iParentPos;
 	int m_iChildPos;
+
 	QPoint m_oStartPoint;
 	QPoint m_oEndPoint;
 	QList<QPoint> m_oOffsets;

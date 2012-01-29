@@ -30,8 +30,6 @@ box_control_point::box_control_point(box_view* i_oParent) : QGraphicsRectItem(),
 	i_oParent->scene()->addItem(this);
 	setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
-	m_iPosition = 0;
-
 	setZValue(110);
 	m_bChanged = false;
 	m_bForced = false;
@@ -129,32 +127,32 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 
 				if (l_oUnder)
 				{
-					m_iPosition = l_oUnder->choose_position(l_o);
+					int l_iPosition = (int) l_oUnder->choose_position(l_o);
 					if (l_oUnder)
 					{
 						if (m_oLink->m_oStartPoint == this)
 						{
-							if (m_iPosition == m_oLink->m_oInnerLink.m_iChildPos && m_oLink->m_oInnerLink.m_iChild == l_oUnder->m_iId)
+							if (l_iPosition == m_oLink->m_oInnerLink.m_iChildPos && m_oLink->m_oInnerLink.m_iChild == l_oUnder->m_iId)
 								goto not_connected;
 						}
 						else if (m_oLink->m_oEndPoint == this)
 						{
-							if (m_iPosition == m_oLink->m_oInnerLink.m_iParentPos && m_oLink->m_oInnerLink.m_iParent == l_oUnder->m_iId)
+							if (l_iPosition == m_oLink->m_oInnerLink.m_iParentPos && m_oLink->m_oInnerLink.m_iParent == l_oUnder->m_iId)
 								goto not_connected;
 						}
 					}
 
-					np = l_oUnder->get_point(m_iPosition);
+					np = l_oUnder->get_point(l_iPosition);
 					if (m_oLink->m_oStartPoint == this)
 					{
 						m_oLink->m_oInnerLink.m_iParent     = l_oUnder->m_iId;
-						m_oLink->m_oInnerLink.m_iParentPos  = m_iPosition;
+						m_oLink->m_oInnerLink.m_iParentPos  = l_iPosition;
 						m_oLink->m_oInnerLink.m_oStartPoint = m_oRealPosition = np;
 					}
 					else if (m_oLink->m_oEndPoint == this)
 					{
 						m_oLink->m_oInnerLink.m_iChild    = l_oUnder->m_iId;
-						m_oLink->m_oInnerLink.m_iChildPos = m_iPosition;
+						m_oLink->m_oInnerLink.m_iChildPos = l_iPosition;
 						m_oLink->m_oInnerLink.m_oEndPoint = m_oRealPosition = np;
 					}
 					update();
@@ -165,11 +163,19 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 
 				if (m_oLink->m_oStartPoint == this)
 				{
+					if (connectable* con = m_oView->m_oItems.value(m_oLink->m_oInnerLink.m_iChild))
+					{
+						m_oLink->m_oInnerLink.m_iParentPos = con->pos_heuristic(np, m_oLink->m_oInnerLink.m_iChildPos);
+					}
 					m_oLink->m_oInnerLink.m_iParent = NO_ITEM;
 					m_oLink->m_oInnerLink.m_oStartPoint = m_oRealPosition = np;
 				}
 				else if (m_oLink->m_oEndPoint == this)
 				{
+					if (connectable* con = m_oView->m_oItems.value(m_oLink->m_oInnerLink.m_iParent))
+					{
+						m_oLink->m_oInnerLink.m_iChildPos = con->pos_heuristic(np, m_oLink->m_oInnerLink.m_iParentPos);
+					}
 					m_oLink->m_oInnerLink.m_iChild = NO_ITEM;
 					m_oLink->m_oInnerLink.m_oEndPoint = m_oRealPosition = np;
 				}
