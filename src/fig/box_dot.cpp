@@ -127,12 +127,29 @@ int box_dot::choose_position(const QPointF& i_oP, int id)
 	double c_y = l_o.y() * r.width();
 	if (qAbs(c_x) > qAbs(c_y))
 	{
-		return (c_x > 0) ? 1 : 3;
+		return (c_x > 0) ? data_link::WEST : data_link::EAST;
 	}
 	else
 	{
-		return (c_y > 0) ? 0 : 2;
+		return (c_y > 0) ? data_link::NORTH : data_link::SOUTH;
 	}
-	return 0;
+	return data_link::NORTH;
+}
+
+QPoint box_dot::get_point(int i_oP)
+{
+	QRectF r = rect();
+	switch (i_oP & data_link::COORD) {
+		case data_link::NORTH:
+			return QPoint(r.x() + r.width() / 2., r.y());
+		case data_link::WEST:
+			return QPoint(r.x(), r.y() + r.height() / 2);
+		case data_link::SOUTH:
+			return QPoint(r.x() + r.width()/2., r.y() + r.height());
+		case data_link::EAST:
+			return QPoint(r.x() + r.width(), r.y() + r.height()/2.);
+	}
+	Q_ASSERT(false);
+	return QPoint(0, 0);
 }
 

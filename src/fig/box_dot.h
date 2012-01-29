@@ -40,7 +40,9 @@ class box_dot : public QGraphicsRectItem, public connectable
 		void update_links();
 
 		QVariant itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue);
-		virtual int choose_position(const QPointF&p, int id=-1);
+		int choose_position(const QPointF&p, int id=-1);
+		QPoint get_point(int position);
+
 };
 
 #endif // BOX_DOT_H
