@@ -425,8 +425,8 @@ void box_link::update_pos()
 	}*/
 	//qDebug()<<"end dump";
 
-	m_oStartPoint->setPos(m_oLst[0]);
-	m_oEndPoint->setPos(m_oLst[m_oLst.length() - 1]);
+	m_oStartPoint->force_position(m_oLst[0]);
+	m_oEndPoint->force_position(m_oLst[m_oLst.length() - 1]);
 
 	update_ratio();
 }

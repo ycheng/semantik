@@ -18,6 +18,8 @@ class box_control_point : public QGraphicsRectItem
 		box_control_point(box_view*);
 		bool m_bIsSegment;
 		bool m_bMoveX;
+
+		int m_iPosition;
 		int m_iOffset;
 		box_link *m_oLink;
 		box_view *m_oView;
@@ -26,8 +28,13 @@ class box_control_point : public QGraphicsRectItem
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
 		QPoint m_oRealPosition;
 		QVariant itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue);
+
+
+		void force_position(const QPoint&);
+
 	private:
 		bool m_bChanged;
+		bool m_bForced;
 };
 
 #endif // BOX_CTRL_H
