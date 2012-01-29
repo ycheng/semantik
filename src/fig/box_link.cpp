@@ -323,6 +323,7 @@ void box_link::update_pos()
 
 	if (connectable *start = m_oView->m_oItems.value(m_oInnerLink.m_iParent))
 	{
+		m_oInnerLink.m_oStartPoint = start->get_point(m_oInnerLink.m_iParentPos);
 		l_oR1 = start->rect();
 	}
 	else
@@ -330,9 +331,11 @@ void box_link::update_pos()
 		QPointF l_oP = m_oInnerLink.m_oStartPoint;
 		l_oR1 = QRectF(l_oP - QPointF(1, 1), l_oP + QPointF(1, 1));
 	}
+	m_oStartPoint->force_position(m_oInnerLink.m_oStartPoint);
 
 	if (connectable *end = m_oView->m_oItems.value(m_oInnerLink.m_iChild))
 	{
+		m_oInnerLink.m_oEndPoint = end->get_point(m_oInnerLink.m_iChildPos);
 		l_oR2 = end->rect();
 	}
 	else
@@ -340,6 +343,7 @@ void box_link::update_pos()
 		QPointF l_oP = m_oInnerLink.m_oEndPoint;
 		l_oR2 = QRectF(l_oP - QPointF(1, 1), l_oP + QPointF(1, 1));
 	}
+	m_oEndPoint->force_position(m_oInnerLink.m_oEndPoint);
 
 	/*
 	connectable *l_oUnder = NULL;
@@ -417,9 +421,6 @@ void box_link::update_pos()
 		//qDebug()<<xx<<yy;
 	}*/
 	//qDebug()<<"end dump";
-
-	m_oStartPoint->force_position(m_oInnerLink.m_oStartPoint);
-	m_oEndPoint->force_position(m_oInnerLink.m_oEndPoint);
 
 	update_ratio();
 }

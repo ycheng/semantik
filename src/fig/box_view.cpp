@@ -809,8 +809,8 @@ void box_view::notify_link_box(int id, data_link* link)
 	if (!l_o)
 	{
 		l_o = new box_link(this);
-		m_oLinks.push_back(l_o);
 	}
+	m_oLinks.push_back(l_o);
 	l_o->m_oInnerLink.copy_from(*link);
 	l_o->m_oLink = link;
 	l_o->update_pos();
@@ -1002,34 +1002,6 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 	QGraphicsView::mouseReleaseEvent(i_oEv);
 
 	m_bPressed = false;
-	/*if (m_oCurrent)
-	{
-		connectable *l_oUnder = NULL;
-		foreach (QGraphicsItem *l_oI1, scene()->items(m_oLastMovePoint))
-		{
-			if (l_oUnder = dynamic_cast<connectable*>(l_oI1))
-			{
-				break;
-			}
-		}
-
-		if (l_oUnder)
-		{
-			if (!m_oCurrent->m_oChild)
-				m_oCurrent->m_oChild = l_oUnder;
-			else
-				m_oCurrent->m_oParent = l_oUnder;
-
-			//see notify_link_box();
-			mem_link_box *ln = new mem_link_box(m_oMediator, m_iId);
-			ln->init(m_oCurrent->m_oParent->m_iId, m_oCurrent->m_iParent, m_oCurrent->m_oChild->m_iId, m_oCurrent->m_iChild);
-			ln->apply();
-		}
-
-		delete m_oCurrent;
-		m_oCurrent = NULL;
-	}
-	else*/
 	{
 		QPointF p = mapToScene(i_oEv->pos()) - m_oLastPoint;
 		if (qAbs(p.x()) > 1 || qAbs(p.y()) > 1)
