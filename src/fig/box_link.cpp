@@ -130,12 +130,13 @@ void box_link::draw_triangle(QPainter *i_oPainter, int i_iPos, QPointF i_oP)
                         }
 			break;
 		case data_link::EAST:
-		default:
 			{
                                 l_oPol<<i_oP+QPointF(yw, -xw);
                                 l_oPol<<i_oP+QPointF(yw,  xw);
                         }
 			break;
+		default:
+			Q_ASSERT(false);
 	}
 	i_oPainter->drawPolygon(l_oPol);
 }
@@ -166,10 +167,11 @@ void box_link::set_rectangles(int ax1, int ax2, int ay1, int ay2, int ap, int bx
 			hor.append((ax1 + ax2) / 2);
 			break;
 		case data_link::EAST:
-		default:
 			hor.append(ax2);
 			ver.append((ay1 + ay2) / 2);
 			break;
+		default:
+			Q_ASSERT(false);
 	}
 	QPair<int,int> init_p(hor.at(0), ver.at(0));
 
@@ -187,10 +189,11 @@ void box_link::set_rectangles(int ax1, int ax2, int ay1, int ay2, int ap, int bx
 			hor.append((bx1 + bx2) / 2);
 			break;
 		case data_link::EAST:
-		default:
 			hor.append(bx2);
 			ver.append((by1 + by2) / 2);
 			break;
+		default:
+			Q_ASSERT(false);
 	}
 	QPair<int, int> end_p(hor.at(1), ver.at(1));
 
