@@ -326,8 +326,29 @@ void box_link::update_pos()
 	// now we are about certain we can work
 
 	QRectF l_oR1, l_oR2;
-	QPointF l_oP = m_oView->m_oLastMovePoint;
+	//QPointF l_oP = m_oView->m_oLastMovePoint;
 
+	if (m_oParent)
+	{
+		l_oR1 = m_oParent->rect();
+	}
+	else
+	{
+		QPointF l_oP = m_oInnerLink.m_oStartPoint;
+		l_oR1 = QRectF(l_oP - QPointF(1, 1), l_oP + QPointF(1, 1));
+	}
+
+	if (m_oChild)
+	{
+		l_oR2 = m_oChild->rect();
+	}
+	else
+	{
+		QPointF l_oP = m_oInnerLink.m_oEndPoint;
+		l_oR2 = QRectF(l_oP - QPointF(1, 1), l_oP + QPointF(1, 1));
+	}
+
+	/*
 	connectable *l_oUnder = NULL;
         foreach (QGraphicsItem *l_oI1, scene()->items(l_oP))
         {
@@ -378,7 +399,7 @@ void box_link::update_pos()
 			}
 			l_oR2 = l_o;
 		}
-	}
+	}*/
 
 	int ax1 = (int) l_oR1.x();
 	int ax2 = (int) (l_oR1.x()+l_oR1.width());

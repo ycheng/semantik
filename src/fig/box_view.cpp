@@ -920,28 +920,24 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 
 			m_oCurrent = new box_link(this);
 			m_oCurrent->m_oParent = kk;
-			m_oCurrent->m_oInnerLink.m_iParentPos = kk->choose_position(m_oLastMovePoint);
 			m_oCurrent->m_oInnerLink.m_oStartPoint = m_oCurrent->m_oInnerLink.m_oEndPoint = p;
+			m_oCurrent->m_oInnerLink.m_iParentPos = kk->choose_position(m_oLastMovePoint);
 
 			m_oCurrent->m_oChild = NULL;
 			m_oCurrent->m_oInnerLink.m_iChildPos = 0;
 
 			mem_link_box *ln = new mem_link_box(m_oMediator, m_iId);
-			//ln->init(m_oCurrent->m_oParent->m_iId, m_oCurrent->m_oInnerLink.m_iParentPos,
-			//	m_oCurrent->m_oChild->m_iId, m_oCurrent->m_oInnerLink.m_iChildPos);
 			ln->link = new data_link();
 			ln->link->m_iParent = kk->m_iId;
 			ln->link->m_iParentPos = m_oCurrent->m_oInnerLink.m_iParentPos;
-			ln->link->m_oStartPoint = p;
-
 			ln->link->m_iChild = NO_ITEM;
 			ln->link->m_iChildPos = 0;
-			ln->link->m_oEndPoint = p;
+			ln->link->m_oStartPoint = ln->link->m_oEndPoint = p;
 
 			ln->apply();
 
+			l_oItem->setSelected(false);
 			m_oCurrent->setSelected(true);
-
 			m_oCurrent = NULL;
 		}
 	}
