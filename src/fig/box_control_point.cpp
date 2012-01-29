@@ -76,7 +76,8 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 	{
 		if (i_oChange == ItemPositionChange)
 		{
-			QPointF np = i_oValue.toPointF();
+			QPointF l_o = i_oValue.toPointF();
+			QPoint np = QPoint(l_o.x(), l_o.y());
 			if (m_bIsSegment)
 			{
 				if (m_bMoveX) {
@@ -119,42 +120,53 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 
 				if (l_oUnder)
 				{
-					m_iPosition = l_oUnder->choose_position(np);
+					m_iPosition = l_oUnder->choose_position(l_o);
 					if (l_oUnder)
 					{
-						if (l_oUnder->m_iId == m_oLink->m_oInnerLink.m_iParent && m_iPosition == m_oLink->m_oInnerLink.m_iParentPos) 
+						if (l_oUnder->m_iId == m_oLink->m_oInnerLink.m_iParent
+							&& m_iPosition == m_oLink->m_oInnerLink.m_iChildPos
+							&& m_oLink->m_oInnerLink.m_iChild != NO_ITEM) 
 						{
-							
-							return m_oRealPosition = QPoint(np.x(), np.y());
+							goto not_connected;
 						}
-						else if (l_oUnder->m_iId == m_oLink->m_oInnerLink.m_iChild && m_iPosition == m_oLink->m_oInnerLink.m_iChildPos)
+						else if (l_oUnder->m_iId == m_oLink->m_oInnerLink.m_iChild
+							&& m_iPosition == m_oLink->m_oInnerLink.m_iParentPos
+							&& m_oLink->m_oInnerLink.m_iParent != NO_ITEM)
 						{
-							return m_oRealPosition = QPoint(np.x(), np.y());
+							goto not_connected;
 						}
 					}
 
-					QPoint p = l_oUnder->get_point(m_iPosition);
+					np = l_oUnder->get_point(m_iPosition);
 					if (m_oLink->m_oStartPoint == this)
 					{
-						m_oLink->m_oInnerLink.m_iParent = l_oUnder->m_iId;
+						m_oLink->m_oInnerLink.m_iParent     = l_oUnder->m_iId;
+						m_oLink->m_oInnerLink.m_iParentPos  = m_iPosition;
+						m_oLink->m_oInnerLink.m_oStartPoint = m_oRealPosition = np;
 					}
 					else if (m_oLink->m_oEndPoint == this)
 					{
-						m_oLink->m_oInnerLink.m_iChild = l_oUnder->m_iId;
+						m_oLink->m_oInnerLink.m_iChild    = l_oUnder->m_iId;
+						m_oLink->m_oInnerLink.m_iChildPos = m_iPosition;
+						m_oLink->m_oInnerLink.m_oEndPoint = m_oRealPosition = np;
 					}
-					return m_oRealPosition = QPoint(int_val2(p.x()), int_val2(p.y()));
+					return np;
 				}
+
+				not_connected:
 
 				if (m_oLink->m_oStartPoint == this)
 				{
 					m_oLink->m_oInnerLink.m_iParent = NO_ITEM;
+					m_oLink->m_oInnerLink.m_oStartPoint = m_oRealPosition = np;
 				}
 				else if (m_oLink->m_oEndPoint == this)
 				{
 					m_oLink->m_oInnerLink.m_iChild = NO_ITEM;
+					m_oLink->m_oInnerLink.m_oEndPoint = m_oRealPosition = np;
 				}
 
-				return m_oRealPosition = QPoint(np.x(), np.y());
+				return np;
 			}
 		}
 		else if (i_oChange == ItemPositionHasChanged)
@@ -166,24 +178,7 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 			}
 			else if (!m_bIsSegment && !m_bForced)
 			{
-				if (m_oLink->m_oStartPoint == this)
-				{
-					if (m_oRealPosition != m_oLink->m_oInnerLink.m_oStartPoint)
-					{
-						m_oLink->m_oInnerLink.m_iParentPos = m_iPosition;
-						m_oLink->m_oInnerLink.m_oStartPoint = m_oRealPosition;
-						m_oLink->update_pos();
-					}
-				}
-				else if (m_oLink->m_oEndPoint == this)
-				{
-					if (m_oRealPosition != m_oLink->m_oInnerLink.m_oEndPoint)
-					{
-						m_oLink->m_oInnerLink.m_iChildPos = m_iPosition;
-						m_oLink->m_oInnerLink.m_oEndPoint = m_oRealPosition;
-						m_oLink->update_pos();
-					}
-				}
+				m_oLink->update_pos();
 			}
 		}
 		else if (i_oChange == ItemSelectedHasChanged)
