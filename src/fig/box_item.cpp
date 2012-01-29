@@ -178,23 +178,55 @@ void box_item::update_links()
 	}
 }
 
+static int RATIO[] = {333, 500, 667, 0};
+#define MUL 64
+
 int box_item::choose_position(const QPointF& i_oP, int id)
 {
 	QRectF r = rect();
 	QPointF l_o = pos() - i_oP + QPointF(r.width()/2, r.height()/2);
 	double c_x = l_o.x() * r.height();
 	double c_y = l_o.y() * r.width();
+
+	int ret = 0;
+	int best = 1<<30;
+	int cand = 0;
 	if (qAbs(c_x) > qAbs(c_y))
 	{
-		return (c_x > 0) ? data_link::WEST : data_link::EAST;
+		ret = (c_x > 0) ? data_link::WEST : data_link::EAST;
+		for (int i=0; i < 10; ++i) {
+			int k = RATIO[i];
+			if (k == 0) break;
+			int val = qAbs((k * r.height() / 1000.) - (i_oP.y() - pos().y()));
+
+			if (val < best)
+			{
+				best = val;
+				cand = k;
+			}
+		}
+		ret += cand * MUL;
 	}
 	else
 	{
-		return (c_y > 0) ? data_link::NORTH : data_link::SOUTH;
+		ret = (c_y > 0) ? data_link::NORTH : data_link::SOUTH;
+		for (int i=0; i < 10; ++i) {
+			int k = RATIO[i];
+			if (k == 0) break;
+			int val = qAbs((k * r.width() / 1000.) - (i_oP.x() - pos().x()));
+
+			if (val < best)
+			{
+				best = val;
+				cand = k;
+			}
+		}
+		ret += cand * MUL;
 	}
-	return data_link::NORTH;
+	return ret;
 }
 
+/*
 QPoint box_item::get_point(int i_oP)
 {
 	QRectF r = rect();
@@ -211,4 +243,24 @@ QPoint box_item::get_point(int i_oP)
 	Q_ASSERT(false);
 	return QPoint(0, 0);
 }
+*/
 
+QPoint box_item::get_point(int i_oP)
+{
+	QRectF r = rect();
+	int ratio = i_oP / MUL;
+
+	if (ratio >= 1000 || ratio <= 0) ratio = 500;
+	switch (i_oP & data_link::COORD) {
+		case data_link::NORTH:
+			return QPoint(r.x() + r.width() * ratio / 1000., r.y());
+		case data_link::WEST:
+			return QPoint(r.x(), r.y() + r.height() * ratio / 1000.);
+		case data_link::SOUTH:
+			return QPoint(r.x() + r.width() * ratio / 1000., r.y() + r.height());
+		case data_link::EAST:
+			return QPoint(r.x() + r.width(), r.y() + r.height() * ratio / 1000.);
+	}
+	Q_ASSERT(false);
+	return QPoint(0, 0);
+}

@@ -161,7 +161,7 @@ QPoint box_fork::get_point(int i_oP)
 	QRectF r = rect();
 	int ratio = i_oP / MUL;
 
-	if (ratio > 1000 || ratio < 0) ratio = 500;
+	if (ratio >= 1000 || ratio <= 0) ratio = 500;
 	switch (i_oP & data_link::COORD) {
 		case data_link::NORTH:
 			return QPoint(r.x() + r.width() * ratio / 1000., r.y());
