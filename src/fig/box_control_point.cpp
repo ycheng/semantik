@@ -123,11 +123,11 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 					QPoint p = l_oUnder->get_point(m_iPosition);
 					if (l_oUnder)
 					{
-						if (l_oUnder == m_oLink->m_oParent && m_iPosition == m_oLink->m_oInnerLink.m_iParentPos) 
+						if (l_oUnder == m_oLink->m_oParent     && m_iPosition == m_oLink->m_oInnerLink.m_iParentPos) 
 						{
 							return m_oRealPosition = QPoint(np.x(), np.y());
 						}
-						else if (l_oUnder == m_oLink->m_oChild && m_oLink->m_oInnerLink.m_iChildPos == m_iPosition)
+						else if (l_oUnder == m_oLink->m_oChild && m_iPosition == m_oLink->m_oInnerLink.m_iChildPos)
 						{
 							return m_oRealPosition = QPoint(np.x(), np.y());
 						}
@@ -141,7 +141,6 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 					{
 						m_oLink->m_oInnerLink.m_iChild = NO_ITEM;
 					}
-
 					return m_oRealPosition = QPoint(int_val2(p.x()), int_val2(p.y()));
 				}
 				return m_oRealPosition = QPoint(np.x(), np.y());
@@ -207,8 +206,12 @@ void box_control_point::init_pos()
 void box_control_point::force_position(const QPoint& i_oP)
 {
 	m_bForced = true;
-	m_oRealPosition = i_oP;
+	if (m_oRealPosition != i_oP)
+	{
+		m_oRealPosition = i_oP;
+	}
 	setPos(i_oP);
+	//}
 	m_bForced = false;
 }
 

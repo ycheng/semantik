@@ -135,6 +135,18 @@ data_link::data_link() : diagram_item()
 	color = QColor(Qt::black);
 }
 
+void data_link::copy_from(const data_link& i_oLink)
+{
+	m_sLink       = i_oLink.m_sLink;
+	m_sCaption    = i_oLink.m_sCaption;
+	m_iParent     = i_oLink.m_iParent;
+	m_iChild      = i_oLink.m_iParent;
+	m_iParentPos  = i_oLink.m_iParentPos;
+	m_iChildPos   = i_oLink.m_iChildPos;
+	m_oStartPoint = i_oLink.m_oStartPoint;
+	m_oEndPoint   = i_oLink.m_oEndPoint;
+	m_oOffsets    = i_oLink.m_oOffsets;
+}
 
 /*
 #include "main.moc"

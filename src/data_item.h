@@ -43,6 +43,8 @@ class data_link : public diagram_item
 	QPoint m_oStartPoint;
 	QPoint m_oEndPoint;
 	QList<QPoint> m_oOffsets;
+
+	void copy_from(const data_link&);
 };
 
 class data_box : public diagram_item

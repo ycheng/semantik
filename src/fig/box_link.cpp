@@ -425,8 +425,8 @@ void box_link::update_pos()
 	}*/
 	//qDebug()<<"end dump";
 
-	m_oStartPoint->force_position(m_oLst[0]);
-	m_oEndPoint->force_position(m_oLst[m_oLst.length() - 1]);
+	m_oStartPoint->force_position(m_oInnerLink.m_oStartPoint);
+	m_oEndPoint->force_position(m_oInnerLink.m_oEndPoint);
 
 	update_ratio();
 }
@@ -545,10 +545,12 @@ QPainterPath box_link::shape() const
 
 void box_link::set_link(data_link* link)
 {
-	m_oInnerLink.m_iParentPos = link->m_iParentPos;
-	m_oInnerLink.m_iChildPos = link->m_iChildPos;
-	m_oChild = m_oView->m_oItems.value(link->m_iChild);
-	m_oParent = m_oView->m_oItems.value(link->m_iParent);
+	m_oInnerLink.copy_from(*link);
+
+	//m_oInnerLink.m_iParentPos = link->m_iParentPos;
+	//m_oInnerLink.m_iChildPos = link->m_iChildPos;
+	//m_oChild = m_oView->m_oItems.value(link->m_iChild);
+	//m_oParent = m_oView->m_oItems.value(link->m_iParent);
 	m_oLink = link;
 }
 
@@ -562,6 +564,7 @@ QVariant box_link::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 			if (isSelected())
 			{
 				setZValue(102);
+				// FIXME not here
 				while (m_oControlPoints.size() < m_oGood.size() - 3)
 				{
 					m_oControlPoints.append(new box_control_point(m_oView));
