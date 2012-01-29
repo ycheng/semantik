@@ -47,13 +47,22 @@ void box_control_point::paint(QPainter *painter, const QStyleOptionGraphicsItem 
 	l_oPen.setColor(Qt::black);
 	l_oPen.setCosmetic(false);
 	l_oPen.setWidth(1);
+	painter->setPen(l_oPen);
 	if (m_bIsSegment)
 	{
 		painter->setBrush(QColor("#FFFF00"));
 	}
 	else
 	{
-		painter->setBrush(QColor("#00FF00"));
+		if (
+			(m_oLink->m_oStartPoint == this && m_oLink->m_oInnerLink.m_iParent != NO_ITEM) 
+			||
+			(m_oLink->m_oEndPoint == this && m_oLink->m_oInnerLink.m_iChild != NO_ITEM))
+		{
+			painter->setBrush(QColor(Qt::green));
+		}
+		else
+			painter->setBrush(QColor(Qt::red));
 	}
 	painter->drawRect(l_oRect);
 	painter->restore();
@@ -148,6 +157,7 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 						m_oLink->m_oInnerLink.m_iChildPos = m_iPosition;
 						m_oLink->m_oInnerLink.m_oEndPoint = m_oRealPosition = np;
 					}
+					update();
 					return np;
 				}
 
@@ -164,6 +174,7 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 					m_oLink->m_oInnerLink.m_oEndPoint = m_oRealPosition = np;
 				}
 
+				update();
 				return np;
 			}
 		}
