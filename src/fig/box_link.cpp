@@ -38,6 +38,15 @@ box_link::box_link(box_view* i_oParent) : QGraphicsRectItem()
 	m_oEndPoint->m_bIsSegment = false;
 	m_oEndPoint->m_oLink = this;
 	m_oEndPoint->setZValue(117);
+
+	for (int i=0; i < 7; ++i)
+	{
+		box_control_point* b = new box_control_point(m_oView);
+		b->hide();
+		b->m_oLink = this;
+		b->m_iOffset = i;
+		m_oControlPoints.append(b);
+	}
 }
 
 box_link::~box_link()
@@ -510,6 +519,23 @@ void box_link::update_ratio()
 	// now we have the size
 	setRect(QRectF(mx1, my1, qAbs(mx2 - mx1), qAbs(my2 - my1)));
 
+	for (int i = 0; i < m_oControlPoints.size(); ++i)
+	{
+		box_control_point * b = m_oControlPoints.at(i);
+		if (i < m_oGood.size() - 3)
+		{
+			b->init_pos();
+
+			if (isSelected())
+				b->show();
+			else
+				b->hide();
+		}
+		else
+		{
+			b->hide();
+		}
+	}
 
 	QPainterPath p;
 	for (int i = 0; i < m_oGood.size() - 1; ++i)
@@ -547,33 +573,16 @@ QVariant box_link::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 			if (isSelected())
 			{
 				setZValue(102);
-				// FIXME not here
-				while (m_oControlPoints.size() < m_oGood.size() - 3)
-				{
-					m_oControlPoints.append(new box_control_point(m_oView));
-				}
-				for (int i = 0; i < m_oGood.size() - 3; ++i)
-				{
-					box_control_point * b = m_oControlPoints.at(i);
-					b->m_oLink = this;
-					b->m_iOffset = i;
-					b->init_pos();
-					b->show();
-				}
-
 				m_oStartPoint->show();
 				m_oEndPoint->show();
 			}
 			else
 			{
 				setZValue(98);
-				foreach(box_control_point *b, m_oControlPoints)
-				{
-					b->hide();
-				}
 				m_oStartPoint->hide();
 				m_oEndPoint->hide();
 			}
+			update_pos();
 		}
 	}
 
