@@ -109,7 +109,7 @@ void box_link::draw_triangle(QPainter *i_oPainter, int i_iPos, QPointF i_oP)
 {
 	QPolygonF l_oPol;
 	l_oPol<<i_oP;
-	switch (i_iPos)
+	switch (i_iPos & data_link::COORD)
 	{
 		case data_link::NORTH:
 			{
