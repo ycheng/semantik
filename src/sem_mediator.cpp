@@ -62,6 +62,7 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		//m_oMediator->m_sOrganization = i_oAttrs.value("organization");
 		//m_oMediator->m_sEmail = i_oAttrs.value("email");
 		m_oMediator->m_sHints = i_oAttrs.value(notr("hints"));
+		m_iVersion = i_oAttrs.value(notr("version")).toInt();
 
 		if (i_oAttrs.value(notr("location")).size()) m_oMediator->m_sOutDir = i_oAttrs.value(notr("location"));
 		if (i_oAttrs.value(notr("dir")).size()) m_oMediator->m_sOutProject = i_oAttrs.value(notr("dir"));

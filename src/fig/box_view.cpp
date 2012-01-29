@@ -81,6 +81,17 @@ bool box_reader::startElement(const QString&, const QString&, const QString& i_s
 		link->m_iParent    = i_oAttrs.value(QObject::trUtf8("c1")).toInt();
 		link->m_iChildPos  = i_oAttrs.value(QObject::trUtf8("p2")).toInt();
 		link->m_iChild     = i_oAttrs.value(QObject::trUtf8("c2")).toInt();
+
+		if (link->m_iChildPos == 0) link->m_iChildPos = data_link::NORTH;
+		if (link->m_iChildPos == 1) link->m_iChildPos = data_link::WEST;
+		if (link->m_iChildPos == 2) link->m_iChildPos = data_link::SOUTH;
+		if (link->m_iChildPos == 3) link->m_iChildPos = data_link::EAST;
+
+		if (link->m_iParentPos == 0) link->m_iParentPos = data_link::NORTH;
+		if (link->m_iParentPos == 1) link->m_iParentPos = data_link::WEST;
+		if (link->m_iParentPos == 2) link->m_iParentPos = data_link::SOUTH;
+		if (link->m_iParentPos == 3) link->m_iParentPos = data_link::EAST;
+
 		link->pen_style = (Qt::PenStyle) i_oAttrs.value(QObject::trUtf8("sl")).toInt();
 		link->border_width = i_oAttrs.value(QObject::trUtf8("wl")).toInt();
 		m_oCurrent = link;
