@@ -929,12 +929,7 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 
 			mem_link_box *ln = new mem_link_box(m_oMediator, m_iId);
 			ln->link = new data_link();
-			ln->link->m_iParent = kk->m_iId;
-			ln->link->m_iParentPos = m_oCurrent->m_oInnerLink.m_iParentPos;
-			ln->link->m_iChild = NO_ITEM;
-			ln->link->m_iChildPos = data_link::NORTH;
-			ln->link->m_oStartPoint = ln->link->m_oEndPoint = p;
-
+			ln->link->copy_from(m_oCurrent->m_oInnerLink);
 			ln->apply();
 
 			l_oItem->setSelected(false);
