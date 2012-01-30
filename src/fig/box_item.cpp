@@ -226,25 +226,6 @@ int box_item::choose_position(const QPointF& i_oP, int id)
 	return ret;
 }
 
-/*
-QPoint box_item::get_point(int i_oP)
-{
-	QRectF r = rect();
-	switch (i_oP & data_link::COORD) {
-		case data_link::NORTH:
-			return QPoint(r.x() + r.width() / 2., r.y());
-		case data_link::WEST:
-			return QPoint(r.x(), r.y() + r.height() / 2);
-		case data_link::SOUTH:
-			return QPoint(r.x() + r.width()/2., r.y() + r.height());
-		case data_link::EAST:
-			return QPoint(r.x() + r.width(), r.y() + r.height()/2.);
-	}
-	Q_ASSERT(false);
-	return QPoint(0, 0);
-}
-*/
-
 QPoint box_item::get_point(int i_oP)
 {
 	QRectF r = rect();
@@ -264,3 +245,4 @@ QPoint box_item::get_point(int i_oP)
 	Q_ASSERT(false);
 	return QPoint(0, 0);
 }
+

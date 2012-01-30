@@ -165,7 +165,8 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 				{
 					if (connectable* con = m_oView->m_oItems.value(m_oLink->m_oInnerLink.m_iChild))
 					{
-						m_oLink->m_oInnerLink.m_iParentPos = con->pos_heuristic(np, m_oLink->m_oInnerLink.m_iChildPos);
+						QPointF bot = con->rect().bottomLeft();
+						m_oLink->m_oInnerLink.m_iParentPos = con->pos_heuristic(np - QPoint(bot.x(), bot.y()), m_oLink->m_oInnerLink.m_iChildPos);
 					}
 					m_oLink->m_oInnerLink.m_iParent = NO_ITEM;
 					m_oLink->m_oInnerLink.m_oStartPoint = m_oRealPosition = np;
@@ -174,7 +175,8 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 				{
 					if (connectable* con = m_oView->m_oItems.value(m_oLink->m_oInnerLink.m_iParent))
 					{
-						m_oLink->m_oInnerLink.m_iChildPos = con->pos_heuristic(np, m_oLink->m_oInnerLink.m_iParentPos);
+						QPointF bot = con->rect().bottomLeft();
+						m_oLink->m_oInnerLink.m_iChildPos = con->pos_heuristic(np - QPoint(bot.x(), bot.y()), m_oLink->m_oInnerLink.m_iParentPos);
 					}
 					m_oLink->m_oInnerLink.m_iChild = NO_ITEM;
 					m_oLink->m_oInnerLink.m_oEndPoint = m_oRealPosition = np;
