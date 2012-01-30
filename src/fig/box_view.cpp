@@ -840,6 +840,10 @@ void box_view::notify_unlink_box(int id, data_link* link)
 	}
 }
 
+void box_view::notify_change_link_box(int id, data_link*link)
+{
+
+}
 
 void box_view::wheelEvent(QWheelEvent *i_oEvent)
 {
@@ -1007,12 +1011,6 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 		m_bScroll = false;
 		viewport()->setCursor(Qt::ArrowCursor);
 		return;
-	}
-
-	if (m_oCurrent)
-	{
-		m_oCurrent->m_oLink->copy_from(m_oCurrent->m_oInnerLink);
-		m_oCurrent = NULL;
 	}
 
 	QGraphicsView::mouseReleaseEvent(i_oEv);

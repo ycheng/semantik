@@ -116,5 +116,19 @@ class mem_pos_box : public mem_command {
 		IType type() { return POS_BOX; }
 };
 
+class mem_change_link_box : public mem_command {
+	public:
+		mem_change_link_box(sem_mediator*, int id);
+
+		int m_iId;
+		data_link prev;
+		data_link next;
+		data_link *link;
+
+		void undo();
+		void redo();
+		IType type() { return CHANGE_LINK_BOX; }
+};
+
 #endif
 

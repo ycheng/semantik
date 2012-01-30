@@ -120,6 +120,7 @@ class box_view : public QGraphicsView
 		void notify_unlink_box(int id, data_link* link);
 		void notify_box_props(int id, const QList<diagram_item*>&);
 		void notify_pos_box(int, const QList<data_box*>&);
+		void notify_change_link_box(int id, data_link*link);
 
 		void notify_select(const QList<int>& unsel, const QList<int>& sel);
 		void notify_export_item(int);

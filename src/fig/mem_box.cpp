@@ -223,4 +223,20 @@ void mem_pos_box::undo() {
 	undo_dirty();
 }
 
+///////////////////////////////////////////////////////////////////
+
+mem_change_link_box::mem_change_link_box(sem_mediator* mod, int id) : mem_command(mod)
+{
+	m_iId = id;
+}
+
+void mem_change_link_box::redo() {
+	model->notify_change_link_box(m_iId, link);
+	redo_dirty();
+}
+
+void mem_change_link_box::undo() {
+	model->notify_change_link_box(m_iId, link);
+	undo_dirty();
+}
 

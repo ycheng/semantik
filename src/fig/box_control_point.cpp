@@ -67,14 +67,20 @@ void box_control_point::paint(QPainter *painter, const QStyleOptionGraphicsItem 
 }
 
 void box_control_point::mousePressEvent(QGraphicsSceneMouseEvent* e) {
-	// FIXME
-	qDebug()<<"FIXME mouse press event";
+	//qDebug()<<"FIXME mouse press event";
 	QGraphicsRectItem::mousePressEvent(e);
 }
 
 void box_control_point::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
-	// FIXME undo changes
-	qDebug()<<"FIXME mouse release event";
+	if (m_oView->m_oCurrent)
+	{
+		m_oView->m_oCurrent->m_oLink->copy_from(m_oView->m_oCurrent->m_oInnerLink);
+		m_oView->m_oCurrent = NULL;
+	}
+	else
+	{
+		qDebug()<<"add the command here";
+	}
 	QGraphicsRectItem::mouseReleaseEvent(e);
 }
 
