@@ -48,6 +48,7 @@ class data_link : public diagram_item
 	QList<QPoint> m_oOffsets;
 
 	void copy_from(const data_link&);
+	bool equals(const data_link&);
 };
 
 class data_box : public diagram_item

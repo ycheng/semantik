@@ -842,7 +842,15 @@ void box_view::notify_unlink_box(int id, data_link* link)
 
 void box_view::notify_change_link_box(int id, data_link*link)
 {
-
+	foreach (box_link *cur, m_oLinks)
+	{
+		if (cur->m_oLink == link)
+		{
+			cur->m_oInnerLink.copy_from(*cur->m_oLink);
+			cur->update_pos();
+			break;
+		}
+	}
 }
 
 void box_view::wheelEvent(QWheelEvent *i_oEvent)

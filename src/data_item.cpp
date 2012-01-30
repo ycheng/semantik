@@ -148,6 +148,46 @@ void data_link::copy_from(const data_link& i_oLink)
 	m_oStartPoint = i_oLink.m_oStartPoint;
 	m_oEndPoint   = i_oLink.m_oEndPoint;
 	m_oOffsets    = i_oLink.m_oOffsets;
+
+	border_width  = i_oLink.border_width;
+	pen_style     = i_oLink.pen_style;
+	color         = i_oLink.color;
+}
+
+bool data_link::equals(const data_link& i_oLink)
+{
+	if (m_iParent != NO_ITEM)
+	{
+		if (m_iParent != i_oLink.m_iParent || m_iParentPos != i_oLink.m_iParentPos)
+			return false;
+	}
+	else
+	{
+		if (m_oStartPoint != i_oLink.m_oStartPoint)
+			return false;
+	}
+
+	if (m_iChild != NO_ITEM)
+	{
+		if (m_iChild != i_oLink.m_iChild || m_iChildPos != i_oLink.m_iChildPos)
+			return false;
+	}
+	else
+	{
+		if (m_oEndPoint != i_oLink.m_oEndPoint)
+			return false;
+	}
+
+	if (m_oOffsets.size() != i_oLink.m_oOffsets.size())
+		return false;
+
+	for (int i = 0; i < m_oOffsets.size(); ++i)
+	{
+		if (m_oOffsets.at(i) != i_oLink.m_oOffsets.at(i))
+			return false;
+	}
+
+	return true;
 }
 
 /*

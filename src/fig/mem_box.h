@@ -118,7 +118,7 @@ class mem_pos_box : public mem_command {
 
 class mem_change_link_box : public mem_command {
 	public:
-		mem_change_link_box(sem_mediator*, int id);
+		mem_change_link_box(sem_mediator*, int);
 
 		int m_iId;
 		data_link prev;

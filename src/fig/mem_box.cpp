@@ -231,11 +231,13 @@ mem_change_link_box::mem_change_link_box(sem_mediator* mod, int id) : mem_comman
 }
 
 void mem_change_link_box::redo() {
+	link->copy_from(next);
 	model->notify_change_link_box(m_iId, link);
 	redo_dirty();
 }
 
 void mem_change_link_box::undo() {
+	link->copy_from(prev);
 	model->notify_change_link_box(m_iId, link);
 	undo_dirty();
 }

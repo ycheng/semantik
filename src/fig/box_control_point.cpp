@@ -14,6 +14,7 @@
 #include "box_control_point.h"
 #include "box_view.h"
 #include "box_control_point.h"
+#include "mem_box.h"
  #include "box_link.h"
 #include "data_item.h"
 #include "sem_mediator.h"
@@ -79,7 +80,14 @@ void box_control_point::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 	}
 	else
 	{
-		qDebug()<<"add the command here";
+		if (!m_oLink->m_oLink->equals(m_oLink->m_oInnerLink))
+		{
+			mem_change_link_box* mem = new mem_change_link_box(m_oView->m_oMediator, m_oView->m_iId);
+			mem->link = m_oLink->m_oLink;
+			mem->prev.copy_from(*m_oLink->m_oLink);
+			mem->next.copy_from(m_oLink->m_oInnerLink);
+			mem->apply();
+		}
 	}
 	QGraphicsRectItem::mouseReleaseEvent(e);
 }
@@ -102,7 +110,7 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 						np.setY((m_oLink->m_oGood[m_iOffset + 1].y() + m_oLink->m_oGood[m_iOffset + 2].y()) / 2.);
 						if (m_oLink->m_oGood[m_iOffset + 1].x() != dec)
 						{
-							m_oLink->m_oLink->m_oOffsets[m_iOffset].setX(dec - m_oLink->m_oLst[m_iOffset + 1].x());
+							m_oLink->m_oInnerLink.m_oOffsets[m_iOffset].setX(dec - m_oLink->m_oLst[m_iOffset + 1].x());
 							m_bChanged = true;
 						}
 					}
@@ -114,7 +122,7 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 						np.setX((m_oLink->m_oGood[m_iOffset + 1].x() + m_oLink->m_oGood[m_iOffset + 2].x()) / 2.);
 						if (m_oLink->m_oGood[m_iOffset + 1].y() != dec)
 						{
-							m_oLink->m_oLink->m_oOffsets[m_iOffset].setY(dec - m_oLink->m_oLst[m_iOffset + 1].y());
+							m_oLink->m_oInnerLink.m_oOffsets[m_iOffset].setY(dec - m_oLink->m_oLst[m_iOffset + 1].y());
 							m_bChanged = true;
 						}
 					}
