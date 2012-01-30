@@ -287,13 +287,13 @@ void box_link::update_pos()
 		l_oR1 = QRectF(l_oP - QPointF(1, 1), l_oP + QPointF(1, 1));
 		switch (m_oInnerLink.m_iParentPos & data_link::COORD) {
 			case data_link::NORTH:
-				apos = QPoint(l_oP.x(), l_oP.y() + 1);
+				apos = QPoint(l_oP.x(), l_oP.y() - 1);
 				break;
 			case data_link::WEST:
 				apos = QPoint(l_oP.x() - 1, l_oP.y());
 				break;
 			case data_link::SOUTH:
-				apos = QPoint(l_oP.x(), l_oP.y() - 1);
+				apos = QPoint(l_oP.x(), l_oP.y() + 1);
 				break;
 			case data_link::EAST:
 				apos = QPoint(l_oP.x() + 1, l_oP.y());
@@ -316,13 +316,13 @@ void box_link::update_pos()
 		l_oR2 = QRectF(l_oP - QPointF(1, 1), l_oP + QPointF(1, 1));
 		switch (m_oInnerLink.m_iChildPos & data_link::COORD) {
 			case data_link::NORTH:
-				bpos = QPoint(l_oP.x(), l_oP.y() + 1);
+				bpos = QPoint(l_oP.x(), l_oP.y() - 1);
 				break;
 			case data_link::WEST:
 				bpos = QPoint(l_oP.x() - 1, l_oP.y());
 				break;
 			case data_link::SOUTH:
-				bpos = QPoint(l_oP.x(), l_oP.y() - 1);
+				bpos = QPoint(l_oP.x(), l_oP.y() + 1);
 				break;
 			case data_link::EAST:
 				bpos = QPoint(l_oP.x() + 1, l_oP.y());
