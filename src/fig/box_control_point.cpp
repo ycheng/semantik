@@ -66,16 +66,17 @@ void box_control_point::paint(QPainter *painter, const QStyleOptionGraphicsItem 
 	painter->restore();
 }
 
-/*
 void box_control_point::mousePressEvent(QGraphicsSceneMouseEvent* e) {
-	setZValue(100);
+	// FIXME
+	qDebug()<<"FIXME mouse press event";
 	QGraphicsRectItem::mousePressEvent(e);
 }
 
 void box_control_point::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
-	setZValue(99);
+	// FIXME undo changes
+	qDebug()<<"FIXME mouse release event";
 	QGraphicsRectItem::mouseReleaseEvent(e);
-}*/
+}
 
 QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue)
 {

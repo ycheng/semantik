@@ -1,14 +1,16 @@
 Priority:
 ---------
 
+resize diagram elements
 link arrows
+  undo link changes
   direct links
-  arrow types
-  move link positions
+  arrow properties (styles)
+
 resize the diagram scene properly
-display pictures on the canvas
+
+display pictures on the canvas...
 fix the mouse interaction with the items (select text on canvas and diagram)
-load previous semantik documents
 
 Ideas:
 ------

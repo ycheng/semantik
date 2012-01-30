@@ -28,6 +28,8 @@ class box_control_point : public QGraphicsRectItem
 		QPoint m_oRealPosition;
 		QVariant itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue);
 
+		void mousePressEvent(QGraphicsSceneMouseEvent* e);
+		void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
 
 		void force_position(const QPoint&);
 
