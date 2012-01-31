@@ -6,6 +6,7 @@
 #include <QGraphicsRectItem>
 #include <QBrush>
 #include "CON.h"
+#include "res:zable.h"
 #include "con.h"
 
 #define OFF 3
@@ -16,7 +17,7 @@ class QTextDocument;
 class box_view;
 class data_item;
 class data_box;
-class box_fork : public QGraphicsRectItem, public connectable
+class box_fork : public QGraphicsRectItem, public connectable, public resizable
 {
 	public:
 		box_fork(box_view*, int i_iId);

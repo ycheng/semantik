@@ -13,6 +13,7 @@
 #include <QTextDocument>
 #include "box_fork.h"
 #include "data_item.h"
+ #include "res:zable.h"
 #include "box_view.h"
  #include "box_link.h"
 #include "sem_mediator.h"
@@ -20,7 +21,7 @@
 #define PAD 2
 #define GRID 10
 
-box_fork::box_fork(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), connectable(), m_oView(i_oParent)
+box_fork::box_fork(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), connectable(), resizable(i_oParent), m_oView(i_oParent)
 {
 	m_iId = i_iId;
 	m_oItem = m_oView->m_oMediator->m_oItems[m_oView->m_iId];
