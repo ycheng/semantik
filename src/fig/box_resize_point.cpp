@@ -20,20 +20,17 @@
 #include "sem_mediator.h"
 
 #define PAD 1
-#define CTRLSIZE 8
 #define GRID 10
 
-box_resize_point::box_resize_point(box_view* i_oParent) : QGraphicsRectItem(), m_oView(i_oParent)
+box_resize_point::box_resize_point(box_view* i_oView) : QGraphicsRectItem()
 {
-	setRect(-CTRLSIZE/2., -CTRLSIZE/2., CTRLSIZE, CTRLSIZE);
-	i_oParent->scene()->addItem(this);
 	setCacheMode(QGraphicsItem::DeviceCoordinateCache);
-
+	m_oView = i_oView;
 	setZValue(110);
 	m_bForced = false;
-	//m_oBox = NULL;
 	m_iPosition = 0;
 	setFlags(ItemIsMovable | ItemSendsGeometryChanges);
+	i_oView->scene()->addItem(this);
 }
 
 void box_resize_point::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

@@ -320,11 +320,7 @@ void box_view::sync_view()
 		{
 			box_fork *l_o = new box_fork(this, box->m_iId);
 			m_oItems[box->m_iId] = l_o;
-			QSizeF size(FORK_LENGTH, FORK_WIDTH);
-			if (box->m_bIsVertical)
-				size.transpose();
 			l_o->setPos(QPointF(box->m_iXX, box->m_iYY));
-			l_o->setRect(QRectF(QPointF(0, 0), size));
 			l_o->update_data();
 		}
 		else
@@ -793,12 +789,17 @@ void box_view::notify_add_box(int id, int box)
 	}
 	else if (db->m_iType == data_box::ACTIVITY_PARALLEL)
 	{
-		box_fork *tmp = new box_fork(this, box);
-		QSizeF size(FORK_LENGTH, FORK_WIDTH);
 		if (db->m_bIsVertical)
-			size.transpose();
-		tmp->setRect(QRectF(QPointF(0, 0), size));
-		l_o = tmp;
+		{
+			db->m_iHH = FORK_LENGTH;
+			db->m_iWW = FORK_WIDTH;
+		}
+		else
+		{
+			db->m_iWW = FORK_LENGTH;
+			db->m_iHH = FORK_WIDTH;
+		}
+		l_o = new box_fork(this, box);
 	}
 	Q_ASSERT(l_o != NULL);
 	m_oItems[box] = l_o;

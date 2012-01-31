@@ -20,7 +20,7 @@
 #define PAD 2
 #define GRID 10
 
-box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oView(i_oParent), resizable(m_oView), connectable()
+box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oView(i_oParent), resizable(), connectable()
 {
 	m_iId = i_iId;
 	setPlainText("");

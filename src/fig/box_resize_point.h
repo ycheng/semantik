@@ -21,7 +21,6 @@ class box_resize_point : public QGraphicsRectItem
 		bool m_bMoveX;
 
 		int m_iPosition;
-		//resizable *m_oBox;
 		box_view *m_oView;
 
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
