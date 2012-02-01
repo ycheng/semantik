@@ -37,12 +37,12 @@
  #include "mem_box.h"
 
 
-#define ALIGN_LEFT
-#define ALIGN_CENTER
-#define ALIGN_RIGHT
-#define ALIGN_TOP
-#define ALIGN_MIDDLE
-#define ALIGN_BOTTOM
+#define ALIGN_LEFT 22
+#define ALIGN_CENTER 33
+#define ALIGN_RIGHT 44
+#define ALIGN_TOP 55
+#define ALIGN_MIDDLE 66
+#define ALIGN_BOTTOM 77
 
 
 class box_reader : public QXmlDefaultHandler
@@ -908,7 +908,69 @@ void box_view::keyReleaseEvent(QKeyEvent *i_oEvent)
 
 void box_view::slot_align()
 {
-	qDebug()<<"TODO";
+	int l_i = ((QAction*) QObject::sender())->data().toInt();
+
+	int n = 0;
+	qreal best = 0;
+	if (l_i == ALIGN_LEFT || l_i == ALIGN_TOP)
+		best =  99999999;
+	else if (l_i == ALIGN_BOTTOM || l_i == ALIGN_RIGHT)
+		best = -99999999;
+
+	foreach (QGraphicsItem* l_oItem, scene()->selectedItems())
+	{
+		if (connectable* c = dynamic_cast<connectable*>(l_oItem))
+		{
+			n++;
+			QRectF r = c->rect();
+			if (l_i == ALIGN_LEFT)
+				best = qMin(r.x(), best);
+			if (l_i == ALIGN_RIGHT)
+				best = qMin(r.x() + r.width(), best);
+			if (l_i == ALIGN_BOTTOM)
+				best = qMin(r.y() , best);
+			if (l_i == ALIGN_TOP)
+				best = qMax(r.y() + r.height(), best);
+			if (l_i == ALIGN_CENTER)
+				best = r.x() + r.width() / 2.; // TODO do not pick one randomly
+			if (l_i == ALIGN_MIDDLE)
+				best = r.y() + r.height()/2.;
+		}
+	}
+	mem_pos_box *mem = new mem_pos_box(m_oMediator, m_iId);
+
+	foreach (QGraphicsItem* l_oItem, scene()->selectedItems())
+	{
+		if (connectable* c = dynamic_cast<connectable*>(l_oItem))
+		{
+			data_box *box = c->m_oBox;
+			mem->prev_values[box] = QPointF(box->m_iXX, box->m_iYY);
+			switch (l_i)
+			{
+				case ALIGN_LEFT:
+					mem->next_values[box] = QPoint(best, box->m_iYY);
+					break;
+				case ALIGN_RIGHT:
+					mem->next_values[box] = QPoint(best - box->m_iWW, box->m_iYY);
+					break;
+				case ALIGN_TOP:
+					mem->next_values[box] = QPoint(box->m_iXX, best);
+					break;
+				case ALIGN_BOTTOM:
+					mem->next_values[box] = QPoint(box->m_iXX, best - box->m_iHH);
+					break;
+				case ALIGN_CENTER:
+					mem->next_values[box] = QPoint(best - box->m_iWW / 2., box->m_iYY);
+					break;
+				case ALIGN_MIDDLE:
+					mem->next_values[box] = QPoint(box->m_iXX, best - box->m_iHH / 2.);
+					break;
+				default:
+					Q_ASSERT(false);
+			}
+		}
+	}
+	mem->apply();
 }
 
 void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
