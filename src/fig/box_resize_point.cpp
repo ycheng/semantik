@@ -70,7 +70,7 @@ QVariant box_resize_point::itemChange(GraphicsItemChange i_oChange, const QVaria
 {
 	if (scene())
 	{
-		if (i_oChange == ItemPositionChange)
+		/*if (i_oChange == ItemPositionChange)
 		{
 			QPointF l_o = i_oValue.toPointF();
 			QPoint np = QPoint(int_val2(l_o.x()), int_val2(l_o.y()));
@@ -85,7 +85,7 @@ QVariant box_resize_point::itemChange(GraphicsItemChange i_oChange, const QVaria
 				setZValue(105);
 			else
 				setZValue(104);
-		}
+		}*/
 	}
 	return QGraphicsItem::itemChange(i_oChange, i_oValue);
 }

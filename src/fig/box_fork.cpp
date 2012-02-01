@@ -40,20 +40,20 @@ box_fork::box_fork(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), connec
 	{
 		size.transpose();
 		m_oTop = new box_resize_point(m_oView);
-		m_oTop->setRect(0, -CTRLSIZE, CTRLSIZE, CTRLSIZE);
+		m_oTop->setRect(-CTRLSIZE/2., 0, CTRLSIZE, CTRLSIZE);
 		m_oTop->hide();
 		m_oDown = new box_resize_point(m_oView);
-		m_oDown->setRect(0, 0, CTRLSIZE, CTRLSIZE);
+		m_oDown->setRect(-CTRLSIZE/2., -CTRLSIZE, CTRLSIZE, CTRLSIZE);
 		m_oDown->hide();
 		m_oLeft = m_oRight = NULL;
 	}
 	else
 	{
 		m_oLeft = new box_resize_point(m_oView);
-		m_oLeft->setRect(0, 0, CTRLSIZE, CTRLSIZE);
+		m_oLeft->setRect(0, -CTRLSIZE/2., CTRLSIZE, CTRLSIZE);
 		m_oLeft->hide();
 		m_oRight = new box_resize_point(m_oView);
-		m_oRight->setRect(-CTRLSIZE, 0, CTRLSIZE, CTRLSIZE);
+		m_oRight->setRect(-CTRLSIZE, -CTRLSIZE/2., CTRLSIZE, CTRLSIZE);
 		m_oRight->hide();
 		m_oTop = m_oDown = NULL;
 	}
@@ -90,6 +90,25 @@ void box_fork::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 void box_fork::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 	setZValue(99);
 	QGraphicsRectItem::mouseReleaseEvent(e);
+
+	QRectF r = rect();
+	int px = m_oBox->m_iXX;
+	int py = m_oBox->m_iYY;
+	int ww = m_oBox->m_iWW;
+	int hh = m_oBox->m_iHH;
+	if (m_oBox->m_bIsVertical)
+	{
+		m_oTop ->setPos(QPoint(px + ww/2., py));
+		m_oDown->setPos(QPoint(px + ww/2., py + hh));
+	}
+	else
+	{
+		//m_oLeft ->force_position(QPoint(px, py + hh / 2.));
+		//m_oRight->force_position(QPoint(px + ww, py + hh / 2.));
+		m_oLeft ->setPos(QPoint(px, py + hh / 2.));
+		m_oRight->setPos(QPoint(px + ww, py + hh / 2.));
+	}
+
 }
 
 void box_fork::update_data()
@@ -99,22 +118,32 @@ void box_fork::update_data()
 	int ww = m_oBox->m_iWW;
 	int hh = m_oBox->m_iHH;
 
+
 	setPos(QPointF(m_oBox->m_iXX, m_oBox->m_iYY));
 	Q_ASSERT(ww < 9999 && ww > 0);
 	Q_ASSERT(hh < 9999 && hh > 0);
 	QRectF r = QRectF(0, 0, ww, hh);
 	setRect(r);
 
+	px = pos().x();
+	py = pos().y();
+
+
 	if (m_oBox->m_bIsVertical)
 	{
-		m_oTop ->force_position(QPoint(px + ww/2., py));
-		m_oDown->force_position(QPoint(px + ww/2., py + r.height()));
+		//m_oTop ->force_position(QPoint(px + ww/2., py));
+		//m_oDown->force_position(QPoint(px + ww/2., py + r.height()));
+		m_oTop ->setPos(QPoint(px + ww/2., py));
+		m_oDown->setPos(QPoint(px + ww/2., py + hh));
 	}
 	else
 	{
-		m_oLeft ->force_position(QPoint(px, py + hh / 2.));
-		m_oRight->force_position(QPoint(px + ww, py + hh / 2.));
+		//m_oLeft ->force_position(QPoint(px, py + hh / 2.));
+		//m_oRight->force_position(QPoint(px + ww, py + hh / 2.));
+		m_oLeft ->setPos(QPoint(px, py + hh / 2.));
+		m_oRight->setPos(QPoint(px + ww, py + hh / 2.));
 	}
+
 }
 
 QVariant box_fork::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue)

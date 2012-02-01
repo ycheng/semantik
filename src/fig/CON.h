@@ -7,7 +7,7 @@
 #include <QGraphicsItem>
 #include "data_item.h"
 
-#define JUST 2
+#define JUST 1
 
 class connectable
 {
