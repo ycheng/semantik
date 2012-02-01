@@ -36,6 +36,15 @@
 #include "sembind.h"
  #include "mem_box.h"
 
+
+#define ALIGN_LEFT
+#define ALIGN_CENTER
+#define ALIGN_RIGHT
+#define ALIGN_TOP
+#define ALIGN_MIDDLE
+#define ALIGN_BOTTOM
+
+
 class box_reader : public QXmlDefaultHandler
 {
     public:
@@ -208,6 +217,20 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	l_o = m_oStyleMenu->addAction(QObject::trUtf8("solid line")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_penstyle())); addAction(l_o); l_o->setData(QVariant(Qt::SolidLine)); m_oStyleGroup->addAction(l_o);
 	l_o = m_oStyleMenu->addAction(QObject::trUtf8("dot line")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_penstyle())); addAction(l_o); l_o->setData(QVariant(Qt::DotLine)); m_oStyleGroup->addAction(l_o);
 	l_o = m_oStyleMenu->addAction(QObject::trUtf8("dash line")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_penstyle())); addAction(l_o); l_o->setData(QVariant(Qt::DashLine)); m_oStyleGroup->addAction(l_o);
+
+
+	m_oAlignMenu = m_oMenu->addMenu(QObject::trUtf8("Alignment"));
+	m_oAlignGroup = new QActionGroup(this);
+	l_o = m_oAlignMenu->addAction(QObject::trUtf8("Align left")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_align())); addAction(l_o); l_o->setData(QVariant(ALIGN_LEFT)); m_oAlignGroup->addAction(l_o);
+	l_o = m_oAlignMenu->addAction(QObject::trUtf8("Align center")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_align())); addAction(l_o); l_o->setData(QVariant(ALIGN_CENTER)); m_oAlignGroup->addAction(l_o);
+	l_o = m_oAlignMenu->addAction(QObject::trUtf8("Align right")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_align())); addAction(l_o); l_o->setData(QVariant(ALIGN_RIGHT)); m_oAlignGroup->addAction(l_o);
+	l_o = m_oAlignMenu->addAction(QObject::trUtf8("Align top")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_align())); addAction(l_o); l_o->setData(QVariant(ALIGN_TOP)); m_oAlignGroup->addAction(l_o);
+	l_o = m_oAlignMenu->addAction(QObject::trUtf8("Align middle")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_align())); addAction(l_o); l_o->setData(QVariant(ALIGN_MIDDLE)); m_oAlignGroup->addAction(l_o);
+	l_o = m_oAlignMenu->addAction(QObject::trUtf8("Align bottom")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_align())); addAction(l_o); l_o->setData(QVariant(ALIGN_BOTTOM)); m_oAlignGroup->addAction(l_o);
+
+
+
+
 
 
 	m_oAddItemAction->setEnabled(false);
@@ -437,6 +460,12 @@ void box_view::enable_menu_actions()
 	foreach(QAction* l_o, m_oStyleGroup->actions())
 	{
 		l_o->setEnabled(selected >= 1);
+	}
+
+	m_oAlignMenu->setEnabled(selected > 1);
+	foreach(QAction* l_o, m_oAlignGroup->actions())
+	{
+		l_o->setEnabled(selected > 1);
 	}
 }
 
@@ -875,6 +904,11 @@ void box_view::keyReleaseEvent(QKeyEvent *i_oEvent)
 {
 	QGraphicsView::keyReleaseEvent(i_oEvent);
 	setCursor(Qt::ArrowCursor);
+}
+
+void box_view::slot_align()
+{
+	qDebug()<<"TODO";
 }
 
 void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
