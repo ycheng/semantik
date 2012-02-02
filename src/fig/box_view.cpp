@@ -44,6 +44,9 @@
 #define ALIGN_MIDDLE 66
 #define ALIGN_BOTTOM 77
 
+#define SAME_WIDTH 101
+#define SAME_HEIGHT 102
+#define SAME_WIDTH_HEIGHT 103
 
 class box_reader : public QXmlDefaultHandler
 {
@@ -229,8 +232,11 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	l_o = m_oAlignMenu->addAction(QObject::trUtf8("Align bottom")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_align())); addAction(l_o); l_o->setData(QVariant(ALIGN_BOTTOM)); m_oAlignGroup->addAction(l_o);
 
 
-
-
+	m_oSizeMenu = m_oMenu->addMenu(QObject::trUtf8("Size"));
+	m_oSizeGroup = new QActionGroup(this);
+	l_o = m_oAlignMenu->addAction(QObject::trUtf8("Same width")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_size())); addAction(l_o); l_o->setData(QVariant(SAME_WIDTH)); m_oAlignGroup->addAction(l_o);
+	l_o = m_oAlignMenu->addAction(QObject::trUtf8("Same height")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_size())); addAction(l_o); l_o->setData(QVariant(SAME_HEIGHT)); m_oAlignGroup->addAction(l_o);
+	l_o = m_oAlignMenu->addAction(QObject::trUtf8("Same width and height")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_size())); addAction(l_o); l_o->setData(QVariant(SAME_WIDTH_HEIGHT)); m_oAlignGroup->addAction(l_o);
 
 
 	m_oAddItemAction->setEnabled(false);
@@ -904,6 +910,12 @@ void box_view::keyReleaseEvent(QKeyEvent *i_oEvent)
 {
 	QGraphicsView::keyReleaseEvent(i_oEvent);
 	setCursor(Qt::ArrowCursor);
+}
+
+void box_view::slot_size()
+{
+	qDebug()<<"TODO implement me";
+
 }
 
 void box_view::slot_align()

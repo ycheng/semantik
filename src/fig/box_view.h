@@ -47,13 +47,13 @@ class box_view : public QGraphicsView
 		QMenu* m_oStyleMenu;
 		QMenu* m_oAddBoxMenu;
 		QMenu* m_oAlignMenu;
+		QMenu* m_oSizeMenu;
 
 		QAction *m_oAddItemAction;
 		QAction *m_oAddDotStart;
 		QAction *m_oAddDotEnd;
 		QAction *m_oAddParallelHorizontal;
 		QAction *m_oAddParallelVertical;
-
 
 		QAction *m_oEditAction;
 		QAction *m_oCancelEditAction;
@@ -81,6 +81,7 @@ class box_view : public QGraphicsView
 		QActionGroup *m_oWidthGroup;
 		QActionGroup *m_oStyleGroup;
 		QActionGroup *m_oAlignGroup;
+		QActionGroup *m_oSizeGroup;
 
 		void keyPressEvent(QKeyEvent *i_oEvent);
 		void keyReleaseEvent(QKeyEvent *i_oEvent);
@@ -105,6 +106,7 @@ class box_view : public QGraphicsView
 		void slot_toggle_edit();
 		void slot_cancel_edit();
 		void slot_align();
+		void slot_size();
 
 		void slot_move_up();
 		void slot_move_down();
