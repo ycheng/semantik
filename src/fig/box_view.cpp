@@ -935,12 +935,11 @@ void box_view::slot_size()
 			}
 		}
 	}
-	qDebug()<<"TODO set the dimensions to"<<w<<h;
 	foreach (QGraphicsItem* l_oItem, scene()->selectedItems())
 	{
 		if (connectable* c = dynamic_cast<connectable*>(l_oItem))
 		{
-
+			qDebug()<<"TODO";
 		}
 	}
 }
@@ -1239,6 +1238,15 @@ void box_view::notify_pos_box(int id, const QList<data_box*>& items)
 	foreach (data_box *box, items)
 	{
 		m_oItems[box->m_iId]->update_data();
+	}
+}
+
+void box_view::notify_size_box(int id, const QList<data_box*>& items)
+{
+	Q_ASSERT(id == m_iId);
+	foreach (data_box *box, items)
+	{
+		m_oItems[box->m_iId]->update_size();
 	}
 }
 

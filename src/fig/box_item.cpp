@@ -114,6 +114,10 @@ void box_item::update_data() {
 	setPlainText(m_oBox->m_sText);
 }
 
+void box_item::update_size() {
+	qDebug()<<"TODO box_item::update_size";
+}
+
 void box_item::keyPressEvent(QKeyEvent* e) {
 	// FIXME Qt Sucks
 	if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)

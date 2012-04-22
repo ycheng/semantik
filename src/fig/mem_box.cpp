@@ -242,3 +242,28 @@ void mem_change_link_box::undo() {
 	undo_dirty();
 }
 
+///////////////////////////////////////////////////////////////////
+
+mem_size_box::mem_size_box(sem_mediator* mod, int id) : mem_command(mod)
+{
+	m_iId = id;
+}
+
+void mem_size_box::redo() {
+	foreach (data_box* box, next_values.keys()) {
+		box->m_iWW = next_values[box].x();
+		box->m_iHH = next_values[box].y();
+	}
+	model->notify_size_box(m_iId, next_values.keys());
+	redo_dirty();
+}
+
+void mem_size_box::undo() {
+	foreach (data_box* box, prev_values.keys()) {
+		box->m_iWW = prev_values[box].x();
+		box->m_iHH = prev_values[box].y();
+	}
+	model->notify_pos_box(m_iId, prev_values.keys());
+	undo_dirty();
+}
+

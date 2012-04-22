@@ -1432,5 +1432,9 @@ void sem_mediator::notify_change_link_box(int id, data_link*link) {
 	emit sig_change_link_box(id, link);
 }
 
+void sem_mediator::notify_size_box(int id, const QList<data_box*>& items) {
+	emit sig_size_box(id, items);
+}
+
 #include "sem_mediator.moc"
 

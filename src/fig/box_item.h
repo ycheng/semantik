@@ -39,6 +39,7 @@ class box_item : public QGraphicsTextItem, public connectable, public resizable
 		void keyReleaseEvent(QKeyEvent*);
 
 		void update_data();
+		void update_size();
 		void update_links();
 
 		QVariant itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue);

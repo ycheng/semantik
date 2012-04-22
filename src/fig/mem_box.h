@@ -130,5 +130,16 @@ class mem_change_link_box : public mem_command {
 		IType type() { return CHANGE_LINK_BOX; }
 };
 
+class mem_size_box : public mem_command {
+	public:
+		mem_size_box(sem_mediator*, int);
+		void undo();
+		void redo();
+		int m_iId;
+		QHash<data_box*, QPointF> prev_values;
+		QHash<data_box*, QPointF> next_values;
+		IType type() { return SIZE_BOX; }
+};
+
 #endif
 
