@@ -227,6 +227,9 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	l_o = m_oAlignMenu->addAction(QObject::trUtf8("Align left")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_align())); addAction(l_o); l_o->setData(QVariant(ALIGN_LEFT)); m_oAlignGroup->addAction(l_o);
 	l_o = m_oAlignMenu->addAction(QObject::trUtf8("Align center")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_align())); addAction(l_o); l_o->setData(QVariant(ALIGN_CENTER)); m_oAlignGroup->addAction(l_o);
 	l_o = m_oAlignMenu->addAction(QObject::trUtf8("Align right")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_align())); addAction(l_o); l_o->setData(QVariant(ALIGN_RIGHT)); m_oAlignGroup->addAction(l_o);
+
+	m_oAlignMenu->addSeparator();
+
 	l_o = m_oAlignMenu->addAction(QObject::trUtf8("Align top")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_align())); addAction(l_o); l_o->setData(QVariant(ALIGN_TOP)); m_oAlignGroup->addAction(l_o);
 	l_o = m_oAlignMenu->addAction(QObject::trUtf8("Align middle")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_align())); addAction(l_o); l_o->setData(QVariant(ALIGN_MIDDLE)); m_oAlignGroup->addAction(l_o);
 	l_o = m_oAlignMenu->addAction(QObject::trUtf8("Align bottom")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_align())); addAction(l_o); l_o->setData(QVariant(ALIGN_BOTTOM)); m_oAlignGroup->addAction(l_o);
@@ -234,9 +237,9 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 
 	m_oSizeMenu = m_oMenu->addMenu(QObject::trUtf8("Size"));
 	m_oSizeGroup = new QActionGroup(this);
-	l_o = m_oAlignMenu->addAction(QObject::trUtf8("Same width")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_size())); addAction(l_o); l_o->setData(QVariant(SAME_WIDTH)); m_oAlignGroup->addAction(l_o);
-	l_o = m_oAlignMenu->addAction(QObject::trUtf8("Same height")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_size())); addAction(l_o); l_o->setData(QVariant(SAME_HEIGHT)); m_oAlignGroup->addAction(l_o);
-	l_o = m_oAlignMenu->addAction(QObject::trUtf8("Same width and height")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_size())); addAction(l_o); l_o->setData(QVariant(SAME_WIDTH_HEIGHT)); m_oAlignGroup->addAction(l_o);
+	l_o = m_oSizeMenu->addAction(QObject::trUtf8("Same width")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_size())); addAction(l_o); l_o->setData(QVariant(SAME_WIDTH)); m_oSizeGroup->addAction(l_o);
+	l_o = m_oSizeMenu->addAction(QObject::trUtf8("Same height")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_size())); addAction(l_o); l_o->setData(QVariant(SAME_HEIGHT)); m_oSizeGroup->addAction(l_o);
+	l_o = m_oSizeMenu->addAction(QObject::trUtf8("Same width and height")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_size())); addAction(l_o); l_o->setData(QVariant(SAME_WIDTH_HEIGHT)); m_oSizeGroup->addAction(l_o);
 
 
 	m_oAddItemAction->setEnabled(false);
