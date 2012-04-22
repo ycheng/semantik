@@ -917,8 +917,32 @@ void box_view::keyReleaseEvent(QKeyEvent *i_oEvent)
 
 void box_view::slot_size()
 {
-	qDebug()<<"TODO implement me";
+	int l_i = ((QAction*) QObject::sender())->data().toInt();
+	qreal w = 0;
+	qreal h = 0;
+	foreach (QGraphicsItem* l_oItem, scene()->selectedItems())
+	{
+		if (connectable* c = dynamic_cast<connectable*>(l_oItem))
+		{
+			QRectF r = c->rect();
+			if ((l_i == SAME_WIDTH || l_i == SAME_WIDTH_HEIGHT) && r.width() > w)
+			{
+				w = r.width();
+			}
+			if ((l_i == SAME_HEIGHT || l_i == SAME_WIDTH_HEIGHT) && r.height() > h)
+			{
+				h = r.height();
+			}
+		}
+	}
+	qDebug()<<"TODO set the dimensions to"<<w<<h;
+	foreach (QGraphicsItem* l_oItem, scene()->selectedItems())
+	{
+		if (connectable* c = dynamic_cast<connectable*>(l_oItem))
+		{
 
+		}
+	}
 }
 
 void box_view::slot_align()
