@@ -20,7 +20,6 @@
 #include "sem_mediator.h"
 
 #define PAD 1
-#define GRID 10
 
 box_resize_point::box_resize_point(box_view* i_oView) : QGraphicsRectItem()
 {

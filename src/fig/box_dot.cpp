@@ -18,7 +18,6 @@
 #include "sem_mediator.h"
 
 #define PAD 2
-#define GRID 10
 
 box_dot::box_dot(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), connectable(), m_oView(i_oParent)
 {

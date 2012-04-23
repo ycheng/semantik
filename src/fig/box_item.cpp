@@ -18,7 +18,6 @@
 #include "sem_mediator.h"
 
 #define PAD 2
-#define GRID 10
 
 box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oView(i_oParent), resizable(), connectable()
 {
@@ -116,6 +115,7 @@ void box_item::update_data() {
 
 void box_item::update_size() {
 	qDebug()<<"TODO box_item::update_size";
+	setTextWidth(m_oBox->m_iWW);
 }
 
 void box_item::keyPressEvent(QKeyEvent* e) {

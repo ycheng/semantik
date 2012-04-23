@@ -917,9 +917,11 @@ void box_view::keyReleaseEvent(QKeyEvent *i_oEvent)
 
 void box_view::slot_size()
 {
+	if (scene()->selectedItems().size() < 2) return;
+
 	int l_i = ((QAction*) QObject::sender())->data().toInt();
-	qreal w = 0;
-	qreal h = 0;
+	int w = 0;
+	int h = 0;
 	foreach (QGraphicsItem* l_oItem, scene()->selectedItems())
 	{
 		if (connectable* c = dynamic_cast<connectable*>(l_oItem))
@@ -935,13 +937,17 @@ void box_view::slot_size()
 			}
 		}
 	}
+	mem_size_box *mem = new mem_size_box(m_oMediator, m_iId);
 	foreach (QGraphicsItem* l_oItem, scene()->selectedItems())
 	{
 		if (connectable* c = dynamic_cast<connectable*>(l_oItem))
-		{
-			qDebug()<<"TODO";
+		{	
+			data_box *box = c->m_oBox;
+			mem->prev_values[box] = QPoint(box->m_iWW, box->m_iHH);
+			mem->next_values[box] = QPoint(w, h);
 		}
 	}
+	mem->apply();
 }
 
 void box_view::slot_align()

@@ -21,7 +21,6 @@
 
 #define PAD 1
 #define CTRLSIZE 8
-#define GRID 10
 
 box_control_point::box_control_point(box_view* i_oParent) : QGraphicsRectItem(), m_oView(i_oParent)
 {

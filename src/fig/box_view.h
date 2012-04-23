@@ -9,6 +9,8 @@
 #include <QPoint>
 #include "con.h"
 
+#define GRID 10
+
 class QActionGroup;
 class connectable;
 class box_item;

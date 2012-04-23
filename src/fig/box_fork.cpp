@@ -19,7 +19,6 @@
 #include "sem_mediator.h"
 
 #define PAD 2
-#define GRID 10
 
 box_fork::box_fork(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), connectable(), resizable(), m_oView(i_oParent)
 {
