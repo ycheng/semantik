@@ -537,7 +537,7 @@ QString sem_mediator::doc_to_xml()
 				link->color.name(),
 				QString::number(link->border_width),
 				QString::number(link->pen_style),
-				QString("\n    startx=\"%1\" starty=\"%1\" endx=\"%1\" endy=\"%1\"").arg(
+				QString("\n    startx=\"%1\" starty=\"%2\" endx=\"%3\" endy=\"%4\"").arg(
 					QString::number(link->m_oStartPoint.x()),
 					QString::number(link->m_oStartPoint.y()),
 					QString::number(link->m_oEndPoint.x()),
