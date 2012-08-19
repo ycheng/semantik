@@ -64,7 +64,10 @@ box_fork::box_fork(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), connec
 
 box_fork::~box_fork()
 {
-
+	delete m_oTop;
+	delete m_oDown;
+	delete m_oLeft;
+	delete m_oRight;
 }
 
 void box_fork::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -348,6 +351,7 @@ void box_fork::commit_size(box_resize_point *p)
 	if (p == m_oTop)
 	{
 		r_dest.setX(m_oBox->m_iXX);
+		r_dest.setY(m_oBox->m_iYY + m_oBox->m_iHH - m_iLastStretch);
 		r_dest.setWidth(m_oBox->m_iWW);
 		r_dest.setHeight(m_iLastStretch);
 	}
@@ -377,9 +381,6 @@ void box_fork::commit_size(box_resize_point *p)
 	mem->prev_values[m_oBox] = r_orig;
 	mem->next_values[m_oBox] = r_dest;
 	mem->apply();
-
-	qDebug()<<r_orig;
-	qDebug()<<r_dest;
 }
 
 void box_fork::freeze(bool b)

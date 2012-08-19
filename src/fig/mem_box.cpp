@@ -253,8 +253,8 @@ void mem_size_box::redo() {
 	foreach (data_box* box, next_values.keys()) {
 		box->m_iXX = next_values[box].x();
 		box->m_iYY = next_values[box].y();
-		box->m_iWW = next_values[box].width() || box->m_iWW; // size of 0 makes no sense
-		box->m_iHH = next_values[box].height() || box->m_iHH;
+		if (next_values[box].width()  > 0) box->m_iWW = next_values[box].width();
+		if (next_values[box].height() > 0) box->m_iHH = next_values[box].height();
 	}
 	model->notify_size_box(m_iId, next_values.keys());
 	redo_dirty();
@@ -264,8 +264,8 @@ void mem_size_box::undo() {
 	foreach (data_box* box, prev_values.keys()) {
 		box->m_iXX = prev_values[box].x();
 		box->m_iYY = prev_values[box].y();
-		box->m_iWW = prev_values[box].width() || box->m_iWW;
-		box->m_iHH = prev_values[box].height() || box->m_iHH;
+		if (prev_values[box].width()  > 0) box->m_iWW = prev_values[box].width();
+		if (prev_values[box].height() > 0) box->m_iHH = prev_values[box].height();
 	}
 	model->notify_pos_box(m_iId, prev_values.keys());
 	undo_dirty();
