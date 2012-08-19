@@ -96,36 +96,29 @@ void box_fork::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 	QGraphicsRectItem::mousePressEvent(e);
 }
 
-void box_fork::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
-	setZValue(99);
-	QGraphicsRectItem::mouseReleaseEvent(e);
-
-	qDebug()<<"box fork release event?";
-
-	int px = m_oBox->m_iXX;
-	int py = m_oBox->m_iYY;
-	int ww = m_oBox->m_iWW;
-	int hh = m_oBox->m_iHH;
+void box_fork::update_sizers()
+{
+	QPointF p = pos();
 	if (m_oBox->m_bIsVertical)
 	{
-		m_oTop ->setPos(QPoint(px + ww/2., py));
-		m_oDown->setPos(QPoint(px + ww/2., py + hh));
+		m_oTop ->setPos(p.x() + m_oBox->m_iWW/2., p.y());
+		m_oDown->setPos(p.x() + m_oBox->m_iWW/2., p.y() + m_oBox->m_iHH);
 	}
 	else
 	{
-		//m_oLeft ->force_position(QPoint(px, py + hh / 2.));
-		//m_oRight->force_position(QPoint(px + ww, py + hh / 2.));
-		m_oLeft ->setPos(QPoint(px, py + hh / 2.));
-		m_oRight->setPos(QPoint(px + ww, py + hh / 2.));
+		m_oLeft ->setPos(p.x()                , p.y() + m_oBox->m_iHH / 2.);
+		m_oRight->setPos(p.x() + m_oBox->m_iWW, p.y() + m_oBox->m_iHH / 2.);
 	}
+}
 
+void box_fork::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
+	setZValue(99);
+	QGraphicsRectItem::mouseReleaseEvent(e);
+	update_sizers();
 }
 
 void box_fork::update_data()
 {
-	qDebug()<<"update data";
-
-
 	int px = m_oBox->m_iXX;
 	int py = m_oBox->m_iYY;
 	int ww = m_oBox->m_iWW;
@@ -138,25 +131,7 @@ void box_fork::update_data()
 	QRectF r = QRectF(0, 0, ww, hh);
 	setRect(r);
 
-	px = pos().x();
-	py = pos().y();
-
-
-	if (m_oBox->m_bIsVertical)
-	{
-		//m_oTop ->force_position(QPoint(px + ww/2., py));
-		//m_oDown->force_position(QPoint(px + ww/2., py + r.height()));
-		m_oTop ->setPos(QPoint(px + ww/2., py));
-		m_oDown->setPos(QPoint(px + ww/2., py + hh));
-	}
-	else
-	{
-		//m_oLeft ->force_position(QPoint(px, py + hh / 2.));
-		//m_oRight->force_position(QPoint(px + ww, py + hh / 2.));
-		m_oLeft ->setPos(QPoint(px, py + hh / 2.));
-		m_oRight->setPos(QPoint(px + ww, py + hh / 2.));
-	}
-
+	update_sizers();
 }
 
 QVariant box_fork::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue)
@@ -189,8 +164,8 @@ QVariant box_fork::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 		}
 		else if (i_oChange == ItemPositionHasChanged)
 		{
-			//qDebug()<<"item position changed event on box_fork";
-			//update_links();
+			update_links();
+			update_sizers();
 		}
 		else if (i_oChange == ItemSelectedHasChanged)
 		{

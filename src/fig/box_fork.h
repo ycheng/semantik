@@ -45,6 +45,8 @@ class box_fork : public QGraphicsRectItem, public connectable, public resizable
 		int choose_position(const QPointF&p, int id=-1);
 		QPoint get_point(int position);
 
+		void update_sizers();
+
 		int m_iLastStretch;
 		QPointF validate_point(box_resize_point *p, const QPointF & orig);
 		void freeze(bool b);
