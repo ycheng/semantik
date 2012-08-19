@@ -295,6 +295,10 @@ QPointF box_fork::validate_point(box_resize_point *p, const QPointF & orig)
 		if (pf.y() <= ypos) ypos = pf.y();
 		ypos = GRID * (int) (ypos / GRID);
 		pf.setY(ypos);
+
+		setPos(m_oBox->m_iXX, pf.y());
+		QSizeF size(FORK_WIDTH, m_oBox->m_iHH - ypos + m_oBox->m_iYY);
+		setRect(QRectF(QPointF(0, 0), size));
 	}
 	else if (p == m_oDown)
 	{
@@ -303,6 +307,9 @@ QPointF box_fork::validate_point(box_resize_point *p, const QPointF & orig)
 		if (pf.y() >= ypos) ypos = pf.y();
 		ypos = GRID * (int) (ypos / GRID);
 		pf.setY(ypos);
+
+		QSizeF size(FORK_WIDTH, ypos - m_oBox->m_iYY);
+		setRect(QRectF(QPointF(0, 0), size));
 	}
 	else if (p == m_oLeft)
 	{
@@ -311,6 +318,11 @@ QPointF box_fork::validate_point(box_resize_point *p, const QPointF & orig)
 		if (pf.x() <= xpos) xpos = pf.x();
 		xpos = GRID * (int) (xpos / GRID);
 		pf.setX(xpos);
+
+		setPos(pf.x(), m_oBox->m_iYY);
+
+		QSizeF size(m_oBox->m_iWW - xpos + m_oBox->m_iXX, FORK_WIDTH);
+		setRect(QRectF(QPointF(0, 0), size));
 	}
 	else if (p == m_oRight)
 	{
@@ -319,6 +331,9 @@ QPointF box_fork::validate_point(box_resize_point *p, const QPointF & orig)
 		if (pf.x() >= xpos) xpos = pf.x();
 		xpos = GRID * (int) (xpos / GRID);
 		pf.setX(xpos);
+
+		QSizeF size(xpos - m_oBox->m_iXX, FORK_WIDTH);
+		setRect(QRectF(QPointF(0, 0), size));
 	}
 	return pf;
 }
