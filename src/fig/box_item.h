@@ -48,8 +48,8 @@ class box_item : public QGraphicsTextItem, public connectable, public resizable
 		QPoint get_point(int position);
 
 		QPointF validate_point(box_resize_point *p, const QPointF & orig);
-		void freeze(bool b) {};
-		void commit_size(box_resize_point *p) {};
+		void freeze(bool b);
+		void commit_size(box_resize_point *p);
 };
 
 #endif // BOX_ITEM_H

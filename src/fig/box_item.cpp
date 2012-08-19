@@ -255,3 +255,55 @@ QPointF box_item::validate_point(box_resize_point *p, const QPointF & orig)
 	return orig;
 }
 
+void box_item::commit_size(box_resize_point *p)
+{
+	QRect r_orig(m_oBox->m_iXX, m_oBox->m_iYY, m_oBox->m_iWW, m_oBox->m_iHH);
+	QRect r_dest;
+
+	/*if (p == m_oTop)
+	{
+		r_dest.setX(m_oBox->m_iXX);
+		r_dest.setY(m_oBox->m_iYY + m_oBox->m_iHH - m_iLastStretch);
+		r_dest.setWidth(m_oBox->m_iWW);
+		r_dest.setHeight(m_iLastStretch);
+	}
+	else if (p == m_oDown)
+	{
+		r_dest.setX(m_oBox->m_iXX);
+		r_dest.setY(m_oBox->m_iYY);
+		r_dest.setWidth(m_oBox->m_iWW);
+		r_dest.setHeight(m_iLastStretch);
+	}
+	else if (p == m_oLeft)
+	{
+		r_dest.setX(m_oBox->m_iXX + m_oBox->m_iWW - m_iLastStretch);
+		r_dest.setY(m_oBox->m_iYY);
+		r_dest.setHeight(m_oBox->m_iHH);
+		r_dest.setWidth(m_iLastStretch);
+	}
+	else if (p == m_oRight)
+	{
+		r_dest.setX(m_oBox->m_iXX);
+		r_dest.setY(m_oBox->m_iYY);
+		r_dest.setHeight(m_oBox->m_iHH);
+		r_dest.setWidth(m_iLastStretch);
+	}
+
+	mem_size_box *mem = new mem_size_box(m_oView->m_oMediator, m_oView->m_iId);
+	mem->prev_values[m_oBox] = r_orig;
+	mem->next_values[m_oBox] = r_dest;
+	mem->apply();*/
+}
+
+void box_item::freeze(bool b)
+{
+	if (b)
+	{
+		setFlags(ItemIsSelectable);
+		//m_iLastStretch = 0;
+	}
+	else
+	{
+		setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
+	}
+}

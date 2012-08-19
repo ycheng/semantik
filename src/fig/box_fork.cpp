@@ -43,9 +43,11 @@ box_fork::box_fork(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), connec
 		size.transpose();
 		m_oTop = new box_resize_point(m_oView, this);
 		m_oTop->setRect(-CTRLSIZE/2., 0, CTRLSIZE, CTRLSIZE);
+		m_oTop->setCursor(Qt::SizeVerCursor);
 		m_oTop->hide();
 		m_oDown = new box_resize_point(m_oView, this);
 		m_oDown->setRect(-CTRLSIZE/2., -CTRLSIZE, CTRLSIZE, CTRLSIZE);
+		m_oDown->setCursor(Qt::SizeVerCursor);
 		m_oDown->hide();
 		m_oLeft = m_oRight = NULL;
 	}
@@ -53,9 +55,11 @@ box_fork::box_fork(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), connec
 	{
 		m_oLeft = new box_resize_point(m_oView, this);
 		m_oLeft->setRect(0, -CTRLSIZE/2., CTRLSIZE, CTRLSIZE);
+		m_oLeft->setCursor(Qt::SizeHorCursor);
 		m_oLeft->hide();
 		m_oRight = new box_resize_point(m_oView, this);
 		m_oRight->setRect(-CTRLSIZE, -CTRLSIZE/2., CTRLSIZE, CTRLSIZE);
+		m_oRight->setCursor(Qt::SizeHorCursor);
 		m_oRight->hide();
 		m_oTop = m_oDown = NULL;
 	}
