@@ -19,6 +19,7 @@
 #include "sem_mediator.h"
 
 #define PAD 2
+#define MIN_FORK_SIZE 30
 
 box_fork::box_fork(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), connectable(), resizable(), m_oView(i_oParent)
 {
@@ -32,26 +33,26 @@ box_fork::box_fork(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), connec
 	setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
 	setZValue(100);
-	setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
+	setFlags(ItemIsMovable | ItemIsSelectable); // | ItemSendsGeometryChanges);
 
 	QSizeF size(FORK_LENGTH, FORK_WIDTH);
 	if (m_oBox->m_bIsVertical)
 	{
 		size.transpose();
-		m_oTop = new box_resize_point(m_oView);
+		m_oTop = new box_resize_point(m_oView, this);
 		m_oTop->setRect(-CTRLSIZE/2., 0, CTRLSIZE, CTRLSIZE);
 		m_oTop->hide();
-		m_oDown = new box_resize_point(m_oView);
+		m_oDown = new box_resize_point(m_oView, this);
 		m_oDown->setRect(-CTRLSIZE/2., -CTRLSIZE, CTRLSIZE, CTRLSIZE);
 		m_oDown->hide();
 		m_oLeft = m_oRight = NULL;
 	}
 	else
 	{
-		m_oLeft = new box_resize_point(m_oView);
+		m_oLeft = new box_resize_point(m_oView, this);
 		m_oLeft->setRect(0, -CTRLSIZE/2., CTRLSIZE, CTRLSIZE);
 		m_oLeft->hide();
-		m_oRight = new box_resize_point(m_oView);
+		m_oRight = new box_resize_point(m_oView, this);
 		m_oRight->setRect(-CTRLSIZE, -CTRLSIZE/2., CTRLSIZE, CTRLSIZE);
 		m_oRight->hide();
 		m_oTop = m_oDown = NULL;
@@ -89,6 +90,8 @@ void box_fork::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 void box_fork::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 	setZValue(99);
 	QGraphicsRectItem::mouseReleaseEvent(e);
+
+	qDebug()<<"box fork release event?";
 
 	QRectF r = rect();
 	int px = m_oBox->m_iXX;
@@ -151,6 +154,7 @@ QVariant box_fork::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 	{
 		if (i_oChange == ItemPositionChange)
 		{
+			qDebug()<<"item position change event on box_fork";
 			QPointF np = i_oValue.toPointF();
 			np.setX(((int) np.x() / GRID) * GRID);
 			np.setY(((int) np.y() / GRID) * GRID);
@@ -158,10 +162,12 @@ QVariant box_fork::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 		}
 		else if (i_oChange == ItemPositionHasChanged)
 		{
+			qDebug()<<"item position changed event on box_fork";
 			update_links();
 		}
 		else if (i_oChange == ItemSelectedHasChanged)
 		{
+			qDebug()<<"item selected has changed event on box_fork";
 			bool b = isSelected();
 			if (b)
 			{
@@ -258,5 +264,44 @@ QPoint box_fork::get_point(int i_oP)
 	}
 	Q_ASSERT(false);
 	return QPoint(0, 0);
+}
+
+
+QPointF box_fork::validate_point(box_resize_point *p, const QPointF & orig)
+{
+	QPointF pf = QPointF(orig);
+	if (p == m_oTop)
+	{
+		pf.setX(m_oBox->m_iXX + m_oBox->m_iWW / 2.);
+		qreal ypos = m_oBox->m_iYY + m_oBox->m_iHH - MIN_FORK_SIZE;
+		if (pf.y() <= ypos) ypos = pf.y();
+		ypos = GRID * (ypos / GRID);
+		pf.setY(ypos);
+	}
+	else if (p == m_oDown)
+	{
+		pf.setX(m_oBox->m_iXX + m_oBox->m_iWW / 2.);
+		qreal ypos = m_oBox->m_iYY + MIN_FORK_SIZE;
+		if (pf.y() >= ypos) ypos = pf.y();
+		ypos = GRID * (ypos / GRID);
+		pf.setY(ypos);
+	}
+	else if (p == m_oLeft)
+	{
+		pf.setY(m_oBox->m_iYY + m_oBox->m_iHH / 2.);
+		qreal xpos = m_oBox->m_iXX + m_oBox->m_iWW - MIN_FORK_SIZE;
+		if (pf.x() <= xpos) xpos = pf.x();
+		xpos = GRID * (xpos / GRID);
+		pf.setX(xpos);
+	}
+	else if (p == m_oRight)
+	{
+		pf.setY(m_oBox->m_iYY + m_oBox->m_iHH / 2.);
+		qreal xpos = m_oBox->m_iXX + MIN_FORK_SIZE;
+		if (pf.x() >= xpos) xpos = pf.x();
+		xpos = GRID * (xpos / GRID);
+		pf.setX(xpos);
+	}
+	return pf;
 }
 

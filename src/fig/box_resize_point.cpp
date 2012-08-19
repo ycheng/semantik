@@ -19,12 +19,15 @@
 #include "data_item.h"
 #include "sem_mediator.h"
 
+#include <QGraphicsSceneMouseEvent>
+
 #define PAD 1
 
-box_resize_point::box_resize_point(box_view* i_oView) : QGraphicsRectItem()
+box_resize_point::box_resize_point(box_view* i_oView, resizable *i_oR) : QGraphicsRectItem(), m_oParent(i_oR)
 {
 	setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 	m_oView = i_oView;
+	m_bHeld = false;
 	setZValue(110);
 	m_bForced = false;
 	m_iPosition = 0;
@@ -48,49 +51,33 @@ void box_resize_point::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 }
 
 void box_resize_point::mousePressEvent(QGraphicsSceneMouseEvent* e) {
+	e->accept();
 	QGraphicsRectItem::mousePressEvent(e);
+	m_bHeld = true;
 }
 
 void box_resize_point::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
-	// TODO change the size effectively
-	/*
-	if (!m_oLink->m_oLink->equals(m_oLink->m_oInnerLink))
-	{
-		mem_change_link_box* mem = new mem_change_link_box(m_oView->m_oMediator, m_oView->m_iId);
-		mem->link = m_oLink->m_oLink;
-		mem->prev.copy_from(*m_oLink->m_oLink);
-		mem->next.copy_from(m_oLink->m_oInnerLink);
-		mem->apply();
-	}*/
+	e->accept();
 	QGraphicsRectItem::mouseReleaseEvent(e);
+	m_bHeld = false;
 }
 
 QVariant box_resize_point::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue)
 {
 	if (scene())
 	{
-		/*if (i_oChange == ItemPositionChange)
+		if (i_oChange == ItemPositionChange && m_bHeld)
 		{
-			QPointF l_o = i_oValue.toPointF();
-			QPoint np = QPoint(int_val2(l_o.x()), int_val2(l_o.y()));
-			return np;
+			QPointF pf = m_oParent->validate_point(this, i_oValue.toPointF());
+			return pf;
 		}
-		else if (i_oChange == ItemPositionHasChanged)
-		{
-		}
-		else if (i_oChange == ItemSelectedHasChanged)
-		{
-			if (isSelected())
-				setZValue(105);
-			else
-				setZValue(104);
-		}*/
 	}
 	return QGraphicsItem::itemChange(i_oChange, i_oValue);
 }
 
 void box_resize_point::force_position(const QPoint& i_oP)
 {
+	// FIXME hmnm?
 	m_bForced = true;
 	if (m_oRealPosition != i_oP)
 	{

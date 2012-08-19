@@ -250,3 +250,8 @@ QPoint box_item::get_point(int i_oP)
 	return QPoint(0, 0);
 }
 
+QPointF box_item::validate_point(box_resize_point *p, const QPointF & orig)
+{
+	return orig;
+}
+

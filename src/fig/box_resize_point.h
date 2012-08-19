@@ -17,11 +17,12 @@ class resizable;
 class box_resize_point : public QGraphicsRectItem
 {
 	public:
-		box_resize_point(box_view*);
+		box_resize_point(box_view*, resizable*);
 		bool m_bMoveX;
 
 		int m_iPosition;
 		box_view *m_oView;
+		resizable *m_oParent;
 
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
 		QPoint m_oRealPosition;
@@ -35,6 +36,8 @@ class box_resize_point : public QGraphicsRectItem
 	private:
 		bool m_bChanged;
 		bool m_bForced;
+
+		bool m_bHeld;
 };
 
 #endif // BOX_RESIZE_H
