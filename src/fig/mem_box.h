@@ -136,8 +136,8 @@ class mem_size_box : public mem_command {
 		void undo();
 		void redo();
 		int m_iId;
-		QHash<data_box*, QPoint> prev_values;
-		QHash<data_box*, QPoint> next_values;
+		QHash<data_box*, QRect> prev_values;
+		QHash<data_box*, QRect> next_values;
 		IType type() { return SIZE_BOX; }
 };
 

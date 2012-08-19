@@ -943,8 +943,8 @@ void box_view::slot_size()
 		if (connectable* c = dynamic_cast<connectable*>(l_oItem))
 		{	
 			data_box *box = c->m_oBox;
-			mem->prev_values[box] = QPoint(box->m_iWW, box->m_iHH);
-			mem->next_values[box] = QPoint(w, h);
+			mem->prev_values[box] = QRect(box->m_iXX, box->m_iYY, box->m_iWW, box->m_iHH);
+			mem->next_values[box] = QRect(box->m_iXX, box->m_iYY, w, h);
 		}
 	}
 	mem->apply();

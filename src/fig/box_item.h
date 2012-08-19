@@ -43,12 +43,13 @@ class box_item : public QGraphicsTextItem, public connectable, public resizable
 		void update_links();
 
 		QVariant itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue);
-		QPointF validate_point(box_resize_point *p, const QPointF & orig);
 
 		int choose_position(const QPointF&p, int id=-1);
 		QPoint get_point(int position);
 
+		QPointF validate_point(box_resize_point *p, const QPointF & orig);
 		void freeze(bool b) {};
+		void commit_size(box_resize_point *p) {};
 };
 
 #endif // BOX_ITEM_H

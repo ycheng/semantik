@@ -17,6 +17,8 @@
 #include "box_view.h"
  #include "box_link.h"
 #include "sem_mediator.h"
+#include "mem_box.h"
+
 
 #define PAD 2
 #define MIN_FORK_SIZE 30
@@ -292,55 +294,104 @@ QPointF box_fork::validate_point(box_resize_point *p, const QPointF & orig)
 	if (p == m_oTop)
 	{
 		pf.setX(m_oBox->m_iXX + m_oBox->m_iWW / 2.);
-		int ypos = m_oBox->m_iYY + m_oBox->m_iHH - MIN_FORK_SIZE;
-		if (pf.y() <= ypos) ypos = pf.y();
-		ypos = GRID * (int) (ypos / GRID);
-		pf.setY(ypos);
 
+		m_iLastStretch = - pf.y() + m_oBox->m_iYY + m_oBox->m_iHH;
+		m_iLastStretch = GRID * (m_iLastStretch / GRID);
+		if (m_iLastStretch < MIN_FORK_SIZE) m_iLastStretch = MIN_FORK_SIZE;
+		pf.setY(m_oBox->m_iYY + m_oBox->m_iHH - m_iLastStretch);
 		setPos(m_oBox->m_iXX, pf.y());
-		s = QSizeF(FORK_WIDTH, m_oBox->m_iHH - ypos + m_oBox->m_iYY);
+
+		s = QSizeF(FORK_WIDTH, m_iLastStretch);
 	}
 	else if (p == m_oDown)
 	{
 		pf.setX(m_oBox->m_iXX + m_oBox->m_iWW / 2.);
-		int ypos = m_oBox->m_iYY + MIN_FORK_SIZE;
-		if (pf.y() >= ypos) ypos = pf.y();
-		ypos = GRID * (int) (ypos / GRID);
-		pf.setY(ypos);
 
-		s = QSizeF(FORK_WIDTH, ypos - m_oBox->m_iYY);
+		m_iLastStretch = pf.y() - m_oBox->m_iYY;
+		m_iLastStretch = GRID * (m_iLastStretch / GRID);
+		if (m_iLastStretch < MIN_FORK_SIZE) m_iLastStretch = MIN_FORK_SIZE;
+		pf.setY(m_oBox->m_iYY + m_iLastStretch);
+
+		s = QSizeF(FORK_WIDTH, m_iLastStretch);
 	}
 	else if (p == m_oLeft)
 	{
 		pf.setY(m_oBox->m_iYY + m_oBox->m_iHH / 2.);
-		int xpos = m_oBox->m_iXX + m_oBox->m_iWW - MIN_FORK_SIZE;
-		if (pf.x() <= xpos) xpos = pf.x();
-		xpos = GRID * (int) (xpos / GRID);
-		pf.setX(xpos);
 
+		m_iLastStretch = - pf.x() + m_oBox->m_iXX + m_oBox->m_iWW;
+		m_iLastStretch = GRID * (m_iLastStretch / GRID);
+		if (m_iLastStretch < MIN_FORK_SIZE) m_iLastStretch = MIN_FORK_SIZE;
+		pf.setX(m_oBox->m_iXX + m_oBox->m_iWW - m_iLastStretch);
 		setPos(pf.x(), m_oBox->m_iYY);
 
-		s = QSizeF(m_oBox->m_iWW - xpos + m_oBox->m_iXX, FORK_WIDTH);
+		s = QSizeF(m_iLastStretch, FORK_WIDTH);
 	}
 	else if (p == m_oRight)
 	{
 		pf.setY(m_oBox->m_iYY + m_oBox->m_iHH / 2.);
-		int xpos = m_oBox->m_iXX + MIN_FORK_SIZE;
-		if (pf.x() >= xpos) xpos = pf.x();
-		xpos = GRID * (int) (xpos / GRID);
-		pf.setX(xpos);
+		m_iLastStretch = pf.x() - m_oBox->m_iXX;
+		m_iLastStretch = GRID * (m_iLastStretch / GRID);
+		if (m_iLastStretch < MIN_FORK_SIZE) m_iLastStretch = MIN_FORK_SIZE;
+		pf.setX(m_oBox->m_iXX + m_iLastStretch);
 
-		s = QSizeF(xpos - m_oBox->m_iXX, FORK_WIDTH);
+		s = QSizeF(m_iLastStretch, FORK_WIDTH);
 	}
 	setRect(QRectF(QPointF(0, 0), s));
 	return pf;
 }
 
+void box_fork::commit_size(box_resize_point *p)
+{
+	QRect r_orig(m_oBox->m_iXX, m_oBox->m_iYY, m_oBox->m_iWW, m_oBox->m_iHH);
+	QRect r_dest;
+
+	if (p == m_oTop)
+	{
+		r_dest.setX(m_oBox->m_iXX);
+		r_dest.setWidth(m_oBox->m_iWW);
+		r_dest.setHeight(m_iLastStretch);
+	}
+	else if (p == m_oDown)
+	{
+		r_dest.setX(m_oBox->m_iXX);
+		r_dest.setY(m_oBox->m_iYY);
+		r_dest.setWidth(m_oBox->m_iWW);
+		r_dest.setHeight(m_iLastStretch);
+	}
+	else if (p == m_oLeft)
+	{
+		r_dest.setX(m_oBox->m_iXX + m_oBox->m_iWW - m_iLastStretch);
+		r_dest.setY(m_oBox->m_iYY);
+		r_dest.setHeight(m_oBox->m_iHH);
+		r_dest.setWidth(m_iLastStretch);
+	}
+	else if (p == m_oRight)
+	{
+		r_dest.setX(m_oBox->m_iXX);
+		r_dest.setY(m_oBox->m_iYY);
+		r_dest.setHeight(m_oBox->m_iHH);
+		r_dest.setWidth(m_iLastStretch);
+	}
+
+	mem_size_box *mem = new mem_size_box(m_oView->m_oMediator, m_oView->m_iId);
+	mem->prev_values[m_oBox] = r_orig;
+	mem->next_values[m_oBox] = r_dest;
+	mem->apply();
+
+	qDebug()<<r_orig;
+	qDebug()<<r_dest;
+}
+
 void box_fork::freeze(bool b)
 {
 	if (b)
+	{
 		setFlags(ItemIsSelectable);
+		m_iLastStretch = 0;
+	}
 	else
+	{
 		setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
+	}
 }
 

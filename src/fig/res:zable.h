@@ -16,6 +16,7 @@ class resizable
 	resizable() {}
 	int m_iOrientation;
 	virtual QPointF validate_point(box_resize_point *p, const QPointF & orig) = 0;
+	virtual void commit_size(box_resize_point *p) = 0;
 	virtual void freeze(bool b) = 0;
 };
 

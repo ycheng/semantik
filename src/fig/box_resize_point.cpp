@@ -60,6 +60,7 @@ void box_resize_point::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 void box_resize_point::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 	e->accept();
 	m_oParent->freeze(false);
+	m_oParent->commit_size(this);
 	QGraphicsRectItem::mouseReleaseEvent(e);
 	m_bHeld = false;
 }

@@ -251,8 +251,10 @@ mem_size_box::mem_size_box(sem_mediator* mod, int id) : mem_command(mod)
 
 void mem_size_box::redo() {
 	foreach (data_box* box, next_values.keys()) {
-		box->m_iWW = next_values[box].x() || box->m_iWW; // size of 0 makes no sense
-		box->m_iHH = next_values[box].y() || box->m_iHH;
+		box->m_iXX = next_values[box].x();
+		box->m_iYY = next_values[box].y();
+		box->m_iWW = next_values[box].width() || box->m_iWW; // size of 0 makes no sense
+		box->m_iHH = next_values[box].height() || box->m_iHH;
 	}
 	model->notify_size_box(m_iId, next_values.keys());
 	redo_dirty();
@@ -260,8 +262,10 @@ void mem_size_box::redo() {
 
 void mem_size_box::undo() {
 	foreach (data_box* box, prev_values.keys()) {
-		box->m_iWW = prev_values[box].x() || box->m_iWW;
-		box->m_iHH = prev_values[box].y() || box->m_iHH;
+		box->m_iXX = prev_values[box].x();
+		box->m_iYY = prev_values[box].y();
+		box->m_iWW = prev_values[box].width() || box->m_iWW;
+		box->m_iHH = prev_values[box].height() || box->m_iHH;
 	}
 	model->notify_pos_box(m_iId, prev_values.keys());
 	undo_dirty();

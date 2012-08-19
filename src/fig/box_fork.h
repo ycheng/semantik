@@ -41,12 +41,14 @@ class box_fork : public QGraphicsRectItem, public connectable, public resizable
 		box_resize_point *m_oLeft;
 		box_resize_point *m_oRight;
 
-		QPointF validate_point(box_resize_point *p, const QPointF & orig);
-
 		QVariant itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue);
 		int choose_position(const QPointF&p, int id=-1);
 		QPoint get_point(int position);
+
+		int m_iLastStretch;
+		QPointF validate_point(box_resize_point *p, const QPointF & orig);
 		void freeze(bool b);
+		void commit_size(box_resize_point *p);
 };
 
 #endif // BOX_FORK_H
