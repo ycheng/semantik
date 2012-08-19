@@ -102,10 +102,17 @@ void box_item::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 	QGraphicsTextItem::mousePressEvent(e);
 }
 
+void box_item::update_sizers()
+{
+	QPointF p = pos();
+	//qDebug()<<m_oBox->m_iWW<<m_oBox->m_iHH;
+	m_oBottomRight->setPos(p.x() + m_oBox->m_iWW, p.y() + m_oBox->m_iHH);
+}
+
 void box_item::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 	setZValue(99);
-	m_oBottomRight->setPos(m_oBox->m_iXX + m_oBox->m_iWW, m_oBox->m_iYY + m_oBox->m_iHH); // FIXME make it follow the object
 	QGraphicsTextItem::mouseReleaseEvent(e);
+	update_sizers();
 }
 
 QRectF box_item::boundingRect() const {
@@ -166,6 +173,7 @@ QVariant box_item::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 		else if (i_oChange == ItemPositionHasChanged)
 		{
 			update_links();
+			update_sizers();
 		}
 		else if (i_oChange == ItemSelectedHasChanged)
 		{
