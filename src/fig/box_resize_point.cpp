@@ -68,22 +68,9 @@ QVariant box_resize_point::itemChange(GraphicsItemChange i_oChange, const QVaria
 	{
 		if (i_oChange == ItemPositionChange && m_bHeld)
 		{
-			QPointF pf = m_oParent->validate_point(this, i_oValue.toPointF());
-			return pf;
+			return m_oParent->validate_point(this, i_oValue.toPointF());
 		}
 	}
 	return QGraphicsItem::itemChange(i_oChange, i_oValue);
-}
-
-void box_resize_point::force_position(const QPoint& i_oP)
-{
-	// FIXME hmnm?
-	m_bForced = true;
-	if (m_oRealPosition != i_oP)
-	{
-		m_oRealPosition = i_oP;
-	}
-	setPos(i_oP);
-	m_bForced = false;
 }
 

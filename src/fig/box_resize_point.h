@@ -31,8 +31,6 @@ class box_resize_point : public QGraphicsRectItem
 		void mousePressEvent(QGraphicsSceneMouseEvent* e);
 		void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
 
-		void force_position(const QPoint&);
-
 	private:
 		bool m_bChanged;
 		bool m_bForced;
