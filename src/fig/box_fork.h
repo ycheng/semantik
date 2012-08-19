@@ -46,6 +46,7 @@ class box_fork : public QGraphicsRectItem, public connectable, public resizable
 		QVariant itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue);
 		int choose_position(const QPointF&p, int id=-1);
 		QPoint get_point(int position);
+		void freeze(bool b);
 };
 
 #endif // BOX_FORK_H

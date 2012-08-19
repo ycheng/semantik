@@ -31,11 +31,12 @@ class box_resize_point : public QGraphicsRectItem
 		void mousePressEvent(QGraphicsSceneMouseEvent* e);
 		void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
 
+		bool m_bHeld;
+
 	private:
 		bool m_bChanged;
 		bool m_bForced;
 
-		bool m_bHeld;
 };
 
 #endif // BOX_RESIZE_H

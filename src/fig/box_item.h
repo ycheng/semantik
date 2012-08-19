@@ -47,6 +47,8 @@ class box_item : public QGraphicsTextItem, public connectable, public resizable
 
 		int choose_position(const QPointF&p, int id=-1);
 		QPoint get_point(int position);
+
+		void freeze(bool b) {};
 };
 
 #endif // BOX_ITEM_H

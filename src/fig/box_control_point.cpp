@@ -133,7 +133,7 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 				connectable *l_oUnder = NULL; // TODO do something with the z-index
 				foreach (QGraphicsItem *l_oI1, scene()->items(np))
 				{
-					if (l_oUnder = dynamic_cast<connectable*>(l_oI1))
+					if ((l_oUnder = dynamic_cast<connectable*>(l_oI1)))
 					{
 						break;
 					}

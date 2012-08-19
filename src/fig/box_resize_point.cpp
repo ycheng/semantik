@@ -52,12 +52,14 @@ void box_resize_point::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 
 void box_resize_point::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 	e->accept();
+	m_oParent->freeze(true);
 	QGraphicsRectItem::mousePressEvent(e);
 	m_bHeld = true;
 }
 
 void box_resize_point::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 	e->accept();
+	m_oParent->freeze(false);
 	QGraphicsRectItem::mouseReleaseEvent(e);
 	m_bHeld = false;
 }
