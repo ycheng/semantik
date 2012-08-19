@@ -189,12 +189,11 @@ QVariant box_fork::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 		}
 		else if (i_oChange == ItemPositionHasChanged)
 		{
-			qDebug()<<"item position changed event on box_fork";
+			//qDebug()<<"item position changed event on box_fork";
 			//update_links();
 		}
 		else if (i_oChange == ItemSelectedHasChanged)
 		{
-			qDebug()<<"item selected has changed event on box_fork";
 			bool b = isSelected();
 			if (b)
 			{

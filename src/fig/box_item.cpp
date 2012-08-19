@@ -35,6 +35,11 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oVie
 
 	setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
+	m_oBottomRight = new box_resize_point(m_oView, this);
+	m_oBottomRight->setRect(-CTRLSIZE/2., 0, CTRLSIZE, CTRLSIZE);
+	m_oBottomRight->setCursor(Qt::SizeFDiagCursor); // FIXME if someone has a solution for this
+	m_oBottomRight->hide();
+
 	setZValue(100);
 	setTextWidth(80);
 	setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
@@ -99,6 +104,7 @@ void box_item::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 
 void box_item::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 	setZValue(99);
+	m_oBottomRight->setPos(m_oBox->m_iXX + m_oBox->m_iWW, m_oBox->m_iYY + m_oBox->m_iHH); // FIXME make it follow the object
 	QGraphicsTextItem::mouseReleaseEvent(e);
 }
 
@@ -163,10 +169,12 @@ QVariant box_item::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 		}
 		else if (i_oChange == ItemSelectedHasChanged)
 		{
-			if (isSelected())
+			bool b = isSelected();
+			if (b)
 				setZValue(101);
 			else
 				setZValue(100);
+			m_oBottomRight->setVisible(b);
 		}
 	}
 
