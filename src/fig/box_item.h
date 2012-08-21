@@ -30,6 +30,7 @@ class box_item : public QGraphicsRectItem, public connectable, public resizable,
 		QRectF rect() const { return boundingRect().translated(pos()).adjusted(JUST, JUST, -JUST, -JUST); };
 		//void setRect(int, int, int, int) { }
 
+		QTextDocument doc;
 
 		box_view *m_oView;
 		data_item *m_oItem;

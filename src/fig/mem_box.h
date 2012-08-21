@@ -49,6 +49,9 @@ class mem_edit_box: public mem_command {
 		data_item *item;
 		data_box *box;
 
+		int oldHeight;
+		int newHeight;
+
 		QString oldText;
 		QString newText;
 		IType type() { return EDIT_BOX; }

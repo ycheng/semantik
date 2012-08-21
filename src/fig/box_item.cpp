@@ -17,6 +17,7 @@
  #include "box_link.h"
 #include "data_item.h"
 #include "sem_mediator.h"
+#include "mem_box.h"
 
 #define PAD 2
 
@@ -40,6 +41,8 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), resiza
 	m_oBottomRight->setRect(-CTRLSIZE/2., 0, CTRLSIZE, CTRLSIZE);
 	m_oBottomRight->setCursor(Qt::SizeFDiagCursor); // FIXME if someone has a solution for this
 	m_oBottomRight->hide();
+
+	doc.setPlainText(m_oBox->m_sText);
 
 	setZValue(100);
 	setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
@@ -67,6 +70,9 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	painter->drawRoundRect(l_oRect, 20, 20);
 
 
+	QAbstractTextDocumentLayout::PaintContext ctx;
+	ctx.palette = QApplication::palette("QTextControl");
+	doc.documentLayout()->draw(painter, ctx);
 
 	/*
 	painter->save();
@@ -141,7 +147,14 @@ QRectF box_item::boundingRect() const {
 
 void box_item::update_data() {
 	setPos(QPointF(m_oBox->m_iXX, m_oBox->m_iYY));
-	//setPlainText(m_oBox->m_sText);
+	if (m_oBox->m_iWW != rect().width() || m_oBox->m_iHH != rect().height())
+	{
+		doc.setTextWidth(m_oBox->m_iWW);
+		doc.setPlainText(m_oBox->m_sText);
+		setRect(0, 0, m_oBox->m_iWW, m_oBox->m_iHH);
+		update_sizers();
+	}
+	update();
 }
 
 void box_item::update_size() {
@@ -155,11 +168,17 @@ void box_item::properties()
 	QString text = QInputDialog::getText(m_oView, m_oView->trUtf8("Properties for diagram box"),
 			m_oView->trUtf8("Text:"), QLineEdit::Normal,
 			m_oBox->m_sText, &ok);
-	if (ok)
+	if (ok && text != m_oBox->m_sText)
 	{
-		qDebug()<<"user chose"<<text;
-		update();
-		update_links();
+		mem_edit_box *ed = new mem_edit_box(m_oView->m_oMediator, m_oView->m_iId, m_iId);
+		ed->newText = text;
+
+		QTextDocument doc;
+		doc.setPlainText(text);
+		doc.setTextWidth(m_oBox->m_iWW);
+		ed->newHeight = GRID * (((int) (doc.size().height() + GRID - 1)) / GRID);
+
+		ed->apply();
 	}
 }
 

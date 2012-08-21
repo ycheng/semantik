@@ -278,7 +278,7 @@ void box_view::notify_edit_box(int id, int bid)
 	box_item *item = (box_item*) m_oItems.value(bid); // TODO
 	Q_ASSERT(item != NULL);
 	data_box *box = item->m_oBox;
-	item->update();
+	item->update_data();
 }
 
 void box_view::notify_select(const QList<int>& unsel, const QList<int>& sel)
