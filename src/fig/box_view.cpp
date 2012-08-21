@@ -598,8 +598,21 @@ void box_view::slot_add_element()
 	mem_add_box *add = new mem_add_box(m_oMediator, m_iId, next_seq());
 	add->box->m_iXX = m_oLastPoint.x();
 	add->box->m_iYY = m_oLastPoint.y();
+	add->box->m_iWW = 80;
 
-	add->box->m_bIsVertical = sender == m_oAddParallelVertical;
+	if (sender == m_oAddParallelVertical)
+	{
+		add->box->m_iWW = FORK_WIDTH;
+		add->box->m_iHH = FORK_LENGTH;
+		add->box->m_bIsVertical = true;
+	}
+	else if (sender == m_oAddParallelHorizontal)
+	{
+		add->box->m_iHH = FORK_WIDTH;
+		add->box->m_iWW = FORK_LENGTH;
+		add->box->m_bIsVertical = false;
+	}
+
 	add->box->m_bIsEnd = sender == m_oAddDotEnd;
 	
 	if (sender == m_oAddDotEnd || sender == m_oAddDotStart) {

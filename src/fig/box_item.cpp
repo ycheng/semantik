@@ -41,7 +41,10 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oVie
 	m_oBottomRight->hide();
 
 	setZValue(100);
-	setTextWidth(80);
+
+	qDebug()<<"and the box width is"<<m_oBox->m_iWW;
+
+	setTextWidth(m_oBox->m_iWW);
 	setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
 }
 
