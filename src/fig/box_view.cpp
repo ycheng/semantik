@@ -424,25 +424,24 @@ void box_view::slot_delete()
 {
 	QList<data_box*> boxes;
 	QSet<data_link*> links;
-	foreach (QGraphicsItem* el, scene()->selectedItems()) {
-		if (box_item *bit = dynamic_cast<box_item*>(el)) {
-			boxes.append(bit->m_oBox);
+	foreach (QGraphicsItem* el, scene()->selectedItems())
+	{
+		if (box_link *l = dynamic_cast<box_link*>(el))
+		{
+			links << l->m_oLink;
+			Q_ASSERT(l->m_oLink);
+		}
+		else if (connectable* c = dynamic_cast<connectable*>(el))
+		{
+			data_box *b = c->m_oBox;
+			boxes.append(b);
 			foreach (box_link* l, m_oLinks)
 			{
-				if (l->m_oLink->m_iParent == bit->m_oBox->m_iId || l->m_oLink->m_iChild == bit->m_oBox->m_iId)
+				if (l->m_oLink->m_iParent == b->m_iId || l->m_oLink->m_iChild == b->m_iId)
 				{
 					links << l->m_oLink;
 				}
 			}
-		}
-		else if (box_fork *fork = dynamic_cast<box_fork*>(el))
-		{
-			qDebug()<<"fork removal is not implemented";
-		}
-		else if (box_link *l = dynamic_cast<box_link*>(el))
-		{
-			links << l->m_oLink;
-			Q_ASSERT(l->m_oLink);
 		}
 	}
 
