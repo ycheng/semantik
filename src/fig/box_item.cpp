@@ -2,6 +2,7 @@
 
 #include <QApplication>
 #include <QAbstractTextDocumentLayout>
+#include <QInputDialog>
 #include <QTextDocument>
 #include <QTextDocumentFragment>
 #include <QAbstractTextDocumentLayout>
@@ -19,7 +20,7 @@
 
 #define PAD 2
 
-box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), resizable(), connectable(), m_oView(i_oParent)
+box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), resizable(), connectable(), editable(), m_oView(i_oParent)
 {
 	m_iId = i_iId;
 	//setPlainText("");
@@ -41,9 +42,6 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), resiza
 	m_oBottomRight->hide();
 
 	setZValue(100);
-
-	//setTextWidth(m_oBox->m_iWW);
-	//if (m_oBox->m_iHH == 0) m_oBox->m_iHH = document()->size().height();
 	setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
 }
 
@@ -151,35 +149,19 @@ void box_item::update_size() {
 	//setTextWidth(m_oBox->m_iWW);
 }
 
-/*
-void box_item::keyPressEvent(QKeyEvent* e) {
-	// FIXME Qt Sucks
-	if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)
+void box_item::properties()
+{
+	bool ok = false;
+	QString text = QInputDialog::getText(m_oView, m_oView->trUtf8("QInputDialog::getText()"),
+			m_oView->trUtf8("Input text:"), QLineEdit::Normal,
+			m_oBox->m_sText, &ok);
+	if (ok)
 	{
-		m_oView->m_oEditAction->activate(QAction::Trigger);
-		return;
+		qDebug()<<"user chose"<<text;
+		update();
+		update_links();
 	}
-	else if (e->key() == Qt::Key_Escape)
-	{
-		m_oView->m_oCancelEditAction->activate(QAction::Trigger);
-		return;
-	}
-
-
-	QGraphicsTextItem::keyPressEvent(e);
-	update();
-	update_links();
 }
-
-void box_item::keyReleaseEvent(QKeyEvent* e) {
-	if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return || e->key() == Qt::Key_Escape)
-	{
-		e->ignore();
-		return;
-	}
-	QGraphicsTextItem::keyReleaseEvent(e);
-}
-*/
 
 QVariant box_item::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue)
 {
@@ -345,3 +327,4 @@ void box_item::freeze(bool b)
 		setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
 	}
 }
+

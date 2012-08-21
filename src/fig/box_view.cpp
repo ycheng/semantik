@@ -920,6 +920,17 @@ void box_view::wheelEvent(QWheelEvent *i_oEvent)
 
 void box_view::keyPressEvent(QKeyEvent *i_oEvent)
 {
+	if (i_oEvent->key() == Qt::Key_Enter || i_oEvent->key() == Qt::Key_Return)
+	{
+		QList<QGraphicsItem*> lst = scene()->selectedItems();
+		if (lst.length() == 1)
+		{
+			if (editable*e = dynamic_cast<editable*>(lst.at(0)))
+			{
+				e->properties();
+			}
+		}
+	}
 	QGraphicsView::keyPressEvent(i_oEvent);
 	if (QApplication::keyboardModifiers() & Qt::ShiftModifier) setCursor(Qt::CrossCursor);
 }

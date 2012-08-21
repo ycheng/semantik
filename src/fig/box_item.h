@@ -7,6 +7,7 @@
 #include <QGraphicsRectItem>
 #include <QBrush>
 #include "res:zable.h"
+#include "ed:table.h"
 #include "box_resize_point.h"
 #include "CON.h"
 #include "con.h"
@@ -17,7 +18,7 @@ class QTextDocument;
 class box_view;
 class data_item;
 class data_box;
-class box_item : public QGraphicsRectItem, public connectable, public resizable
+class box_item : public QGraphicsRectItem, public connectable, public resizable, public editable
 {
 	public:
 		box_item(box_view*, int i_iId);
@@ -35,9 +36,7 @@ class box_item : public QGraphicsRectItem, public connectable, public resizable
 
 		void mousePressEvent(QGraphicsSceneMouseEvent* e);
 		void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
-		//void keyPressEvent(QKeyEvent*);
-		//void keyReleaseEvent(QKeyEvent*);
-
+		void properties();
 
 		box_resize_point *m_oBottomRight;
 
