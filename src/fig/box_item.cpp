@@ -19,7 +19,7 @@
 
 #define PAD 2
 
-box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oView(i_oParent), resizable(), connectable()
+box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), resizable(), connectable(), m_oView(i_oParent)
 {
 	m_iId = i_iId;
 	setPlainText("");
@@ -42,9 +42,8 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oVie
 
 	setZValue(100);
 
-	qDebug()<<"and the box width is"<<m_oBox->m_iWW;
-
 	setTextWidth(m_oBox->m_iWW);
+	if (m_oBox->m_iHH == 0) m_oBox->m_iHH = document()->size().height();
 	setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
 }
 

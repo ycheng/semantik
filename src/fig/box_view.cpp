@@ -500,6 +500,7 @@ void box_view::slot_add_item()
 	mem_add_box *add = new mem_add_box(m_oMediator, m_iId, next_seq());
 	add->box->m_iXX = m_oLastPoint.x();
 	add->box->m_iYY = m_oLastPoint.y();
+	add->box->m_iWW = 80;
 	add->apply();
 
 	box_item *l_o = (box_item*) m_oItems.value(add->box->m_iId);
@@ -599,11 +600,7 @@ void box_view::slot_add_element()
 	add->box->m_iXX = GRID * (int) (m_oLastPoint.x() / GRID);
 	add->box->m_iYY = GRID * (int) (m_oLastPoint.y() / GRID);
 
-	if (sender == m_oAddItemAction)
-	{
-		add->box->m_iWW = 80;
-	}
-	else if (sender == m_oAddParallelVertical)
+	if (sender == m_oAddParallelVertical)
 	{
 		add->box->m_iWW = FORK_WIDTH;
 		add->box->m_iHH = FORK_LENGTH;
@@ -1058,15 +1055,7 @@ void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 	}
 
 	if (i_oEv->modifiers() != Qt::ShiftModifier) {
-		//qDebug()<<"adding a box from double click";
-
-		mem_add_box *add = new mem_add_box(m_oMediator, m_iId, next_seq());
-		add->box->m_iXX = m_oLastPoint.x();
-		add->box->m_iYY = m_oLastPoint.y();
-		add->apply();
-
-		QGraphicsItem *l_o = dynamic_cast<QGraphicsItem*>(m_oItems.value(add->box->m_iId));
-		l_o->setSelected(true);
+		slot_add_item();
 	}
 }
 
