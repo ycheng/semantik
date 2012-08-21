@@ -147,7 +147,7 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	//setCacheMode(CacheBackground);
 	setRenderHint(QPainter::Antialiasing);
 
-	m_oEditAction = new QAction(QObject::trUtf8("Toggle edit"), this);
+	/*m_oEditAction = new QAction(QObject::trUtf8("Toggle edit"), this);
 	m_oEditAction->setShortcut(QObject::trUtf8("Return"));
 	connect(m_oEditAction, SIGNAL(triggered()), this, SLOT(slot_toggle_edit()));
 	addAction(m_oEditAction);
@@ -156,7 +156,7 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	m_oCancelEditAction->setShortcut(notr("Escape"));
 	addAction(m_oCancelEditAction);
 	connect(m_oCancelEditAction, SIGNAL(triggered()), this, SLOT(slot_cancel_edit()));
-	m_oCancelEditAction->setEnabled(false);
+	m_oCancelEditAction->setEnabled(false);*/
 
 	m_oAddItemAction = new QAction(QObject::trUtf8("Add Box"), this);
 	m_oAddItemAction->setShortcut(QObject::trUtf8("Ctrl+Return"));
@@ -201,7 +201,7 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	m_oAddBoxMenu->addAction(m_oAddParallelHorizontal);
 	m_oAddBoxMenu->addAction(m_oAddParallelVertical);
 
-	m_oMenu->addAction(m_oEditAction);
+	//m_oMenu->addAction(m_oEditAction);
 	m_oMenu->addAction(m_oDeleteAction);
 	m_oMenu->addAction(m_oColorAction);
 	//m_oMenu->addAction(m_oMoveUpAction);
@@ -245,7 +245,7 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	m_oAddItemAction->setEnabled(false);
 	m_oDeleteAction->setEnabled(false);
 
-	m_oEditAction->setEnabled(false);
+	//m_oEditAction->setEnabled(false);
 	//m_oMoveUpAction->setEnabled(false);
 	//m_oMoveDownAction->setEnabled(false);
 	m_oMenu->addSeparator();
@@ -278,10 +278,7 @@ void box_view::notify_edit_box(int id, int bid)
 	box_item *item = (box_item*) m_oItems.value(bid); // TODO
 	Q_ASSERT(item != NULL);
 	data_box *box = item->m_oBox;
-	if (box->m_sText != item->toPlainText())
-	{
-		item->setPlainText(box->m_sText);
-	}
+	item->update();
 }
 
 void box_view::notify_select(const QList<int>& unsel, const QList<int>& sel)
@@ -292,8 +289,8 @@ void box_view::notify_select(const QList<int>& unsel, const QList<int>& sel)
 	{
 		m_iId = NO_ITEM;
 		setEnabled(false);
-		m_oEditAction->setEnabled(false);
-		m_oCancelEditAction->setEnabled(false);
+		//m_oEditAction->setEnabled(false);
+		//m_oCancelEditAction->setEnabled(false);
 	}
 	else
 	{
@@ -336,7 +333,6 @@ void box_view::sync_view()
 		{
 			box_item *l_o = new box_item(this, box->m_iId);
 			m_oItems[box->m_iId] = l_o;
-			l_o->setPlainText(box->m_sText);
 			l_o->setPos(QPointF(box->m_iXX, box->m_iYY));
 			l_o->update_data();
 		}
@@ -461,7 +457,7 @@ void box_view::enable_menu_actions()
 	m_oDeleteAction->setEnabled(selected >= 1);
 	m_oColorAction->setEnabled(selected >= 1);
 
-	m_oEditAction->setEnabled(selected == 1 and dynamic_cast<box_item*>(selection.at(0)));
+	//m_oEditAction->setEnabled(selected == 1 and dynamic_cast<box_item*>(selection.at(0)));
 
 	m_oWidthMenu->setEnabled(selected >= 1 and dynamic_cast<box_link*>(selection.at(0)));
 	foreach(QAction* l_o, m_oWidthGroup->actions())
@@ -645,6 +641,7 @@ void box_view::slot_penwidth()
 	mem->apply();
 }
 
+#if 0
 void box_view::slot_toggle_edit()
 {
 	if (!hasFocus()) {
@@ -752,6 +749,7 @@ void box_view::slot_cancel_edit()
 	m_oAddItemAction->setEnabled(true);
 	m_oDeleteAction->setEnabled(true);
 }
+#endif
 
 void box_view::slot_move_up()
 {
@@ -823,7 +821,7 @@ void box_view::focusInEvent(QFocusEvent *i_oEv)
 void box_view::focusOutEvent(QFocusEvent *i_oEv)
 {
 	QGraphicsView::focusOutEvent(i_oEv);
-	edit_off();
+	//edit_off();
 }
 
 void box_view::notify_add_box(int id, int box)
@@ -1063,7 +1061,7 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 {
 	if (i_oEv->button() == Qt::RightButton)
 	{
-		edit_off();
+		//edit_off();
 		m_oLastPoint = mapToScene(i_oEv->pos());
 		enable_menu_actions();
 		m_oMenu->popup(i_oEv->globalPos());
@@ -1132,7 +1130,7 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 	}
 
 	QGraphicsView::mousePressEvent(i_oEv);
-	edit_off();
+	//edit_off();
 }
 
 void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
@@ -1201,6 +1199,7 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 	check_canvas_size();
 }
 
+#if 0
 void box_view::edit_off() {
 	box_item* sel = NULL;
 	foreach (QGraphicsItem *tmp, items()) {
@@ -1222,6 +1221,7 @@ void box_view::edit_off() {
 		}
 	}
 }
+#endif
 
 void box_view::notify_box_props(int id, const QList<diagram_item*>& items)
 {
@@ -1278,7 +1278,7 @@ void box_view::notify_focus(void* ptr)
 	bool cond = ptr == this;
 	m_oAddItemAction->setEnabled(cond);
 	m_oDeleteAction->setEnabled(cond);
-	m_oEditAction->setEnabled(cond);
+	//m_oEditAction->setEnabled(cond);
 }
 
 #include "box_view.moc"

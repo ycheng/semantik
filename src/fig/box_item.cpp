@@ -19,17 +19,17 @@
 
 #define PAD 2
 
-box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), resizable(), connectable(), m_oView(i_oParent)
+box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), resizable(), connectable(), m_oView(i_oParent)
 {
 	m_iId = i_iId;
-	setPlainText("");
+	//setPlainText("");
 	//adjustSize();
-
-	//setRect(0, 0, 20, 20);
 
 	m_oItem = m_oView->m_oMediator->m_oItems[m_oView->m_iId];
 	m_oBox = m_oItem->m_oBoxes[m_iId];
 	Q_ASSERT(m_oBox);
+
+	setRect(0, 0, m_oBox->m_iWW, m_oBox->m_iHH);
 
 	i_oParent->scene()->addItem(this);
 
@@ -42,8 +42,8 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), resiza
 
 	setZValue(100);
 
-	setTextWidth(m_oBox->m_iWW);
-	if (m_oBox->m_iHH == 0) m_oBox->m_iHH = document()->size().height();
+	//setTextWidth(m_oBox->m_iWW);
+	//if (m_oBox->m_iHH == 0) m_oBox->m_iHH = document()->size().height();
 	setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
 }
 
@@ -54,6 +54,23 @@ box_item::~box_item()
 
 void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+	QRectF l_oRect = boundingRect().adjusted(PAD, PAD, -PAD, -PAD);
+
+	QPen l_oPen = QPen(Qt::SolidLine);
+
+	l_oPen.setColor(Qt::black);
+	if (isSelected()) l_oPen.setStyle(Qt::DotLine);
+	l_oPen.setCosmetic(false);
+	l_oPen.setWidth(1);
+
+	painter->setPen(l_oPen);
+	painter->setBrush(m_oBox->color);
+
+	painter->drawRoundRect(l_oRect, 20, 20);
+
+
+
+	/*
 	painter->save();
 
 	QRectF l_oRect = boundingRect().adjusted(PAD, PAD, -PAD, -PAD);
@@ -95,13 +112,13 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	document()->documentLayout()->draw(painter, ctx);
 
 	painter->restore();
-
+	*/
 	// TODO resize handle
 }
 
 void box_item::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 	setZValue(100);
-	QGraphicsTextItem::mousePressEvent(e);
+	QGraphicsRectItem::mousePressEvent(e);
 }
 
 void box_item::update_sizers()
@@ -113,26 +130,28 @@ void box_item::update_sizers()
 
 void box_item::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 	setZValue(99);
-	QGraphicsTextItem::mouseReleaseEvent(e);
+	QGraphicsRectItem::mouseReleaseEvent(e);
 	update_sizers();
 }
 
 QRectF box_item::boundingRect() const {
-	QTextDocument *doc = document();
+	return QGraphicsRectItem::boundingRect();
+	/*QTextDocument *doc = document();
 	QRectF rect(QPointF(0, 0), doc->size());
-	return rect.adjusted(-OFF, -OFF, OFF, OFF);
+	return rect.adjusted(-OFF, -OFF, OFF, OFF);*/
 }
 
 void box_item::update_data() {
 	setPos(QPointF(m_oBox->m_iXX, m_oBox->m_iYY));
-	setPlainText(m_oBox->m_sText);
+	//setPlainText(m_oBox->m_sText);
 }
 
 void box_item::update_size() {
 	qDebug()<<"TODO box_item::update_size";
-	setTextWidth(m_oBox->m_iWW);
+	//setTextWidth(m_oBox->m_iWW);
 }
 
+/*
 void box_item::keyPressEvent(QKeyEvent* e) {
 	// FIXME Qt Sucks
 	if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)
@@ -160,6 +179,7 @@ void box_item::keyReleaseEvent(QKeyEvent* e) {
 	}
 	QGraphicsTextItem::keyReleaseEvent(e);
 }
+*/
 
 QVariant box_item::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue)
 {

@@ -17,7 +17,7 @@ class QTextDocument;
 class box_view;
 class data_item;
 class data_box;
-class box_item : public QGraphicsTextItem, public connectable, public resizable
+class box_item : public QGraphicsRectItem, public connectable, public resizable
 {
 	public:
 		box_item(box_view*, int i_iId);
@@ -26,9 +26,8 @@ class box_item : public QGraphicsTextItem, public connectable, public resizable
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
 
 		QRectF boundingRect() const;
-
 		QRectF rect() const { return boundingRect().translated(pos()).adjusted(JUST, JUST, -JUST, -JUST); };
-		void setRect(int, int, int, int) { }
+		//void setRect(int, int, int, int) { }
 
 
 		box_view *m_oView;
@@ -36,8 +35,8 @@ class box_item : public QGraphicsTextItem, public connectable, public resizable
 
 		void mousePressEvent(QGraphicsSceneMouseEvent* e);
 		void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
-		void keyPressEvent(QKeyEvent*);
-		void keyReleaseEvent(QKeyEvent*);
+		//void keyPressEvent(QKeyEvent*);
+		//void keyReleaseEvent(QKeyEvent*);
 
 
 		box_resize_point *m_oBottomRight;
