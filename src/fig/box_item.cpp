@@ -73,51 +73,6 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	QAbstractTextDocumentLayout::PaintContext ctx;
 	ctx.palette = QApplication::palette("QTextControl");
 	doc.documentLayout()->draw(painter, ctx);
-
-	/*
-	painter->save();
-
-	QRectF l_oRect = boundingRect().adjusted(PAD, PAD, -PAD, -PAD);
-	data_item *l_oItem = m_oItem; //m_oGraph->m_oMediator->m_oItems.value(Id());
-
-	QPen l_oPen = QPen(Qt::SolidLine);
-
-	l_oPen.setColor(Qt::black);
-	if (isSelected()) l_oPen.setStyle(Qt::DotLine);
-	l_oPen.setCosmetic(false);
-	l_oPen.setWidth(1);
-
-	painter->setPen(l_oPen);
-
-	if (textInteractionFlags() & Qt::TextEditorInteraction)
-	{
-		painter->setBrush(Qt::white);
-	}
-	else
-	{
-		painter->setBrush(m_oBox->color);
-	}
-
-	painter->drawRoundRect(l_oRect, 20, 20);
-
-	QAbstractTextDocumentLayout::PaintContext ctx;
-	ctx.palette = QApplication::palette("QTextControl");
-	if (textInteractionFlags() & Qt::TextEditorInteraction) {
-		QTextCursor cursor = textCursor();
-		ctx.cursorPosition = cursor.position();
-		QAbstractTextDocumentLayout::Selection selection;
-		selection.cursor = cursor;
-		selection.format.setBackground(ctx.palette.brush(QPalette::Active, QPalette::Highlight));
-		selection.format.setForeground(ctx.palette.brush(QPalette::Active, QPalette::HighlightedText));
-		ctx.selections.append(selection);
-	}
-
-	ctx.clip = l_oRect;
-	document()->documentLayout()->draw(painter, ctx);
-
-	painter->restore();
-	*/
-	// TODO resize handle
 }
 
 void box_item::mousePressEvent(QGraphicsSceneMouseEvent* e) {
@@ -128,8 +83,8 @@ void box_item::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 void box_item::update_sizers()
 {
 	QPointF p = pos();
-	//qDebug()<<m_oBox->m_iWW<<m_oBox->m_iHH;
-	m_oBottomRight->setPos(p.x() + m_oBox->m_iWW, p.y() + m_oBox->m_iHH);
+	QRectF r = m_oBottomRight->boundingRect();
+	m_oBottomRight->setPos(pos() + boundingRect().bottomRight() - m_oBottomRight->boundingRect().bottomRight());
 }
 
 void box_item::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
@@ -138,18 +93,11 @@ void box_item::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 	update_sizers();
 }
 
-QRectF box_item::boundingRect() const {
-	return QGraphicsRectItem::boundingRect();
-	/*QTextDocument *doc = document();
-	QRectF rect(QPointF(0, 0), doc->size());
-	return rect.adjusted(-OFF, -OFF, OFF, OFF);*/
-}
-
 void box_item::update_data() {
 	setPos(QPointF(m_oBox->m_iXX, m_oBox->m_iYY));
 	if (m_oBox->m_iWW != rect().width() || m_oBox->m_iHH != rect().height())
 	{
-		doc.setTextWidth(m_oBox->m_iWW);
+		doc.setTextWidth(m_oBox->m_iWW - 2 * OFF);
 		doc.setPlainText(m_oBox->m_sText);
 		setRect(0, 0, m_oBox->m_iWW, m_oBox->m_iHH);
 		update_sizers();

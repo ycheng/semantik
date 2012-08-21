@@ -26,7 +26,6 @@ class box_item : public QGraphicsRectItem, public connectable, public resizable,
 
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
 
-		QRectF boundingRect() const;
 		QRectF rect() const { return boundingRect().translated(pos()).adjusted(JUST, JUST, -JUST, -JUST); };
 		//void setRect(int, int, int, int) { }
 
