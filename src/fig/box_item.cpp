@@ -152,8 +152,8 @@ void box_item::update_size() {
 void box_item::properties()
 {
 	bool ok = false;
-	QString text = QInputDialog::getText(m_oView, m_oView->trUtf8("QInputDialog::getText()"),
-			m_oView->trUtf8("Input text:"), QLineEdit::Normal,
+	QString text = QInputDialog::getText(m_oView, m_oView->trUtf8("Properties for diagram box"),
+			m_oView->trUtf8("Text:"), QLineEdit::Normal,
 			m_oBox->m_sText, &ok);
 	if (ok)
 	{
