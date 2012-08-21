@@ -117,11 +117,8 @@ void box_fork::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 
 void box_fork::update_data()
 {
-	int px = m_oBox->m_iXX;
-	int py = m_oBox->m_iYY;
 	int ww = m_oBox->m_iWW;
 	int hh = m_oBox->m_iHH;
-
 
 	setPos(QPointF(m_oBox->m_iXX, m_oBox->m_iYY));
 	Q_ASSERT(ww < 9999 && ww > 0);
