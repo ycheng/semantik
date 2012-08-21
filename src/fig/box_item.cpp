@@ -69,7 +69,7 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
 	painter->drawRoundRect(l_oRect, 20, 20);
 
-
+	painter->translate(OFF, OFF);
 	QAbstractTextDocumentLayout::PaintContext ctx;
 	ctx.palette = QApplication::palette("QTextControl");
 	doc.documentLayout()->draw(painter, ctx);
@@ -175,8 +175,8 @@ void box_item::properties()
 
 		QTextDocument doc;
 		doc.setPlainText(text);
-		doc.setTextWidth(m_oBox->m_iWW);
-		ed->newHeight = GRID * (((int) (doc.size().height() + GRID - 1)) / GRID);
+		doc.setTextWidth(m_oBox->m_iWW - 2 * OFF);
+		ed->newHeight = GRID * (((int) (doc.size().height() + 2 * OFF + GRID - 1)) / GRID);
 
 		ed->apply();
 	}
