@@ -47,7 +47,7 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsTextItem(), m_oVie
 
 box_item::~box_item()
 {
-
+	delete m_oBottomRight;
 }
 
 void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

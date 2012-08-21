@@ -434,8 +434,13 @@ void box_view::slot_delete()
 					links << l->m_oLink;
 				}
 			}
-
-		} else if (box_link *l = dynamic_cast<box_link*>(el)) {
+		}
+		else if (box_fork *fork = dynamic_cast<box_fork*>(el))
+		{
+			qDebug()<<"fork removal is not implemented";
+		}
+		else if (box_link *l = dynamic_cast<box_link*>(el))
+		{
 			links << l->m_oLink;
 			Q_ASSERT(l->m_oLink);
 		}
