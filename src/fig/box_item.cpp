@@ -24,8 +24,6 @@
 box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), resizable(), connectable(), editable(), m_oView(i_oParent)
 {
 	m_iId = i_iId;
-	//setPlainText("");
-	//adjustSize();
 
 	m_oItem = m_oView->m_oMediator->m_oItems[m_oView->m_iId];
 	m_oBox = m_oItem->m_oBoxes[m_iId];
@@ -42,7 +40,7 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), resiza
 	m_oBottomRight->setCursor(Qt::SizeFDiagCursor); // FIXME if someone has a solution for this
 	m_oBottomRight->hide();
 
-	doc.setPlainText(m_oBox->m_sText);
+	doc.setHtml(QString("<div align='center'>%1</div>").arg(m_oBox->m_sText));
 
 	setZValue(100);
 	setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
@@ -98,7 +96,7 @@ void box_item::update_data() {
 	if (m_oBox->m_iWW != rect().width() || m_oBox->m_iHH != rect().height())
 	{
 		doc.setTextWidth(m_oBox->m_iWW - 2 * OFF);
-		doc.setPlainText(m_oBox->m_sText);
+		doc.setHtml(QString("<div align='center'>%1</div>").arg(m_oBox->m_sText));
 		setRect(0, 0, m_oBox->m_iWW, m_oBox->m_iHH);
 		update_sizers();
 	}
@@ -122,7 +120,7 @@ void box_item::properties()
 		ed->newText = text;
 
 		QTextDocument doc;
-		doc.setPlainText(text);
+		doc.setHtml(QString("<div align='center'>%1</div>").arg(text));
 		doc.setTextWidth(m_oBox->m_iWW - 2 * OFF);
 		ed->newHeight = GRID * (((int) (doc.size().height() + 2 * OFF + GRID - 1)) / GRID);
 
