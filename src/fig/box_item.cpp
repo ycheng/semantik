@@ -31,16 +31,11 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), resiza
 	m_oBox = m_oItem->m_oBoxes[m_iId];
 	Q_ASSERT(m_oBox);
 
-	m_iWW = m_oBox->m_iWW;
-	m_iHH = m_oBox->m_iHH;
-	setRect(0, 0, m_iWW, m_iHH);
-
 	i_oParent->scene()->addItem(this);
 
 	setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
-	doc.setHtml(QString("<div align='center'>%1</div>").arg(m_oBox->m_sText));
-
+	update_size();
 	setZValue(100);
 	setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
 }
@@ -64,9 +59,12 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	painter->setBrush(m_oBox->color);
 
 	painter->drawRect(l_oRect);
-	painter->setBrush(QColor("#FFFF00"));
-	QRectF l_oR2(m_iWW - 10, m_iHH - 10, 8, 8);
-	painter->drawRect(l_oR2);
+	if (isSelected)
+	{
+		painter->setBrush(QColor("#FFFF00"));
+		QRectF l_oR2(m_iWW - 10, m_iHH - 10, 8, 8);
+		painter->drawRect(l_oR2);
+	}
 
 	painter->translate(OFF, OFF);
 	QAbstractTextDocumentLayout::PaintContext ctx;
@@ -121,26 +119,38 @@ void box_item::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 	{
 		m_bMoving = false;
 		setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
+
+		if (m_iWW != m_oBox->m_iWW || m_iHH != m_oBox->m_iHH)	
+		{
+			mem_size_box *mem = new mem_size_box(m_oView->m_oMediator, m_oView->m_iId);
+			mem->prev_values[m_oBox] = QRect(m_oBox->m_iXX, m_oBox->m_iYY, m_oBox->m_iWW, m_oBox->m_iHH);
+			mem->next_values[m_oBox] = QRect(m_oBox->m_iXX, m_oBox->m_iYY, m_iWW, m_iHH);
+			mem->apply();
+		}
 	}
-	QGraphicsRectItem::mouseReleaseEvent(e);
+	else
+	{
+		QGraphicsRectItem::mouseReleaseEvent(e);
+	}
 }
 
 void box_item::update_data() {
 	setPos(QPointF(m_oBox->m_iXX, m_oBox->m_iYY));
 	if (m_oBox->m_iWW != m_iWW || m_oBox->m_iHH != m_iHH || doc.toPlainText() != m_oBox->m_sText)
 	{
-		m_iWW = m_oBox->m_iWW;
-		m_iHH = m_oBox->m_iHH;
-		doc.setTextWidth(m_oBox->m_iWW - 2 * OFF);
-		doc.setHtml(QString("<div align='center'>%1</div>").arg(m_oBox->m_sText));
-		setRect(0, 0, m_iWW, m_iHH);
+		update_size();
 	}
 	update();
 }
 
 void box_item::update_size() {
-	qDebug()<<"TODO box_item::update_size";
-	//setTextWidth(m_oBox->m_iWW);
+	m_iWW = m_oBox->m_iWW;
+	m_iHH = m_oBox->m_iHH;
+
+	doc.setHtml(QString("<div align='center'>%1</div>").arg(m_oBox->m_sText));
+	doc.setTextWidth(m_iWW - 2 * OFF);
+
+	setRect(0, 0, m_iWW, m_iHH);
 }
 
 void box_item::properties()
