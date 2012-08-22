@@ -1130,7 +1130,7 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 		QPointF l_o = l_oItem->pos();
 		// TODO used by the handle for resizing the boxes - check that the click was on the handle
 		if (m_oLastPoint.x() + m_oLastPoint.y() - l_o.x() - l_o.y() >
-			k->rect().width() + k->rect().height() - 2*GRID_VALUE)
+			k->rect().width() + k->rect().height() - 2*GRID)
 		{
 			m_oOffsetPoint = QPointF(k->rect().width(), k->rect().height());
 		}

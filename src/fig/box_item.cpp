@@ -7,6 +7,7 @@
 #include <QTextDocumentFragment>
 #include <QAbstractTextDocumentLayout>
 #include <QTextList>
+#include <QGraphicsSceneMouseEvent>
 #include <QClipboard>
 #include <QPainter>
 #include <QtDebug>
@@ -24,21 +25,19 @@
 box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), resizable(), connectable(), editable(), m_oView(i_oParent)
 {
 	m_iId = i_iId;
+	m_bMoving = false;
 
 	m_oItem = m_oView->m_oMediator->m_oItems[m_oView->m_iId];
 	m_oBox = m_oItem->m_oBoxes[m_iId];
 	Q_ASSERT(m_oBox);
 
-	setRect(0, 0, m_oBox->m_iWW, m_oBox->m_iHH);
+	m_iWW = m_oBox->m_iWW;
+	m_iHH = m_oBox->m_iHH;
+	setRect(0, 0, m_iWW, m_iHH);
 
 	i_oParent->scene()->addItem(this);
 
 	setCacheMode(QGraphicsItem::DeviceCoordinateCache);
-
-	m_oBottomRight = new box_resize_point(m_oView, this);
-	m_oBottomRight->setRect(-CTRLSIZE/2., 0, CTRLSIZE, CTRLSIZE);
-	m_oBottomRight->setCursor(Qt::SizeFDiagCursor); // FIXME if someone has a solution for this
-	m_oBottomRight->hide();
 
 	doc.setHtml(QString("<div align='center'>%1</div>").arg(m_oBox->m_sText));
 
@@ -48,7 +47,6 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), resiza
 
 box_item::~box_item()
 {
-	delete m_oBottomRight;
 }
 
 void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -65,7 +63,8 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	painter->setPen(l_oPen);
 	painter->setBrush(m_oBox->color);
 
-	painter->drawRoundRect(l_oRect, 20, 20);
+	//painter->drawRoundRect(l_oRect, 20, 20);
+	painter->drawRect(l_oRect);
 
 	painter->translate(OFF, OFF);
 	QAbstractTextDocumentLayout::PaintContext ctx;
@@ -75,30 +74,64 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
 void box_item::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 	setZValue(100);
+
+	QPointF pt = rect().bottomRight();
+	m_oLastPressPoint = e->pos();
+	if (m_oLastPressPoint.x() > m_iWW - GRID && m_oLastPressPoint.y() > m_iHH - GRID )
+	{
+		setFlags(ItemIsSelectable | ItemSendsGeometryChanges);
+		m_bMoving = true;
+	}
 	QGraphicsRectItem::mousePressEvent(e);
 }
 
-void box_item::update_sizers()
+void box_item::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 {
-	QPointF p = pos();
-	QRectF r = m_oBottomRight->boundingRect();
-	m_oBottomRight->setPos(pos() + boundingRect().bottomRight() - m_oBottomRight->boundingRect().bottomRight());
+	if (m_bMoving)
+	{
+		QPointF np = e->pos();
+		int x = np.x() - m_oLastPressPoint.x();
+		int y = np.y() - m_oLastPressPoint.y();
+
+		m_iWW = m_oBox->m_iWW + x;
+		if (m_iWW < GRID) m_iWW = GRID;
+		m_iWW = grid_int(m_iWW);
+
+		m_iHH = m_oBox->m_iHH + y;
+		if (m_iHH < GRID) m_iHH = GRID;
+		m_iHH = grid_int(m_iHH);
+
+		doc.setTextWidth(m_iWW - 2 * OFF);
+		setRect(0, 0, m_iWW, m_iHH);
+		update();
+		update_links();
+	}
+	else
+	{
+		QGraphicsRectItem::mouseMoveEvent(e);
+	}
 }
 
 void box_item::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 	setZValue(99);
+
+	if (m_bMoving)
+	{
+		m_bMoving = false;
+		setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
+	}
 	QGraphicsRectItem::mouseReleaseEvent(e);
-	update_sizers();
 }
 
 void box_item::update_data() {
 	setPos(QPointF(m_oBox->m_iXX, m_oBox->m_iYY));
-	if (m_oBox->m_iWW != rect().width() || m_oBox->m_iHH != rect().height())
+	if (m_oBox->m_iWW != m_iWW || m_oBox->m_iHH != m_iHH || doc.toPlainText() != m_oBox->m_sText)
 	{
+		m_iWW = m_oBox->m_iWW;
+		m_iHH = m_oBox->m_iHH;
 		doc.setTextWidth(m_oBox->m_iWW - 2 * OFF);
 		doc.setHtml(QString("<div align='center'>%1</div>").arg(m_oBox->m_sText));
-		setRect(0, 0, m_oBox->m_iWW, m_oBox->m_iHH);
-		update_sizers();
+		setRect(0, 0, m_iWW, m_iHH);
 	}
 	update();
 }
@@ -112,8 +145,7 @@ void box_item::properties()
 {
 	bool ok = false;
 	QString text = QInputDialog::getText(m_oView, m_oView->trUtf8("Properties for diagram box"),
-			m_oView->trUtf8("Text:"), QLineEdit::Normal,
-			m_oBox->m_sText, &ok);
+			m_oView->trUtf8("Text:"), QLineEdit::Normal, m_oBox->m_sText, &ok);
 	if (ok && text != m_oBox->m_sText)
 	{
 		mem_edit_box *ed = new mem_edit_box(m_oView->m_oMediator, m_oView->m_iId, m_iId);
@@ -142,7 +174,6 @@ QVariant box_item::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 		else if (i_oChange == ItemPositionHasChanged)
 		{
 			update_links();
-			update_sizers();
 		}
 		else if (i_oChange == ItemSelectedHasChanged)
 		{
@@ -151,7 +182,6 @@ QVariant box_item::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 				setZValue(101);
 			else
 				setZValue(100);
-			m_oBottomRight->setVisible(b);
 		}
 	}
 

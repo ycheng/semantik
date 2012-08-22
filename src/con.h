@@ -40,10 +40,13 @@
 #define yp(a, b, d) a->setItem(b, 1, new QStandardItem(d));
 
 
-#define GRID_VALUE 10.
+#define GRID 10
 #define nof(x, y) ((int) ((y) * ((int) ((x) / (y)))))
-#define int_val2(x)  (nof(x, GRID_VALUE/2.))
-#define int_val(x)   (nof(x, GRID_VALUE))
+#define int_val2(x)  (nof(x, GRID/2.))
+#define int_val(x)   (nof(x, GRID))
+
+
+int grid_int(int x);
 
 
 

@@ -26,6 +26,10 @@
 static const char description[] = I18N_NOOP("A mind-mapping tool for KDE\nAvailable exclusively for Linux systems such as OpenSuse, Gentoo or Fedora.");
 static const char version[] = VERSION;
 
+int grid_int(int x) {
+	return GRID * (x / GRID);
+}
+
 int main(int i_iArgc, char **i_iArgv)
 {
 	int l_iSeed;
