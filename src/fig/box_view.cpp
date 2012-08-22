@@ -466,6 +466,12 @@ void box_view::enable_menu_actions()
 		l_o->setEnabled(selected >= 1);
 	}
 
+	m_oSizeMenu->setEnabled(selected >= 1 and dynamic_cast<box_link*>(selection.at(0)));
+	foreach(QAction* l_o, m_oSizeGroup->actions())
+	{
+		l_o->setEnabled(selected >= 1);
+	}
+
 	m_oStyleMenu->setEnabled(selected >= 1 and dynamic_cast<box_link*>(selection.at(0)));
 	foreach(QAction* l_o, m_oStyleGroup->actions())
 	{
