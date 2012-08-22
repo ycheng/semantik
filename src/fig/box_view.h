@@ -24,8 +24,6 @@ class box_view : public QGraphicsView
 		box_view(QWidget*, sem_mediator *);
 		~box_view();
 
-
-		//QList<box_item*> selection();
 		void clear_diagram();
 
 		QList<box_link*> m_oLinks;
@@ -50,13 +48,13 @@ class box_view : public QGraphicsView
 		QMenu* m_oSizeMenu;
 
 		QAction *m_oAddItemAction;
+		QAction *m_oAddLabel;
 		QAction *m_oAddDotStart;
 		QAction *m_oAddDotEnd;
 		QAction *m_oAddParallelHorizontal;
 		QAction *m_oAddParallelVertical;
 
 		QAction *m_oPropertiesAction;
-		//QAction *m_oCancelEditAction;
 		QAction *m_oDeleteAction;
 		QAction *m_oColorAction;
 		QAction *m_oMoveUpAction;

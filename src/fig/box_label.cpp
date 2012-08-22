@@ -19,9 +19,17 @@
 #include "sem_mediator.h"
 #include "mem_box.h"
 
+#include <QFont>
 
 #define PAD 2
 #define MIN_FORK_SIZE 30
+
+box_label::box_label(box_view* view, int id) : box_item(view, id)
+{
+	QFont font = doc.defaultFont();
+	font.setPointSize(font.pointSize() - 2);
+	doc.setDefaultFont(font);
+}
 
 void box_label::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {

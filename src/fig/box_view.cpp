@@ -29,6 +29,7 @@
 #include "sem_mediator.h"
 #include "box_item.h"
 #include "box_dot.h"
+#include "box_label.h"
 #include "box_fork.h"
 #include "box_link.h"
 #include "data_item.h"
@@ -183,6 +184,8 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	connect(m_oMoveDownAction, SIGNAL(triggered()), this, SLOT(slot_move_down()));
 	addAction(m_oMoveDownAction);
 
+	m_oAddLabel = new QAction(QObject::trUtf8("Floating text"), this);
+	connect(m_oAddLabel, SIGNAL(triggered()), this, SLOT(slot_add_element()));
 	m_oAddDotStart = new QAction(QObject::trUtf8("Activity start"), this);
 	connect(m_oAddDotStart, SIGNAL(triggered()), this, SLOT(slot_add_element()));
 	m_oAddDotEnd = new QAction(QObject::trUtf8("Activity end"), this);
@@ -196,6 +199,7 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	m_oMenu->addAction(m_oAddItemAction);
 
 	m_oAddBoxMenu = m_oMenu->addMenu(QObject::trUtf8("Add element"));
+	m_oAddBoxMenu->addAction(m_oAddLabel);
 	m_oAddBoxMenu->addAction(m_oAddDotStart);
 	m_oAddBoxMenu->addAction(m_oAddDotEnd);
 	m_oAddBoxMenu->addAction(m_oAddParallelHorizontal);
@@ -626,6 +630,10 @@ void box_view::slot_add_element()
 		add->box->m_iType = data_box::ACTIVITY_PARALLEL;
 		add->box->color = QColor(Qt::black);
 	}
+	if (sender == m_oAddLabel)
+	{
+		add->box->m_iType = data_box::LABEL;
+	}
 	add->apply();
 
 	QGraphicsItem *l_o = dynamic_cast<QGraphicsItem*>(m_oItems.value(add->box->m_iId));
@@ -852,6 +860,10 @@ void box_view::notify_add_box(int id, int box)
 	if (db->m_iType == data_box::ACTIVITY)
 	{
 		l_o = new box_item(this, box);
+	}
+	else if (db->m_iType == data_box::LABEL)
+	{
+		l_o = new box_label(this, box);
 	}
 	else if (db->m_iType == data_box::ACTIVITY_START)
 	{

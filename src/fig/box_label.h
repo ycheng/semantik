@@ -17,6 +17,8 @@ class box_label : public box_item
 {
 	public:
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
+		box_label(box_view*, int i_iId);
+
 };
 
 #endif // BOX_LABEL_H
