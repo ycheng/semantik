@@ -147,12 +147,12 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	//setCacheMode(CacheBackground);
 	setRenderHint(QPainter::Antialiasing);
 
-	/*m_oEditAction = new QAction(QObject::trUtf8("Toggle edit"), this);
-	m_oEditAction->setShortcut(QObject::trUtf8("Return"));
-	connect(m_oEditAction, SIGNAL(triggered()), this, SLOT(slot_toggle_edit()));
-	addAction(m_oEditAction);
+	m_oPropertiesAction = new QAction(QObject::trUtf8("Properties"), this);
+	//m_oPropertiesAction->setShortcut(QObject::trUtf8("Return"));
+	connect(m_oPropertiesAction, SIGNAL(triggered()), this, SLOT(slot_edit_properties()));
+	addAction(m_oPropertiesAction);
 
-	m_oCancelEditAction = new QAction(trUtf8("Cancel edit"), this);
+	/*m_oCancelEditAction = new QAction(trUtf8("Cancel edit"), this);
 	m_oCancelEditAction->setShortcut(notr("Escape"));
 	addAction(m_oCancelEditAction);
 	connect(m_oCancelEditAction, SIGNAL(triggered()), this, SLOT(slot_cancel_edit()));
@@ -249,6 +249,7 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	//m_oMoveUpAction->setEnabled(false);
 	//m_oMoveDownAction->setEnabled(false);
 	m_oMenu->addSeparator();
+	m_oMenu->addAction(m_oPropertiesAction);
 	m_oColorAction->setEnabled(false);
 
 	m_oLastMovePoint = QPointF(-100, -100);
@@ -329,7 +330,7 @@ void box_view::sync_view()
 
 	foreach (data_box *box, item->m_oBoxes.values())
 	{
-		if (box->m_iType == data_box::TEXT)
+		if (box->m_iType == data_box::ACTIVITY)
 		{
 			box_item *l_o = new box_item(this, box->m_iId);
 			m_oItems[box->m_iId] = l_o;
@@ -457,7 +458,7 @@ void box_view::enable_menu_actions()
 	m_oDeleteAction->setEnabled(selected >= 1);
 	m_oColorAction->setEnabled(selected >= 1);
 
-	//m_oEditAction->setEnabled(selected == 1 and dynamic_cast<box_item*>(selection.at(0)));
+	m_oPropertiesAction->setEnabled(selected == 1 and dynamic_cast<editable*>(selection.at(0)));
 
 	m_oWidthMenu->setEnabled(selected >= 1 and dynamic_cast<box_link*>(selection.at(0)));
 	foreach(QAction* l_o, m_oWidthGroup->actions())
@@ -639,6 +640,18 @@ void box_view::slot_penwidth()
 	mem->change_type = CH_BORDER;
 	mem->new_props.border_width = l_i;
 	mem->apply();
+}
+
+void box_view::slot_edit_properties()
+{
+	QList<QGraphicsItem*> lst = scene()->selectedItems();
+	if (lst.length() == 1)
+	{
+		if (editable*e = dynamic_cast<editable*>(lst.at(0)))
+		{
+			e->properties();
+		}
+	}
 }
 
 #if 0
@@ -830,7 +843,7 @@ void box_view::notify_add_box(int id, int box)
 	data_item *item = m_oMediator->m_oItems.value(m_iId);
 	data_box *db = item->m_oBoxes[box];
 	connectable *l_o = NULL;
-	if (db->m_iType == data_box::TEXT)
+	if (db->m_iType == data_box::ACTIVITY)
 	{
 		l_o = new box_item(this, box);
 	}
@@ -922,14 +935,7 @@ void box_view::keyPressEvent(QKeyEvent *i_oEvent)
 {
 	if (i_oEvent->key() == Qt::Key_Enter || i_oEvent->key() == Qt::Key_Return)
 	{
-		QList<QGraphicsItem*> lst = scene()->selectedItems();
-		if (lst.length() == 1)
-		{
-			if (editable*e = dynamic_cast<editable*>(lst.at(0)))
-			{
-				e->properties();
-			}
-		}
+		slot_edit_properties();
 	}
 	QGraphicsView::keyPressEvent(i_oEvent);
 	if (QApplication::keyboardModifiers() & Qt::ShiftModifier) setCursor(Qt::CrossCursor);
@@ -1072,7 +1078,6 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 {
 	if (i_oEv->button() == Qt::RightButton)
 	{
-		//edit_off();
 		m_oLastPoint = mapToScene(i_oEv->pos());
 		enable_menu_actions();
 		m_oMenu->popup(i_oEv->globalPos());

@@ -55,7 +55,7 @@ class box_view : public QGraphicsView
 		QAction *m_oAddParallelHorizontal;
 		QAction *m_oAddParallelVertical;
 
-		//QAction *m_oEditAction;
+		QAction *m_oPropertiesAction;
 		//QAction *m_oCancelEditAction;
 		QAction *m_oDeleteAction;
 		QAction *m_oColorAction;
@@ -103,8 +103,7 @@ class box_view : public QGraphicsView
 		void slot_delete();
 		void slot_add_item();
 		void slot_color();
-		//void slot_toggle_edit();
-		//void slot_cancel_edit();
+		void slot_edit_properties();
 		void slot_align();
 		void slot_size();
 

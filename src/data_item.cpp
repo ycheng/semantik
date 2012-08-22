@@ -109,7 +109,7 @@ data_box::data_box(int id) : diagram_item()
 	m_iId = id;
 	m_bIsEnd = false;
 	m_bIsVertical = false;
-	m_iType = data_box::TEXT;
+	m_iType = data_box::ACTIVITY;
 	m_iWW = 80;
 	m_iHH = 30;
 	color = QColor("#cafeba");
