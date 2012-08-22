@@ -231,6 +231,7 @@ int box_fork::choose_position(const QPointF& i_oP, int id)
 			if (k == 0) break;
 
 			int val = qAbs((k * r.width() / 1000.) - (i_oP.x() - pos().x()));
+
 			if (val < best)
 			{
 				best = val;
@@ -242,6 +243,12 @@ int box_fork::choose_position(const QPointF& i_oP, int id)
 	return ret;
 }
 
+int round_point(int x) {
+	// Ugly
+	float y = x;
+	y = qRound(y / GRID);
+	int k = GRID * y;
+};
 QPoint box_fork::get_point(int i_oP)
 {
 	QRectF r = rect();
@@ -250,13 +257,13 @@ QPoint box_fork::get_point(int i_oP)
 	if (ratio >= 1000 || ratio <= 0) ratio = 500;
 	switch (i_oP & data_link::COORD) {
 		case data_link::NORTH:
-			return QPoint(r.x() + r.width() * ratio / 1000., r.y());
+			return QPoint(round_point(r.x() + r.width() * ratio / 1000.), r.y());
 		case data_link::WEST:
-			return QPoint(r.x(), r.y() + r.height() * ratio / 1000.);
+			return QPoint(r.x(), round_point(r.y() + r.height() * ratio / 1000.));
 		case data_link::SOUTH:
-			return QPoint(r.x() + r.width() * ratio / 1000., r.y() + r.height());
+			return QPoint(round_point(r.x() + r.width() * ratio / 1000.), r.y() + r.height());
 		case data_link::EAST:
-			return QPoint(r.x() + r.width(), r.y() + r.height() * ratio / 1000.);
+			return QPoint(r.x() + r.width(), round_point( r.y() + r.height() * ratio / 1000. ));
 	}
 	Q_ASSERT(false);
 	return QPoint(0, 0);

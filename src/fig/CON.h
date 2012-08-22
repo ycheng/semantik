@@ -8,7 +8,6 @@
 #include "data_item.h"
 
 #define JUST 1
-
 class connectable
 {
 	public:
