@@ -341,6 +341,13 @@ void box_view::sync_view()
 			l_o->setPos(QPointF(box->m_iXX, box->m_iYY));
 			l_o->update_data();
 		}
+		else if (box->m_iType == data_box::LABEL)
+		{
+			box_item *l_o = new box_label(this, box->m_iId);
+			m_oItems[box->m_iId] = l_o;
+			l_o->setPos(QPointF(box->m_iXX, box->m_iYY));
+			l_o->update_data();
+		}
 		else if (box->m_iType == data_box::ACTIVITY_START)
 		{
 			box_dot *l_o = new box_dot(this, box->m_iId);
