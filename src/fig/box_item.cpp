@@ -63,8 +63,10 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	painter->setPen(l_oPen);
 	painter->setBrush(m_oBox->color);
 
-	//painter->drawRoundRect(l_oRect, 20, 20);
 	painter->drawRect(l_oRect);
+	painter->setBrush(QColor("#FFFF00"));
+	QRectF l_oR2(m_iWW - 10, m_iHH - 10, 8, 8);
+	painter->drawRect(l_oR2);
 
 	painter->translate(OFF, OFF);
 	QAbstractTextDocumentLayout::PaintContext ctx;
@@ -94,11 +96,11 @@ void box_item::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 		int y = np.y() - m_oLastPressPoint.y();
 
 		m_iWW = m_oBox->m_iWW + x;
-		if (m_iWW < GRID) m_iWW = GRID;
+		if (m_iWW < 2 * GRID) m_iWW = 2 * GRID;
 		m_iWW = grid_int(m_iWW);
 
 		m_iHH = m_oBox->m_iHH + y;
-		if (m_iHH < GRID) m_iHH = GRID;
+		if (m_iHH < 2 * GRID) m_iHH = 2 * GRID;
 		m_iHH = grid_int(m_iHH);
 
 		doc.setTextWidth(m_iWW - 2 * OFF);
