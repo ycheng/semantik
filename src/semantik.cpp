@@ -132,7 +132,7 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 {
 	setObjectName("semantik_win");
 
-	//setWindowIcon(QIcon(notr(":images/semantik-32.png")));
+	setWindowIcon(KIcon("semantik"));
 
 	m_oMediator = new sem_mediator(this);
 	connect(m_oMediator, SIGNAL(sig_message(const QString&, int)), this, SLOT(slot_message(const QString&, int)));
