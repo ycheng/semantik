@@ -76,7 +76,6 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 }
 
 void box_item::mousePressEvent(QGraphicsSceneMouseEvent* e) {
-	setZValue(100);
 
 	QPointF pt = rect().bottomRight();
 	m_oLastPressPoint = e->pos();
@@ -116,8 +115,6 @@ void box_item::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 }
 
 void box_item::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
-	setZValue(99);
-
 	if (m_bMoving)
 	{
 		m_bMoving = false;
@@ -191,14 +188,6 @@ QVariant box_item::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 		else if (i_oChange == ItemPositionHasChanged)
 		{
 			update_links();
-		}
-		else if (i_oChange == ItemSelectedHasChanged)
-		{
-			bool b = isSelected();
-			if (b)
-				setZValue(101);
-			else
-				setZValue(100);
 		}
 	}
 

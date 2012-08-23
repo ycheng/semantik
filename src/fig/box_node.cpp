@@ -26,6 +26,7 @@
 
 box_node::box_node(box_view* view, int id) : box_item(view, id)
 {
+	setZValue(90);
 }
 
 void box_node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
