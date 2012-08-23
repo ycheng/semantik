@@ -44,7 +44,7 @@ void box_label::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 		l_oPen.setCosmetic(false);
 		l_oPen.setWidth(1);
 		painter->setPen(l_oPen);
-		painter->drawRect(l_oRect);
+		painter->drawRoundRect(l_oRect, 20, 20);
 	}
 
 	painter->translate(OFF, OFF);

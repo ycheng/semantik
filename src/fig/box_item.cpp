@@ -58,7 +58,7 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	painter->setPen(l_oPen);
 	painter->setBrush(m_oBox->color);
 
-	painter->drawRect(l_oRect);
+	painter->drawRoundRect(l_oRect, 20, 20);
 	if (isSelected())
 	{
 		painter->setBrush(QColor("#FFFF00"));
