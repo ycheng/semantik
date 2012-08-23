@@ -34,6 +34,8 @@ void box_node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
 	QRectF l_oRect = boundingRect().adjusted(PAD, PAD, -PAD, -PAD);
 
+	painter->setBrush(m_oBox->color);
+
 	QPen l_oPen = QPen(Qt::SolidLine);
 	l_oPen.setColor(Qt::black);
 	l_oPen.setCosmetic(false);

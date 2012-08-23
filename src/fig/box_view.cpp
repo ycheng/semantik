@@ -662,15 +662,23 @@ void box_view::slot_add_element()
 	if (sender == m_oAddLabel)
 	{
 		add->box->m_iType = data_box::LABEL;
+		add->box->m_iWW = 60;
+		add->box->m_iHH = 10;
 		add->box->m_sText = QString("...");
 	}
 	else if (sender == m_oAddComponent)
 	{
 		add->box->m_iType = data_box::COMPONENT;
+		add->box->m_iWW = 120;
+		add->box->m_iHH = 60;
+		add->box->color = QColor("#FFFFCC");
 	}
 	else if (sender == m_oAddNode)
 	{
 		add->box->m_iType = data_box::NODE;
+		add->box->m_iWW = 200;
+		add->box->m_iHH = 200;
+		add->box->color = QColor("#FFFFCC");
 	}
 	add->apply();
 

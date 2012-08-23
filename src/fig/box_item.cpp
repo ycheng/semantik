@@ -170,6 +170,8 @@ void box_item::properties()
 		doc.setHtml(QString("<div align='center'>%1</div>").arg(text));
 		doc.setTextWidth(m_oBox->m_iWW - 2 * OFF);
 		ed->newHeight = GRID * (((int) (doc.size().height() + 2 * OFF + GRID - 1)) / GRID);
+		if (ed->newHeight < m_oBox->m_iHH)
+			ed->newHeight = m_oBox->m_iHH;
 
 		ed->apply();
 	}
