@@ -65,6 +65,12 @@ void box_node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
 	painter->drawPolygon(pts, 4);
 
+	if (isSelected())
+	{
+		painter->setBrush(QColor("#FFFF00"));
+		QRectF l_oR2(m_iWW - 8, m_iHH - 8, 6, 6);
+		painter->drawRect(l_oR2);
+	}
 
 	painter->translate(OFF, OFF);
 	QAbstractTextDocumentLayout::PaintContext ctx;
@@ -73,4 +79,15 @@ void box_node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
 	painter->restore();
 }
+
+void box_node::update_size() {
+	m_iWW = m_oBox->m_iWW;
+	m_iHH = m_oBox->m_iHH;
+
+	doc.setHtml(QString("<div align='center'>%1</div>").arg(m_oBox->m_sText));
+	doc.setTextWidth(m_iWW - 2 * OFF - 20);
+
+	setRect(0, 0, m_iWW, m_iHH);
+}
+
 
