@@ -640,6 +640,7 @@ void box_view::slot_add_element()
 	if (sender == m_oAddLabel)
 	{
 		add->box->m_iType = data_box::LABEL;
+		add->box->m_sText = QString("...");
 	}
 	add->apply();
 
