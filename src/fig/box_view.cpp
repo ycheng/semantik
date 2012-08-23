@@ -32,6 +32,8 @@
 #include "box_label.h"
 #include "box_fork.h"
 #include "box_link.h"
+#include "box_component.h"
+#include "box_node.h"
 #include "data_item.h"
 #include "box_view.h"
 #include "sembind.h"
@@ -186,6 +188,10 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 
 	m_oAddLabel = new QAction(QObject::trUtf8("Floating text"), this);
 	connect(m_oAddLabel, SIGNAL(triggered()), this, SLOT(slot_add_element()));
+	m_oAddComponent = new QAction(QObject::trUtf8("Component"), this);
+	connect(m_oAddComponent, SIGNAL(triggered()), this, SLOT(slot_add_element()));
+	m_oAddNode = new QAction(QObject::trUtf8("Node"), this);
+	connect(m_oAddNode, SIGNAL(triggered()), this, SLOT(slot_add_element()));
 	m_oAddDotStart = new QAction(QObject::trUtf8("Activity start"), this);
 	connect(m_oAddDotStart, SIGNAL(triggered()), this, SLOT(slot_add_element()));
 	m_oAddDotEnd = new QAction(QObject::trUtf8("Activity end"), this);
@@ -200,6 +206,8 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 
 	m_oAddBoxMenu = m_oMenu->addMenu(QObject::trUtf8("Add element"));
 	m_oAddBoxMenu->addAction(m_oAddLabel);
+	m_oAddBoxMenu->addAction(m_oAddComponent);
+	m_oAddBoxMenu->addAction(m_oAddNode);
 	m_oAddBoxMenu->addAction(m_oAddDotStart);
 	m_oAddBoxMenu->addAction(m_oAddDotEnd);
 	m_oAddBoxMenu->addAction(m_oAddParallelHorizontal);
@@ -344,6 +352,20 @@ void box_view::sync_view()
 		else if (box->m_iType == data_box::LABEL)
 		{
 			box_item *l_o = new box_label(this, box->m_iId);
+			m_oItems[box->m_iId] = l_o;
+			l_o->setPos(QPointF(box->m_iXX, box->m_iYY));
+			l_o->update_data();
+		}
+		else if (box->m_iType == data_box::COMPONENT)
+		{
+			box_component *l_o = new box_component(this, box->m_iId);
+			m_oItems[box->m_iId] = l_o;
+			l_o->setPos(QPointF(box->m_iXX, box->m_iYY));
+			l_o->update_data();
+		}
+		else if (box->m_iType == data_box::NODE)
+		{
+			box_node *l_o = new box_node(this, box->m_iId);
 			m_oItems[box->m_iId] = l_o;
 			l_o->setPos(QPointF(box->m_iXX, box->m_iYY));
 			l_o->update_data();
@@ -642,6 +664,14 @@ void box_view::slot_add_element()
 		add->box->m_iType = data_box::LABEL;
 		add->box->m_sText = QString("...");
 	}
+	else if (sender == m_oAddComponent)
+	{
+		add->box->m_iType = data_box::COMPONENT;
+	}
+	else if (sender == m_oAddNode)
+	{
+		add->box->m_iType = data_box::NODE;
+	}
 	add->apply();
 
 	QGraphicsItem *l_o = dynamic_cast<QGraphicsItem*>(m_oItems.value(add->box->m_iId));
@@ -872,6 +902,14 @@ void box_view::notify_add_box(int id, int box)
 	else if (db->m_iType == data_box::LABEL)
 	{
 		l_o = new box_label(this, box);
+	}
+	else if (db->m_iType == data_box::COMPONENT)
+	{
+		l_o = new box_component(this, box);
+	}
+	else if (db->m_iType == data_box::NODE)
+	{
+		l_o = new box_node(this, box);
 	}
 	else if (db->m_iType == data_box::ACTIVITY_START)
 	{

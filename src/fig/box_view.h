@@ -49,6 +49,8 @@ class box_view : public QGraphicsView
 
 		QAction *m_oAddItemAction;
 		QAction *m_oAddLabel;
+		QAction *m_oAddComponent;
+		QAction *m_oAddNode;
 		QAction *m_oAddDotStart;
 		QAction *m_oAddDotEnd;
 		QAction *m_oAddParallelHorizontal;
