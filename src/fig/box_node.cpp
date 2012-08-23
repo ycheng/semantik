@@ -47,7 +47,24 @@ void box_node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	}
 
 	painter->setPen(l_oPen);
-	painter->drawRect(l_oRect);
+	QRectF br = l_oRect.adjusted(0, 0, -20, -20);
+	painter->drawRect(br);
+
+	QPointF pts[4];
+	pts[0] = br.bottomRight();
+	pts[1] = br.bottomRight() + QPointF(20, 20);
+	pts[2] = br.bottomLeft() + QPointF(20, 20);
+	pts[3] = br.bottomLeft();
+
+	painter->drawPolygon(pts, 4);
+
+	pts[0] = br.topRight();
+	pts[1] = br.topRight() + QPointF(20, 20);
+	pts[2] = br.bottomRight() + QPointF(20, 20);
+	pts[3] = br.bottomRight();
+
+	painter->drawPolygon(pts, 4);
+
 
 	painter->translate(OFF, OFF);
 	QAbstractTextDocumentLayout::PaintContext ctx;
