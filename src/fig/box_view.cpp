@@ -676,8 +676,8 @@ void box_view::slot_add_element()
 	else if (sender == m_oAddNode)
 	{
 		add->box->m_iType = data_box::NODE;
-		add->box->m_iWW = 200;
-		add->box->m_iHH = 200;
+		add->box->m_iWW = 180;
+		add->box->m_iHH = 180;
 		add->box->color = QColor("#FFFFCC");
 	}
 	add->apply();
