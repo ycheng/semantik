@@ -66,10 +66,13 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 		painter->drawRect(l_oR2);
 	}
 
-	painter->translate(OFF, OFF);
 	QAbstractTextDocumentLayout::PaintContext ctx;
 	ctx.palette = QApplication::palette("QTextControl");
-	doc.documentLayout()->draw(painter, ctx);
+	QAbstractTextDocumentLayout * lay = doc.documentLayout();
+	qreal yoff = lay->documentSize().height();
+
+	painter->translate(OFF, OFF + (m_iHH - 2 * OFF - yoff) / 2.);
+	lay->draw(painter, ctx);
 }
 
 void box_item::mousePressEvent(QGraphicsSceneMouseEvent* e) {
