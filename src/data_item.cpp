@@ -112,7 +112,7 @@ data_box::data_box(int id) : diagram_item()
 	m_iType = data_box::ACTIVITY;
 	m_iWW = 80;
 	m_iHH = 30;
-	color = QColor("#cafeba");
+	color = QColor("#a7e89b");
 }
 
 void diagram_item::setBorderWidth(int bw)

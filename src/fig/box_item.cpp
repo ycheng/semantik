@@ -8,6 +8,7 @@
 #include <QAbstractTextDocumentLayout>
 #include <QTextList>
 #include <QGraphicsSceneMouseEvent>
+#include <QLinearGradient>
 #include <QClipboard>
 #include <QPainter>
 #include <QtDebug>
@@ -56,7 +57,12 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	l_oPen.setWidth(1);
 
 	painter->setPen(l_oPen);
-	painter->setBrush(m_oBox->color);
+
+	QColor bc(m_oBox->color);
+	QLinearGradient linearGradient(0, 0, l_oRect.width(), 0);
+        linearGradient.setColorAt(0.0, bc);
+        linearGradient.setColorAt(1.0, bc.darker(GRADVAL));
+        painter->setBrush(linearGradient);
 
 	painter->drawRoundRect(l_oRect, 20, 20);
 	if (isSelected())

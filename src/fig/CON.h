@@ -7,6 +7,7 @@
 #include <QGraphicsItem>
 #include "data_item.h"
 
+#define GRADVAL 110
 #define JUST 1
 class connectable
 {
