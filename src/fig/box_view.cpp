@@ -150,7 +150,7 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	//setCacheMode(CacheBackground);
 	setRenderHint(QPainter::Antialiasing);
 
-	m_oPropertiesAction = new QAction(QObject::trUtf8("Properties"), this);
+	m_oPropertiesAction = new QAction(QObject::trUtf8("Properties..."), this);
 	//m_oPropertiesAction->setShortcut(QObject::trUtf8("Return"));
 	connect(m_oPropertiesAction, SIGNAL(triggered()), this, SLOT(slot_edit_properties()));
 	addAction(m_oPropertiesAction);
@@ -1261,8 +1261,10 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 
 	m_bPressed = false;
 	{
+		//if (qAbs(p->m_iXX - v->pos().x()) + qAbs(p->m_iYY - v->pos().y()) > 0.1) {
+
 		QPointF p = mapToScene(i_oEv->pos()) - m_oLastPoint;
-		if (qAbs(p.x()) > 1 || qAbs(p.y()) > 1)
+		if (qAbs(p.x()) > 3 || qAbs(p.y()) > 3)
 		{
 			mem_pos_box *mem = new mem_pos_box(m_oMediator, m_iId);
 			foreach (QGraphicsItem *l_oI1, scene()->selectedItems())
