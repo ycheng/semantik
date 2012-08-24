@@ -47,6 +47,13 @@ void box_label::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 		painter->drawRoundRect(l_oRect, 20, 20);
 	}
 
+	if (isSelected())
+	{
+		painter->setBrush(QColor("#FFFF00"));
+		QRectF l_oR2(m_iWW - 8, m_iHH - 8, 6, 6);
+		painter->drawRect(l_oR2);
+	}
+
 	painter->translate(OFF, OFF);
 	QAbstractTextDocumentLayout::PaintContext ctx;
 	ctx.palette = QApplication::palette("QTextControl");
@@ -54,4 +61,18 @@ void box_label::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
 	painter->restore();
 }
+
+QVariant box_label::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue)
+{
+	if (scene())
+	{
+		if (i_oChange == ItemPositionHasChanged)
+		{
+			update_links();
+		}
+	}
+
+	return QGraphicsItem::itemChange(i_oChange, i_oValue);
+}
+
 
