@@ -110,8 +110,8 @@ data_box::data_box(int id) : diagram_item()
 	m_bIsEnd = false;
 	m_bIsVertical = false;
 	m_iType = data_box::ACTIVITY;
-	m_iWW = 80;
-	m_iHH = 30;
+	m_iWW = 100;
+	m_iHH = 40;
 	color = QColor("#a7e89b");
 }
 
