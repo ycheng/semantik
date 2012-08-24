@@ -410,8 +410,26 @@ void box_view::notify_export_item(int id)
 	m_iId = id;
 	sync_view();
 
-	QRectF l_oRect = scene()->itemsBoundingRect();
-	l_oRect = QRectF(l_oRect.topLeft() - QPointF(25, 25), l_oRect.bottomRight() + QPointF(25, 25));
+	QRectF l_oRect;
+	foreach (QGraphicsItem*it, scene()->items())
+	{
+		if (it->isVisible())
+		{
+			if (l_oRect.width() < 1)
+			{
+				l_oRect = it->boundingRect();
+				l_oRect.translate(it->pos());
+			}
+			else
+			{
+				QRectF tmp = it->boundingRect();
+				tmp.translate(it->pos());
+				l_oRect = l_oRect.united(tmp);
+			}
+		}
+	}
+
+	l_oRect = l_oRect.adjusted(-15, -15, 15, 15);
 
 	QRectF l_oR(0, 0, l_oRect.width(), l_oRect.height());
 
