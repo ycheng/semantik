@@ -45,6 +45,8 @@ void box_component::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 	l_oPen.setColor(Qt::black);
 	l_oPen.setCosmetic(false);
 	l_oPen.setWidth(1);
+
+
 	if (isSelected())
 	{
 		l_oPen.setStyle(Qt::DotLine);
@@ -55,12 +57,25 @@ void box_component::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 
 	if (isSelected())
 	{
+		l_oPen.setStyle(Qt::SolidLine);
+		painter->setPen(l_oPen);
 		painter->setBrush(QColor("#FFFF00"));
 		QRectF l_oR2(m_iWW - 8, m_iHH - 8, 6, 6);
 		painter->drawRect(l_oR2);
 	}
 
-	painter->translate(OFF, OFF);
+	l_oPen.setStyle(Qt::SolidLine);
+	painter->setPen(l_oPen);
+	painter->setBrush(bc);
+	QRectF l_o(m_iWW - 20, 6, 12, 14);
+	painter->drawRect(l_o);
+	QRectF l_o2(m_iWW - 24, 9, 8, 3);
+	painter->drawRect(l_o2);
+	QRectF l_o3(m_iWW - 24, 14, 8, 3);
+	painter->drawRect(l_o3);
+
+
+	painter->translate(OFF, OFF + 15);
 	QAbstractTextDocumentLayout::PaintContext ctx;
 	ctx.palette = QApplication::palette("QTextControl");
 	doc.documentLayout()->draw(painter, ctx);

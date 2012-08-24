@@ -67,6 +67,8 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	painter->drawRoundRect(l_oRect, 20, 20);
 	if (isSelected())
 	{
+		l_oPen.setStyle(Qt::SolidLine);
+		painter->setPen(l_oPen);
 		painter->setBrush(QColor("#FFFF00"));
 		QRectF l_oR2(m_iWW - 8, m_iHH - 8, 6, 6);
 		painter->drawRect(l_oR2);

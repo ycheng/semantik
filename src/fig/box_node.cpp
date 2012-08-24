@@ -7,6 +7,7 @@
 #include <QAbstractTextDocumentLayout>
 #include <QTextList>
 #include <QClipboard>
+#include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QtDebug>
 #include <QAction>
@@ -77,8 +78,10 @@ void box_node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
 	if (isSelected())
 	{
+		l_oPen.setStyle(Qt::SolidLine);
+		painter->setPen(l_oPen);
 		painter->setBrush(QColor("#FFFF00"));
-		QRectF l_oR2(m_iWW - 8, m_iHH - 8, 6, 6);
+		QRectF l_oR2(m_iWW - 10 - 8, m_iHH - 8, 6, 6);
 		painter->drawRect(l_oR2);
 	}
 
@@ -98,6 +101,18 @@ void box_node::update_size() {
 	doc.setTextWidth(m_iWW - 2 * OFF - 20);
 
 	setRect(0, 0, m_iWW, m_iHH);
+}
+
+void box_node::mousePressEvent(QGraphicsSceneMouseEvent* e) {
+
+	QPointF pt = rect().bottomRight();
+	m_oLastPressPoint = e->pos();
+	if (m_oLastPressPoint.x() > m_iWW - GRID - 10 && m_oLastPressPoint.x() < m_iWW - 10 && m_oLastPressPoint.y() > m_iHH - GRID)
+	{
+		setFlags(ItemIsSelectable | ItemSendsGeometryChanges);
+		m_bMoving = true;
+	}
+	QGraphicsRectItem::mousePressEvent(e);
 }
 
 

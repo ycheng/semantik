@@ -19,7 +19,7 @@ class box_node : public box_item
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
 		box_node(box_view*, int i_iId);
 		void update_size();
-
+		void mousePressEvent(QGraphicsSceneMouseEvent* e);
 };
 
 #endif // BOX_NODE_H
