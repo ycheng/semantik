@@ -47,20 +47,20 @@ void box_node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	}
 
 	painter->setPen(l_oPen);
-	QRectF br = l_oRect.adjusted(0, 0, -20, -20);
+	QRectF br = l_oRect.adjusted(0, 10, -10, 0);
 	painter->drawRect(br);
 
 	QPointF pts[4];
-	pts[0] = br.bottomRight();
-	pts[1] = br.bottomRight() + QPointF(20, 20);
-	pts[2] = br.bottomLeft() + QPointF(20, 20);
-	pts[3] = br.bottomLeft();
+	pts[0] = br.topLeft();
+	pts[1] = br.topLeft() + QPointF(10, -10);
+	pts[2] = br.topRight() + QPointF(10, -10);
+	pts[3] = br.topRight();
 
 	painter->drawPolygon(pts, 4);
 
 	pts[0] = br.topRight();
-	pts[1] = br.topRight() + QPointF(20, 20);
-	pts[2] = br.bottomRight() + QPointF(20, 20);
+	pts[1] = br.topRight() + QPointF(10, -10);
+	pts[2] = br.bottomRight() + QPointF(10, -10);
 	pts[3] = br.bottomRight();
 
 	painter->drawPolygon(pts, 4);
@@ -72,7 +72,7 @@ void box_node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 		painter->drawRect(l_oR2);
 	}
 
-	painter->translate(OFF, OFF);
+	painter->translate(OFF, OFF + 20);
 	QAbstractTextDocumentLayout::PaintContext ctx;
 	ctx.palette = QApplication::palette("QTextControl");
 	doc.documentLayout()->draw(painter, ctx);

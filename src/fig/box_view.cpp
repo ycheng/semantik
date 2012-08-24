@@ -663,7 +663,7 @@ void box_view::slot_add_element()
 	{
 		add->box->m_iType = data_box::LABEL;
 		add->box->m_iWW = 60;
-		add->box->m_iHH = 10;
+		add->box->m_iHH = 30;
 		add->box->m_sText = QString("...");
 	}
 	else if (sender == m_oAddComponent)
