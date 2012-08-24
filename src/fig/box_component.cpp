@@ -20,8 +20,6 @@
 #include "sem_mediator.h"
 #include "mem_box.h"
 
-#include <QFont>
-
 #define PAD 2
 #define MIN_FORK_SIZE 30
 

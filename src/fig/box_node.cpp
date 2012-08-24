@@ -27,6 +27,10 @@
 
 box_node::box_node(box_view* view, int id) : box_item(view, id)
 {
+	QFont font = doc.defaultFont();
+	font.setBold(true);
+	doc.setDefaultFont(font);
+
 	setZValue(90);
 }
 
