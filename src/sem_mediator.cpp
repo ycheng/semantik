@@ -1100,6 +1100,7 @@ void sem_mediator::generate_docs(const QString &i_oFile, const QString &i_sDirNa
 	}
 	PyRun_SimpleString(l_oBa.constData());
 
+	emit sig_message(trUtf8("Document generation completed successfully"), 5000);
 	emit sig_preview();
 }
 
