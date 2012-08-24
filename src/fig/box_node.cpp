@@ -78,7 +78,7 @@ void box_node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 		painter->drawRect(l_oR2);
 	}
 
-	painter->translate(OFF, OFF + 20);
+	painter->translate(OFF, OFF + 10);
 	QAbstractTextDocumentLayout::PaintContext ctx;
 	ctx.palette = QApplication::palette("QTextControl");
 	doc.documentLayout()->draw(painter, ctx);
