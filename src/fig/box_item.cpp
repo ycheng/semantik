@@ -113,6 +113,9 @@ void box_item::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 
 		doc.setTextWidth(m_iWW - 2 * OFF);
 		setRect(0, 0, m_iWW, m_iHH);
+
+		m_oView->message(m_oView->trUtf8("%1 x %2").arg(QString::number(m_iWW), QString::number(m_iHH)), 1000);
+
 		update();
 		update_links();
 	}

@@ -1389,5 +1389,10 @@ void box_view::notify_focus(void* ptr)
 	//m_oEditAction->setEnabled(cond);
 }
 
+void box_view::message(const QString &s, int d)
+{
+	emit sig_message(s, d);
+}
+
 #include "box_view.moc"
 

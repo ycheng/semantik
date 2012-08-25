@@ -97,6 +97,8 @@ class box_view : public QGraphicsView
 		int next_seq();
 		int num_seq;
 
+		void message(const QString &, int);
+
 	public slots:
 		void change_colors(QAction* i_oAct);
 		void enable_actions(); // used on focus in
@@ -129,6 +131,9 @@ class box_view : public QGraphicsView
 
 		void notify_select(const QList<int>& unsel, const QList<int>& sel);
 		void notify_export_item(int);
+
+	signals:
+		void sig_message(const QString &, int);
 };
 
 #endif

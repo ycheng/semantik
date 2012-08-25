@@ -262,6 +262,8 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	m_oDiagramView = new box_view(m_oDataView, m_oMediator);
 	m_oDataView->addWidget(m_oDiagramView);
 	connect(m_oColorGroup, SIGNAL(triggered(QAction*)), m_oDiagramView, SLOT(change_colors(QAction*)));
+	connect(m_oDiagramView, SIGNAL(sig_message(const QString&, int)), this, SLOT(slot_message(const QString&, int)));
+
 
 	QDockWidget *l_oDockVars = new QDockWidget(trUtf8("Variables"), this);
 	l_oDockVars->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::BottomDockWidgetArea);
