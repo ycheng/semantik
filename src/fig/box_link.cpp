@@ -87,8 +87,7 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 	//i_oPainter->setPen(l_oPen);
 
       	l_oPen.setStyle(Qt::SolidLine);
-
-	//draw_triangle(i_oPainter, m_iParent, m_oGood[0]);
+	i_oPainter->setPen(l_oPen);
 	draw_triangle(i_oPainter, m_oInnerLink.m_iChildPos, m_oGood[m_oGood.size()-1]);
 }
 
