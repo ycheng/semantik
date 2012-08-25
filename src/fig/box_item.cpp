@@ -72,6 +72,11 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 		painter->setBrush(QColor("#FFFF00"));
 		QRectF l_oR2(m_iWW - 8, m_iHH - 8, 6, 6);
 		painter->drawRect(l_oR2);
+
+		/*painter->setBrush(Qt::green);
+		l_oR2.setY(PAD);
+		l_oR2.setHeight(6);
+		painter->drawRect(l_oR2);*/
 	}
 
 	QAbstractTextDocumentLayout::PaintContext ctx;

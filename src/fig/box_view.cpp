@@ -156,13 +156,7 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	connect(m_oPropertiesAction, SIGNAL(triggered()), this, SLOT(slot_edit_properties()));
 	addAction(m_oPropertiesAction);
 
-	/*m_oCancelEditAction = new QAction(trUtf8("Cancel edit"), this);
-	m_oCancelEditAction->setShortcut(notr("Escape"));
-	addAction(m_oCancelEditAction);
-	connect(m_oCancelEditAction, SIGNAL(triggered()), this, SLOT(slot_cancel_edit()));
-	m_oCancelEditAction->setEnabled(false);*/
-
-	m_oAddItemAction = new QAction(QObject::trUtf8("Add Box"), this);
+	m_oAddItemAction = new QAction(QObject::trUtf8("Activity"), this);
 	m_oAddItemAction->setShortcut(QObject::trUtf8("Ctrl+Return"));
 	connect(m_oAddItemAction, SIGNAL(triggered()), this, SLOT(slot_add_item()));
 	addAction(m_oAddItemAction);
@@ -203,12 +197,12 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	connect(m_oAddParallelVertical, SIGNAL(triggered()), this, SLOT(slot_add_element()));
 
 	m_oMenu = new QMenu(this);
+	m_oMenu->addAction(m_oAddLabel);
 	m_oMenu->addAction(m_oAddItemAction);
+	m_oMenu->addAction(m_oAddComponent);
+	m_oMenu->addAction(m_oAddNode);
 
-	m_oAddBoxMenu = m_oMenu->addMenu(QObject::trUtf8("Add element"));
-	m_oAddBoxMenu->addAction(m_oAddLabel);
-	m_oAddBoxMenu->addAction(m_oAddComponent);
-	m_oAddBoxMenu->addAction(m_oAddNode);
+	m_oAddBoxMenu = m_oMenu->addMenu(QObject::trUtf8("More elements"));
 	m_oAddBoxMenu->addAction(m_oAddDotStart);
 	m_oAddBoxMenu->addAction(m_oAddDotEnd);
 	m_oAddBoxMenu->addAction(m_oAddParallelHorizontal);
