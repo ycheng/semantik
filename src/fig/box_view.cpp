@@ -923,7 +923,6 @@ void box_view::focusInEvent(QFocusEvent *i_oEv)
 void box_view::focusOutEvent(QFocusEvent *i_oEv)
 {
 	QGraphicsView::focusOutEvent(i_oEv);
-	//edit_off();
 }
 
 void box_view::notify_add_box(int id, int box)
@@ -1220,10 +1219,6 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 			m_oCurrent->m_oInnerLink.m_iChildPos = data_link::NORTH;
 			m_oCurrent->m_oInnerLink.m_oStartPoint = m_oCurrent->m_oInnerLink.m_oEndPoint = p;
 
-			mem_link_box *ln = new mem_link_box(m_oMediator, m_iId);
-			ln->link = new data_link();
-			ln->link->copy_from(m_oCurrent->m_oInnerLink);
-			ln->apply();
 
 			l_oItem->setSelected(false);
 			m_oCurrent->setSelected(true);
@@ -1247,7 +1242,6 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 	}
 
 	QGraphicsView::mousePressEvent(i_oEv);
-	//edit_off();
 }
 
 void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
@@ -1277,6 +1271,27 @@ void box_view::mouseMoveEvent(QMouseEvent *i_oEv)
 
 void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 {
+	if (m_oCurrent)
+	{
+		if (m_oItems.value(m_oCurrent->m_oInnerLink.m_iChild))
+		{
+			mem_link_box *ln = new mem_link_box(m_oMediator, m_iId);
+			ln->link = new data_link();
+			ln->link->copy_from(m_oCurrent->m_oInnerLink);
+			ln->apply();
+
+			m_oCurrent = NULL;
+		}
+		else
+		{
+			// assume cancel
+			delete m_oCurrent;
+			m_oCurrent = NULL;
+		}
+		return;
+	}
+
+
 	if (m_bScroll)
 	{
 		QGraphicsView::mouseReleaseEvent(i_oEv);
@@ -1317,30 +1332,6 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 	}
 	check_canvas_size();
 }
-
-#if 0
-void box_view::edit_off() {
-	box_item* sel = NULL;
-	foreach (QGraphicsItem *tmp, items()) {
-		if (sel = dynamic_cast<box_item*>(tmp))
-		{
-			sel = (box_item*) tmp;
-			if (sel->textInteractionFlags() & Qt::TextEditorInteraction)
-			{
-				sel->setTextInteractionFlags(Qt::NoTextInteraction);
-				if (sel->toPlainText() != m_oMediator->m_oItems[m_iId]->m_oBoxes[sel->m_iId]->m_sText) {
-					mem_edit_box *ed = new mem_edit_box(m_oMediator, m_iId, sel->m_iId);
-					ed->newText = sel->toPlainText();
-					ed->apply();
-				}
-				m_oAddItemAction->setEnabled(true);
-				m_oDeleteAction->setEnabled(true);
-				m_oCancelEditAction->setEnabled(false);
-			}
-		}
-	}
-}
-#endif
 
 void box_view::notify_box_props(int id, const QList<diagram_item*>& items)
 {
