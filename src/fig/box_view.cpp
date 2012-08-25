@@ -21,6 +21,7 @@
 #include <QHeaderView>
 #include <QAction>
 #include <QStandardItemModel>
+#include <QPrinter>
 
 #include "aux.h"
 #include "con.h"
@@ -427,6 +428,7 @@ void box_view::notify_export_item(int id)
 				l_oRect = l_oRect.united(tmp);
 			}
 		}
+		it->setCacheMode(QGraphicsItem::NoCache); // the magic happens here
 	}
 
 	l_oRect = l_oRect.adjusted(-15, -15, 15, 15);
@@ -460,6 +462,21 @@ void box_view::notify_export_item(int id)
 	l_oP.end();
 
 	l_oImage.save(QString(m_oMediator->m_sTempDir + QString("/") + QString("diag-%1.png")).arg(QString::number(m_iId)));
+
+	QPrinter l_oPrinter;
+	l_oPrinter.setOrientation(QPrinter::Portrait);
+	l_oPrinter.setOutputFormat(QPrinter::PdfFormat);
+	l_oPrinter.setPaperSize(l_oR.size(), QPrinter::DevicePixel);
+	l_oPrinter.setPageMargins(0, 0, 0, 0, QPrinter::DevicePixel);
+	l_oPrinter.setOutputFileName(QString(m_oMediator->m_sTempDir + QString("/") + QString("diag-%1.pdf")).arg(QString::number(m_iId)));
+	
+	QPainter l_oPdf;
+	if (l_oPdf.begin(&l_oPrinter))
+	{
+		scene()->render(&l_oPdf, l_oR, l_oRect, rat);
+        	l_oPdf.end();
+	}
+
 	clear_diagram();
 	m_iId = l_iOldId;
 	if (m_iId != NO_ITEM)
