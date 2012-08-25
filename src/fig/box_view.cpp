@@ -1355,6 +1355,8 @@ void box_view::notify_box_props(int id, const QList<diagram_item*>& items)
 		foreach (box_link *lnk, m_oLinks)
 		{
 			if (lnk->m_oLink == it) {
+				data_link* dat = static_cast<data_link*>(it);
+				lnk->m_oInnerLink.copy_from(*dat);
 				lnk->update();
 				goto end;
 			}

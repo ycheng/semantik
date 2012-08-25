@@ -63,17 +63,12 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 	//i_oPainter->setPen(pen());
 	//QGraphicsRectItem::paint(i_oPainter, option, i_oW);
 
-	QColor c = QColor(Qt::black);
-	c = m_oInnerLink.color;
-	//if (isSelected())
-	//	c = QColor(Qt::red);
+	i_oPainter->setBrush(m_oInnerLink.color);
 
-	i_oPainter->setBrush(c);
-        QPen l_oPen;
+        QPen l_oPen(m_oInnerLink.pen_style);
 	l_oPen.setWidth(m_oInnerLink.border_width);
-	l_oPen.setStyle(m_oInnerLink.pen_style);
 
-	l_oPen.setColor(c);
+	l_oPen.setColor(m_oInnerLink.color);
 	i_oPainter->setPen(l_oPen);
 
 	for (int i=0; i<m_oGood.size() - 1; ++i)
