@@ -23,7 +23,7 @@
 #include <KDebug>
 #include <KGlobal>
 
-static const char description[] = I18N_NOOP("A mind-mapping tool for KDE\nAvailable exclusively for Linux systems such as OpenSuse, Gentoo or Fedora.");
+static const char description[] = I18N_NOOP("A mind-mapping tool for KDE\nAvailable exclusively for open systems such as OpenSuse, Gentoo or Fedora.");
 static const char version[] = VERSION;
 
 int grid_int(int x) {
@@ -44,7 +44,8 @@ int main(int i_iArgc, char **i_iArgv)
 	KAboutData l_o("semantik", 0, ki18n("Semantik"), version, ki18n(description),
 			KAboutData::License_GPL_V3, ki18n("(C) 2007-2012 Thomas Nagy"), KLocalizedString(),
 			"nomail@nomail.com");
-	l_o.addAuthor(ki18n("Thomas Nagy"), KLocalizedString(), "nomail@nomail.com");
+	l_o.setBugAddress("http://code.google.com/p/semantik/issues/list");
+	l_o.addAuthor(ki18n("Thomas Nagy"), KLocalizedString());
 
 	KCmdLineArgs::init(i_iArgc, i_iArgv, &l_o);
 	KCmdLineArgs::addCmdLineOptions(options);
