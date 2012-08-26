@@ -9,11 +9,14 @@
 #include "data_item.h"
 #include <box_control_point.h>
 
+#include <QInputDialog>
+#include <QLineEdit>
+
 #define pad 25
 #define MAX 2000000000
 #define DAMP 1000000
 
-box_link::box_link(box_view* i_oParent) : QGraphicsRectItem()
+box_link::box_link(box_view* i_oParent) : QGraphicsRectItem(), editable()
 {
 	m_oInnerLink.m_iParentPos = 0;
 	m_oInnerLink.m_iChildPos = 0;
@@ -500,4 +503,16 @@ QVariant box_link::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 
 	return QGraphicsItem::itemChange(i_oChange, i_oValue);
 }
+
+void box_link::properties()
+{
+	bool ok = false;
+	QString text = QInputDialog::getText(m_oView, m_oView->trUtf8("Properties for link:"),
+			m_oView->trUtf8("Text:"), QLineEdit::Normal, "random text", &ok);
+	if (ok)
+	{
+		qDebug()<<"not implemented";
+	}
+}
+
 

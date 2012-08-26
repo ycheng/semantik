@@ -9,13 +9,14 @@
 #include <QPair>
 #include <QSet>
 #include <QPainterPath>
+#include "ed:table.h"
 #include "con.h"
 
 class box_view;
 class box_item;
 class data_link;
 class box_control_point;
-class box_link : public QGraphicsRectItem
+class box_link : public QGraphicsRectItem, public editable
 {
 	public:
 		box_link(box_view*);
@@ -46,6 +47,8 @@ class box_link : public QGraphicsRectItem
 
 		void update_offset(const QPointF& i_oP, int i_iIdx);
 		void update_ratio();
+
+		void properties();
 
 		bool m_bReentrantLock;
 

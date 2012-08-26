@@ -192,7 +192,7 @@ def configure(conf):
 	conf.env.CXXFLAGS_PYEMBED = [x for x in conf.env.CXXFLAGS_PYEMBED if x != '-g']
 
 	conf.env.CXXFLAGS = '-O2 -pipe -Wall'.split()# -DDEBUG=1 -g'
-	conf.env.CXXFLAGS = ['-g']
+	#conf.env.CXXFLAGS = ['-g']
 	conf.write_config_header('aux.h')
 
 	# the Debian packagers compile with --prefix=/usr and set /etc/ld.so.conf accordingly
