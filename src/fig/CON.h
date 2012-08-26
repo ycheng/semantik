@@ -6,6 +6,7 @@
 
 #include <QGraphicsItem>
 #include "data_item.h"
+#include "box_chain.h"
 
 #define MUL 64
 #define GRADVAL 110
@@ -22,6 +23,8 @@ class connectable
 		virtual int choose_position(const QPointF&p, int id=-1) { Q_ASSERT(false); return 0; };
 		virtual QPoint get_point(int position) { return QPoint(0, 0); };
 		data_box *m_oBox;
+		box_chain *m_oChain;
+
 
 	virtual data_link::Direction pos_heuristic(const QPoint & i_oP, int i_iDirection)
 	{

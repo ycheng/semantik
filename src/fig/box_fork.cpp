@@ -30,6 +30,9 @@ box_fork::box_fork(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), connec
 	m_oBox = m_oItem->m_oBoxes[m_iId];
 	Q_ASSERT(m_oBox);
 
+	m_oChain = new box_chain(i_oParent);
+	m_oChain->setParentItem(this);
+
 	i_oParent->scene()->addItem(this);
 
 	setCacheMode(QGraphicsItem::DeviceCoordinateCache);
@@ -70,6 +73,7 @@ box_fork::~box_fork()
 	delete m_oDown;
 	delete m_oLeft;
 	delete m_oRight;
+	delete m_oChain;
 }
 
 void box_fork::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -125,6 +129,7 @@ void box_fork::update_data()
 	Q_ASSERT(hh < 9999 && hh > 0);
 	QRectF r = QRectF(0, 0, ww, hh);
 	setRect(r);
+	m_oChain->setPos(m_oBox->m_iWW + 3, 0);
 
 	update_sizers();
 }
@@ -174,6 +179,7 @@ QVariant box_fork::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 				setZValue(100);
 			}
 
+			m_oChain->setVisible(isSelected());
 			if (m_oLeft)  m_oLeft->setVisible(b);
 			if (m_oRight) m_oRight->setVisible(b);
 			if (m_oTop)   m_oTop->setVisible(b);

@@ -28,6 +28,9 @@ box_dot::box_dot(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), connecta
 
 	i_oParent->scene()->addItem(this);
 
+	m_oChain = new box_chain(i_oParent);
+	m_oChain->setParentItem(this);
+
 	setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
 	setZValue(100);
@@ -36,7 +39,7 @@ box_dot::box_dot(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), connecta
 
 box_dot::~box_dot()
 {
-
+	delete m_oChain;
 }
 
 void box_dot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -99,6 +102,7 @@ QVariant box_dot::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oVa
 		}
 		else if (i_oChange == ItemSelectedHasChanged)
 		{
+			m_oChain->setVisible(isSelected());
 			if (isSelected())
 				setZValue(101);
 			else
