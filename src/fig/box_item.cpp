@@ -220,7 +220,6 @@ void box_item::update_links()
 }
 
 static int RATIO[] = {333, 500, 667, 0};
-#define MUL 64
 
 int box_item::choose_position(const QPointF& i_oP, int id)
 {

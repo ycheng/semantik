@@ -113,7 +113,7 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 				{
 					cand = (c_y > 0) ? data_link::NORTH : data_link::SOUTH;
 				}
-				m_oView->m_oCurrent->m_oInnerLink.m_iParentPos = cand + 64 * 500;
+				m_oView->m_oCurrent->m_oInnerLink.m_iParentPos = cand + MUL * 500;
 			}
 
 			if (m_bIsSegment)
