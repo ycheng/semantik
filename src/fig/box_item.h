@@ -9,6 +9,7 @@
 #include "res:zable.h"
 #include "ed:table.h"
 #include "box_resize_point.h"
+#include "box_chain.h"
 #include "CON.h"
 #include "con.h"
 
@@ -33,6 +34,7 @@ class box_item : public QGraphicsRectItem, public connectable, public resizable,
 
 		box_view *m_oView;
 		data_item *m_oItem;
+		box_chain *m_oChain;
 
 		void mousePressEvent(QGraphicsSceneMouseEvent* e);
 		void mouseMoveEvent(QGraphicsSceneMouseEvent *e);

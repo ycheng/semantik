@@ -33,6 +33,8 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), resiza
 	Q_ASSERT(m_oBox);
 
 	i_oParent->scene()->addItem(this);
+	m_oChain = new box_chain(i_oParent);
+	m_oChain->setParentItem(this);
 
 	setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
@@ -43,6 +45,7 @@ box_item::box_item(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), resiza
 
 box_item::~box_item()
 {
+	delete m_oChain;
 }
 
 void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -118,6 +121,7 @@ void box_item::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 
 		doc.setTextWidth(m_iWW - 2 * OFF);
 		setRect(0, 0, m_iWW, m_iHH);
+		m_oChain->setPos(m_iWW + 3, 0);
 
 		m_oView->message(m_oView->trUtf8("%1 x %2").arg(QString::number(m_iWW), QString::number(m_iHH)), 1000);
 
@@ -167,6 +171,7 @@ void box_item::update_size() {
 	doc.setTextWidth(m_iWW - 2 * OFF);
 
 	setRect(0, 0, m_iWW, m_iHH);
+	m_oChain->setPos(m_iWW + 3, 0);
 }
 
 void box_item::properties()
@@ -204,6 +209,10 @@ QVariant box_item::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 		else if (i_oChange == ItemPositionHasChanged)
 		{
 			update_links();
+		}
+		else if (i_oChange == ItemSelectedHasChanged)
+		{
+			m_oChain->setVisible(isSelected());
 		}
 	}
 

@@ -7,6 +7,10 @@ diagram:
 
 resize the diagram scene properly
 
+
+remove the commit_size thing
+crash: resize a box, unselect the diagram, then undo
+
 display pictures on the canvas...
 fix the mouse interaction with the items (select text on canvas and diagram)
 
