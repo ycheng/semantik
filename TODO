@@ -1,8 +1,9 @@
 Priority:
 ---------
 
-link arrows
-  direct links
+diagram:
+  - new drag-and-drop link system
+  - direct arrows
 
 resize the diagram scene properly
 

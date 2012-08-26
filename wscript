@@ -12,7 +12,7 @@ from waflib import Options, Logs, Configure
 
 def compile_py(task):
 	outfile = task.m_outputs[0].abspath()
-	f = open(outfile, 'w')
+	f = open(outfile, 'w') # cpython close the file handles for you
 	w = f.write
 	w('<!DOCTYPE RCC><RCC version="1.0">\n<qresource>\n')
 	for k in task.m_inputs:

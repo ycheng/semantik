@@ -1,5 +1,6 @@
 Semantik 0.8.0, Thomas Nagy
 contact: tnagy1024 at gmail dot com
+http://code.google.com/p/semantik
 
 -----------------------------------------------
 
@@ -24,7 +25,7 @@ The generic command for creating a package is the following (packagers):
 2. Getting started:
 
 * double-click to add an item
-* when a leaf is selected, type 'enter' to start in-place editing, type 'enter' again to leave
+* when a leaf is selected, type 'enter' to start in-place editing, type 'enter' again to save
 * left,right,up,down keys to navigate in the tree
 * alt+left,right,up,down keys to move the selection around
 * double-click on a leaf to add a ramification
@@ -32,11 +33,11 @@ The generic command for creating a package is the following (packagers):
 
 Getting started with document generators:
 * look at the scripts in src/templates/
-* the naming is used for finding the files, be careful
+* the naming is used for finding the files
 
 Getting started with the diagrams:
 * in the map view, right click on a map item, and select "data type: diagram"
-* now in the "data" dock widget, double-click to add a diagram item
+* now in the "data" dock widget, double-click to add a diagram item (or right click...)
 * when holding the control key pressed and left-clicking on a diagram item, a connection arrow is created
 * when holding the control key pressed, double-clicking on a connection thread deletes it
 
@@ -46,19 +47,21 @@ More help in about->help
 
 3. Document generators:
 
-* the document generation is performed in two steps: variable substitution and preprocessing
-* variables in the form @var_name@ are replaced by the corresponding document variables
-* the core of the document is a variable itself
-* a c-like preprocessor is then run on the resulting document, using (nested) conditionals such as:
+* Be careful with documents that you have not created yourself, there are no security restrictions at the moment
+* The document generation is performed in two steps: variable substitution and preprocessing
+* Variables in the form @var_name@ are replaced by the corresponding document variables
+* The core of the document is a variable itself
+* A c-like preprocessor is then run on the resulting document, using (nested) conditionals such as:
   #if 0, #if !0, #ifdef var, #endif (the #elif construct is not supported yet)
-* external viewers can be used, from the 'variables' panel, add code in the form
+* External viewers can be used, from the 'variables' panel, add code in the form
   'command_'+template_name=command_line, for example:
 
   command_html=kfmclient newTab %s
   command_odt=oowriter %s
   command_s5=firefox %s
 
-  this is only necessary for documents that do not have a KDE component yet
+  this is only necessary for documents that do not have a KDE mapping for opening them
+* LaTeX commands can be inserted by using all_latex=1
 
 -----------------------------------------------
 
@@ -66,27 +69,14 @@ More help in about->help
 
 GPL V3
 
-Semantik does not Endorse non-free systems and uber-free systems:
+Semantik does not Endorse non-free systems:
+
+- Due to restrictive Debian policies regarding "binary" files, Semantik cannot be
+packaged on it. Fortunately, there are less restrictive Linux distributions around.
 
 - Do not port Semantik to proprietary platforms (Windows, Mac). You may be free
 to do it, but the author is also free to stop the development, or to keep the
 next versions for himself.
-
-- Semantik cannot be redistributed on Debian and derivated systems
-due to questionable new Debian policies regarding "binary" files. The
-Waf file is a critical element required for building documents, but it
-has been flagged by the Debian nazis as "not source enough".
-
------------------------------------------------
-
-5. Logo:
-
-You may add the following code to your pages to show your interest in Semantik
-(the logo can be found in src/data/semantik-logo.png)
-
-<a href="http://freehackers.org/~tnagy/semantik.html">
-<img src="http://freehackers.org/~tnagy/semantik-logo.png" alt="semantik" border="0" />
-</a>
 
 -----------------------------------------------
 
