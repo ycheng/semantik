@@ -2,15 +2,15 @@
 
 #include <QApplication>
 #include <QPainter>
+#include <QInputDialog>
+#include <QLineEdit>
 #include <QtDebug>
 #include "CON.h"
 #include "box_link.h"
 #include "box_view.h"
 #include "data_item.h"
 #include <box_control_point.h>
-
-#include <QInputDialog>
-#include <QLineEdit>
+#include "box_link_properties.h"
 
 #define pad 25
 #define MAX 2000000000
@@ -506,12 +506,10 @@ QVariant box_link::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 
 void box_link::properties()
 {
-	bool ok = false;
-	QString text = QInputDialog::getText(m_oView, m_oView->trUtf8("Properties for link:"),
-			m_oView->trUtf8("Text:"), QLineEdit::Normal, "random text", &ok);
-	if (ok)
+	box_link_properties props(m_oView);
+	if (props.exec() == QDialog::Accepted)
 	{
-		qDebug()<<"not implemented";
+		qDebug()<<"ok";
 	}
 }
 
