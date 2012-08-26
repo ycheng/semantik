@@ -69,6 +69,10 @@ QVariant box_label::itemChange(GraphicsItemChange i_oChange, const QVariant &i_o
 		{
 			update_links();
 		}
+		else if (i_oChange == ItemSelectedHasChanged)
+		{
+			m_oChain->setVisible(isSelected());
+		}
 	}
 
 	return QGraphicsItem::itemChange(i_oChange, i_oValue);

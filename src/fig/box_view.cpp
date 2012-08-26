@@ -1216,6 +1216,10 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 		m_oCurrent->m_oInnerLink.m_iChild = NO_ITEM;
 		m_oCurrent->m_oInnerLink.m_iChildPos = data_link::NORTH;
 		m_oCurrent->m_oInnerLink.m_oStartPoint = m_oCurrent->m_oInnerLink.m_oEndPoint = p;
+		if (dynamic_cast<box_label*>(l_oParent))
+		{
+			m_oCurrent->m_oInnerLink.pen_style = Qt::DotLine;
+		}
 
 		m_oCurrent->setSelected(true);
 	}

@@ -65,7 +65,7 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 
 	i_oPainter->setBrush(m_oInnerLink.color);
 
-        QPen l_oPen(m_oInnerLink.pen_style);
+	QPen l_oPen(m_oInnerLink.pen_style);
 	l_oPen.setWidth(m_oInnerLink.border_width);
 
 	l_oPen.setColor(m_oInnerLink.color);
@@ -81,7 +81,7 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 	//l_oPen.setStyle(Qt::SolidLine);
 	//i_oPainter->setPen(l_oPen);
 
-      	l_oPen.setStyle(Qt::SolidLine);
+	l_oPen.setStyle(Qt::SolidLine);
 	i_oPainter->setPen(l_oPen);
 	draw_triangle(i_oPainter, m_oInnerLink.m_iChildPos, m_oGood[m_oGood.size()-1]);
 }
@@ -110,15 +110,15 @@ void box_link::draw_triangle(QPainter *i_oPainter, int i_iPos, QPointF i_oP)
 			break;
 		case data_link::SOUTH:
 			{
-                                l_oPol<<i_oP+QPointF(-xw, yw);
-                                l_oPol<<i_oP+QPointF( xw, yw);
-                        }
+				l_oPol<<i_oP+QPointF(-xw, yw);
+				l_oPol<<i_oP+QPointF( xw, yw);
+			}
 			break;
 		case data_link::EAST:
 			{
-                                l_oPol<<i_oP+QPointF(yw, -xw);
-                                l_oPol<<i_oP+QPointF(yw,  xw);
-                        }
+				l_oPol<<i_oP+QPointF(yw, -xw);
+				l_oPol<<i_oP+QPointF(yw,  xw);
+			}
 			break;
 		default:
 			Q_ASSERT(false);
