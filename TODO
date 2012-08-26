@@ -2,10 +2,11 @@ Priority:
 ---------
 
 diagram:
-  - direct arrows
+  - straight arrows
+  - change arrow settings
   - resize the diagram scene properly
+  - display size of forks
 
-remove the commit_size thing
 crash: resize a box, unselect the diagram, then undo
 
 display pictures on the canvas...

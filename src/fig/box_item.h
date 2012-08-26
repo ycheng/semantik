@@ -19,7 +19,7 @@ class QTextDocument;
 class box_view;
 class data_item;
 class data_box;
-class box_item : public QGraphicsRectItem, public connectable, public resizable, public editable
+class box_item : public QGraphicsRectItem, public connectable, public editable
 {
 	public:
 		box_item(box_view*, int i_iId);
@@ -54,9 +54,6 @@ class box_item : public QGraphicsRectItem, public connectable, public resizable,
 		int m_iHH;
 		bool m_bMoving;
 
-		QPointF validate_point(box_resize_point *p, const QPointF & orig);
-		void freeze(bool b);
-		void commit_size(box_resize_point *p);
 };
 
 #endif // BOX_ITEM_H
