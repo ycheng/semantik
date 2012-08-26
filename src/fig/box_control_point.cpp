@@ -94,6 +94,27 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 		{
 			QPointF l_o = i_oValue.toPointF();
 			QPoint np = QPoint(l_o.x(), l_o.y());
+
+			if (m_oView->m_oCurrent)
+			{
+				connectable *start = m_oView->m_oItems.value(m_oView->m_oCurrent->m_oInnerLink.m_iParent);
+				QRectF r = start->rect();
+				QPointF l_o1 = r.topLeft() - l_o + QPointF(r.width()/2, r.height()/2);
+				double c_x = l_o1.x() * r.height();
+				double c_y = l_o1.y() * r.width();
+
+				int cand = 0;
+				if (qAbs(c_x) > qAbs(c_y))
+				{
+					cand = (c_x > 0) ? data_link::WEST : data_link::EAST;
+				}
+				else
+				{
+					cand = (c_y > 0) ? data_link::NORTH : data_link::SOUTH;
+				}
+				m_oView->m_oCurrent->m_oInnerLink.m_iParentPos = cand + 64 * 500;
+			}
+
 			if (m_bIsSegment)
 			{
 				if (m_bMoveX) {
