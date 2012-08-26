@@ -5,6 +5,8 @@
 #include <QInputDialog>
 #include <QLineEdit>
 #include <QtDebug>
+#include <QSpinBox>
+#include <QComboBox>
 #include "CON.h"
 #include "box_link.h"
 #include "box_view.h"
@@ -507,9 +509,20 @@ QVariant box_link::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 void box_link::properties()
 {
 	box_link_properties props(m_oView);
+	props.m_oThickness->setValue(m_oInnerLink.border_width);
+	props.m_oStyle->setCurrentIndex(m_oInnerLink.pen_style);
+	props.m_oLeftArrow->setCurrentIndex(m_oInnerLink.m_iLeftArrow);
+	props.m_oRightArrow->setCurrentIndex(m_oInnerLink.m_iRightArrow);
 	if (props.exec() == QDialog::Accepted)
 	{
-		qDebug()<<"ok";
+		qDebug()<<"dialog accepted";
+		/*
+		mem_prop_box *mem = new mem_prop_box(m_oMediator, m_iId);
+		mem->items.append(m_oLink);
+		mem->change_type = CH_PENST;
+		mem->new_props.pen_style = (Qt::PenStyle) l_i;
+		mem->apply();
+		*/
 	}
 }
 
