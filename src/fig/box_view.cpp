@@ -32,6 +32,7 @@
 #include "box_dot.h"
 #include "box_label.h"
 #include "box_fork.h"
+#include "box_chain.h"
 #include "box_link.h"
 #include "box_component.h"
 #include "box_node.h"
@@ -1038,7 +1039,6 @@ void box_view::keyPressEvent(QKeyEvent *i_oEvent)
 		slot_edit_properties();
 	}
 	QGraphicsView::keyPressEvent(i_oEvent);
-	if (QApplication::keyboardModifiers() & Qt::ShiftModifier) setCursor(Qt::CrossCursor);
 }
 
 void box_view::keyReleaseEvent(QKeyEvent *i_oEvent)
@@ -1169,9 +1169,7 @@ void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 		return;
 	}
 
-	if (i_oEv->modifiers() != Qt::ShiftModifier) {
-		slot_add_item();
-	}
+	slot_add_item();
 }
 
 void box_view::mousePressEvent(QMouseEvent *i_oEv)
@@ -1197,31 +1195,29 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 
 	QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
 
-	connectable* kk;
-	if (l_oItem && (kk = dynamic_cast<connectable*>(l_oItem)))
+	box_chain* kk;
+	if (l_oItem && (kk = dynamic_cast<box_chain*>(l_oItem)))
 	{
-		if (QApplication::keyboardModifiers() & Qt::ShiftModifier)
+		Q_ASSERT(!m_oCurrent);
+
+		foreach (QGraphicsItem *l_o, scene()->selectedItems())
 		{
-			if (m_oCurrent) return;
-
-			foreach (QGraphicsItem *l_o, scene()->selectedItems())
-			{
-				l_o->setSelected(false);
-			}
-
-			QPoint p = QPoint(m_oLastPoint.x(), m_oLastPoint.y());
-
-			m_oCurrent = new box_link(this);
-			m_oCurrent->m_oInnerLink.m_iParent = kk->m_iId;
-			m_oCurrent->m_oInnerLink.m_iParentPos = kk->choose_position(m_oLastMovePoint);
-			m_oCurrent->m_oInnerLink.m_iChild = NO_ITEM;
-			m_oCurrent->m_oInnerLink.m_iChildPos = data_link::NORTH;
-			m_oCurrent->m_oInnerLink.m_oStartPoint = m_oCurrent->m_oInnerLink.m_oEndPoint = p;
-
-
-			l_oItem->setSelected(false);
-			m_oCurrent->setSelected(true);
+			l_o->setSelected(false);
 		}
+
+		connectable *l_oParent = dynamic_cast<connectable*>(kk->parentItem());
+		Q_ASSERT(l_oParent);
+
+		QPoint p = QPoint(m_oLastPoint.x(), m_oLastPoint.y());
+
+		m_oCurrent = new box_link(this);
+		m_oCurrent->m_oInnerLink.m_iParent = l_oParent->m_iId;
+		m_oCurrent->m_oInnerLink.m_iParentPos = data_link::EAST + MUL * 500;
+		m_oCurrent->m_oInnerLink.m_iChild = NO_ITEM;
+		m_oCurrent->m_oInnerLink.m_iChildPos = data_link::NORTH;
+		m_oCurrent->m_oInnerLink.m_oStartPoint = m_oCurrent->m_oInnerLink.m_oEndPoint = p;
+
+		m_oCurrent->setSelected(true);
 	}
 
 	box_item *k;

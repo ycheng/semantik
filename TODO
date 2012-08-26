@@ -2,11 +2,8 @@ Priority:
 ---------
 
 diagram:
-  - new drag-and-drop link system
   - direct arrows
-
-resize the diagram scene properly
-
+  - resize the diagram scene properly
 
 remove the commit_size thing
 crash: resize a box, unselect the diagram, then undo
