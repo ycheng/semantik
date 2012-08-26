@@ -252,15 +252,15 @@ int box_link::may_use(QPair<int, int> cand, QPair<int, int> p, int ax1, int ax2,
 	int cy2 = qMax(cand.second, p.second);
 
 	return 1 && (
-		cx1 >= ax2 && cx2 > ax2 ||
-		cx2 <= ax1 && cx1 < ax1 ||
-		cy1 >= ay2 && cy2 > ay2 ||
-		cy2 <= ay1 && cy1 < ay1
+		(cx1 >= ax2 && cx2 > ax2) ||
+		(cx2 <= ax1 && cx1 < ax1) ||
+		(cy1 >= ay2 && cy2 > ay2) ||
+		(cy2 <= ay1 && cy1 < ay1)
 	) && (
-		cx1 >= bx2 && cx2 > bx2 ||
-		cx2 <= bx1 && cx1 < bx1 ||
-		cy1 >= by2 && cy2 > by2 ||
-		cy2 <= by1 && cy1 < by1
+		(cx1 >= bx2 && cx2 > bx2) ||
+		(cx2 <= bx1 && cx1 < bx1) ||
+		(cy1 >= by2 && cy2 > by2) ||
+		(cy2 <= by1 && cy1 < by1)
 	);
 }
 

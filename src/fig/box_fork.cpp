@@ -253,7 +253,9 @@ int round_point(int x) {
 	float y = x;
 	y = qRound(y / GRID);
 	int k = GRID * y;
+	return k;
 };
+
 QPoint box_fork::get_point(int i_oP)
 {
 	QRectF r = rect();

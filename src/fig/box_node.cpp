@@ -103,9 +103,8 @@ void box_node::update_size() {
 	setRect(0, 0, m_iWW, m_iHH);
 }
 
-void box_node::mousePressEvent(QGraphicsSceneMouseEvent* e) {
-
-	QPointF pt = rect().bottomRight();
+void box_node::mousePressEvent(QGraphicsSceneMouseEvent* e)
+{
 	m_oLastPressPoint = e->pos();
 	if (m_oLastPressPoint.x() > m_iWW - GRID - 10 && m_oLastPressPoint.x() < m_iWW - 10 && m_oLastPressPoint.y() > m_iHH - GRID)
 	{
