@@ -1021,7 +1021,6 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 				{
 					canvas_sort* l_oSort = (canvas_sort*) l_oItem;
 					int l_iId = l_oSort->m_oFrom->Id();
-					canvas_item* l_oRect = l_oSort->m_oFrom;
 					int l_iParentId = m_oMediator->parent_of(l_iId);
 
 					mem_sort *srt = new mem_sort(m_oMediator);
@@ -1042,6 +1041,8 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 				}
 			}
 			break;
+		default:
+			break;
 	}
 	check_canvas_size();
 	update_cursor();
@@ -1052,7 +1053,6 @@ void canvas_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 	if (i_oEv->button() != Qt::LeftButton) return;
 	m_oLastPoint = mapToScene(i_oEv->pos());
 	QGraphicsItem *l_oItem = itemAt(i_oEv->pos());
-	int l_iAdded = NO_ITEM;
 	if (m_iMode == select_mode || m_iMode == link_mode) {
 		if (l_oItem) {
 			if (l_oItem->type() == CANVAS_ITEM_T) {
@@ -1416,6 +1416,8 @@ void canvas_view::mouseMoveEvent(QMouseEvent *i_oEv) {
 				v->setValue(v->value() - d.y());
 				m_oLastPressPoint = i_oEv->pos();
 			}
+			break;
+		default:
 			break;
 	}
 }
