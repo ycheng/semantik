@@ -135,6 +135,8 @@ data_link::data_link() : diagram_item()
 	color = QColor(Qt::black);
 	m_iParentPos = NORTH;
 	m_iChildPos = NORTH;
+	m_iLeftArrow = 0;
+	m_iRightArrow = 1;
 }
 
 void data_link::copy_from(const data_link& i_oLink)
@@ -148,6 +150,9 @@ void data_link::copy_from(const data_link& i_oLink)
 	m_oStartPoint = i_oLink.m_oStartPoint;
 	m_oEndPoint   = i_oLink.m_oEndPoint;
 	m_oOffsets    = i_oLink.m_oOffsets;
+
+	m_iLeftArrow  = i_oLink.m_iLeftArrow;
+	m_iRightArrow = i_oLink.m_iRightArrow;
 
 	border_width  = i_oLink.border_width;
 	pen_style     = i_oLink.pen_style;

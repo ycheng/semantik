@@ -43,6 +43,9 @@ class data_link : public diagram_item
 	int m_iParentPos;
 	int m_iChildPos;
 
+	bool m_iLeftArrow;
+	bool m_iRightArrow;
+
 	QPoint m_oStartPoint;
 	QPoint m_oEndPoint;
 	QList<QPoint> m_oOffsets;
