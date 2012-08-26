@@ -274,3 +274,26 @@ void mem_size_box::undo() {
 	undo_dirty();
 }
 
+///////////////////////////////////////////////////////////////////
+
+mem_edit_link::mem_edit_link(sem_mediator* mod, int id) : mem_command(mod)
+{
+	m_iId = id;
+}
+
+void mem_edit_link::redo() {
+	link->copy_from(next);
+	QList<diagram_item*> items;
+	items.append(link);
+	model->notify_box_props(m_iId, items);
+	redo_dirty();
+}
+
+void mem_edit_link::undo() {
+	link->copy_from(prev);
+	QList<diagram_item*> items;
+	items.append(link);
+	model->notify_box_props(m_iId, items);
+	undo_dirty();
+}
+

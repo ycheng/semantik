@@ -45,9 +45,10 @@ box_link_properties::box_link_properties(QWidget *i_oParent):
 	l_oGridLayout->addWidget(m_oThickness, 0, 1);
 
 	m_oStyle = new QComboBox(this);
-	m_oStyle->addItem(trUtf8("Solid Line"), Qt::SolidLine);
-	m_oStyle->addItem(trUtf8("Dot Line"), Qt::DotLine);
-	m_oStyle->addItem(trUtf8("Dash Line"), Qt::DashLine);
+	m_oStyle->addItem(trUtf8("Invisible line"), (int) Qt::NoPen);
+	m_oStyle->addItem(trUtf8("Solid Line"), (int) Qt::SolidLine);
+	m_oStyle->addItem(trUtf8("Dot Line"),   (int) Qt::DotLine);
+	m_oStyle->addItem(trUtf8("Dash Line"),  (int) Qt::DashLine);
 	l_oGridLayout->addWidget(m_oStyle, 1, 1);
 
 	m_oLeftArrow = new QComboBox(this);

@@ -3,7 +3,6 @@ Priority:
 
 diagram:
   - straight arrows
-  - change arrow settings
   - resize the diagram scene properly
 
 crash: resize a box, unselect the diagram, then undo

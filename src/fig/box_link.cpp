@@ -11,6 +11,7 @@
 #include "box_link.h"
 #include "box_view.h"
 #include "data_item.h"
+#include "mem_box.h"
 #include <box_control_point.h>
 #include "box_link_properties.h"
 
@@ -510,19 +511,22 @@ void box_link::properties()
 {
 	box_link_properties props(m_oView);
 	props.m_oThickness->setValue(m_oInnerLink.border_width);
-	props.m_oStyle->setCurrentIndex(m_oInnerLink.pen_style);
+	props.m_oStyle->setCurrentIndex((int) m_oInnerLink.pen_style);
 	props.m_oLeftArrow->setCurrentIndex(m_oInnerLink.m_iLeftArrow);
 	props.m_oRightArrow->setCurrentIndex(m_oInnerLink.m_iRightArrow);
 	if (props.exec() == QDialog::Accepted)
 	{
-		qDebug()<<"dialog accepted";
-		/*
-		mem_prop_box *mem = new mem_prop_box(m_oMediator, m_iId);
-		mem->items.append(m_oLink);
-		mem->change_type = CH_PENST;
-		mem->new_props.pen_style = (Qt::PenStyle) l_i;
+		mem_edit_link *mem = new mem_edit_link(m_oView->m_oMediator, m_oView->m_iId);
+		mem->link = m_oLink;
+
+		mem->prev.copy_from(m_oInnerLink);
+		mem->next.copy_from(m_oInnerLink);
+		mem->next.border_width = props.m_oThickness->value();
+		mem->next.pen_style = (Qt::PenStyle) props.m_oStyle->currentIndex();
+		mem->next.m_iLeftArrow = props.m_oLeftArrow->currentIndex();
+		mem->next.m_iRightArrow = props.m_oRightArrow->currentIndex();
+
 		mem->apply();
-		*/
 	}
 }
 

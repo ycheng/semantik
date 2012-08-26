@@ -144,5 +144,20 @@ class mem_size_box : public mem_command {
 		IType type() { return SIZE_BOX; }
 };
 
+class mem_edit_link: public mem_command {
+	public:
+		mem_edit_link(sem_mediator*, int id);
+		void undo();
+		void redo();
+
+		int m_iId;
+		data_link prev;
+		data_link next;
+		data_link *link;
+		QList<diagram_item*> items;
+
+		IType type() { return EDIT_LINK; }
+};
+
 #endif
 
