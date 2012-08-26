@@ -72,12 +72,7 @@ void box_control_point::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 }
 
 void box_control_point::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
-	if (m_oView->m_oCurrent)
-	{
-		m_oView->m_oCurrent->m_oLink->copy_from(m_oView->m_oCurrent->m_oInnerLink);
-		m_oView->m_oCurrent = NULL;
-	}
-	else
+	if (! m_oView->m_oCurrent)
 	{
 		if (!m_oLink->m_oLink->equals(m_oLink->m_oInnerLink))
 		{
@@ -248,7 +243,6 @@ void box_control_point::force_position(const QPoint& i_oP)
 		m_oRealPosition = i_oP;
 	}
 	setPos(i_oP);
-	//}
 	m_bForced = false;
 }
 

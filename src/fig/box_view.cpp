@@ -1185,8 +1185,7 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 	}
 
 	m_bPressed = true;
-	m_oLastMovePoint = mapToScene(i_oEv->pos());
-	m_oLastPoint = mapToScene(i_oEv->pos());
+	m_oLastMovePoint = m_oLastPoint = mapToScene(i_oEv->pos());
 
 	if (i_oEv->button() == Qt::MidButton)
 	{
