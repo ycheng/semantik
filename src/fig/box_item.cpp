@@ -91,9 +91,8 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	lay->draw(painter, ctx);
 }
 
-void box_item::mousePressEvent(QGraphicsSceneMouseEvent* e) {
-
-	QPointF pt = rect().bottomRight();
+void box_item::mousePressEvent(QGraphicsSceneMouseEvent* e)
+{
 	m_oLastPressPoint = e->pos();
 	if (m_oLastPressPoint.x() > m_iWW - GRID && m_oLastPressPoint.y() > m_iHH - GRID )
 	{

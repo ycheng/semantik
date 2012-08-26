@@ -83,7 +83,7 @@ bool box_reader::startElement(const QString&, const QString&, const QString& i_s
 		int id = i_oAttrs.value(QObject::trUtf8("id")).toInt();
 
 		data_box *box = new data_box(id);
-		data_item *item = m_oMediator->m_oMediator->m_oItems[m_iId];
+		//data_item *item = m_oMediator->m_oMediator->m_oItems[m_iId];
 		m_oMediator->m_oMediator->m_oItems[m_iId]->m_oBoxes[id] = box;
 		box->m_iXX = i_oAttrs.value(QObject::trUtf8("c1")).toFloat();
 		box->m_iYY = i_oAttrs.value(QObject::trUtf8("c2")).toFloat();
@@ -288,7 +288,6 @@ void box_view::notify_edit_box(int id, int bid)
 	Q_ASSERT(id == m_iId);
 	box_item *item = (box_item*) m_oItems.value(bid); // TODO
 	Q_ASSERT(item != NULL);
-	data_box *box = item->m_oBox;
 	item->update_data();
 }
 
@@ -611,7 +610,7 @@ void box_view::change_colors(QAction* i_oAct)
 	{
 		if (box_link *k = dynamic_cast<box_link*>(l_o))
 		{
-			mem->items.append(((box_link*) l_o)->m_oLink);
+			mem->items.append(k->m_oLink);
 		}
 		else if (connectable* t = dynamic_cast<connectable*>(l_o))
 		{
@@ -1163,7 +1162,6 @@ void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 		return;
 	}
 
-	QPointF m_oLastPoint = mapToScene(i_oEv->pos());
 	QGraphicsItem *l_oItem = itemAt(i_oEv->pos());
 	box_link *l_oLink;
 	if (l_oItem && (l_oLink = dynamic_cast<box_link*>(l_oItem)))
