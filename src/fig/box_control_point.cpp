@@ -92,10 +92,11 @@ QVariant box_control_point::itemChange(GraphicsItemChange i_oChange, const QVari
 	{
 		if (i_oChange == ItemPositionChange)
 		{
+			// TODO make sure items do not mess each other positions (crashes...)
 			QPointF l_o = i_oValue.toPointF();
 			QPoint np = QPoint(l_o.x(), l_o.y());
 
-			if (m_oView->m_oCurrent)
+			if (m_oView->m_oCurrent && this == m_oLink->m_oEndPoint)
 			{
 				connectable *start = m_oView->m_oItems.value(m_oView->m_oCurrent->m_oInnerLink.m_iParent);
 				QRectF r = start->rect();
