@@ -1104,17 +1104,21 @@ void box_view::slot_align()
 			if (l_i == ALIGN_LEFT)
 				best = qMin(r.x(), best);
 			if (l_i == ALIGN_RIGHT)
-				best = qMin(r.x() + r.width(), best);
+				best = qMax(r.x() + r.width(), best);
 			if (l_i == ALIGN_BOTTOM)
-				best = qMin(r.y() , best);
+				best = qMax(r.y() , best);
 			if (l_i == ALIGN_TOP)
-				best = qMax(r.y() + r.height(), best);
+				best = qMin(r.y() + r.height(), best);
 			if (l_i == ALIGN_CENTER)
 				best = r.x() + r.width() / 2.; // TODO do not pick one randomly
 			if (l_i == ALIGN_MIDDLE)
 				best = r.y() + r.height()/2.;
 		}
 	}
+
+	if (l_i == ALIGN_CENTER || l_i == ALIGN_MIDDLE)
+		best = (int) best;
+
 	mem_pos_box *mem = new mem_pos_box(m_oMediator, m_iId);
 
 	foreach (QGraphicsItem* l_oItem, scene()->selectedItems())
