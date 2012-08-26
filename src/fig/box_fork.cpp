@@ -290,6 +290,7 @@ QPointF box_fork::validate_point(box_resize_point *p, const QPointF & orig)
 		setPos(m_oBox->m_iXX, pf.y());
 
 		s = QSizeF(FORK_WIDTH, m_iLastStretch);
+		m_oChain->setPos(FORK_WIDTH + 3, 0);
 	}
 	else if (p == m_oDown)
 	{
@@ -301,6 +302,7 @@ QPointF box_fork::validate_point(box_resize_point *p, const QPointF & orig)
 		pf.setY(m_oBox->m_iYY + m_iLastStretch);
 
 		s = QSizeF(FORK_WIDTH, m_iLastStretch);
+		m_oChain->setPos(FORK_WIDTH + 3, 0);
 	}
 	else if (p == m_oLeft)
 	{
@@ -313,6 +315,7 @@ QPointF box_fork::validate_point(box_resize_point *p, const QPointF & orig)
 		setPos(pf.x(), m_oBox->m_iYY);
 
 		s = QSizeF(m_iLastStretch, FORK_WIDTH);
+		m_oChain->setPos(m_iLastStretch + 3, 0);
 	}
 	else if (p == m_oRight)
 	{
@@ -323,8 +326,10 @@ QPointF box_fork::validate_point(box_resize_point *p, const QPointF & orig)
 		pf.setX(m_oBox->m_iXX + m_iLastStretch);
 
 		s = QSizeF(m_iLastStretch, FORK_WIDTH);
+		m_oChain->setPos(m_iLastStretch + 3, 0);
 	}
 	setRect(QRectF(QPointF(0, 0), s));
+	m_oView->message(m_oView->trUtf8("%1 x %2").arg(QString::number(s.width()), QString::number(s.height())), 1000);
 	return pf;
 }
 
