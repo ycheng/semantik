@@ -41,8 +41,8 @@ class box_view : public QGraphicsView
 		void check_canvas_size();
 
 		QMenu* m_oMenu;
-		QMenu* m_oWidthMenu;
-		QMenu* m_oStyleMenu;
+		//QMenu* m_oWidthMenu;
+		//QMenu* m_oStyleMenu;
 		QMenu* m_oAddBoxMenu;
 		QMenu* m_oAlignMenu;
 		QMenu* m_oSizeMenu;

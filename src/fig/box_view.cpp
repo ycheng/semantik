@@ -211,12 +211,12 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 
 	//m_oMenu->addAction(m_oEditAction);
 	m_oMenu->addAction(m_oDeleteAction);
-	m_oMenu->addAction(m_oColorAction);
 	//m_oMenu->addAction(m_oMoveUpAction);
 	//m_oMenu->addAction(m_oMoveDownAction);
 
 	QAction *l_o;
 
+	/*
 	m_oWidthMenu = m_oMenu->addMenu(QObject::trUtf8("Connection width"));
 	m_oWidthGroup = new QActionGroup(this);
 	l_o = m_oWidthMenu->addAction(QObject::trUtf8("1px")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_penwidth())); addAction(l_o); l_o->setData(QVariant(1)); m_oWidthGroup->addAction(l_o);
@@ -229,14 +229,15 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	l_o = m_oStyleMenu->addAction(QObject::trUtf8("dot line")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_penstyle())); addAction(l_o); l_o->setData(QVariant(Qt::DotLine)); m_oStyleGroup->addAction(l_o);
 	l_o = m_oStyleMenu->addAction(QObject::trUtf8("dash line")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_penstyle())); addAction(l_o); l_o->setData(QVariant(Qt::DashLine)); m_oStyleGroup->addAction(l_o);
 
+	*/
+
+	m_oMenu->addSeparator();
 
 	m_oAlignMenu = m_oMenu->addMenu(QObject::trUtf8("Alignment"));
 	m_oAlignGroup = new QActionGroup(this);
 	l_o = m_oAlignMenu->addAction(QObject::trUtf8("Align left")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_align())); addAction(l_o); l_o->setData(QVariant(ALIGN_LEFT)); m_oAlignGroup->addAction(l_o);
 	l_o = m_oAlignMenu->addAction(QObject::trUtf8("Align center")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_align())); addAction(l_o); l_o->setData(QVariant(ALIGN_CENTER)); m_oAlignGroup->addAction(l_o);
 	l_o = m_oAlignMenu->addAction(QObject::trUtf8("Align right")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_align())); addAction(l_o); l_o->setData(QVariant(ALIGN_RIGHT)); m_oAlignGroup->addAction(l_o);
-
-	m_oAlignMenu->addSeparator();
 
 	l_o = m_oAlignMenu->addAction(QObject::trUtf8("Align top")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_align())); addAction(l_o); l_o->setData(QVariant(ALIGN_TOP)); m_oAlignGroup->addAction(l_o);
 	l_o = m_oAlignMenu->addAction(QObject::trUtf8("Align middle")); connect(l_o, SIGNAL(triggered()), this, SLOT(slot_align())); addAction(l_o); l_o->setData(QVariant(ALIGN_MIDDLE)); m_oAlignGroup->addAction(l_o);
@@ -257,6 +258,7 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	//m_oMoveUpAction->setEnabled(false);
 	//m_oMoveDownAction->setEnabled(false);
 	m_oMenu->addSeparator();
+	m_oMenu->addAction(m_oColorAction);
 	m_oMenu->addAction(m_oPropertiesAction);
 	m_oColorAction->setEnabled(false);
 
@@ -523,14 +525,14 @@ void box_view::enable_menu_actions()
 
 	m_oPropertiesAction->setEnabled(selected == 1 and dynamic_cast<editable*>(selection.at(0)));
 
-	m_oWidthMenu->setEnabled(selected >= 1 and dynamic_cast<box_link*>(selection.at(0)));
-	foreach(QAction* l_o, m_oWidthGroup->actions())
+	m_oSizeMenu->setEnabled(selected > 1);
+	foreach(QAction* l_o, m_oSizeGroup->actions())
 	{
 		l_o->setEnabled(selected >= 1);
 	}
 
-	m_oSizeMenu->setEnabled(selected >= 1 and dynamic_cast<box_link*>(selection.at(0)));
-	foreach(QAction* l_o, m_oSizeGroup->actions())
+	/*m_oWidthMenu->setEnabled(selected >= 1 and dynamic_cast<box_link*>(selection.at(0)));
+	foreach(QAction* l_o, m_oWidthGroup->actions())
 	{
 		l_o->setEnabled(selected >= 1);
 	}
@@ -539,7 +541,7 @@ void box_view::enable_menu_actions()
 	foreach(QAction* l_o, m_oStyleGroup->actions())
 	{
 		l_o->setEnabled(selected >= 1);
-	}
+	}*/
 
 	m_oAlignMenu->setEnabled(selected > 1);
 	foreach(QAction* l_o, m_oAlignGroup->actions())
