@@ -190,6 +190,8 @@ def print_nodes(node, niv):
 				w = int(node.get_val('pic_w'))
 				restrict = ""
 				if (w > 5*72): restrict = "[width=5in]"
+			if not restrict:
+				restrict = "[width=\\textwidth,height=\\textheight,keepaspectratio]"
 
 			out('\\begin{figure}[htbp]\n')
 			out('  \\begin{center}\n')
