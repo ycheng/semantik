@@ -1287,8 +1287,8 @@ void box_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 			delete m_oCurrent;
 			m_oCurrent = NULL;
 		}
+		m_bPressed = false;
 		QGraphicsView::mouseReleaseEvent(i_oEv);
-                m_bPressed = false;
 		return;
 	}
 
