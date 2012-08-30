@@ -569,32 +569,7 @@ void canvas_view::notify_open_map() {
 		return;
 	}
 
-	QRectF l_oR2;
-
-	qreal x, y, z, t;
-	canvas_item *l_o = m_oItems.values()[0];
-
-	x = z = l_o->x() + l_o->boundingRect().width()/2;
-	y = t = l_o->y() + l_o->boundingRect().height()/2;
-
-	QList<canvas_item*> l_oList = m_oItems.values();
-	foreach (canvas_item *l_oItem, l_oList)
-	{
-		if (l_oItem->x() < x) x = l_oItem->x();
-		if (l_oItem->y() < y) y = l_oItem->y();
-		if (l_oItem->x2() > z) z = l_oItem->x2();
-		if (l_oItem->y2() > t) t = l_oItem->y2();
-	}
-	x -= GAP; y -= GAP; z += GAP, t += GAP;
-
-	l_oR2 = QRectF(QPointF(x, y), QPointF(z, t));
-	//l_oR2 = l_oR2.united(QRectF(mapToScene(l_oRect.topLeft()), mapToScene(l_oRect.bottomRight())));
-	if (l_oR2 == sceneRect()) return;
-	scene()->setSceneRect(l_oR2);
-	fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
-
-	l_oR2 = l_oR2.united(QRectF(mapToScene(l_oRect.topLeft()) + QPointF(-10, -10), mapToScene(l_oRect.bottomRight()) + QPointF(10, 10)));
-	scene()->setSceneRect(l_oR2);
+	check_canvas_size();
 	fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
 }
 
@@ -1044,8 +1019,8 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 		default:
 			break;
 	}
-	check_canvas_size();
 	update_cursor();
+	check_canvas_size();
 }
 
 void canvas_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
@@ -1086,37 +1061,10 @@ void canvas_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 
 void canvas_view::check_canvas_size()
 {
-	// using viewport()->rect() was a bad idea
-	QRect l_oRect = viewport()->rect();
-	if (m_oItems.size() < 1) // no rectangle
-	{
-		scene()->setSceneRect(QRectF(mapToScene(l_oRect.topLeft()), mapToScene(l_oRect.bottomRight())));
-		return;
-	}
-
-	QRectF l_oR2;
-
-	qreal x, y, z, t;
-	canvas_item *l_o = m_oItems.values()[0];
-
-	x = z = l_o->x() + l_o->boundingRect().width()/2;
-	y = t = l_o->y() + l_o->boundingRect().height()/2;
-
-	QList<canvas_item*> l_oList = m_oItems.values();
-	foreach (canvas_item *l_oItem, l_oList)
-	{
-		if (l_oItem->x() < x) x = l_oItem->x();
-		if (l_oItem->y() < y) y = l_oItem->y();
-		if (l_oItem->x2() > z) z = l_oItem->x2();
-		if (l_oItem->y2() > t) t = l_oItem->y2();
-	}
-	x -=GAP; y -= GAP; z += GAP, t += GAP;
-
-	l_oR2 = QRectF(QPointF(x, y), QPointF(z, t));
-	l_oR2 = l_oR2.united(QRectF(mapToScene(l_oRect.topLeft()) + QPointF(-10, -10), mapToScene(l_oRect.bottomRight()) + QPointF(10, 10)));
-
-	if (l_oR2 == sceneRect()) return;
-	scene()->setSceneRect(l_oR2);
+	QRectF br = scene()->itemsBoundingRect();
+	br.adjust(-GAP, -GAP, GAP, GAP);
+	br = br.united(scene()->sceneRect());
+	scene()->setSceneRect(br);
 }
 
 void canvas_view::fit_zoom()
