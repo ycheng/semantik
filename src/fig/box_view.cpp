@@ -339,53 +339,38 @@ void box_view::sync_view()
 
 	foreach (data_box *box, item->m_oBoxes.values())
 	{
+		connectable *l_o = NULL;
 		if (box->m_iType == data_box::ACTIVITY)
 		{
-			box_item *l_o = new box_item(this, box->m_iId);
-			m_oItems[box->m_iId] = l_o;
-			l_o->setPos(QPointF(box->m_iXX, box->m_iYY));
-			l_o->update_data();
+			l_o = new box_item(this, box->m_iId);
 		}
 		else if (box->m_iType == data_box::LABEL)
 		{
-			box_item *l_o = new box_label(this, box->m_iId);
-			m_oItems[box->m_iId] = l_o;
-			l_o->setPos(QPointF(box->m_iXX, box->m_iYY));
-			l_o->update_data();
+			l_o = new box_label(this, box->m_iId);
 		}
 		else if (box->m_iType == data_box::COMPONENT)
 		{
-			box_component *l_o = new box_component(this, box->m_iId);
-			m_oItems[box->m_iId] = l_o;
-			l_o->setPos(QPointF(box->m_iXX, box->m_iYY));
-			l_o->update_data();
+			l_o = new box_component(this, box->m_iId);
 		}
 		else if (box->m_iType == data_box::NODE)
 		{
-			box_node *l_o = new box_node(this, box->m_iId);
-			m_oItems[box->m_iId] = l_o;
-			l_o->setPos(QPointF(box->m_iXX, box->m_iYY));
-			l_o->update_data();
+			l_o = new box_node(this, box->m_iId);
 		}
 		else if (box->m_iType == data_box::ACTIVITY_START)
 		{
-			box_dot *l_o = new box_dot(this, box->m_iId);
-			m_oItems[box->m_iId] = l_o;
-			l_o->setPos(QPointF(box->m_iXX, box->m_iYY));
-			l_o->setRect(QRectF(QPointF(0, 0), QSizeF(20, 20)));
-			l_o->update_data();
+			l_o = new box_dot(this, box->m_iId);
 		}
 		else if (box->m_iType == data_box::ACTIVITY_PARALLEL)
 		{
-			box_fork *l_o = new box_fork(this, box->m_iId);
-			m_oItems[box->m_iId] = l_o;
-			l_o->setPos(QPointF(box->m_iXX, box->m_iYY));
-			l_o->update_data();
+			l_o = new box_fork(this, box->m_iId);
 		}
 		else
 		{
 			Q_ASSERT(false);
 		}
+		m_oItems[box->m_iId] = l_o;
+		(dynamic_cast<QGraphicsItem*> (l_o))->setPos(QPointF(box->m_iXX, box->m_iYY));
+		l_o->update_data();
 	}
 
 	foreach (data_link *link, item->m_oLinks) {
@@ -667,7 +652,12 @@ void box_view::slot_add_element()
 	add->box->m_iXX = GRID * (int) (m_oLastPoint.x() / GRID);
 	add->box->m_iYY = GRID * (int) (m_oLastPoint.y() / GRID);
 
-	if (sender == m_oAddParallelVertical)
+	if (sender == m_oAddDotStart || sender == m_oAddDotEnd)
+	{
+		add->box->m_iHH = 20;
+		add->box->m_iWW = 20;
+	}
+	else if (sender == m_oAddParallelVertical)
 	{
 		add->box->m_iWW = FORK_WIDTH;
 		add->box->m_iHH = FORK_LENGTH;
@@ -942,9 +932,7 @@ void box_view::notify_add_box(int id, int box)
 	}
 	else if (db->m_iType == data_box::ACTIVITY_START)
 	{
-		box_dot *tmp = new box_dot(this, box);
-		tmp->setRect(QRectF(QPointF(0, 0), QSizeF(20, 20)));
-		l_o = tmp;
+		l_o = new box_dot(this, box);
 	}
 	else if (db->m_iType == data_box::ACTIVITY_PARALLEL)
 	{

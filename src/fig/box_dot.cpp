@@ -27,6 +27,7 @@ box_dot::box_dot(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), connecta
 	Q_ASSERT(m_oBox);
 
 	i_oParent->scene()->addItem(this);
+	//setRect(QRectF(QPointF(0, 0), QSizeF(20, 20)));
 
 	m_oChain = new box_chain(i_oParent);
 	m_oChain->setParentItem(this);
@@ -35,6 +36,8 @@ box_dot::box_dot(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), connecta
 
 	setZValue(100);
 	setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
+
+	update_size();
 }
 
 box_dot::~box_dot()
@@ -83,6 +86,14 @@ void box_dot::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 
 void box_dot::update_data() {
 	setPos(QPointF(m_oBox->m_iXX, m_oBox->m_iYY));
+	update_size();
+	update();
+}
+
+void box_dot::update_size()
+{
+	setRect(0, 0, m_oBox->m_iWW, m_oBox->m_iHH);
+	m_oChain->setPos(m_oBox->m_iWW + 3, 0);
 }
 
 QVariant box_dot::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue)

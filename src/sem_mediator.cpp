@@ -97,6 +97,12 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		box->m_bIsVertical = i_oAttrs.value(notr("v")).toInt();
 		box->m_bIsEnd = i_oAttrs.value(notr("e")).toInt();
 		box->color = QColor(i_oAttrs.value(notr("color")));
+
+		// TODO remove in the future...
+		if (box->m_iType == data_box::ACTIVITY_START)
+		{
+			if (box->m_iWW > 20 + box->m_iHH) box->m_iWW = box->m_iHH = 20;
+		}
 	}
 	else if (i_sName == notr("linkbox"))
 	{
