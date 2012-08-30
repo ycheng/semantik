@@ -901,19 +901,10 @@ void box_view::clear_diagram()
 
 void box_view::check_canvas_size()
 {
-	QRect l_oRect = viewport()->rect();
-	if (m_oItems.size() < 1) // no rectangle
-	{
-		scene()->setSceneRect(QRectF(mapToScene(l_oRect.topLeft()), mapToScene(l_oRect.bottomRight())));
-		return;
-	}
-
 	QRectF br = scene()->itemsBoundingRect();
 	br.adjust(-GAP, -GAP, GAP, GAP);
-
-	QRectF sc = br.united(QRectF(mapToScene(l_oRect.topLeft()), mapToScene(l_oRect.bottomRight())));
-	if (sc == sceneRect()) return;
-	scene()->setSceneRect(sc);
+	br = br.united(scene()->sceneRect());
+	scene()->setSceneRect(br);
 }
 
 void box_view::focusInEvent(QFocusEvent *i_oEv)
