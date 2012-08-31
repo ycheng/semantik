@@ -25,6 +25,7 @@ canvas_sort::canvas_sort(canvas_view *i_oGraphWidget, canvas_item *i_oFrom)
 	//m_oColor = QColor("#FFFCD5");
 	//m_oColor = QColor("#ABFBC7");
 
+	hide();
 	QPen l_oPen;
 	l_oPen.setWidth(1);
 	setPen(l_oPen);

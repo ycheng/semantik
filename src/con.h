@@ -15,6 +15,7 @@
 #define CANVAS_SORT_T gratype(12304)
 #define BOX_ITEM_T gratype(12305)
 #define BOX_LINK_T gratype(12306)
+#define CANVAS_CHAIN_T gratype(12307)
 
 #define hash_params QHash<int, QVariant>
 

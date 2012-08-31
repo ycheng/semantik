@@ -22,6 +22,7 @@ class canvas_view;
 class canvas_link;
 class canvas_sort;
 class canvas_flag;
+class canvas_chain;
 
 class canvas_item: public QGraphicsTextItem
 {
@@ -32,6 +33,7 @@ class canvas_item: public QGraphicsTextItem
 		int type() const { return CANVAS_ITEM_T; }
 		QRectF boundingRect() const;
 
+		void adjustSize();
 		void update_flags();
 
 		QList<canvas_link*> m_oLinks;
@@ -82,6 +84,7 @@ class canvas_item: public QGraphicsTextItem
 		canvas_view *m_oGraph;
 		canvas_item *m_oParent;
 		canvas_sort *m_oSort;
+		canvas_chain *m_oChain;
 
 		int m_iId;
 		QColor m_oColor;

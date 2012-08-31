@@ -18,6 +18,7 @@
 #include <QSvgRenderer>
 #include <QTextDocumentFragment>
 
+#include "canvas_chain.h"
 #include "canvas_flag.h"
 #include "color_scheme.h"
 #include "sem_mediator.h"
@@ -51,6 +52,8 @@ canvas_item::canvas_item(canvas_view *i_oGraphWidget, int i_iId) : QGraphicsText
 	//adjustSize();
 
 	m_oSort = new canvas_sort(i_oGraphWidget, this);
+	m_oChain = new canvas_chain(i_oGraphWidget);
+	m_oChain->setParentItem(this);
 
 	setFlags(ItemIsMovable | ItemIsSelectable);
 
@@ -61,7 +64,7 @@ canvas_item::canvas_item(canvas_view *i_oGraphWidget, int i_iId) : QGraphicsText
 	m_oColorBackup = m_oColor;
 
 	i_oGraphWidget->scene()->addItem(this);
-	m_oSort->hide();
+	m_oChain->setPos(boundingRect().width() + 3, 0);
 
 	update_flags();
 
@@ -80,16 +83,18 @@ void canvas_item::set_parent(canvas_item * i_o)
 
 QVariant canvas_item::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue)
 {
-	bool l_bChange = ((i_oChange == ItemPositionChange) && scene());
-
-	QVariant l_oRet = QGraphicsItem::itemChange(i_oChange, i_oValue);
-
-	if (l_bChange)
+	if (scene())
 	{
-		update_links();
+		if (i_oChange == ItemPositionHasChanged)
+		{
+			update_links();
+		}
+		else if (i_oChange == ItemSelectedHasChanged)
+		{
+			m_oChain->setVisible(isSelected());
+		}
 	}
-
-	return l_oRet;
+	return QGraphicsItem::itemChange(i_oChange, i_oValue);
 }
 
 void canvas_item::add_link(canvas_link* i_oL)
@@ -167,6 +172,7 @@ void canvas_item::update_flags()
 
 canvas_item::~canvas_item()
 {
+	delete m_oChain;
 }
 
 void canvas_item::mousePressEvent(QGraphicsSceneMouseEvent* e) {
@@ -195,6 +201,11 @@ void canvas_item::keyPressEvent(QKeyEvent* e) {
 	QGraphicsTextItem::keyPressEvent(e);
 	adjustSize();
 	update_links();
+}
+
+void canvas_item::adjustSize() {
+	QGraphicsTextItem::adjustSize();
+	m_oChain->setPos(boundingRect().width() + 3, 0);
 }
 
 void canvas_item::keyReleaseEvent(QKeyEvent* e) {
