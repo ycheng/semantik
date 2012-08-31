@@ -149,6 +149,8 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	l_oScene->setSceneRect(-400, -400, 400, 400);
 	setScene(l_oScene);
 
+	setDragMode(QGraphicsView::RubberBandDrag);
+
 	//setCacheMode(CacheBackground);
 	setRenderHint(QPainter::Antialiasing);
 
