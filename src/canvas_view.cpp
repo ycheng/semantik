@@ -18,6 +18,7 @@
 #include "semantik.h"
 #include <QTextCursor> 
 #include  <QApplication> 
+#include "canvas_chain.h"
 #include <QtDebug>
 #include  <QX11Info>
 #include <QScrollBar>
@@ -857,15 +858,16 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 
 	if (i_oEv->button() == Qt::MidButton) {
 		set_mode(scroll_mode, m_iMode);
+		return;
 	}
 
 	m_bPressed = (i_oEv->button() != Qt::RightButton);
 
-	// link items on click sequences
+	QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
 	QList<canvas_item*> sel = selection();
-	if (sel.size() == 1 && QApplication::keyboardModifiers() & Qt::ShiftModifier) {
-
-		QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
+	if (sel.size() == 1 && QApplication::keyboardModifiers() & Qt::ShiftModifier)
+	{
+		// link items on click sequences
 		if (l_oItem && l_oItem->type() == CANVAS_ITEM_T) {
 
 			int id1 = sel.at(0)->Id();
@@ -887,6 +889,21 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 			}
 			return;
 		}
+	}
+
+	canvas_chain *kk=NULL;
+	if (l_oItem && (kk = dynamic_cast<canvas_chain*>(l_oItem)))
+	{
+		foreach (QGraphicsItem *l_o, scene()->selectedItems())
+		{
+			l_o->setSelected(false);
+		}
+
+		canvas_item *l_oParent = dynamic_cast<canvas_item*>(kk->parentItem());
+		Q_ASSERT(l_oParent);
+
+		qDebug()<<"TODO";
+		return;
 	}
 
 	QGraphicsView::mousePressEvent(i_oEv);
