@@ -31,7 +31,6 @@ class canvas_view : public QGraphicsView
 			no_mode = 0,
 			select_mode = 1,
 			sort_mode = 3,
-			scroll_mode = 4,
 		};
 
 		void set_mode(mode_type i_o, mode_type i_oSave = no_mode);
@@ -58,6 +57,8 @@ class canvas_view : public QGraphicsView
 
 
 		bool m_bPressed;
+		bool m_bScroll;
+
 		QPoint m_oLastPressPoint;
 		QPointF m_oLastMovePoint;
 

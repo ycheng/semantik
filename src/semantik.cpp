@@ -195,15 +195,8 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	m_oSortAct->setIcon(KIcon(notr("semantik_sort")));
 	m_oSortAct->setCheckable(true);
 
-	m_oScrollAct = new KAction(trUtf8("&Scroll"), this);
-	actionCollection()->addAction(notr("tool_scroll"), m_oScrollAct);
-	connect(m_oScrollAct, SIGNAL(triggered(bool)), SLOT(slot_tool_scroll()));
-	m_oScrollAct->setIcon(KIcon(notr("semantik_move")));
-	m_oScrollAct->setCheckable(true);
-
 	m_oGroup->addAction(m_oSelectAct);
 	m_oGroup->addAction(m_oSortAct);
-	m_oGroup->addAction(m_oScrollAct);
 
 	m_oSelectAct->setChecked(true);
 
@@ -597,12 +590,6 @@ void semantik_win::slot_tool_sort()
 {
 	//qDebug()<<"slot tool sort"<<endl;
 	m_oCanvas->set_mode(canvas_view::sort_mode);
-}
-
-void semantik_win::slot_tool_scroll()
-{
-	//qDebug()<<"slot tool scroll"<<endl;
-	m_oCanvas->set_mode(canvas_view::scroll_mode);
 }
 
 void semantik_win::slot_message(const QString & i_sMsg, int i_iDur)

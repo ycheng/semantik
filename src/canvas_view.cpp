@@ -72,6 +72,7 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphi
 	m_iLastMode = m_iMode = select_mode;
 
 	m_bPressed = false;
+	m_bScroll = false;
 
 	m_oRubberLine = new rubber_line(QRubberBand::Line, this);
 
@@ -500,9 +501,6 @@ void canvas_view::update_cursor() {
 			setDragMode(QGraphicsView::NoDrag);
 			viewport()->setCursor(Qt::ArrowCursor);
 			break;
-		case scroll_mode:
-			setDragMode(QGraphicsView::ScrollHandDrag);
-			break;
 		default:
 			qDebug()<<"unknown mode"<<m_iMode;
 			break;
@@ -821,6 +819,12 @@ void canvas_view::enable_menu_actions()
 
 void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 {
+	if (i_oEv->button() == Qt::MidButton) {
+		m_bScroll = true;
+		setDragMode(QGraphicsView::ScrollHandDrag);
+		return;
+	}
+
 	m_oLastPressPoint = i_oEv->pos();
 	if (i_oEv->button() == Qt::RightButton)
 	{
@@ -851,13 +855,6 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 		i_oEv->accept();
 		return;
 	}
-
-	if (i_oEv->button() == Qt::MidButton) {
-		set_mode(scroll_mode, m_iMode);
-		return;
-	}
-
-	m_bPressed = (i_oEv->button() != Qt::RightButton);
 
 	QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
 	QList<canvas_item*> sel = selection();
@@ -943,6 +940,12 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 		}
 		m_oRubberLine->hide();
 		return;
+	}
+
+	if (m_bScroll)
+	{
+		m_bScroll = false;
+		setDragMode(QGraphicsView::RubberBandDrag);
 	}
 
 	QGraphicsView::mouseReleaseEvent(i_oEv);
@@ -1321,6 +1324,19 @@ void canvas_view::mouseMoveEvent(QMouseEvent *i_oEv)
 		m_oRubberLine->setGeometry(l_oSel);
 	}
 
+	if (m_bScroll)
+	{
+		QScrollBar *h = horizontalScrollBar();
+		QScrollBar *v = verticalScrollBar();
+		QPoint d = i_oEv->pos() - m_oLastPressPoint;
+		h->setValue(h->value() - d.x());
+		v->setValue(v->value() - d.y());
+		m_oLastPressPoint = i_oEv->pos();
+		//QGraphicsView::mouseMoveEvent(i_oEv);
+		return;
+	}
+
+
 	switch (m_iMode) {
 		case select_mode:
 			{
@@ -1350,16 +1366,6 @@ void canvas_view::mouseMoveEvent(QMouseEvent *i_oEv)
 			}
 			break;
 
-		case scroll_mode:
-			if (m_bPressed) {
-				QScrollBar *h = horizontalScrollBar();
-				QScrollBar *v = verticalScrollBar();
-				QPoint d = i_oEv->pos() - m_oLastPressPoint;
-				h->setValue(h->value() - d.x());
-				v->setValue(v->value() - d.y());
-				m_oLastPressPoint = i_oEv->pos();
-			}
-			break;
 		default:
 			break;
 	}

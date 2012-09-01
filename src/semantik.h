@@ -111,7 +111,6 @@ class semantik_win : public KXmlGuiWindow
 
 		void slot_tool_select();
 		void slot_tool_sort();
-		void slot_tool_scroll();
 		void slot_enable_undo(bool, bool);
 
 		void slot_properties();
