@@ -916,7 +916,11 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 		return;
 	}
 
-	QGraphicsView::mousePressEvent(i_oEv);
+        canvas_sort *l_oSort = dynamic_cast<canvas_sort*>(scene()->itemAt(mapToScene(i_oEv->pos())));
+	if (!l_oSort)
+	{
+		QGraphicsView::mousePressEvent(i_oEv);
+	}
 }
 
 
@@ -960,6 +964,28 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 		m_bScroll = false;
 		setDragMode(QGraphicsView::RubberBandDrag);
 	}
+
+	QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
+	canvas_sort *l_oSort = dynamic_cast<canvas_sort*>(l_oItem);
+	if (l_oSort)
+	{
+		int l_iId = l_oSort->m_oFrom->Id();
+		int l_iParentId = m_oMediator->parent_of(l_iId);
+
+		mem_sort *srt = new mem_sort(m_oMediator);
+		srt->init(l_iParentId, l_iId, m_iSortCursor);
+		srt->apply();
+
+		m_iSortCursor++;
+		if (m_iSortCursor >= m_oMediator->num_children(l_iParentId))
+		{
+			m_iSortCursor = 0;
+		}
+
+		emit sig_message(trUtf8("Click to set Item %1").arg(QString::number(m_iSortCursor+1)), -1);
+		return;
+	}
+
 
 	QGraphicsView::mouseReleaseEvent(i_oEv);
 
@@ -1006,24 +1032,6 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 				if (l_oItem && l_oItem->type() == CANVAS_ITEM_T)
 				{
 					check_selection();
-				}
-				else if (l_oItem && l_oItem->type() == CANVAS_SORT_T)
-				{
-					canvas_sort* l_oSort = (canvas_sort*) l_oItem;
-					int l_iId = l_oSort->m_oFrom->Id();
-					int l_iParentId = m_oMediator->parent_of(l_iId);
-
-					mem_sort *srt = new mem_sort(m_oMediator);
-					srt->init(l_iParentId, l_iId, m_iSortCursor);
-					srt->apply();
-
-					m_iSortCursor++;
-					if (m_iSortCursor >= m_oMediator->num_children(l_iParentId))
-					{
-						m_iSortCursor = 0;
-					}
-
-					emit sig_message(trUtf8("Click to set Item %1").arg(QString::number(m_iSortCursor+1)), -1);
 				}
 				else
 				{
