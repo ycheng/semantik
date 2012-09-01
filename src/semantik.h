@@ -80,7 +80,6 @@ class semantik_win : public KXmlGuiWindow
 
 		KMenu *m_oToolsMenu;
 		QAction *m_oSelectAct;
-		QAction *m_oLinkAct;
 		QAction *m_oSortAct;
 		QAction *m_oScrollAct;
 
@@ -111,7 +110,6 @@ class semantik_win : public KXmlGuiWindow
 		void slot_recent(const KUrl &);
 
 		void slot_tool_select();
-		void slot_tool_link();
 		void slot_tool_sort();
 		void slot_tool_scroll();
 		void slot_enable_undo(bool, bool);

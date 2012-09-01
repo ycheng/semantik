@@ -30,7 +30,6 @@ class canvas_view : public QGraphicsView
 		{
 			no_mode = 0,
 			select_mode = 1,
-			link_mode = 2,
 			sort_mode = 3,
 			scroll_mode = 4,
 		};

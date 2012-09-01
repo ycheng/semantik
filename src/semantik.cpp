@@ -189,12 +189,6 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	m_oSelectAct->setIcon(KIcon(notr("semantik_point")));
 	m_oSelectAct->setCheckable(true);
 
-	m_oLinkAct = new KAction(trUtf8("&Link"), this);
-	actionCollection()->addAction(notr("tool_link"), m_oLinkAct);
-	connect(m_oLinkAct, SIGNAL(triggered(bool)), SLOT(slot_tool_link()));
-	m_oLinkAct->setIcon(KIcon(notr("semantik_link")));
-	m_oLinkAct->setCheckable(true);
-
 	m_oSortAct = new KAction(trUtf8("&Sort"), this);
 	actionCollection()->addAction(notr("tool_sort"), m_oSortAct);
 	connect(m_oSortAct, SIGNAL(triggered(bool)), SLOT(slot_tool_sort()));
@@ -208,7 +202,6 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	m_oScrollAct->setCheckable(true);
 
 	m_oGroup->addAction(m_oSelectAct);
-	m_oGroup->addAction(m_oLinkAct);
 	m_oGroup->addAction(m_oSortAct);
 	m_oGroup->addAction(m_oScrollAct);
 
@@ -598,12 +591,6 @@ void semantik_win::slot_tool_select()
 {
 	//qDebug()<<"slot tool select"<<endl;
 	m_oCanvas->set_mode(canvas_view::select_mode);
-}
-
-void semantik_win::slot_tool_link()
-{
-	//qDebug()<<"slot tool link"<<endl;
-	m_oCanvas->set_mode(canvas_view::link_mode);
 }
 
 void semantik_win::slot_tool_sort()

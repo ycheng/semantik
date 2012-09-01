@@ -496,10 +496,6 @@ void canvas_view::update_cursor() {
 			setDragMode(QGraphicsView::RubberBandDrag);
 			viewport()->setCursor(Qt::ArrowCursor);
 			break;
-		case link_mode:
-			setDragMode(QGraphicsView::NoDrag);
-			viewport()->setCursor(Qt::CrossCursor);
-			break;
 		case sort_mode:
 			setDragMode(QGraphicsView::NoDrag);
 			viewport()->setCursor(Qt::ArrowCursor);
@@ -874,19 +870,15 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 			int id2 = ((canvas_item*) l_oItem)->Id();
 			m_oMediator->link_items(id1, id2);
 
-			if (m_iMode != link_mode) {
-				QList<int> unlst;
-				unlst.append(id1);
-				QList<int> lst;
-				lst.append(id2);
+			QList<int> unlst;
+			unlst.append(id1);
+			QList<int> lst;
+			lst.append(id2);
 
-				mem_sel *sel = new mem_sel(m_oMediator);
-				sel->sel = lst;
-				sel->unsel = unlst;
-				sel->apply();
-			} else {
-				deselect_all();
-			}
+			mem_sel *sel = new mem_sel(m_oMediator);
+			sel->sel = lst;
+			sel->unsel = unlst;
+			sel->apply();
 			return;
 		}
 	}
@@ -902,7 +894,15 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 		canvas_item *l_oParent = dynamic_cast<canvas_item*>(kk->parentItem());
 		Q_ASSERT(l_oParent);
 
-		qDebug()<<"TODO";
+		QRectF r = l_oParent->boundingRect().translated(l_oParent->pos());
+		m_oLastPressPoint.setX(r.x() + r.width() / 2.);
+		m_oLastPressPoint.setY(r.y() + r.height() / 2.);
+		m_oLastPressPoint = mapFromScene(m_oLastPressPoint);
+		
+		QRect l_oSel = QRect(m_oLastPressPoint, i_oEv->pos());
+		m_oRubberLine->setGeometry(l_oSel);
+
+		m_oRubberLine->setVisible(true);
 		return;
 	}
 
@@ -912,6 +912,39 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 
 void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 {
+	if (m_oRubberLine->isVisible())
+	{
+		m_oRubberLine->setVisible(false);
+		canvas_item *l_oR1 = NULL;
+		canvas_item *l_oR2 = NULL;
+
+		foreach (QGraphicsItem *l_oI1, scene()->items(mapToScene(m_oLastPressPoint)))
+		{
+			if (l_oI1->type() == CANVAS_ITEM_T)
+			{
+				l_oR1 = (canvas_item*) l_oI1;
+				break;
+			}
+		}
+
+		foreach (QGraphicsItem *l_oI1, scene()->items(mapToScene(i_oEv->pos())))
+		{
+			if (l_oI1->type() == CANVAS_ITEM_T)
+			{
+				l_oR2 = (canvas_item*) l_oI1;
+				break;
+			}
+		}
+
+		if (l_oR1 && l_oR2 && l_oR1 != l_oR2)
+		{
+			m_oMediator->link_items(l_oR1->Id(), l_oR2->Id());
+			deselect_all(); // TODO
+		}
+		m_oRubberLine->hide();
+		return;
+	}
+
 	QGraphicsView::mouseReleaseEvent(i_oEv);
 
 	edit_off();
@@ -922,14 +955,6 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 	if (i_oEv->button() == Qt::RightButton) return;
 	m_bPressed = false;
 
-	/*if (m_iLastMode != no_mode)
-	{
-		m_iMode = m_iLastMode;
-		m_iLastMode = no_mode;
-		viewport()->setCursor(m_iMode==link_mode?Qt::CrossCursor:Qt::ArrowCursor);
-	}*/
-
-	m_oRubberLine->setVisible(false);
 	switch (m_iMode)
 	{
 		case select_mode:
@@ -956,49 +981,6 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 						mv->apply();
 					} // else { qDebug()<<"move too small"; }
 				}
-			}
-			break;
-		case link_mode:
-			{
-				canvas_item *l_oR1 = NULL;
-				canvas_item *l_oR2 = NULL;
-
-				foreach (QGraphicsItem *l_oI1, scene()->items(mapToScene(m_oLastPressPoint)))
-				{
-					if (l_oI1->type() == CANVAS_ITEM_T)
-					{
-						l_oR1 = (canvas_item*) l_oI1;
-						break;
-					}
-				}
-
-				foreach (QGraphicsItem *l_oI1, scene()->items(mapToScene(i_oEv->pos())))
-				{
-					if (l_oI1->type() == CANVAS_ITEM_T)
-					{
-						l_oR2 = (canvas_item*) l_oI1;
-						break;
-					}
-				}
-
-				if (l_oR1 && l_oR2 && l_oR1 != l_oR2)
-				{
-					m_oMediator->link_items(l_oR1->Id(), l_oR2->Id());
-					// TODO
-					deselect_all();
-					/*
-					QList<int> unlst;
-					unlst.append(l_oR1->m_iId);
-					QList<int> lst;
-					lst.append(l_oR2->m_iId);
-
-					mem_sel *sel = new mem_sel(m_oMediator);
-					sel->sel = lst;
-					sel->unsel = unlst;
-					sel->apply();
-					*/
-				}
-				m_oRubberLine->hide();
 			}
 			break;
 
@@ -1045,7 +1027,7 @@ void canvas_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 	if (i_oEv->button() != Qt::LeftButton) return;
 	m_oLastPoint = mapToScene(i_oEv->pos());
 	QGraphicsItem *l_oItem = itemAt(i_oEv->pos());
-	if (m_iMode == select_mode || m_iMode == link_mode) {
+	if (m_iMode == select_mode) {
 		if (l_oItem) {
 			if (l_oItem->type() == CANVAS_ITEM_T) {
 				deselect_all();
@@ -1331,7 +1313,14 @@ QList<canvas_item*> canvas_view::selection() {
 	return ret;
 }
 
-void canvas_view::mouseMoveEvent(QMouseEvent *i_oEv) {
+void canvas_view::mouseMoveEvent(QMouseEvent *i_oEv)
+{
+	if (m_oRubberLine->isVisible())
+	{
+		QRect l_oSel = QRect(m_oLastPressPoint, i_oEv->pos());
+		m_oRubberLine->setGeometry(l_oSel);
+	}
+
 	switch (m_iMode) {
 		case select_mode:
 			{
@@ -1361,17 +1350,6 @@ void canvas_view::mouseMoveEvent(QMouseEvent *i_oEv) {
 			}
 			break;
 
-		case link_mode:
-			if (m_bPressed) {
-				bool c1 = ((m_oLastPoint - i_oEv->pos()).manhattanLength() >= QApplication::startDragDistance());
-				if (c1)
-				{
-					QRect l_oSel = QRect(m_oLastPressPoint, i_oEv->pos());
-					m_oRubberLine->setGeometry(l_oSel);
-				}
-				m_oRubberLine->setVisible(c1);
-			}
-			break;
 		case scroll_mode:
 			if (m_bPressed) {
 				QScrollBar *h = horizontalScrollBar();
