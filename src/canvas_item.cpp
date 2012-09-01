@@ -28,6 +28,7 @@
 #include "canvas_link.h"
 #include "canvas_item.h"
 #include "canvas_view.h"
+#include "canvas_sort_toggle.h"
 
 #define square_size 5
 #define item_padding 7.
@@ -55,6 +56,9 @@ canvas_item::canvas_item(canvas_view *i_oGraphWidget, int i_iId) : QGraphicsText
 	m_oChain = new canvas_chain(i_oGraphWidget);
 	m_oChain->setParentItem(this);
 
+	m_oSortToggle = new canvas_sort_toggle(i_oGraphWidget);
+	m_oSortToggle->setParentItem(this);
+
 	setFlags(ItemIsMovable | ItemIsSelectable);
 
 	setZValue(100);
@@ -65,6 +69,7 @@ canvas_item::canvas_item(canvas_view *i_oGraphWidget, int i_iId) : QGraphicsText
 
 	i_oGraphWidget->scene()->addItem(this);
 	m_oChain->setPos(boundingRect().width() + 2, 0);
+	m_oSortToggle->setPos(boundingRect().width() + 2, m_oChain->boundingRect().height() + 2);
 
 	update_flags();
 
@@ -92,6 +97,7 @@ QVariant canvas_item::itemChange(GraphicsItemChange i_oChange, const QVariant &i
 		else if (i_oChange == ItemSelectedHasChanged)
 		{
 			m_oChain->setVisible(isSelected());
+			m_oSortToggle->setVisible(isSelected());
 		}
 	}
 	return QGraphicsItem::itemChange(i_oChange, i_oValue);
@@ -173,6 +179,7 @@ void canvas_item::update_flags()
 canvas_item::~canvas_item()
 {
 	delete m_oChain;
+	delete m_oSortToggle;
 }
 
 void canvas_item::mousePressEvent(QGraphicsSceneMouseEvent* e) {
@@ -206,6 +213,7 @@ void canvas_item::keyPressEvent(QKeyEvent* e) {
 void canvas_item::adjustSize() {
 	QGraphicsTextItem::adjustSize();
 	m_oChain->setPos(boundingRect().width() + 2, 0);
+	m_oSortToggle->setPos(boundingRect().width() + 2, m_oChain->boundingRect().height() + 2);
 }
 
 void canvas_item::keyReleaseEvent(QKeyEvent* e) {
