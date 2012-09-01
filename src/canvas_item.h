@@ -59,7 +59,7 @@ class canvas_item: public QGraphicsTextItem
 		int Id() const {return m_iId;};
 
 		bool m_bEdit;
-		QString m_sNum;
+		int m_iNum;
 
 		void mousePressEvent(QGraphicsSceneMouseEvent* e);
 		void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);

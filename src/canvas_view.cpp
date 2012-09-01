@@ -456,12 +456,11 @@ void canvas_view::show_sort(int i_iId, bool i_b)
 			++j;
 			canvas_item *l_oRect = m_oItems.value(l_oP.y());
 
-			QString l_sNum = QString::number(j);
-			if (l_sNum != l_oRect->m_sNum)
+			if (j != l_oRect->m_iNum)
 			{
-				l_oRect->m_sNum = l_sNum;
-				l_oRect->m_oSort->update();
+				l_oRect->m_iNum = j;
 			}
+			l_oRect->m_oSort->update();
 			l_oRect->m_oSort->setVisible(i_b);
 		}
 	}

@@ -47,7 +47,7 @@ canvas_item::canvas_item(canvas_view *i_oGraphWidget, int i_iId) : QGraphicsText
 
 	m_iId = i_iId;
 	m_bEdit = false;
-	m_sNum = "1";
+	m_iNum = 1;
 
 	setPlainText(m_oGraph->m_oMediator->m_oItems.value(Id())->m_sSummary);
 	//adjustSize();

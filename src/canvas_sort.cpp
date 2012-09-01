@@ -42,9 +42,18 @@ canvas_sort::canvas_sort(canvas_view *i_oGraphWidget, canvas_item *i_oFrom)
 	setParentItem(m_oFrom);
 }
 
-void canvas_sort::paint(QPainter *_painter, const QStyleOptionGraphicsItem *_option, QWidget * i_oW)
+void canvas_sort::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *_option, QWidget * i_oW)
 {
-        QGraphicsEllipseItem::paint(_painter, _option, i_oW);
-        _painter->drawText(boundingRect().translated(0, 1), Qt::AlignCenter, m_oFrom->m_sNum);
+	if (m_oGraph->m_iSortCursor + 1 > m_oFrom->m_iNum)
+	{
+		i_oPainter->setBrush(QColor(0, 255, 0));
+	}
+	else
+	{
+		i_oPainter->setBrush(QColor(255, 255, 0));
+	}
+
+	i_oPainter->drawEllipse(boundingRect().adjusted(1, 1, -1, -1));
+        i_oPainter->drawText(boundingRect().translated(0, 1), Qt::AlignCenter, QString::number(m_oFrom->m_iNum));
 }
 
