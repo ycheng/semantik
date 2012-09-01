@@ -544,9 +544,7 @@ void canvas_view::notify_select(const QList<int>& unsel, const QList<int>& sel) 
 	if (sel.size() == 1 && true) //
 	{
 		m_iSortId = sel.at(0);
-		show_sort(m_iSortId, true);
 		m_iSortCursor = 0;
-		//emit sig_message(trUtf8("Click to set Item %1").arg(QString::number(m_iSortCursor+1)), -1);
 	}
 }
 
@@ -864,10 +862,12 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 	}
 
         canvas_sort *l_oSort = dynamic_cast<canvas_sort*>(scene()->itemAt(mapToScene(i_oEv->pos())));
-	if (!l_oSort)
-	{
-		QGraphicsView::mousePressEvent(i_oEv);
-	}
+	if (l_oSort)
+		return;
+	canvas_sort_toggle *l_oToggle = dynamic_cast<canvas_sort_toggle*>(l_oItem);
+	if (l_oToggle)
+		return;
+	QGraphicsView::mousePressEvent(i_oEv);
 }
 
 
@@ -936,7 +936,14 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 	canvas_sort_toggle *l_oToggle = dynamic_cast<canvas_sort_toggle*>(l_oItem);
 	if (l_oToggle)
 	{
-		check_selection(); // TODO ITA
+		//check_selection(); // TODO ITA
+		if (scene()->selectedItems().size() == 1)
+		{
+			canvas_item *it = static_cast<canvas_item*>(l_oToggle->parentItem());
+			m_iSortId = it->Id();
+			m_iSortCursor = 0;
+			show_sort(it->Id(), true);
+		}
 		return;
 	}
 	QGraphicsView::mouseReleaseEvent(i_oEv);
