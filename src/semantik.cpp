@@ -181,25 +181,6 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	m_oGenerateAct->setShortcut(trUtf8("Ctrl+G"));
 	connect(m_oGenerateAct, SIGNAL(triggered(bool)), SLOT(slot_generate()));
 
-	m_oGroup = new QActionGroup(this);
-
-	m_oSelectAct = new KAction(trUtf8("&Select"), this);
-	actionCollection()->addAction(notr("tool_select"), m_oSelectAct);
-	connect(m_oSelectAct, SIGNAL(triggered(bool)), SLOT(slot_tool_select()));
-	m_oSelectAct->setIcon(KIcon(notr("semantik_point")));
-	m_oSelectAct->setCheckable(true);
-
-	m_oSortAct = new KAction(trUtf8("&Sort"), this);
-	actionCollection()->addAction(notr("tool_sort"), m_oSortAct);
-	connect(m_oSortAct, SIGNAL(triggered(bool)), SLOT(slot_tool_sort()));
-	m_oSortAct->setIcon(KIcon(notr("semantik_sort")));
-	m_oSortAct->setCheckable(true);
-
-	m_oGroup->addAction(m_oSelectAct);
-	m_oGroup->addAction(m_oSortAct);
-
-	m_oSelectAct->setChecked(true);
-
 	flag_scheme l_oScheme(this, notr("crsc-app-colors"), "");
 
 	m_oColorGroup = new QActionGroup(this);
@@ -210,8 +191,6 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	m_oFlagGroup = new QActionGroup(this);
 	m_oFlagGroup->setExclusive(false);
 	connect(m_oFlagGroup, SIGNAL(triggered(QAction*)), m_oCanvas, SLOT(change_flags(QAction*)));
-
-	slot_tool_select();
 
 	//m_oCanvasFitZoom = new KAction(trUtf8("Fit zoom"), this);
 	//actionCollection()->addAction(notr("zoom_map"), m_oCanvasFitZoom);
@@ -225,7 +204,7 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	KStandardAction::zoomOut(m_oCanvas, SLOT(zoom_out()), actionCollection());
 
 	//END setupActions()
-	setStandardToolBarMenuEnabled(true);
+	//setStandardToolBarMenuEnabled(true);
 
 
 	QDockWidget *l_oDockData = new QDockWidget(trUtf8("Data"), this);
@@ -578,18 +557,6 @@ void semantik_win::slot_recent(const KUrl& i_oUrl)
 		m_oMediator->m_oCurrentUrl = i_oUrl;
 	}
 	update_title();
-}
-
-void semantik_win::slot_tool_select()
-{
-	//qDebug()<<"slot tool select"<<endl;
-	m_oCanvas->set_mode(canvas_view::select_mode);
-}
-
-void semantik_win::slot_tool_sort()
-{
-	//qDebug()<<"slot tool sort"<<endl;
-	m_oCanvas->set_mode(canvas_view::sort_mode);
 }
 
 void semantik_win::slot_message(const QString & i_sMsg, int i_iDur)

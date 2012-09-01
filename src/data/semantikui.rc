@@ -17,11 +17,6 @@
    <Action name="zoom_map" />
   </Menu>
   <Menu name="tools"><text>&amp;Tools</text>
-   <Action name="tool_select" />
-   <Action name="tool_link" />
-   <Action name="tool_sort" />
-   <Action name="tool_scroll" />
-   <Separator/>
    <Action name="generate_doc" />
   </Menu>
   <Menu name="settings"><text>&amp;Settings</text>
@@ -40,18 +35,6 @@
   </Menu>
 
  </MenuBar>
-
- <ToolBar name="mainToolBar" noMerge="1" iconText="icononly"><text>Main Toolbar</text>
-  <Action name="file_open" />
-  <Action name="file_save" />
- </ToolBar>
-
- <ToolBar name="modesToolBar" iconText="icononly"><text>Modes Toolbar</text>
-  <Action name="tool_select" />
-  <Action name="tool_link" />
-  <Action name="tool_sort" />
-  <Action name="tool_scroll" />
- </ToolBar>
 
  <ToolBar name="colorsToolBar" iconText="icononly" position="right"><text>Colors Toolbar</text>
 	<Action name="tool_select" />
