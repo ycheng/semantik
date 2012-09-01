@@ -26,15 +26,6 @@ class canvas_view : public QGraphicsView
 
 		QMap<int, canvas_item*> m_oItems;
 
-		enum mode_type
-		{
-			no_mode = 0,
-			select_mode = 1,
-			sort_mode = 3,
-		};
-
-		void set_mode(mode_type i_o, mode_type i_oSave = no_mode);
-
 		QMenu* m_oMenu;
 		QMenu* m_oColorMenu;
 		QMenu* m_oDataMenu;
@@ -44,7 +35,6 @@ class canvas_view : public QGraphicsView
 
 
 		bool m_bDeleting;
-		mode_type m_iMode;
 
 		void focusInEvent(QFocusEvent *);
 		void focusOutEvent(QFocusEvent *);
@@ -92,8 +82,6 @@ class canvas_view : public QGraphicsView
 
 		void move_sel(int i_iX, int i_iY);
 
-		mode_type m_iLastMode;
-
 		void check_canvas_size();
 
 		void enable_all(bool);
@@ -133,7 +121,6 @@ class canvas_view : public QGraphicsView
 		void zoom_in();
 		void zoom_out();
 		void toggle_fullscreen();
-		void update_cursor();
 		void slot_select_subtree();
 
 		void notify_focus(void* ptr);

@@ -15,6 +15,7 @@
 #include<QCoreApplication>
 #include <QSet>
 #include "canvas_sort.h"
+#include "canvas_sort_toggle.h"
 #include "semantik.h"
 #include <QTextCursor> 
 #include  <QApplication> 
@@ -50,26 +51,12 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphi
 	//setCacheMode(CacheBackground);
 	setRenderHint(QPainter::Antialiasing);
 
-#ifndef Q_OS_DARWIN
-
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
 	setMinimumSize(200, 200);
 
-#ifdef O
-	//setTransformationAnchor(AnchorUnderMouse);
-	//setResizeAnchor(AnchorViewCenter);
-#endif
-
-	/*QMatrix k(0, 1, 1, 0, 0, 0);
-	  QMatrix kv(1, 0, 0, -1, 0, 0);*/
 	m_oMediator = i_oControl;
-	/*setMatrix(l_oMatrix);
-	  scale(0.8, 0.8);*/
-#endif
-
-	m_iLastMode = m_iMode = select_mode;
 
 	m_bPressed = false;
 	m_bScroll = false;
@@ -155,8 +142,6 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphi
 	newAction(trUtf8("Diagram"), VIEW_DIAG, m_oDiagramType);
 	newAction(trUtf8("Table"), VIEW_TABLE, m_oTableType);
 	newAction(trUtf8("Image"), VIEW_IMG, m_oImageType);
-
-	set_mode(select_mode);
 
 	m_bDeleting = false;
 	//connect(scene(), SIGNAL(selectionChanged()), this, SLOT(selection_changed())); // TODO check with m_bPressed
@@ -490,44 +475,6 @@ void canvas_view::move_sel(int i_iX, int i_iY)
 	foreach (canvas_item *l_oItem, sel) { l_oItem->update_links(); ensureVisible(l_oItem); }
 }
 
-void canvas_view::update_cursor() {
-	switch (m_iMode)
-	{
-		case select_mode:
-			setDragMode(QGraphicsView::RubberBandDrag);
-			viewport()->setCursor(Qt::ArrowCursor);
-			break;
-		case sort_mode:
-			setDragMode(QGraphicsView::NoDrag);
-			viewport()->setCursor(Qt::ArrowCursor);
-			break;
-		default:
-			qDebug()<<"unknown mode"<<m_iMode;
-			break;
-	}
-}
-
-void canvas_view::set_mode(mode_type i_iMode, mode_type i_iSaveMode)
-{
-	edit_off();
-	if (i_iMode == m_iMode) {
-		return;
-	}
-
-	deselect_all();
-
-	m_iMode = i_iMode;
-	update_cursor();
-	m_iLastMode = (i_iSaveMode != no_mode) ? i_iSaveMode : m_iMode;
-
-	// reset
-	m_bPressed = false;
-	// unneeded statements
-	//m_oRubbery->hide();
-	m_oRubberLine->hide();
-}
-
-
 void canvas_view::zoom_in()
 {
 	double i_iScaleFactor = 1.05;
@@ -594,7 +541,7 @@ void canvas_view::notify_select(const QList<int>& unsel, const QList<int>& sel) 
 		m_iSortId = NO_ITEM;
 	}
 
-	if (sel.size() == 1 && m_iMode == sort_mode)
+	if (sel.size() == 1 && true) //
 	{
 		m_iSortId = sel.at(0);
 		show_sort(m_iSortId, true);
@@ -986,63 +933,42 @@ void canvas_view::mouseReleaseEvent(QMouseEvent *i_oEv)
 		return;
 	}
 
-
+	canvas_sort_toggle *l_oToggle = dynamic_cast<canvas_sort_toggle*>(l_oItem);
+	if (l_oToggle)
+	{
+		check_selection(); // TODO ITA
+		return;
+	}
 	QGraphicsView::mouseReleaseEvent(i_oEv);
 
 	edit_off();
 
-	set_mode(m_iLastMode);
-	m_iLastMode = m_iMode;
-
 	if (i_oEv->button() == Qt::RightButton) return;
 	m_bPressed = false;
 
-	switch (m_iMode)
-	{
-		case select_mode:
-			{
-				check_selection();
+	check_selection();
 
-				//qDebug()<<"mouse release event!";
-				QList<int> lst;
-				foreach (QGraphicsItem* k, scene()->selectedItems()) {
-					canvas_item* t = (canvas_item*) k;
-					lst.append(t->Id());
-				}
-				if (lst.size()) {
-					data_item *p = m_oMediator->m_oItems[lst[0]];
-					canvas_item *v = m_oItems[lst[0]];
-					if (qAbs(p->m_iXX - v->pos().x()) + qAbs(p->m_iYY - v->pos().y()) > 0.1) {
-						mem_move *mv = new mem_move(m_oMediator);
-						mv->sel = lst;
-						for (int i = 0; i < lst.size(); ++i) {
-							data_item *it = m_oMediator->m_oItems[lst[i]];
-							mv->oldPos.append(QPointF(it->m_iXX, it->m_iYY));
-							mv->newPos.append(m_oItems[lst[i]]->pos());
-						}
-						mv->apply();
-					} // else { qDebug()<<"move too small"; }
-				}
-			}
-			break;
-
-		case sort_mode:
-			{
-				QGraphicsItem *l_oItem = scene()->itemAt(mapToScene(i_oEv->pos()));
-				if (l_oItem && l_oItem->type() == CANVAS_ITEM_T)
-				{
-					check_selection();
-				}
-				else
-				{
-					deselect_all();
-				}
-			}
-			break;
-		default:
-			break;
+	//qDebug()<<"mouse release event!";
+	QList<int> lst;
+	foreach (QGraphicsItem* k, scene()->selectedItems()) {
+		canvas_item* t = (canvas_item*) k;
+		lst.append(t->Id());
 	}
-	update_cursor();
+	if (lst.size()) {
+		data_item *p = m_oMediator->m_oItems[lst[0]];
+		canvas_item *v = m_oItems[lst[0]];
+		if (qAbs(p->m_iXX - v->pos().x()) + qAbs(p->m_iYY - v->pos().y()) > 0.1) {
+			mem_move *mv = new mem_move(m_oMediator);
+			mv->sel = lst;
+			for (int i = 0; i < lst.size(); ++i) {
+				data_item *it = m_oMediator->m_oItems[lst[i]];
+				mv->oldPos.append(QPointF(it->m_iXX, it->m_iYY));
+				mv->newPos.append(m_oItems[lst[i]]->pos());
+			}
+			mv->apply();
+		} // else { qDebug()<<"move too small"; }
+	}
+
 	check_canvas_size();
 }
 
@@ -1051,34 +977,33 @@ void canvas_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 	if (i_oEv->button() != Qt::LeftButton) return;
 	m_oLastPoint = mapToScene(i_oEv->pos());
 	QGraphicsItem *l_oItem = itemAt(i_oEv->pos());
-	if (m_iMode == select_mode) {
-		if (l_oItem) {
-			if (l_oItem->type() == CANVAS_ITEM_T) {
-				deselect_all();
 
-				canvas_item *l_oR = (canvas_item*) l_oItem;
-				l_oR->setSelected(false);
+	if (l_oItem) {
+		if (l_oItem->type() == CANVAS_ITEM_T) {
+			deselect_all();
 
-				mem_add *add = new mem_add(m_oMediator);
-				add->init();
-				add->item->m_iXX = m_oLastPoint.x();
-				add->item->m_iYY = m_oLastPoint.y();
-				add->parent = l_oR->Id();
-				add->apply();
-			} else if (l_oItem->type() == CANVAS_LINK_T) {
-				canvas_link *l_oLink = (canvas_link*) l_oItem;
-				mem_unlink *link = new mem_unlink(m_oMediator);
-				link->child = l_oLink->m_oTo->Id();
-				link->parent = l_oLink->m_oFrom->Id();
-				link->apply();
-			}
-		} else if (i_oEv->modifiers() != Qt::ControlModifier) {
+			canvas_item *l_oR = (canvas_item*) l_oItem;
+			l_oR->setSelected(false);
+
 			mem_add *add = new mem_add(m_oMediator);
 			add->init();
 			add->item->m_iXX = m_oLastPoint.x();
 			add->item->m_iYY = m_oLastPoint.y();
+			add->parent = l_oR->Id();
 			add->apply();
+		} else if (l_oItem->type() == CANVAS_LINK_T) {
+			canvas_link *l_oLink = (canvas_link*) l_oItem;
+			mem_unlink *link = new mem_unlink(m_oMediator);
+			link->child = l_oLink->m_oTo->Id();
+			link->parent = l_oLink->m_oFrom->Id();
+			link->apply();
 		}
+	} else if (i_oEv->modifiers() != Qt::ControlModifier) {
+		mem_add *add = new mem_add(m_oMediator);
+		add->init();
+		add->item->m_iXX = m_oLastPoint.x();
+		add->item->m_iYY = m_oLastPoint.y();
+		add->apply();
 	}
 }
 
@@ -1358,37 +1283,28 @@ void canvas_view::mouseMoveEvent(QMouseEvent *i_oEv)
 	}
 
 
-	switch (m_iMode) {
-		case select_mode:
-			{
-				QGraphicsView::mouseMoveEvent(i_oEv);
+	QGraphicsView::mouseMoveEvent(i_oEv);
 
-				QList<QGraphicsItem*> sel = scene()->selectedItems();
-				if (sel.size() > 4) { // does not solve the repainting problem
-					QSet<canvas_link*> lst;
-					foreach (QGraphicsItem*tmp, sel) {
-						if (tmp->type() == CANVAS_ITEM_T && tmp->isSelected()) {
-							canvas_item* x = (canvas_item*) tmp;
-							foreach (canvas_link* l_oLink, x->m_oLinks) {
-								lst.insert(l_oLink);
-							}
-						}
-					}
-					foreach (canvas_link* tmp, lst) {
-						tmp->update_pos();
-					}
-				} else {
-					foreach (QGraphicsItem*tmp, sel) {
-						if (tmp->type() == CANVAS_ITEM_T && tmp->isSelected()) {
-							((canvas_item*) tmp)->update_links();
-						}
-					}
+	QList<QGraphicsItem*> sel = scene()->selectedItems();
+	if (sel.size() > 4) { // does not solve the repainting problem
+		QSet<canvas_link*> lst;
+		foreach (QGraphicsItem*tmp, sel) {
+			if (tmp->type() == CANVAS_ITEM_T && tmp->isSelected()) {
+				canvas_item* x = (canvas_item*) tmp;
+				foreach (canvas_link* l_oLink, x->m_oLinks) {
+					lst.insert(l_oLink);
 				}
 			}
-			break;
-
-		default:
-			break;
+		}
+		foreach (canvas_link* tmp, lst) {
+			tmp->update_pos();
+		}
+	} else {
+		foreach (QGraphicsItem*tmp, sel) {
+			if (tmp->type() == CANVAS_ITEM_T && tmp->isSelected()) {
+				((canvas_item*) tmp)->update_links();
+			}
+		}
 	}
 }
 
@@ -1480,7 +1396,7 @@ void canvas_view::notify_flag(int id) {
 }
 
 void canvas_view::notify_sort(int id) {
-	show_sort(id, m_iMode == sort_mode);
+	show_sort(id, true); // TODO ITA
 }
 
 void canvas_view::notify_focus(void* ptr)
