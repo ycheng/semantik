@@ -29,17 +29,17 @@ The generic command for creating a package is the following (packagers):
 * left,right,up,down keys to navigate in the tree
 * alt+left,right,up,down keys to move the selection around
 * double-click on a leaf to add a ramification
-* double-click on a link with the control key held to disconnect
+* double-click on a link to disconnect
 
 Getting started with document generators:
 * look at the scripts in src/templates/
 * the naming is used for finding the files
 
 Getting started with the diagrams:
-* in the map view, right click on a map item, and select "data type: diagram"
-* now in the "data" dock widget, double-click to add a diagram item (or right click...)
-* when holding the control key pressed and left-clicking on a diagram item, a connection arrow is created
-* when holding the control key pressed, double-clicking on a connection thread deletes it
+* right-click to select a component to add
+* press enter to edit the properties
+* use the + to start dragging a connection
+* select a connection and move the points to change its dimensions
 
 More help in about->help
 
