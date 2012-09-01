@@ -883,9 +883,22 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 	canvas_chain *kk=NULL;
 	if (l_oItem && (kk = dynamic_cast<canvas_chain*>(l_oItem)))
 	{
+		QList<int> lst;
 		foreach (QGraphicsItem *l_o, scene()->selectedItems())
 		{
 			l_o->setSelected(false);
+			canvas_item *it = dynamic_cast<canvas_item*>(l_o);
+			if (it)
+			{
+				lst.append(it->Id());
+			}
+		}
+
+		if (lst.size())
+		{
+			mem_sel *sel = new mem_sel(m_oMediator);
+			sel->unsel = lst;
+			sel->apply();
 		}
 
 		canvas_item *l_oParent = dynamic_cast<canvas_item*>(kk->parentItem());

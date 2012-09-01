@@ -64,7 +64,7 @@ canvas_item::canvas_item(canvas_view *i_oGraphWidget, int i_iId) : QGraphicsText
 	m_oColorBackup = m_oColor;
 
 	i_oGraphWidget->scene()->addItem(this);
-	m_oChain->setPos(boundingRect().width() + 3, 0);
+	m_oChain->setPos(boundingRect().width() + 2, 0);
 
 	update_flags();
 
@@ -205,7 +205,7 @@ void canvas_item::keyPressEvent(QKeyEvent* e) {
 
 void canvas_item::adjustSize() {
 	QGraphicsTextItem::adjustSize();
-	m_oChain->setPos(boundingRect().width() + 3, 0);
+	m_oChain->setPos(boundingRect().width() + 2, 0);
 }
 
 void canvas_item::keyReleaseEvent(QKeyEvent* e) {
