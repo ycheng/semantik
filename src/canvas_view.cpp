@@ -145,6 +145,8 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphi
 
 	m_bDeleting = false;
 	//connect(scene(), SIGNAL(selectionChanged()), this, SLOT(selection_changed())); // TODO check with m_bPressed
+
+	setDragMode(QGraphicsView::RubberBandDrag);
 }
 
 void canvas_view::check_selection() {
