@@ -65,6 +65,7 @@ class sem_mediator: public QObject
 		void sig_open_map();
 		void sig_change_data(int id);
 		void sig_export_item(int id);
+		void sig_export_doc();
 		void sig_focus(void*);
 
 		void sig_add_box(int, int);
@@ -140,6 +141,7 @@ class sem_mediator: public QObject
 		void notify_sort(int id);
 		void notify_change_data(int id);
 		void notify_export_item(int id);
+		void notify_export_doc();
 		void notify_focus(void *);
 
 		void notify_add_box(int id, int box);

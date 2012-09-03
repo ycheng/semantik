@@ -137,6 +137,7 @@ class canvas_view : public QGraphicsView
 		void notify_sort(int id);
 		void notify_open_map();
 		void notify_change_data(int id);
+		void notify_export_doc();
 		void sync_flags();
 		void sync_colors();
 

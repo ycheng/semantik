@@ -1258,6 +1258,25 @@ void canvas_view::export_map()
 	m_oMediator->notify_message(trUtf8("Exported '%1'").arg(l_o.path()), 2000);
 }
 
+void canvas_view::notify_export_doc()
+{
+	QRectF l_oRect = scene()->itemsBoundingRect();
+	l_oRect = QRectF(l_oRect.topLeft() - QPointF(25, 25), l_oRect.bottomRight() + QPointF(25, 25));
+	QRectF l_oR(0, 0, l_oRect.width(), l_oRect.height());
+
+	// fill with white
+	QImage l_oImage((int) l_oR.width(), (int) l_oR.height(), QImage::Format_RGB32);
+	l_oImage.fill(qRgb(255,255,255));
+
+	QPainter l_oP;
+	l_oP.begin(&l_oImage);
+	l_oP.setRenderHints(QPainter::Antialiasing);
+	scene()->render(&l_oP, l_oR, l_oRect);
+	l_oP.end();
+
+	l_oImage.save(QString(m_oMediator->m_sTempDir + QString("/wholemap.png")));
+}
+
 QList<canvas_item*> canvas_view::selection() {
 	// FIXME use scene()->selectedItems()
 	QList<canvas_item*> ret;

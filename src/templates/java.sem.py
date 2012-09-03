@@ -29,6 +29,16 @@ except OSError:
 for x in "Makefile main.html Kadapplet.java Mapview.java".split():
 	shutil.copy2(template_dir() + '/java/'+x, outdir)
 
+cwd = os.getcwd()
+os.chdir(sembind.get_var('temp_dir'))
+pics = {} # map the id to the picture
+lst = os.listdir('.')
+for x in lst:
+	if x.startswith('diag-') or x.startswith('wholemap'):
+		pics[ x.replace('diag-', '').split('.')[0] ] = x
+		shutil.copy2(x, outdir + '/pics')
+os.chdir(cwd)
+
 code = []
 def out(s):
 	global code

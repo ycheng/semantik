@@ -1088,6 +1088,7 @@ void sem_mediator::generate_docs(const QString &i_oFile, const QString &i_sDirNa
 	bind_node::init(this);
 	bind_node::_root = bind_node::create_tree(this, choose_root());
 
+	notify_export_doc();
 	foreach (int l_iVal, m_oItems.keys())
 	{
 		data_item *l_oData = m_oItems.value(l_iVal);
@@ -1402,6 +1403,10 @@ void sem_mediator::notify_change_data(int id) {
 
 void sem_mediator::notify_export_item(int id) {
 	emit sig_export_item(id);
+}
+
+void sem_mediator::notify_export_doc() {
+	emit sig_export_doc();
 }
 
 void sem_mediator::notify_add_box(int id, int box) {

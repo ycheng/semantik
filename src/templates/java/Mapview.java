@@ -31,8 +31,7 @@ class Mapview extends JScrollPane implements MouseListener, MouseMotionListener
 		// Panel to hold the map picture
 		JPanel panel = new JPanel(new BorderLayout());
 
-		String filename = "map.png";
-		String path = "/pics/" + filename;
+		String path = "/pics/wholemap.png";
 		ImageIcon pic = new ImageIcon(getClass().getResource(path));
 
 		m_picwidth = pic.getIconWidth();

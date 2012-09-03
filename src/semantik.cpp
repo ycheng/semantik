@@ -320,6 +320,7 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	connect(m_oMediator, SIGNAL(sig_open_map()), m_oCanvas, SLOT(notify_open_map()));
 	connect(m_oMediator, SIGNAL(sig_change_data(int)), m_oCanvas, SLOT(notify_change_data(int)));
 
+	connect(m_oMediator, SIGNAL(sig_export_doc()), m_oCanvas, SLOT(notify_export_doc()));
 	connect(m_oMediator, SIGNAL(sig_export_item(int)), m_oDiagramView, SLOT(notify_export_item(int)));
 	connect(m_oMediator, SIGNAL(sig_export_item(int)), m_oImageView, SLOT(notify_export_item(int)));
 

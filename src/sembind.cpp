@@ -114,6 +114,22 @@ QString bind_node::get_val(const QString & i_s)
 	{
 		return QString::number(m_oItem->m_iPicId);
 	}
+	else if (i_s == notr("x"))
+	{
+		return QString::number(m_oItem->m_iXX);
+	}
+	else if (i_s == notr("y"))
+	{
+		return QString::number(m_oItem->m_iYY);
+	}
+	else if (i_s == notr("w"))
+	{
+		return QString::number(m_oItem->m_iWW);
+	}
+	else if (i_s == notr("h"))
+	{
+		return QString::number(m_oItem->m_iHH);
+	}
 	return "";
 }
 
