@@ -40,61 +40,6 @@ def p(s):
 def x(s):
 	return sembind.protectXML(s)
 
-from sgmllib import SGMLParser
-import htmlentitydefs
-
-class TrucProcessor(SGMLParser):
-	def reset(self):
-		self.pieces = []
-		self.state = ""
-		self.buf = ""
-		self.inli = 0
-		SGMLParser.reset(self)
-
-	def unknown_starttag(self, tag, attrs):
-		if tag == 'ul':
-			if self.inli and self.buf:
-				self.pieces.append('<text:p text:style-name="P1">')
-				self.pieces.append(self.buf)
-				self.pieces.append('</text:p>')
-			self.pieces.append('<text:list text:style-name="L2">\n')
-
-		if tag == 'li':
-			self.pieces.append('<text:list-item>')
-			self.inli += 1
-
-		self.buf = ""
-
-	def unknown_endtag(self, tag):
-		if tag == 'p':
-			self.pieces.append('<text:p text:style-name="Standard">')
-			self.pieces.append(self.buf)
-			self.pieces.append('</text:p>\n')
-		elif tag == 'li':
-			if self.buf:
-				self.pieces.append('<text:p text:style-name="P1">')
-				self.pieces.append(self.buf)
-				self.pieces.append('</text:p>\n')
-			self.pieces.append('</text:list-item>\n')
-			self.inli -= 1
-		elif tag == 'ul':
-			self.pieces.append('</text:list>\n')
-
-	def handle_charref(self, ref):
-		self.pieces.append("&#%(ref)s;" % locals())
-
-	def handle_data(self, text):
-		self.buf = text
-
-	def output(self):
-		return "".join(self.pieces)
-
-def parse_string(s):
-	parser = TrucProcessor()
-	parser.feed(s)
-	parser.close()
-	return parser.output()
-
 def print_slide(node, niv):
 	txt = x(node.get_val('summary'))
 	if niv == 0:
