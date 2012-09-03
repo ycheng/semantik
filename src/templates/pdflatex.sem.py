@@ -3,9 +3,7 @@
 
 # Thomas Nagy, 2007-2012
 
-import os, time, shutil, re, StringIO
-from sgmllib import SGMLParser
-import htmlentitydefs
+import os, time, shutil, re, StringIO, getpass
 
 # Additional variables:
 # exclude   1
@@ -31,7 +29,7 @@ settings = {
 'doc_date':'',
 'doc_date_off':'None',
 
-'doc_author':'',
+'doc_author':getpass.getuser(),
 'doc_author_off':'None',
 
 'babel':'english', # frenchb
@@ -71,55 +69,6 @@ os.chdir(cwd)
 
 buf = []
 out = buf.append
-
-class TrucProcessor(SGMLParser):
-	def reset(self):
-		self.pieces = []
-		self.state = ""
-		self.buf = ""
-		self.inli = 0
-		SGMLParser.reset(self)
-
-	def unknown_starttag(self, tag, attrs):
-		if tag == 'ul':
-			if self.inli and self.buf:
-				self.pieces.append('\\item ')
-				self.pieces.append(tex_convert(self.buf))
-				self.pieces.append('\n')
-			self.pieces.append('\\begin{itemize}\n')
-
-		if tag == 'li':
-			self.inli += 1
-
-		self.buf = ""
-
-	def unknown_endtag(self, tag):
-		if tag == 'p':
-			self.pieces.append(tex_convert(self.buf))
-			self.pieces.append('\n')
-		elif tag == 'li':
-			if self.buf:
-				self.pieces.append('\\item ')
-				self.pieces.append(tex_convert(self.buf))
-				self.pieces.append('\n')
-			self.inli -= 1
-		elif tag == 'ul':
-			self.pieces.append('\\end{itemize}\n')
-
-	def handle_charref(self, ref):
-		self.pieces.append("&#%(ref)s;" % locals())
-
-	def handle_data(self, text):
-		self.buf = text
-
-	def output(self):
-		return "".join(self.pieces)
-
-def parse_string(s):
-	parser = TrucProcessor()
-	parser.feed(s)
-	parser.close()
-	return parser.output()
 
 def print_nodes(node, niv):
 	sm = tex_convert(node.get_val('summary'))

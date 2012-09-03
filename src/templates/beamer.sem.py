@@ -6,6 +6,7 @@
 import os, shutil, time, StringIO
 from sgmllib import SGMLParser
 import htmlentitydefs
+import getpass
 
 outdir = sembind.get_var('outdir')+'/'+sembind.get_var('pname')
 
@@ -13,8 +14,8 @@ settings = {
 'all_latex': False,
 'doc_date':'',
 'doc_content':'',
-'doc_title':'How i did it',
-'doc_author':'Krusty',
+'doc_title':'',
+'doc_author':getpass.getuser(),
 'doc_place':'Los angeles',
 'doc_company':'World company',
 
@@ -165,6 +166,61 @@ def print_nodes(node, niv):
 			print_nodes(subtree, 2)
 		else:
 			sys.stderr.write("transforming this map into slides makes kitten cry")
+
+	typo = node.get_val('type')
+	if typo == 'text':
+		y = node.get_val('text')
+		out(parse_string(y))
+	elif typo == 'table':
+		rows = node.num_rows()
+		cols = node.num_cols()
+		if rows>0 and cols>0:
+
+			caption = node.get_var('caption')
+			if not caption: caption = caption = node.get_val('summary')
+
+			out('\\begin{table}\n')
+
+			out('\\begin{center}\n')
+			out('\\begin{tabular}{|%s}' % ('c|'*cols))
+			out(' \\hline\n')
+			for i in range(rows):
+				for j in range(cols):
+					if i == 0 or j == 0:
+						out('\\textbf{%s}' % tex_convert(node.get_cell(i, j)))
+					else:
+						out('%s' % tex_convert(node.get_cell(i, j)))
+					if j < cols - 1: out(" & ")
+				out(' \\\\ \\hline\n')
+			out('\\end{tabular}\n')
+			out('\\end{center}\n')
+
+			out('\\caption{%s}\n' % tex_convert(caption))
+			out('\\end{table}\n')
+
+		out('\n')
+
+	elif typo == 'img' or typo == 'diag':
+		id = node.get_val('id')
+		if id in pics:
+
+			caption = node.get_var('caption')
+			if not caption: caption = caption = node.get_val('summary')
+
+			restrict = node.get_var("picdim")
+			if not restrict:
+				w = int(node.get_val('pic_w'))
+				restrict = ""
+				if (w > 5*72): restrict = "[width=5in]"
+			if not restrict:
+				restrict = "[width=\\textwidth,height=\\textheight,keepaspectratio]"
+
+			out('\\begin{figure}[htbp]\n')
+			out('  \\begin{center}\n')
+			out('    \\includegraphics%s{%s}\n' % (restrict, pics[id]))
+			out('    \\caption{\\footnotesize{%s}}\n' % tex_convert(caption))
+			out('%% %s\n' % protect_tex(node.get_val('pic_location')))
+			out('%% %s\n' % node.get_val('pic_w'))
 
 #	rows = node.num_rows()
 #	cols = node.num_cols()
