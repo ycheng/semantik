@@ -3,7 +3,7 @@
 
 # Thomas Nagy, 2007-2012
 
-import os, shutil, time, StringIO
+import os, shutil, time, StringIO, sys
 import getpass
 
 outdir = sembind.get_var('outdir')+'/'+sembind.get_var('pname')
@@ -67,6 +67,7 @@ out = buf.append
 
 def print_slide(node, niv):
 	txt = tex_convert(node.get_val('summary'))
+
 	if niv == 0:
 		out('%-------------------------------------------------------------------\n')
 		out('\\begin{frame}\n')
@@ -79,6 +80,10 @@ def print_slide(node, niv):
 			out("\\end{itemize}\n")
 		out('\\end{frame}\n')
 		out('%-------------------------------------------------------------------\n')
+
+		# separate slides for the figures
+		print_figure_slides(node)
+
 	elif niv < 3:
 		if txt: out('\\item %s\n' % txt)
 		num = node.child_count()
@@ -98,6 +103,80 @@ def print_slide(node, niv):
 		num = node.child_count()
 		for i in range(num):
 			print_slide(node.child_num(i), niv+1)
+
+def print_figure_slides(node):
+	typo = node.get_val('type')
+	if typo in ['table', 'diag', 'img']:
+		# TODO what to do with the text?
+		#if typo == 'text':
+		#	y = node.get_val('text')
+		#	out(parse_string(y))
+
+		txt = tex_convert(node.get_val('summary'))
+		out('%-------------------------------------------------------------------\n')
+		out('\\begin{frame}\n')
+		out('\\frametitle{%s}\n\n' % txt)
+
+		if typo == 'table':
+			rows = node.num_rows()
+			cols = node.num_cols()
+			if rows>0 and cols>0:
+
+				caption = node.get_var('caption')
+				if not caption: caption = caption = node.get_val('summary')
+
+				out('\\begin{table}\n')
+
+				out('\\begin{center}\n')
+				out('\\begin{tabular}{|%s}' % ('c|'*cols))
+				out(' \\hline\n')
+				for i in range(rows):
+					for j in range(cols):
+						if i == 0 or j == 0:
+							out('\\textbf{%s}' % tex_convert(node.get_cell(i, j)))
+						else:
+							out('%s' % tex_convert(node.get_cell(i, j)))
+						if j < cols - 1: out(" & ")
+					out(' \\\\ \\hline\n')
+				out('\\end{tabular}\n')
+				out('\\end{center}\n')
+
+				out('\\caption{%s}\n' % tex_convert(caption))
+				out('\\end{table}\n')
+
+			out('\n')
+
+		elif typo == 'img' or typo == 'diag':
+			id = node.get_val('id')
+			if id in pics:
+
+				caption = node.get_var('caption')
+				if not caption: caption = caption = node.get_val('summary')
+
+				restrict = node.get_var("picdim")
+				if not restrict:
+					w = int(node.get_val('pic_w'))
+					restrict = ""
+					if (w > 5*72): restrict = "[width=5in]"
+				if not restrict:
+					restrict = "[width=\\textwidth,height=\\textheight,keepaspectratio]"
+
+				out('\\begin{figure}[htbp]\n')
+				out('  \\begin{center}\n')
+				out('    \\includegraphics%s{%s}\n' % (restrict, pics[id]))
+				out('    \\caption{\\footnotesize{%s}}\n' % tex_convert(caption))
+				out('%% %s\n' % protect_tex(node.get_val('pic_location')))
+				out('%% %s\n' % node.get_val('pic_w'))
+				out('%% %s\n' % node.get_val('pic_h'))
+				out('    \\end{center}\n')
+				out('\\end{figure}\n')
+
+		out('\\end{frame}\n')
+		out('%-------------------------------------------------------------------\n')
+
+	num = node.child_count()
+	for i in range(num):
+		print_figure_slides(node.child_num(i))
 
 def print_nodes(node, niv):
 
@@ -121,80 +200,6 @@ def print_nodes(node, niv):
 			print_nodes(subtree, 2)
 		else:
 			sys.stderr.write("transforming this map into slides makes kitten cry")
-
-	typo = node.get_val('type')
-	if typo == 'text':
-		y = node.get_val('text')
-		out(parse_string(y))
-	elif typo == 'table':
-		rows = node.num_rows()
-		cols = node.num_cols()
-		if rows>0 and cols>0:
-
-			caption = node.get_var('caption')
-			if not caption: caption = caption = node.get_val('summary')
-
-			out('\\begin{table}\n')
-
-			out('\\begin{center}\n')
-			out('\\begin{tabular}{|%s}' % ('c|'*cols))
-			out(' \\hline\n')
-			for i in range(rows):
-				for j in range(cols):
-					if i == 0 or j == 0:
-						out('\\textbf{%s}' % tex_convert(node.get_cell(i, j)))
-					else:
-						out('%s' % tex_convert(node.get_cell(i, j)))
-					if j < cols - 1: out(" & ")
-				out(' \\\\ \\hline\n')
-			out('\\end{tabular}\n')
-			out('\\end{center}\n')
-
-			out('\\caption{%s}\n' % tex_convert(caption))
-			out('\\end{table}\n')
-
-		out('\n')
-
-	elif typo == 'img' or typo == 'diag':
-		id = node.get_val('id')
-		if id in pics:
-
-			caption = node.get_var('caption')
-			if not caption: caption = caption = node.get_val('summary')
-
-			restrict = node.get_var("picdim")
-			if not restrict:
-				w = int(node.get_val('pic_w'))
-				restrict = ""
-				if (w > 5*72): restrict = "[width=5in]"
-			if not restrict:
-				restrict = "[width=\\textwidth,height=\\textheight,keepaspectratio]"
-
-			out('\\begin{figure}[htbp]\n')
-			out('  \\begin{center}\n')
-			out('    \\includegraphics%s{%s}\n' % (restrict, pics[id]))
-			out('    \\caption{\\footnotesize{%s}}\n' % tex_convert(caption))
-			out('%% %s\n' % protect_tex(node.get_val('pic_location')))
-			out('%% %s\n' % node.get_val('pic_w'))
-
-#	rows = node.num_rows()
-#	cols = node.num_cols()
-#	if rows>0 and cols>0:
-#		out('\n')
-#		out('<table class="sem_table" cellspacing="0px" cellpadding="0px">\n')
-#		out('<tbody>\n')
-#		for i in range(rows):
-#			out('\t<tr>\n')
-#			for j in range(cols):
-#				if i>0 and j>0:
-#					out('\t\t<td>%s</td>\n' % x(node.get_cell(i, j)))
-#				else:
-#					out('\t\t<th>%s</th>\n' % x(node.get_cell(i, j)))
-#			out('\t</tr>\n')
-#
-#		out('</tbody>\n')
-#		out('</table>\n')
-#	out('\n')
 
 # the main document
 print_nodes(Root(), 0);

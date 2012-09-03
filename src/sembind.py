@@ -2,6 +2,8 @@
 # encoding: utf-8
 # Thomas Nagy, 2007-2012
 
+from sgmllib import SGMLParser
+import htmlentitydefs
 import sys, sembind, re
 
 protectXML = sembind.protectXML
@@ -35,6 +37,56 @@ def read_properties(code):
 		if len(lst) < 2: continue
 		tmp[lst[0]] = "=".join(lst[1:])
 	return tmp
+
+class TrucProcessor(SGMLParser):
+	def reset(self):
+		self.pieces = []
+		self.state = ""
+		self.buf = ""
+		self.inli = 0
+		SGMLParser.reset(self)
+
+	def unknown_starttag(self, tag, attrs):
+		if tag == 'ul':
+			if self.inli and self.buf:
+				self.pieces.append('\\item ')
+				self.pieces.append(tex_convert(self.buf))
+				self.pieces.append('\n')
+			self.pieces.append('\\begin{itemize}\n')
+
+		if tag == 'li':
+			self.inli += 1
+
+		self.buf = ""
+
+	def unknown_endtag(self, tag):
+		if tag == 'p':
+			self.pieces.append(tex_convert(self.buf))
+			self.pieces.append('\n')
+		elif tag == 'li':
+			if self.buf:
+				self.pieces.append('\\item ')
+				self.pieces.append(tex_convert(self.buf))
+				self.pieces.append('\n')
+			self.inli -= 1
+		elif tag == 'ul':
+			self.pieces.append('\\end{itemize}\n')
+
+	def handle_charref(self, ref):
+		self.pieces.append("&#%(ref)s;" % locals())
+
+	def handle_data(self, text):
+		self.buf = text
+
+	def output(self):
+		return "".join(self.pieces)
+
+def parse_string(s):
+	parser = TrucProcessor()
+	parser.feed(s)
+	parser.close()
+	return parser.output()
+
 
 def template_dir():
 	return sembind.get_var('template_dir')

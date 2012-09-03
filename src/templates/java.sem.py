@@ -4,7 +4,7 @@
 
 # Thomas Nagy, 2007-2012
 
-import os, shutil, time
+import os, shutil, time, sys
 
 # TODO for the moment it does not work
 

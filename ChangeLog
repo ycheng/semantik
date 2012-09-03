@@ -1,3 +1,8 @@
+Semantik 0.8.1
+--------------
+* Made the gui mode-less
+* Enabled diagram, image and table export in the beamer template
+
 Semantik 0.8.0
 --------------
 
