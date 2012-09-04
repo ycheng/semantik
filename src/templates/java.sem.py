@@ -52,7 +52,7 @@ def print_rec(node):
 
 	if node.get_val('type') == 'text':
 		txt = node.get_val('text')
-		#txt = parse_string(txt)
+		txt = clear_html(txt)
 		txt = repr(txt)[1:-1].replace('"', '\\"')
 
 		s = '\nif (x > %f && y > %f && x < %f && y < %f) { return "%s"; }\n' % (x, y, x+w, y+w, txt)

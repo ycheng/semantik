@@ -87,6 +87,46 @@ def parse_string(s):
 	parser.close()
 	return parser.output()
 
+class RichProcessor(SGMLParser):
+	def reset(self):
+		self.pieces = []
+		self.state = ""
+		self.buf = ""
+		self.inli = 0
+		SGMLParser.reset(self)
+
+	def unknown_starttag(self, tag, attrs):
+		if tag == 'ul':
+			self.inli += 1
+		self.buf = ""
+
+	def unknown_endtag(self, tag):
+		if tag == 'p':
+			self.pieces.append(self.buf)
+			self.pieces.append('\n')
+		elif tag == 'li':
+			if self.buf:
+				self.pieces.append(' ' * self.inli)
+				self.pieces.append(self.buf)
+				self.pieces.append('\n')
+		elif tag == 'ul':
+			self.inli -= 1
+
+	def handle_charref(self, ref):
+		self.pieces.append("&#%(ref)s;" % locals())
+
+	def handle_data(self, text):
+		self.buf = text
+
+	def output(self):
+		return "".join(self.pieces)
+
+def clear_html(s):
+	parser = RichProcessor()
+	parser.feed(s)
+	parser.close()
+	return parser.output()
+
 
 def template_dir():
 	return sembind.get_var('template_dir')
