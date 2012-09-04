@@ -212,8 +212,14 @@ void canvas_item::keyPressEvent(QKeyEvent* e) {
 
 void canvas_item::adjustSize() {
 	QGraphicsTextItem::adjustSize();
-	m_oChain->setPos(boundingRect().width() + 2, 0);
-	m_oSortToggle->setPos(boundingRect().width() + 2, m_oChain->boundingRect().height() + 2);
+	QRectF r = boundingRect();
+	m_oChain->setPos(r.width() + 2, 0);
+	m_oSortToggle->setPos(r.width() + 2, m_oChain->boundingRect().height() + 2);
+
+	// FIXME we do not really track the size of the item
+	data_item *l_oItem = m_oGraph->m_oMediator->m_oItems.value(Id());
+	l_oItem->m_iWW = r.width();
+	l_oItem->m_iHH = r.height();
 }
 
 void canvas_item::keyReleaseEvent(QKeyEvent* e) {
