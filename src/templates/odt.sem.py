@@ -35,7 +35,7 @@ add_globals(settings)
 def p(s):
 	return sembind.protectHTML(s)
 
-def x(s):
+def xml(s):
 	return sembind.protectXML(s)
 
 # substitute @var@, look if there is not a global variable named like that in the globals already
@@ -45,7 +45,7 @@ for a in settings.keys():
 	if len(val)>3:
 		if val[0]=='@' and val[-1]=='@' and not ' ' in val:
 			nvar = val[1:-1]
-			if nvar in settings: settings[a] = x(settings[nvar])
+			if nvar in settings: settings[a] = xml(settings[nvar])
 			else: settings[a] = globals.get(nvar, '')
 
 try:
@@ -84,7 +84,7 @@ def print_nodes(node, niv, lbl_lst):
 
 	typo = node.get_val('type')
 
-	txt = x(node.get_val('summary'))
+	txt = xml(node.get_val('summary'))
 	#out('<text:h text:style-name="Heading_x_%d" text:outline-level="%d">%s</text:h>\n' % (nv, nv, txt))
 
 	if niv == 0:
@@ -109,7 +109,7 @@ def print_nodes(node, niv, lbl_lst):
 
 	if typo == 'text':
 		y = node.get_val('text')
-		if y: out(parse_string(y))
+		if y: out(clear_html(y))
 
 	elif typo == 'table':
 		rows = node.num_rows()
@@ -121,18 +121,18 @@ def print_nodes(node, niv, lbl_lst):
 
 			out('\n')
 			out('<table:table table:name="Tableau1" table:style-name="Tableau1">\n')
-			#out('<caption>%s</caption>\n' % x(caption))
+			#out('<caption>%s</caption>\n' % xml(caption))
 			out('<table:table-column table:style-name="Tableau1.A" table:number-columns-repeated="%d"/>\n' % cols)
 			for i in range(rows):
 				out('\t<table:table-row>\n')
 				for j in range(cols):
 					if i>0 and j>0:
 						out('\t\t<table:table-cell table:style-name="Tableau1.B2" office:value-type="string">\n')
-						out('\t\t\t<text:p text:style-name="P1">%s</text:p>\n' % x(node.get_cell(i, j)))
+						out('\t\t\t<text:p text:style-name="P1">%s</text:p>\n' % xml(node.get_cell(i, j)))
 						out('\t\t</table:table-cell>\n')
 					else:
 						out('\t\t<table:table-cell table:style-name="Tableau1.B1" office:value-type="float" office:value="0">\n')
-						out('\t\t\t<text:p text:style-name="P1">%s</text:p>\n' % x(node.get_cell(i, j)))
+						out('\t\t\t<text:p text:style-name="P1">%s</text:p>\n' % xml(node.get_cell(i, j)))
 						out('\t\t</table:table-cell>\n')
 				out('\t</table:table-row>\n')
 			out('</table:table>\n')
