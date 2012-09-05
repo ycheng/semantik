@@ -3,17 +3,17 @@
 
 # Thomas Nagy, 2007-2012
 
-import os, shutil, time
+import os, shutil, time, getpass
 
 outdir = sembind.get_var('outdir')+'/'+sembind.get_var('pname')
 
 settings = {
 'doc_date':'',
 'doc_content':'',
-'doc_title':'How i did it',
-'doc_author':'Krusty',
-'doc_place':'Los angeles',
-'doc_company':'World company'
+'doc_title':'Report',
+'doc_author':getpass.getuser(),
+'doc_place':'Stockholm',
+'doc_company':'Organization'
 }
 add_globals(settings)
 
