@@ -1,0 +1,53 @@
+/*
+ * html template
+ * this file is part of the Semantik templates
+ * http://code.google.com/p/semantik/
+ * created by Thomas Nagy in 2012 for Semantik
+ *
+ * Permission is granted to redistribute copies and
+ * derivated works of this file (semantik.css) without
+ * any restrictions.
+ */
+
+table.sem_table {
+	font-family: "Lucida Grande", "Lucida Sans Unicode", sans-serif;
+	border-collapse: collapse;
+	color: #212424;
+	margin: 3px;
+}
+table.sem_table td, table.sem_table th
+{
+	border: 1px solid black; /*#c5e894;*/
+	padding: 3px;
+	padding-left: 5px;
+	padding-right: 5px;
+	cursor: default;
+}
+
+table.sem_table th
+{
+	font-weight: bold;
+	background-color: #c5e894;
+}
+
+table.sem_table thead
+{
+	background: #524123;
+}
+
+table.sem_table tfoot
+{
+	color: #ffffff;
+	background: #524123;
+}
+
+table.sem_table tbody tr td
+{
+	background: #DDF0BD;
+}
+
+table.sem_table tbody tr td:hover, table.sem_table tbody tr td:hover
+{
+	background: #c5e894;
+}
+
