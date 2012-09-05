@@ -130,6 +130,14 @@ QString bind_node::get_val(const QString & i_s)
 	{
 		return QString::number(m_oItem->m_iHH);
 	}
+	else if (i_s == notr("widthHint"))
+	{
+		return QString::number(m_oItem->m_iObjectWidthHint);
+	}
+	else if (i_s == notr("heightHint"))
+	{
+		return QString::number(m_oItem->m_iObjectHeightHint);
+	}
 	return "";
 }
 

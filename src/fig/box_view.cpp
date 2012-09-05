@@ -433,6 +433,10 @@ void box_view::notify_export_item(int id)
 		}
 	}
 
+	data_item *item = m_oMediator->m_oItems.value(m_iId);
+	item->m_iObjectWidthHint = l_oR.width();
+	item->m_iObjectHeightHint = l_oR.height();
+
 	// fill with white
 	QImage l_oImage((int) l_oR.width(), (int) l_oR.height(), QImage::Format_RGB32);
 	l_oImage.fill(qRgb(255,255,255));

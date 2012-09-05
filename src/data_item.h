@@ -133,6 +133,10 @@ class data_item
 
 		QHash<int, data_box*> m_oBoxes;
 		QList<data_link*> m_oLinks;
+
+		// transient
+		int m_iObjectWidthHint;
+		int m_iObjectHeightHint;
 };
 
 #endif

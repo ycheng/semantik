@@ -39,6 +39,9 @@ data_item::data_item(sem_mediator *i_oControl, int i_iId)
 	m_iNumCols = 3;
 	m_iPicId = NO_ITEM;
 
+	m_iObjectWidthHint = 0;
+	m_iObjectHeightHint = 0;
+
 	m_iYY = m_iXX = -200000.0;
 }
 
