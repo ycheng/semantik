@@ -32,7 +32,7 @@ os.chdir(sembind.get_var('temp_dir'))
 pics = {} # map the id to the picture
 lst = os.listdir('.')
 for x in lst:
-	if x.startswith('diag-'):
+	if x.startswith('diag-') and not x.endswith('pdf'):
 		pics[ x.replace('diag-', '').split('.')[0] ] = x
 		shutil.copy2(x, outdir)
 os.chdir(cwd)
@@ -75,6 +75,68 @@ def print_slide(node, niv):
 
 	out('</div>\n')
 
+def print_figure_slides(node, niv):
+	typo = node.get_val('type')
+	if typo in ['table', 'diag', 'img']:
+
+		out('\n\n<div class="slide">\n')
+		out('<h1>%s</h1>\n' % node.get_val('summary'))
+
+		if typo == 'table':
+			rows = node.num_rows()
+			cols = node.num_cols()
+			if rows>0 and cols>0:
+				out('\n')
+				out('<table class="sem_table" cellspacing="0px" cellpadding="0px" align="center" style="width: 100%; border: 1px solid black;">\n')
+				out('<tbody>\n')
+				for i in range(rows):
+					out('\t<tr>\n')
+					for j in range(cols):
+						if i>0 and j>0:
+							out('\t\t<td>%s</td>\n' % x(node.get_cell(i, j)))
+						else:
+							out('\t\t<th>%s</th>\n' % x(node.get_cell(i, j)))
+					out('\t</tr>\n')
+		
+				out('</tbody>\n')
+				out('</table>\n')
+			out('\n')
+
+		elif typo == 'img' or typo == 'diag':
+			id = node.get_val('id')
+			if id in pics:
+
+				caption = node.get_var('caption')
+				if not caption: caption = caption = node.get_val('summary')
+				out("<img align='center' src='%s'>\n" % pics[id])
+
+				"""
+				restrict = node.get_var("picdim")
+				if not restrict:
+					w = int(node.get_val('pic_w'))
+					restrict = ""
+					if (w > 5*72): restrict = "[width=5in]"
+				if not restrict:
+					restrict = "[width=\\textwidth,height=\\textheight,keepaspectratio]"
+
+				out('\\begin{figure}[htbp]\n')
+				out('  \\begin{center}\n')
+				out('    \\includegraphics%s{%s}\n' % (restrict, pics[id]))
+				out('    \\caption{\\footnotesize{%s}}\n' % tex_convert(caption))
+				out('%% %s\n' % protect_tex(node.get_val('pic_location')))
+				out('%% %s\n' % node.get_val('pic_w'))
+				out('%% %s\n' % node.get_val('pic_h'))
+				out('    \\end{center}\n')
+				out('\\end{figure}\n')
+				"""
+
+		out("</div>\n")
+
+	num = node.child_count()
+	for i in range(num):
+		print_figure_slides(node.child_num(i), niv+1)
+
+
 def print_nodes(node, niv):
 
 	has_child_skip = 0
@@ -111,27 +173,7 @@ def print_nodes(node, niv):
 			print_nodes(node.child_num(i), niv+1)
 	else:
 		print_slide(node, niv)
-
-	'''
-	rows = node.num_rows()
-	cols = node.num_cols()
-	if rows>0 and cols>0:
-		out('\n')
-		out('<table class="sem_table" cellspacing="0px" cellpadding="0px">\n')
-		out('<tbody>\n')
-		for i in range(rows):
-			out('\t<tr>\n')
-			for j in range(cols):
-				if i>0 and j>0:
-					out('\t\t<td>%s</td>\n' % x(node.get_cell(i, j)))
-				else:
-					out('\t\t<th>%s</th>\n' % x(node.get_cell(i, j)))
-			out('\t</tr>\n')
-
-		out('</tbody>\n')
-		out('</table>\n')
-	out('\n')
-	'''
+		print_figure_slides(node, niv)
 
 # the main document
 print_nodes(Root(), 0);
