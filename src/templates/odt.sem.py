@@ -166,9 +166,16 @@ def print_nodes(node, niv, lbl_lst):
 			#out('</draw:frame>\n')
 			#out('</text:p>\n')
 
+			w = float(node.get_val('widthHint')) / 36; # yuck
+			h = float(node.get_val('heightHint')) / 36;
+
+			if w > 15:
+				h = (15 * h) / w
+				w = 15
+
 			out('<text:p text:style-name="Standard">\n')
 			out('<draw:frame draw:style-name="fr1" draw:name="Image1" text:anchor-type="paragraph" ')
-			#out(' svg:width="5cm" svg:height="5cm" draw:z-index="0">\n')
+			out(' svg:width="%fcm" svg:height="%fcm" ' % (w, h))
 			out(' draw:z-index="0">\n')
 			out('<draw:image xlink:href="Pictures/%s" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/>\n' % p)
 			out('</draw:frame>\n')
