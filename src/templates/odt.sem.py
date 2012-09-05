@@ -66,7 +66,7 @@ os.chdir(sembind.get_var('temp_dir'))
 pics = {} # map the id to the picture
 lst = os.listdir('.')
 for x in lst:
-	if x.startswith('diag-'):
+	if x.startswith('diag-') and not x.endswith('.pdf'):
 		pics[ x.replace('diag-', '').split('.')[0] ] = x
 		shutil.copy2(x, outdir + '/Pictures')
 os.chdir(cwd)
