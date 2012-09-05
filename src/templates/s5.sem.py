@@ -87,7 +87,8 @@ def print_figure_slides(node, niv):
 			cols = node.num_cols()
 			if rows>0 and cols>0:
 				out('\n')
-				out('<table class="sem_table" cellspacing="0px" cellpadding="0px" align="center" style="width: 100%; border: 1px solid black;">\n')
+				out('<div style="text-align: center; width: 100%;">\n')
+				out('<table class="sem_table" cellspacing="0px" cellpadding="0px" style="width: 100%; border: 1px solid black;">\n')
 				out('<tbody>\n')
 				for i in range(rows):
 					out('\t<tr>\n')
@@ -100,6 +101,7 @@ def print_figure_slides(node, niv):
 		
 				out('</tbody>\n')
 				out('</table>\n')
+				out('</div>\n')
 			out('\n')
 
 		elif typo == 'img' or typo == 'diag':
@@ -108,7 +110,9 @@ def print_figure_slides(node, niv):
 
 				caption = node.get_var('caption')
 				if not caption: caption = caption = node.get_val('summary')
-				out("<img align='center' src='%s'>\n" % pics[id])
+				out('<div style="text-align: center; width: 100%;">\n')
+				out("<img src='%s'>\n" % pics[id])
+				out('</div>\n')
 
 				"""
 				restrict = node.get_var("picdim")
