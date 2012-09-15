@@ -49,8 +49,8 @@ void box_usecase::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	l_oPen.setCosmetic(false);
 	l_oPen.setWidth(1);
 
-
 	painter->drawEllipse(l_oRect);
+	painter->save();
 
 	QAbstractTextDocumentLayout::PaintContext ctx;
 	ctx.palette = QApplication::palette("QTextControl");
@@ -60,13 +60,13 @@ void box_usecase::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	painter->translate(OFF, OFF + (m_iHH - 2 * OFF - yoff) / 2.);
 	lay->draw(painter, ctx);
 
+	painter->restore();
 	if (isSelected())
 	{
 		painter->setBrush(QColor("#FFFF00"));
 		QRectF l_oR2(m_iWW - 8, m_iHH - 8, 6, 6);
 		painter->drawRect(l_oR2);
 	}
-
 	painter->restore();
 }
 
