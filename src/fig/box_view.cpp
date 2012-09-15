@@ -705,8 +705,8 @@ void box_view::slot_add_element()
 	else if (sender == m_oAddActor)
 	{
 		add->box->m_iType = data_box::ACTOR;
-		add->box->m_iWW = 60;
-		add->box->m_iHH = 80;
+		add->box->m_iWW = 30;
+		add->box->m_iHH = 70;
 	}
 	else if (sender == m_oAddComponent)
 	{

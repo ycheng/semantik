@@ -37,45 +37,33 @@ void box_actor::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
 	QRectF l_oRect = boundingRect().adjusted(PAD, PAD, -PAD, -PAD);
 
+	QPen l_oPen = QPen(Qt::SolidLine);
+	l_oPen.setColor(Qt::black);
+	l_oPen.setCosmetic(false);
+	l_oPen.setWidth(1);
+	painter->setPen(l_oPen);
+
+
+	qreal xtop = l_oRect.x();
+	qreal ytop = l_oRect.y();
+	qreal xcoord = xtop + l_oRect.width() / 2.0;
+	qreal ycoord = l_oRect.height() / 5.;
+
+	painter->drawLine(xcoord, ytop + 2 * ycoord, xcoord, ytop + 4 * ycoord);
+	painter->drawLine(xtop, ytop + 3 * ycoord, xtop + l_oRect.width(), ytop + 3 * ycoord);
+
+	painter->drawLine(xtop, ytop + l_oRect.height(), xcoord, ytop + 4 * ycoord);
+	painter->drawLine(xtop + l_oRect.width(), ytop + l_oRect.height(), xcoord, ytop + 4 * ycoord);
+
+	painter->drawEllipse(l_oRect.x(), l_oRect.y(), l_oRect.width(), 2 * ycoord);
+
 	if (isSelected())
 	{
-		QPen l_oPen = QPen(Qt::DotLine);
-		l_oPen.setColor(Qt::black);
-		l_oPen.setCosmetic(false);
-		l_oPen.setWidth(1);
-		painter->setPen(l_oPen);
-		painter->drawRoundRect(l_oRect, 20, 20);
-
-		l_oPen.setStyle(Qt::SolidLine);
-		painter->setPen(l_oPen);
 		painter->setBrush(QColor("#FFFF00"));
 		QRectF l_oR2(m_iWW - 8, m_iHH - 8, 6, 6);
 		painter->drawRect(l_oR2);
 	}
 
-	painter->translate(OFF, OFF);
-	QAbstractTextDocumentLayout::PaintContext ctx;
-	ctx.palette = QApplication::palette("QTextControl");
-	doc.documentLayout()->draw(painter, ctx);
-
 	painter->restore();
 }
-
-QVariant box_actor::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue)
-{
-	if (scene())
-	{
-		if (i_oChange == ItemPositionHasChanged)
-		{
-			update_links();
-		}
-		else if (i_oChange == ItemSelectedHasChanged)
-		{
-			m_oChain->setVisible(isSelected());
-		}
-	}
-
-	return QGraphicsItem::itemChange(i_oChange, i_oValue);
-}
-
 
