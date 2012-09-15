@@ -43,7 +43,7 @@ int main(int i_iArgc, char **i_iArgv)
 
 	KAboutData l_o("semantik", 0, ki18n("Semantik"), version, ki18n(description),
 			KAboutData::License_GPL_V3, ki18n("(C) 2007-2012 Thomas Nagy"), KLocalizedString(),
-			"nomail@nomail.com");
+			"tnagy@outlook.com");
 	l_o.setBugAddress("http://code.google.com/p/semantik/issues/list");
 	l_o.addAuthor(ki18n("Thomas Nagy"), KLocalizedString());
 
