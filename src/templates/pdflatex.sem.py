@@ -64,7 +64,7 @@ lst = os.listdir('.')
 for x in lst:
 	if x.startswith('diag-'):
 		key = x.split('.')[0].replace('diag-', '')
-		if x.endswith('.pdf') and not key in pics:
+		if x.endswith('.pdf') or not key in pics:
 			pics[key] = x
 		shutil.copy2(x, outdir)
 os.chdir(cwd)
