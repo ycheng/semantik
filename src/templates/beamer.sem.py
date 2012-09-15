@@ -57,7 +57,8 @@ pics = {} # map the id to the picture
 lst = os.listdir('.')
 for x in lst:
 	if x.startswith('diag-'):
-		pics[ x.replace('diag-', '').split('.')[0] ] = x
+		name = x.split('.')[0]
+		pics[x.replace('diag-', '')] = name
 		shutil.copy2(x, outdir)
 os.chdir(cwd)
 
