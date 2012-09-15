@@ -66,7 +66,7 @@ class data_box : public diagram_item
 	int m_iHH;
 	bool m_bIsEnd;
 	bool m_bIsVertical;
-	enum IType { ACTIVITY=1, ACTIVITY_START=2, ACTIVITY_PARALLEL=3, LABEL=4, COMPONENT=5, NODE=6 };
+	enum IType { ACTIVITY=1, ACTIVITY_START=2, ACTIVITY_PARALLEL=3, LABEL=4, COMPONENT=5, NODE=6, ACTOR=7 };
 	data_box::IType m_iType;
 };
 

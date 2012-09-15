@@ -36,6 +36,7 @@
 #include "box_link.h"
 #include "box_component.h"
 #include "box_node.h"
+#include "box_actor.h"
 #include "data_item.h"
 #include "box_view.h"
 #include "sembind.h"
@@ -198,6 +199,9 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	connect(m_oAddParallelHorizontal, SIGNAL(triggered()), this, SLOT(slot_add_element()));
 	m_oAddParallelVertical = new QAction(QObject::trUtf8("Vertical fork/join"), this);
 	connect(m_oAddParallelVertical, SIGNAL(triggered()), this, SLOT(slot_add_element()));
+	m_oAddActor = new QAction(QObject::trUtf8("Actor"), this);
+	connect(m_oAddActor, SIGNAL(triggered()), this, SLOT(slot_add_element()));
+
 
 	m_oMenu = new QMenu(this);
 	m_oMenu->addAction(m_oAddLabel);
@@ -210,6 +214,7 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	m_oAddBoxMenu->addAction(m_oAddDotEnd);
 	m_oAddBoxMenu->addAction(m_oAddParallelHorizontal);
 	m_oAddBoxMenu->addAction(m_oAddParallelVertical);
+	m_oAddBoxMenu->addAction(m_oAddActor);
 
 	//m_oMenu->addAction(m_oEditAction);
 	m_oMenu->addAction(m_oDeleteAction);
@@ -349,6 +354,10 @@ void box_view::sync_view()
 		else if (box->m_iType == data_box::LABEL)
 		{
 			l_o = new box_label(this, box->m_iId);
+		}
+		else if (box->m_iType == data_box::ACTOR)
+		{
+			l_o = new box_actor(this, box->m_iId);
 		}
 		else if (box->m_iType == data_box::COMPONENT)
 		{
@@ -693,6 +702,12 @@ void box_view::slot_add_element()
 		add->box->m_iHH = 30;
 		add->box->m_sText = QString("...");
 	}
+	else if (sender == m_oAddActor)
+	{
+		add->box->m_iType = data_box::ACTOR;
+		add->box->m_iWW = 60;
+		add->box->m_iHH = 80;
+	}
 	else if (sender == m_oAddComponent)
 	{
 		add->box->m_iType = data_box::COMPONENT;
@@ -927,6 +942,10 @@ void box_view::notify_add_box(int id, int box)
 	else if (db->m_iType == data_box::LABEL)
 	{
 		l_o = new box_label(this, box);
+	}
+	else if (db->m_iType == data_box::ACTOR)
+	{
+		l_o = new box_actor(this, box);
 	}
 	else if (db->m_iType == data_box::COMPONENT)
 	{
