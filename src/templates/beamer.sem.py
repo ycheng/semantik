@@ -58,7 +58,7 @@ lst = os.listdir('.')
 for x in lst:
 	if x.startswith('diag-'):
 		name = x.split('.')[0]
-		pics[x.replace('diag-', '')] = name
+		pics[name.replace('diag-', '')] = name
 		shutil.copy2(x, outdir)
 os.chdir(cwd)
 
