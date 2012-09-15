@@ -57,8 +57,9 @@ pics = {} # map the id to the picture
 lst = os.listdir('.')
 for x in lst:
 	if x.startswith('diag-'):
-		name = x.split('.')[0]
-		pics[name.replace('diag-', '')] = name
+		key = x.split('.')[0].replace('diag-', '')
+		if x.endswith('.pdf') and not key in pics:
+			pics[key] = x
 		shutil.copy2(x, outdir)
 os.chdir(cwd)
 
