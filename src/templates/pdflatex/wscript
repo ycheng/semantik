@@ -24,7 +24,7 @@ def options(opts):
 	opts.add_option('--view', action='store_true', default=False, help='View the document')
 
 def configure(conf):
-        conf.load('tex')
+	conf.load('tex')
 	if not conf.env['PDFLATEX']:
 		conf.fatal('install pdflatex!')
 
