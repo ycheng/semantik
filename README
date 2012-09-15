@@ -11,8 +11,10 @@ First, make sure that you have a Linux(tm) system (a *BSD system should do it to
 * the Qt development packages must be installed (Qt >= 4.3)
 
 To compile, run:
-./waf configure
-./waf
+./waf configure build
+
+A few systems may require different options such as:
+PYTHON=python2 PYTHON_VERSION=2.7 waf configure build
 
 Then run the following installation command as root (important - Semantik will only work if installed):
 ./waf install
