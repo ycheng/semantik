@@ -38,6 +38,7 @@
 #include "box_node.h"
 #include "box_actor.h"
 #include "data_item.h"
+#include "box_usecase.h"
 #include "box_view.h"
 #include "sembind.h"
  #include "mem_box.h"
@@ -201,7 +202,8 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	connect(m_oAddParallelVertical, SIGNAL(triggered()), this, SLOT(slot_add_element()));
 	m_oAddActor = new QAction(QObject::trUtf8("Actor"), this);
 	connect(m_oAddActor, SIGNAL(triggered()), this, SLOT(slot_add_element()));
-
+	m_oAddUsecase = new QAction(QObject::trUtf8("Usecase"), this);
+	connect(m_oAddUsecase, SIGNAL(triggered()), this, SLOT(slot_add_element()));
 
 	m_oMenu = new QMenu(this);
 	m_oMenu->addAction(m_oAddLabel);
@@ -215,6 +217,7 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	m_oAddBoxMenu->addAction(m_oAddParallelHorizontal);
 	m_oAddBoxMenu->addAction(m_oAddParallelVertical);
 	m_oAddBoxMenu->addAction(m_oAddActor);
+	m_oAddBoxMenu->addAction(m_oAddUsecase);
 
 	//m_oMenu->addAction(m_oEditAction);
 	m_oMenu->addAction(m_oDeleteAction);
@@ -358,6 +361,10 @@ void box_view::sync_view()
 		else if (box->m_iType == data_box::ACTOR)
 		{
 			l_o = new box_actor(this, box->m_iId);
+		}
+		else if (box->m_iType == data_box::USECASE)
+		{
+			l_o = new box_usecase(this, box->m_iId);
 		}
 		else if (box->m_iType == data_box::COMPONENT)
 		{
@@ -708,6 +715,12 @@ void box_view::slot_add_element()
 		add->box->m_iWW = 30;
 		add->box->m_iHH = 70;
 	}
+	else if (sender == m_oAddUsecase)
+	{
+		add->box->m_iType = data_box::USECASE;
+		add->box->m_iWW = 100;
+		add->box->m_iHH = 50;
+	}
 	else if (sender == m_oAddComponent)
 	{
 		add->box->m_iType = data_box::COMPONENT;
@@ -946,6 +959,10 @@ void box_view::notify_add_box(int id, int box)
 	else if (db->m_iType == data_box::ACTOR)
 	{
 		l_o = new box_actor(this, box);
+	}
+	else if (db->m_iType == data_box::USECASE)
+	{
+		l_o = new box_usecase(this, box);
 	}
 	else if (db->m_iType == data_box::COMPONENT)
 	{
