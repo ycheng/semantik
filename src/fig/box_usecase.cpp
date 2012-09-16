@@ -37,17 +37,18 @@ void box_usecase::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 
 	QRectF l_oRect = boundingRect().adjusted(PAD, PAD, -PAD, -PAD);
 
+	QPen l_oPen = QPen(Qt::SolidLine);
+	l_oPen.setColor(Qt::black);
+	l_oPen.setCosmetic(false);
+	l_oPen.setWidth(1);
+	painter->setPen(l_oPen);
+
 	QColor bc(m_oBox->color);
 	QLinearGradient linearGradient(0, 0, l_oRect.width(), 0);
         linearGradient.setColorAt(0.0, bc);
         linearGradient.setColorAt(1.0, bc.darker(GRADVAL));
         painter->setBrush(linearGradient);
 
-
-	QPen l_oPen = QPen(Qt::SolidLine);
-	l_oPen.setColor(Qt::black);
-	l_oPen.setCosmetic(false);
-	l_oPen.setWidth(1);
 
 	painter->drawEllipse(l_oRect);
 	painter->save();
