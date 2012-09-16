@@ -187,6 +187,13 @@ shutil.copy2(template_dir()+'/pdflatex/wscript', outdir+'/wscript')
 shutil.copy2(template_dir()+'/waf', outdir+'/waf')
 os.chmod(outdir+'/waf', 0755)
 
+f = open(outdir + '/run.sh', 'w')
+try:
+	f.write('#! /bin/sh\npython2 waf configure build --view\n')
+finally:
+	f.close()
+os.chmod(outdir + '/run.sh', 0755)
+
 # load the preview on main.tex
 visualize('pdflatex', outdir+'/main.tex')
 
