@@ -30,6 +30,7 @@ settings = {
 
 'doc_author':'',
 'doc_author_off':'None',
+'uncover_stepwise': '',
 
 'each_subsection_off':'None',
 'doc_tableofcontents_off':'None',
@@ -71,17 +72,23 @@ def print_slide(node, niv):
 	txt = tex_convert(node.get_val('summary'))
 
 	if niv == 0:
-		out('%-------------------------------------------------------------------\n')
-		out('\\begin{frame}\n')
-		out('\\frametitle{%s}\n\n' % txt)
+		
 		num = node.child_count()
-		if num:
-			out("\\begin{itemize}\n")
-			for i in range(num):
-				print_slide(node.child_num(i), niv+1)
-			out("\\end{itemize}\n")
-		out('\\end{frame}\n')
-		out('%-------------------------------------------------------------------\n')
+		typo = node.get_val('type')
+		if num or typo not in ['table', 'diag', 'img']:
+			# top-level diagram items do not need an extra slide
+
+			out('%-------------------------------------------------------------------\n')
+			out('\\begin{frame}\n')
+			out('\\frametitle{%s}\n\n' % txt)
+			num = node.child_count()
+			if num:
+				out("\\begin{itemize}\n")
+				for i in range(num):
+					print_slide(node.child_num(i), niv+1)
+				out("\\end{itemize}\n")
+			out('\\end{frame}\n')
+			out('%-------------------------------------------------------------------\n')
 
 		# separate slides for the figures
 		print_figure_slides(node)
