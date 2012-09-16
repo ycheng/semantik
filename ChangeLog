@@ -1,3 +1,8 @@
+Semantik 0.8.2
+--------------
+* More fixes for the latex templates
+* New actor and usecase elements
+
 Semantik 0.8.1
 --------------
 * Made the gui mode-less
