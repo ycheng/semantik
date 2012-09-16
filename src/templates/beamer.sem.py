@@ -168,7 +168,7 @@ def print_figure_slides(node):
 					restrict = ""
 					if (w > 5*72): restrict = "[width=5in]"
 				if not restrict:
-					restrict = "[width=\\textwidth,height=\\textheight,keepaspectratio]"
+					restrict = "[width=0.8\\textwidth,height=0.8\\textheight,keepaspectratio]"
 
 				out('\\begin{figure}[htbp]\n')
 				out('  \\begin{center}\n')
@@ -211,7 +211,10 @@ def print_nodes(node, niv):
 			sys.stderr.write("transforming this map into slides makes kitten cry")
 
 # the main document
-print_nodes(Root(), 0);
+root = Root()
+if not settings['doc_title']:
+	settings['doc_title'] = root.get_val('summary')
+print_nodes(root, 0);
 settings['doc_content'] = "".join(buf)
 
 # now write main.tex
