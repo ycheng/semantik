@@ -146,6 +146,7 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 {
 	m_oMediator = i_oControl;
 	m_iId = NO_ITEM;
+	m_bDisableGradient = false;
 
 	QGraphicsScene *l_oScene = new QGraphicsScene(this);
 	l_oScene->setSceneRect(-400, -400, 400, 400);
@@ -467,6 +468,7 @@ void box_view::notify_export_item(int id)
 	l_oImage.save(QString(m_oMediator->m_sTempDir + QString("/") + QString("diag-%1.png")).arg(QString::number(m_iId)));
 
 	QPrinter l_oPrinter;
+	//l_oPrinter.setResolution(QPrinter::HighResolution);
 	l_oPrinter.setOrientation(QPrinter::Portrait);
 	l_oPrinter.setOutputFormat(QPrinter::PdfFormat);
 	l_oPrinter.setPaperSize(l_oR.size(), QPrinter::DevicePixel);
@@ -476,8 +478,10 @@ void box_view::notify_export_item(int id)
 	QPainter l_oPdf;
 	if (l_oPdf.begin(&l_oPrinter))
 	{
+		m_bDisableGradient = true;
 		scene()->render(&l_oPdf, l_oR, l_oRect, rat);
         	l_oPdf.end();
+		m_bDisableGradient = false;
 	}
 
 	clear_diagram();

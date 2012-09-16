@@ -62,10 +62,18 @@ void box_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	painter->setPen(l_oPen);
 
 	QColor bc(m_oBox->color);
-	QLinearGradient linearGradient(0, 0, l_oRect.width(), 0);
-        linearGradient.setColorAt(0.0, bc);
-        linearGradient.setColorAt(1.0, bc.darker(GRADVAL));
-        painter->setBrush(linearGradient);
+	if (m_oView->m_bDisableGradient)
+	{
+		painter->setBrush(bc);
+	}
+	else
+	{
+		QLinearGradient linearGradient(0, 0, l_oRect.width(), 0);
+		linearGradient.setColorAt(0.0, bc);
+		linearGradient.setColorAt(1.0, bc.darker(GRADVAL));
+		painter->setBrush(linearGradient);
+	}
+
 
 	painter->drawRoundRect(l_oRect, 20, 20);
 	if (isSelected())

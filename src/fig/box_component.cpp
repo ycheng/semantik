@@ -35,11 +35,17 @@ void box_component::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 	QRectF l_oRect = boundingRect().adjusted(PAD, PAD, -PAD, -PAD);
 
 	QColor bc(m_oBox->color);
-	QLinearGradient linearGradient(0, 0, l_oRect.width(), 0);
-        linearGradient.setColorAt(0.0, bc);
-        linearGradient.setColorAt(1.0, bc.darker(GRADVAL));
-        painter->setBrush(linearGradient);
-
+	if (m_oView->m_bDisableGradient)
+	{
+		painter->setBrush(bc);
+	}
+	else
+	{
+		QLinearGradient linearGradient(0, 0, l_oRect.width(), 0);
+		linearGradient.setColorAt(0.0, bc);
+		linearGradient.setColorAt(1.0, bc.darker(GRADVAL));
+		painter->setBrush(linearGradient);
+	}
 
 	QPen l_oPen = QPen(Qt::SolidLine);
 	l_oPen.setColor(Qt::black);

@@ -100,6 +100,7 @@ class box_view : public QGraphicsView
 		int num_seq;
 
 		void message(const QString &, int);
+		bool m_bDisableGradient;
 
 	public slots:
 		void change_colors(QAction* i_oAct);
