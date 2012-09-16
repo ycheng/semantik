@@ -15,7 +15,7 @@ settings = {
 'doc_title':'',
 'doc_author':getpass.getuser(),
 'doc_place':'Los angeles',
-'doc_company':'World company',
+'doc_company':'World Company',
 
 'theme':'Warsaw',
 'babel':'english', # frenchb

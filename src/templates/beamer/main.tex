@@ -35,10 +35,9 @@
 % math extension - one probably wants to use symbols like '[' (written as '$[$')
 
 
-
+#ifdef @each_subsection_off@
 % Delete this, if you do not want the table of contents to pop up at
 % the beginning of each subsection:
-#ifdef @each_subsection_off@
 \AtBeginSubsection[]
 {
   \begin{frame}<beamer>
@@ -48,9 +47,9 @@
 }
 #endif
 
+#ifdef @uncover_stepwise@
 % If you wish to uncover everything in a step-wise fashion, uncomment
 % the following command:
-#ifdef @uncover_stepwise@
 \beamerdefaultoverlayspecification{<+->}
 #endif
 
@@ -65,6 +64,8 @@
 #ifndef @doc_author_off@
 \author{@doc_author@}
 #endif
+
+\institute{@doc_company@}
 
 \begin{document}
 
