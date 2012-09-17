@@ -20,14 +20,11 @@ QMap<QString, QString> bind_node::s_oVars = QMap<QString, QString>();
 
 bind_node::bind_node()
 {
+	m_oItem = NULL;
 }
 
 bind_node::~bind_node()
 {
-	foreach (bind_node *l_o, _children)
-	{
-		delete l_o;
-	}
 }
 
 int bind_node::child_count()
@@ -219,6 +216,7 @@ bind_node* bind_node::get_item_by_id(int id)
 	if (l_oNode) return l_oNode;
 	l_oNode = _cache[id] = new bind_node();
 	l_oNode->m_oItem = _model->m_oItems.value(id);
+	Q_ASSERT(l_oNode != NULL);
 	return l_oNode;
 }
 
@@ -237,17 +235,23 @@ bind_node* bind_node::create_tree(sem_mediator *model, int i_i)
 		bind_node *l_oNew = create_tree(model, l_oP.y());
 		l_oNode->_children.push_back(l_oNew);
         }
+	_cache[i_i] = l_oNode;
+	Q_ASSERT(l_oNode != NULL);
 	return l_oNode;
 }
 
 void bind_node::init(sem_mediator* med)
 {
-	foreach (bind_node * node, _cache.values()) {
+	// delete any node in the cache
+	foreach (int k, _cache.keys())
+	{
+		bind_node * node = bind_node::_cache.take(k);
 		delete node;
 	}
-	delete bind_node::_root;
+
+	Q_ASSERT(_cache.size() == 0);
+
 	bind_node::_model = med;
-	bind_node::_cache.clear();
 	bind_node::s_oVars.clear();
 }
 
@@ -255,3 +259,4 @@ void bind_node::set_result(const QString& k, const QString& v)
 {
 	s_oResults[k] = v;
 }
+

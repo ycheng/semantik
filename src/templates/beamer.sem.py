@@ -74,24 +74,18 @@ def print_slide(node, niv):
 	if niv == 0:
 		
 		num = node.child_count()
-		typo = node.get_val('type')
-		if num or typo not in ['table', 'diag', 'img']:
-			# top-level diagram items do not need an extra slide
 
-			out('%-------------------------------------------------------------------\n')
-			out('\\begin{frame}\n')
-			out('\\frametitle{%s}\n\n' % txt)
-			num = node.child_count()
-			if num:
-				out("\\begin{itemize}\n")
-				for i in range(num):
-					print_slide(node.child_num(i), niv+1)
-				out("\\end{itemize}\n")
-			out('\\end{frame}\n')
-			out('%-------------------------------------------------------------------\n')
-
-		# separate slides for the figures
-		print_figure_slides(node)
+		out('%-------------------------------------------------------------------\n')
+		out('\\begin{frame}\n')
+		out('\\frametitle{%s}\n\n' % txt)
+		num = node.child_count()
+		if num:
+			out("\\begin{itemize}\n")
+			for i in range(num):
+				print_slide(node.child_num(i), niv+1)
+			out("\\end{itemize}\n")
+		out('\\end{frame}\n')
+		out('%-------------------------------------------------------------------\n')
 
 	elif niv < 3:
 		if txt: out('\\item %s\n' % txt)
@@ -113,9 +107,11 @@ def print_slide(node, niv):
 		for i in range(num):
 			print_slide(node.child_num(i), niv+1)
 
-def print_figure_slides(node):
+diagrams_added = set([]) # prevent accidents
+def print_figure_slides(node, recurse=False):
 	typo = node.get_val('type')
-	if typo in ['table', 'diag', 'img']:
+	if typo in ['table', 'diag', 'img'] and node.get_val("id") not in diagrams_added:
+		diagrams_added.add(node.get_val("id"))
 		# TODO what to do with the text?
 		#if typo == 'text':
 		#	y = node.get_val('text')
@@ -168,7 +164,7 @@ def print_figure_slides(node):
 					restrict = ""
 					if (w > 5*72): restrict = "[width=5in]"
 				if not restrict:
-					restrict = "[width=0.8\\textwidth,height=0.8\\textheight,keepaspectratio]"
+					restrict = "[width=0.8\\textwidth,height=0.7\\textheight,keepaspectratio]"
 
 				out('\\begin{figure}[htbp]\n')
 				out('  \\begin{center}\n')
@@ -186,6 +182,7 @@ def print_figure_slides(node):
 	num = node.child_count()
 	for i in range(num):
 		print_figure_slides(node.child_num(i))
+	#print_figure_slides(root, recurse=False)
 
 def print_nodes(node, niv):
 
@@ -201,14 +198,19 @@ def print_nodes(node, niv):
 		elif niv == 1 and num >= 1:
 			out('\\subsection{%s}\n' % sm)
 
-		if int(subtree.get_val('tree_size')) < 10:
-			print_slide(subtree, 0);
-		elif niv == 0:
-			print_nodes(subtree, 1)
-		elif niv == 1:
-			print_nodes(subtree, 2)
-		else:
-			sys.stderr.write("transforming this map into slides makes kitten cry")
+		if subtree.child_count() > 0:
+			if int(subtree.get_val('tree_size')) < 16:
+				print_slide(subtree, 0);
+				print_figure_slides(subtree, True)
+			elif niv == 0:
+				print_nodes(subtree, 1)
+				print_figure_slides(subtree)
+			elif niv == 1:
+				print_nodes(subtree, 2)
+				print_figure_slides(subtree)
+			else:
+				print_figure_slides(subtree, True)
+				sys.stderr.write("transforming this map into slides makes kitten cry")
 
 # the main document
 root = Root()
@@ -231,7 +233,7 @@ os.chmod(outdir+'/waf', 0755)
 
 f = open(outdir + '/run.sh', 'w')
 try:
-	f.write('#! /bin/sh\npython2 waf configure build --view\n')
+	f.write('#! /bin/sh\npython waf configure build --view\n')
 finally:
 	f.close()
 os.chmod(outdir + '/run.sh', 0755)

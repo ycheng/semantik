@@ -12,6 +12,7 @@ PyObject *from_qstring(const QString &i_s)
 {
 	QByteArray l_b = i_s.toUtf8();
 	PyObject *l_o = PyString_FromStringAndSize(l_b.data(), l_b.size());
+	Py_XINCREF(l_o);
 	return l_o;
 }
 
