@@ -1,6 +1,7 @@
 Semantik 0.8.2
 --------------
-* More fixes for the latex templates
+* Fixed several crashes
+* Fixe various LaTeX templates
 * New actor and usecase elements
 
 Semantik 0.8.1
