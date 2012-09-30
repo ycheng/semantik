@@ -30,11 +30,10 @@ QString from_unicode(PyObject* i_o)
 	int l_iSize = PyString_Size(i_o);
 	char * l_iChars = PyString_AsString(i_o);
 
-	//qDebug()<<chars<<" "<<" and size "<<size;
-
 	QString l_s = QString::fromUtf8(l_iChars, l_iSize);
-	//qDebug()<<l_s<<" and size "<<l_s.size();
-	return l_s;
+	QChar * data = l_s.data();
+	QString ret = QString(data); // force a deep copy, python can safely collect i_o
+	return ret;
 }
 
 PyObject *Node_instance(PyObject *i_s, PyObject *i_oArgs)
