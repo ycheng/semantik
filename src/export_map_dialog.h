@@ -6,15 +6,20 @@
 #include <KDialog>
 
 class QSpinBox;
+class QCheckBox;
 class KUrlRequester;
 class export_map_dialog : public QDialog
 {
 	Q_OBJECT
 	public:
 		export_map_dialog(QWidget *i_oParent);
+
+		KUrlRequester *kurlrequester;
+		QCheckBox *m_oWidthC;
 		QSpinBox *m_oWidth;
+		QCheckBox *m_oHeightC;
 		QSpinBox *m_oHeight;
-		KUrlRequester *m_oRequester;
+		QCheckBox *m_oRemember;
 };
 
 #endif

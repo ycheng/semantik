@@ -17,6 +17,7 @@
 #include <QHeaderView>
 #include <QDirModel>
 #include <QSpinBox>
+#include <QCheckBox>
 #include <kurlrequester.h>
 
 #include <QtDebug>
@@ -26,54 +27,50 @@
 export_map_dialog::export_map_dialog(QWidget *i_oParent):
 	QDialog(i_oParent)
 {
-	QGridLayout *l_oGridLayout = new QGridLayout(this);
+        QGridLayout * gridLayout = new QGridLayout(this);
 
 	QLabel *label = new QLabel(this);
-	label->setText(trUtf8("Width"));
-	l_oGridLayout->addWidget(label, 0, 0);
+	label->setText(trUtf8("File to write"));
+	gridLayout->addWidget(label, 0, 0);
 
-	m_oWidth = new QSpinBox(this);
-	l_oGridLayout->addWidget(m_oWidth, 0, 1);
+        kurlrequester = new KUrlRequester(this);
+        gridLayout->addWidget(kurlrequester, 0, 1, 1, 1);
 
-	label = new QLabel(this);
-	label->setText(trUtf8("Height"));
-	l_oGridLayout->addWidget(label, 1, 0);
+        m_oWidthC = new QCheckBox(trUtf8("Width"), this);
+	m_oWidthC->setCheckState(Qt::Checked);
+        gridLayout->addWidget(m_oWidthC, 1, 0, 1, 1);
 
-	m_oHeight = new QSpinBox(this);
-	l_oGridLayout->addWidget(m_oHeight, 1, 1);
+        m_oWidth = new QSpinBox(this);
+	m_oWidth->setMinimum(16);
+	m_oWidth->setMaximum(20000);
+        gridLayout->addWidget(m_oWidth, 1, 1, 1, 1);
 
+        m_oHeightC = new QCheckBox(trUtf8("Height"), this);
+        gridLayout->addWidget(m_oHeightC, 2, 0, 1, 1);
 
-	label = new QLabel(this);
-	label->setText(trUtf8("Destination"));
-	l_oGridLayout->addWidget(label, 2, 0);
+        m_oHeight = new QSpinBox(this);
+	m_oWidth->setMinimum(16);
+	m_oHeight->setMaximum(20000);
+	m_oHeight->setEnabled(false);
+        gridLayout->addWidget(m_oHeight, 2, 1, 1, 1);
 
-	m_oRequester = new KUrlRequester(this);
-	l_oGridLayout->addWidget(m_oRequester, 2, 1);
+        m_oRemember = new QCheckBox(trUtf8("Remember these settings"), this);
+	m_oRemember->setCheckState(Qt::Checked);
+        gridLayout->addWidget(m_oRemember, 3, 0, 1, 2);
 
+        QSpacerItem *verticalSpacer = new QSpacerItem(0, 10, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-
-	QSpacerItem *spacerItem = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
-	l_oGridLayout->addItem(spacerItem, 4, 4, 1, 1);
-
-	QDialogButtonBox *l_oButtonBox = new QDialogButtonBox(this);
-	l_oButtonBox->setOrientation(Qt::Horizontal);
-
-
-	QPushButton *b = NULL;
-	b = new QPushButton(trUtf8("&Ok"));
-	b->setDefault(true);
-	connect(b, SIGNAL(pressed()), this, SLOT(slot_accept()));
-	l_oButtonBox->addButton(b, QDialogButtonBox::YesRole);
-	b = new QPushButton(trUtf8("&Cancel"));
-	connect(b, SIGNAL(clicked()), this, SLOT(reject()));
-	l_oButtonBox->addButton(b, QDialogButtonBox::NoRole);
-
-	l_oGridLayout->addWidget(l_oButtonBox, 5, 0, 1, 2);
+        gridLayout->addItem(verticalSpacer, 4, 1, 1, 1);
 
 
-	QSize size(250, 100);
-	size = size.expandedTo(minimumSizeHint());
-	resize(size);
+        QDialogButtonBox *buttonBox = new QDialogButtonBox(this);
+        buttonBox->setOrientation(Qt::Horizontal);
+        buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+
+        gridLayout->addWidget(buttonBox, 5, 0, 1, 2);
+
+        QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+        QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 }
 
 #include "export_map_dialog.moc"

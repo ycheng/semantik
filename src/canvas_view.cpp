@@ -1247,6 +1247,8 @@ void canvas_view::export_map_size()
 
 	dlg.m_oWidth->setValue(l_oR.width());
 	dlg.m_oHeight->setValue(l_oR.height());
+
+
 	if (dlg.exec() == QDialog::Accepted)
 	{
 		qDebug()<<"test";
