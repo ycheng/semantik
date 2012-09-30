@@ -3,6 +3,16 @@
 #include <sys/time.h>
 
 #include<KUrl>
+
+#if defined(_POSIX_C_SOURCE)
+	#undef _POSIX_C_SOURCE
+#endif
+
+#if defined(_XOPEN_SOURCE)
+	#undef _XOPEN_SOURCE
+#endif
+
+
 %: include  <Python.h> 
  #include <QFile>
 #include<QTimer>

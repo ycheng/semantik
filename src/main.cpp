@@ -1,7 +1,6 @@
 // Thomas Nagy 2007-2012 GPLV3
 
 #include <fstream>
-#include <Python.h>
 #include <QCoreApplication>
 #include <QtGui>
 #include  <QX11Info>
