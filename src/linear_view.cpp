@@ -23,7 +23,8 @@ linear_view::linear_view(QWidget *i_oParent, sem_mediator *i_oControl) : QTreeWi
 	m_bLockSelect = false;
 }
 
-void linear_view::notify_add_item(int id) {
+void linear_view::notify_add_item(int id)
+{
 	QTreeWidgetItem *l_oItem = new QTreeWidgetItem(this);
 	l_oItem->setText(0, m_oMediator->m_oItems.value(id)->m_sSummary);
 	l_oItem->setData(0, Qt::UserRole, id);
@@ -32,11 +33,13 @@ void linear_view::notify_add_item(int id) {
 	m_oItems[id] = l_oItem;
 }
 
-void linear_view::notify_delete_item(int id) {
+void linear_view::notify_delete_item(int id)
+{
 	QTreeWidgetItem *l_oItem = m_oItems.value(id);
 
 	QTreeWidgetItem *l_oChild = NULL;
-	while ( (l_oChild = l_oItem->takeChild(0)) != NULL) {
+	while ( (l_oChild = l_oItem->takeChild(0)) != NULL)
+	{
 		addTopLevelItem(l_oChild);
 	}
 	if (l_oItem->parent())
@@ -46,7 +49,8 @@ void linear_view::notify_delete_item(int id) {
 	delete l_oItem;
 }
 
-void linear_view::notify_link_items(int id1, int id2) {
+void linear_view::notify_link_items(int id1, int id2)
+{
 	QTreeWidgetItem *l_oItem1 = m_oItems.value(id2);
 	QTreeWidgetItem *l_oItem2 = m_oItems.value(id1);
 	QTreeWidgetItem *l_oRet = takeTopLevelItem(indexOfTopLevelItem(l_oItem1));
@@ -58,7 +62,8 @@ void linear_view::notify_link_items(int id1, int id2) {
 	l_oItem1->setBackgroundColor(0, l_o->get_color_scheme().m_oInnerColor);
 }
 
-void linear_view::notify_unlink_items(int id1, int id2) {
+void linear_view::notify_unlink_items(int id1, int id2)
+{
 	QTreeWidgetItem *l_oItem1 = m_oItems.value(id1);
 	QTreeWidgetItem *l_oItem2 = m_oItems.value(id2);
 	if (l_oItem1->parent() == l_oItem2)
@@ -107,14 +112,8 @@ void linear_view::filter_slot(const QString & i_oS)
 {
 	foreach (QTreeWidgetItem *l_oItem, m_oItems.values())
 	{
-#if 0
-		if (i_oS.length() < 1)
-		{
-			l_oItem->setHidden(false);
-		}
-#endif
-
-		if (l_oItem->parent() != NULL) continue;
+		if (l_oItem->parent() != NULL)
+			continue;
 		filter_item(l_oItem, i_oS);
 	}
 }
@@ -223,7 +222,8 @@ void linear_view::dropEvent(QDropEvent *i_oEv)
 	i_oEv->setDropAction(Qt::CopyAction);
 }
 
-void linear_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
+void linear_view::notify_select(const QList<int>& unsel, const QList<int>& sel)
+{
 	m_bLockSelect = true;
 
 	QList<QTreeWidgetItem *> l_oLst = selectedItems();
@@ -253,7 +253,8 @@ void linear_view::notify_repaint(int id)
 	l_oItem->setBackgroundColor(0, l_o->get_color_scheme().m_oInnerColor);
 }
 
-void linear_view::notify_sort(int id) {
+void linear_view::notify_sort(int id)
+{
 	QTreeWidgetItem *l_oItem = m_oItems.value(id);
 	int l_iCnt = 0;
 	for (int i=0; i<m_oMediator->m_oLinks.size(); i++)

@@ -316,7 +316,6 @@ void sem_mediator::clean_temp_dir()
 	//qDebug()<<"rmdir"<<m_sTempDir;
 }
 
-/* here magic happens */
 QByteArray new_header(const QString & i_oName, int i_iLen)
 {
 	QByteArray l_oBuf;
@@ -1254,7 +1253,8 @@ data_item* sem_mediator::operator+(const int y)
 	return m_oItems.value(y);
 }
 
-void sem_mediator::slot_undo() {
+void sem_mediator::slot_undo()
+{
 	if (!m_oUndoStack.isEmpty()) {
 		mem_command *t = m_oUndoStack.pop();
 		t->undo();
@@ -1263,7 +1263,8 @@ void sem_mediator::slot_undo() {
 	check_undo(true);
 }
 
-void sem_mediator::slot_redo() {
+void sem_mediator::slot_redo()
+{
 	if (!m_oRedoStack.isEmpty()) {
 		mem_command *t = m_oRedoStack.pop();
 		t->redo();
@@ -1272,7 +1273,8 @@ void sem_mediator::slot_redo() {
 	check_undo(true);
 }
 
-void sem_mediator::private_select_item(int id) {
+void sem_mediator::private_select_item(int id)
+{
 	mem_sel *sel = new mem_sel(this);
 	sel->sel.append(id);
 	sel->apply();
@@ -1337,119 +1339,148 @@ bool sem_mediator::load_picture(const QString & i_sPath, int id)
 	return true;
 }
 
-void sem_mediator::notify_add_item(int id) {
+void sem_mediator::notify_add_item(int id)
+{
 	emit sig_add_item(id);
 }
 
-void sem_mediator::notify_delete_item(int id) {
+void sem_mediator::notify_delete_item(int id)
+{
 	emit sig_delete_item(id);
 }
 
-void sem_mediator::notify_link_items(int id1, int id2) {
+void sem_mediator::notify_link_items(int id1, int id2)
+{
 	emit sig_link_items(id1, id2);
 }
 
-void sem_mediator::notify_unlink_items(int id1, int id2) {
+void sem_mediator::notify_unlink_items(int id1, int id2)
+{
 	emit sig_unlink_items(id1, id2);
 }
 
-void sem_mediator::notify_select(const QList<int>& unsel, const QList<int>& sel) {
+void sem_mediator::notify_select(const QList<int>& unsel, const QList<int>& sel)
+{
 	emit sig_select(unsel, sel);
 }
 
-void sem_mediator::notify_move(const QList<int>&sel, const QList<QPointF>&pos) {
+void sem_mediator::notify_move(const QList<int>&sel, const QList<QPointF>&pos)
+{
 	emit sig_move(sel, pos);
 }
 
-void sem_mediator::notify_repaint(int id) {
+void sem_mediator::notify_repaint(int id)
+{
 	emit sig_repaint(id);
 }
 
-void sem_mediator::notify_edit(int id) {
+void sem_mediator::notify_edit(int id)
+{
 	emit sig_edit(id);
 }
 
-void sem_mediator::notify_flag(int id) {
+void sem_mediator::notify_flag(int id)
+{
 	emit sig_flag(id);
 }
 
-void sem_mediator::notify_datatype(int id) {
+void sem_mediator::notify_datatype(int id)
+{
 	emit sig_datatype(id);
 }
 
-void sem_mediator::notify_text(int id) {
+void sem_mediator::notify_text(int id)
+{
 	emit sig_text(id);
 }
 
-void sem_mediator::notify_vars(int id) {
+void sem_mediator::notify_vars(int id)
+{
 	emit sig_vars(id);
 }
 
-void sem_mediator::notify_pic(int id) {
+void sem_mediator::notify_pic(int id)
+{
 	emit sig_pic(id);
 }
 
-void sem_mediator::notify_table(int id) {
+void sem_mediator::notify_table(int id)
+{
 	emit sig_table(id);
 }
 
-void sem_mediator::notify_sort(int id) {
+void sem_mediator::notify_sort(int id)
+{
 	emit sig_sort(id);
 }
 
-void sem_mediator::notify_change_data(int id) {
+void sem_mediator::notify_change_data(int id)
+{
 	emit sig_change_data(id);
 }
 
-void sem_mediator::notify_export_item(int id) {
+void sem_mediator::notify_export_item(int id)
+{
 	emit sig_export_item(id);
 }
 
-void sem_mediator::notify_export_doc() {
+void sem_mediator::notify_export_doc()
+{
 	emit sig_export_doc();
 }
 
-void sem_mediator::notify_add_box(int id, int box) {
+void sem_mediator::notify_add_box(int id, int box)
+{
 	emit sig_add_box(id, box);
 }
 
-void sem_mediator::notify_del_box(int id, int box) {
+void sem_mediator::notify_del_box(int id, int box)
+{
 	emit sig_del_box(id, box);
 }
 
-void sem_mediator::notify_edit_box(int id, int box) {
+void sem_mediator::notify_edit_box(int id, int box)
+{
 	emit sig_edit_box(id, box);
 }
 
-void sem_mediator::notify_link_box(int id, data_link*link) {
+void sem_mediator::notify_link_box(int id, data_link*link)
+{
 	emit sig_link_box(id, link);
 }
 
-void sem_mediator::notify_unlink_box(int id, data_link*link) {
+void sem_mediator::notify_unlink_box(int id, data_link*link)
+{
 	emit sig_unlink_box(id, link);
 }
 
-void sem_mediator::notify_message(const QString& msg, int duration) {
+void sem_mediator::notify_message(const QString& msg, int duration)
+{
 	emit sig_message(msg, duration);
 }
 
-void sem_mediator::notify_box_props(int id, const QList<diagram_item*>& items) {
+void sem_mediator::notify_box_props(int id, const QList<diagram_item*>& items)
+{
 	emit sig_box_props(id, items);
 }
 
-void sem_mediator::notify_pos_box(int id, const QList<data_box*>& items) {
+void sem_mediator::notify_pos_box(int id, const QList<data_box*>& items)
+{
 	emit sig_pos_box(id, items);
 }
 
-void sem_mediator::notify_focus(void *ptr) {
+void sem_mediator::notify_focus(void *ptr)
+{
 	emit sig_focus(ptr);
 }
 
-void sem_mediator::notify_change_link_box(int id, data_link*link) {
+void sem_mediator::notify_change_link_box(int id, data_link*link)
+{
 	emit sig_change_link_box(id, link);
 }
 
-void sem_mediator::notify_size_box(int id, const QList<data_box*>& items) {
+void sem_mediator::notify_size_box(int id, const QList<data_box*>& items)
+{
 	emit sig_size_box(id, items);
 }
 
