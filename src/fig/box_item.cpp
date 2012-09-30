@@ -179,6 +179,8 @@ void box_item::update_size() {
 
 	setRect(0, 0, m_iWW, m_iHH);
 	m_oChain->setPos(m_iWW + 3, 0);
+
+	update_links();
 }
 
 void box_item::properties()

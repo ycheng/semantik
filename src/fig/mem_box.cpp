@@ -270,7 +270,7 @@ void mem_size_box::undo() {
 		if (prev_values[box].width()  > 0) box->m_iWW = prev_values[box].width();
 		if (prev_values[box].height() > 0) box->m_iHH = prev_values[box].height();
 	}
-	model->notify_pos_box(m_iId, prev_values.keys());
+	model->notify_size_box(m_iId, prev_values.keys());
 	undo_dirty();
 }
 
