@@ -28,6 +28,8 @@
 #include  <QMatrix>
 #include <QPointF>
 #include <KFileDialog>
+#include <QSpinBox>
+#include "export_map_dialog.h"
 
  #include <QGraphicsTextItem>
 
@@ -1235,6 +1237,20 @@ void canvas_view::pack(QMap<int, double> &width, QMap<int, double> &height, QMap
 void canvas_view::export_map_size()
 {
 	qDebug()<<"not implemented";
+
+	QRectF l_oRect = scene()->itemsBoundingRect();
+        l_oRect = QRectF(l_oRect.topLeft() - QPointF(25, 25), l_oRect.bottomRight() + QPointF(25, 25));
+        QRectF l_oR(0, 0, l_oRect.width(), l_oRect.height());
+
+	export_map_dialog dlg(this);
+	qDebug()<< l_oR.width() << l_oR.height();
+
+	dlg.m_oWidth->setValue(l_oR.width());
+	dlg.m_oHeight->setValue(l_oR.height());
+	if (dlg.exec() == QDialog::Accepted)
+	{
+		qDebug()<<"test";
+	}
 }
 
 void canvas_view::export_map()

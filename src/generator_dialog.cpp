@@ -80,12 +80,6 @@ generator_dialog::generator_dialog(QWidget *i_oParent, QList<template_entry> i_o
 	QDialogButtonBox *l_oButtonBox = new QDialogButtonBox(this);
 	l_oButtonBox->setOrientation(Qt::Horizontal);
 
-	/*
-	The trolls may well support the gay computer (tm) and winblows,
-	yet they cannot even provide accelerators on QDialog buttons
-
-	setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok);
-	*/
 	QPushButton *b = NULL;
 	b = new QPushButton(trUtf8("&Ok"));
 	b->setDefault(true);
