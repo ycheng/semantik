@@ -6,6 +6,7 @@
   </Menu>
   <Menu name="edit"><text>&amp;Edit</text>
       <Action name="export_map" />
+      <Action name="export_map_size" />
       <Action name="reorganize_map" />
   </Menu>
   <Menu name="view"><text>&amp;View</text>

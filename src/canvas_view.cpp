@@ -1232,6 +1232,11 @@ void canvas_view::pack(QMap<int, double> &width, QMap<int, double> &height, QMap
 	}
 }
 
+void canvas_view::export_map_size()
+{
+	qDebug()<<"not implemented";
+}
+
 void canvas_view::export_map()
 {
 	KUrl l_o = KFileDialog::getSaveUrl(KUrl(notr("kfiledialog:///document")),

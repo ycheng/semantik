@@ -67,6 +67,7 @@ class semantik_win : public KXmlGuiWindow
 
 		KAction *m_oReorgAct;
 		KAction *m_oExportAct;
+		KAction *m_oExportSizeAct;
 
 		KAction *m_oDocPropsAct;
 		KAction *m_oConfPropsAct;

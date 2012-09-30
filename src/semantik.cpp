@@ -168,10 +168,15 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	m_oReorgAct->setShortcut(trUtf8("Ctrl+R"));
 	connect(m_oReorgAct, SIGNAL(triggered(bool)), m_oCanvas, SLOT(reorganize()));
 
-	m_oExportAct = new KAction(trUtf8("&Export the map"), this);
+	m_oExportAct = new KAction(trUtf8("&Export the map..."), this);
 	actionCollection()->addAction(notr("export_map"), m_oExportAct);
 	m_oExportAct->setShortcut(trUtf8("Ctrl+E"));
 	connect(m_oExportAct, SIGNAL(triggered(bool)), m_oCanvas, SLOT(export_map()));
+
+	m_oExportSizeAct = new KAction(trUtf8("&Export the map with a size..."), this);
+	actionCollection()->addAction(notr("export_map_size"), m_oExportSizeAct);
+	m_oExportSizeAct->setShortcut(trUtf8("Ctrl+Shift+E"));
+	connect(m_oExportSizeAct, SIGNAL(triggered(bool)), m_oCanvas, SLOT(export_map_size()));
 
 	KStandardAction::preferences(this, SLOT(slot_properties()), actionCollection());
 
@@ -383,6 +388,7 @@ semantik_win::~semantik_win()
 void semantik_win::slot_print()
 {
         QPrinter *l_oP = new QPrinter;
+	//l_oP->setResolution(QPrinter::HighResolution);
         QPrintDialog l_oD(l_oP, m_oCanvas);
         if (l_oD.exec() == QDialog::Accepted)
         {
