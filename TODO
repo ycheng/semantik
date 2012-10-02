@@ -5,10 +5,9 @@ diagram:
   - straight arrows
   - resize the diagram scene properly
 
-crash: resize a box, unselect the diagram, then undo
+crash: resize a box, unselect the diagram, then undo?
 
 display pictures on the canvas...
-fix the mouse interaction with the items (select text on canvas and diagram)
 
 Ideas:
 ------
