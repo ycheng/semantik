@@ -9,13 +9,14 @@
 #include <QToolTip>
 #include  <QColorDialog> 
 #include<KToolBar> 
+#include <KUrl>
 #include  <QActionGroup> 
 #include "canvas_item.h"
 #include "canvas_link.h"
 #include<QCoreApplication>
 #include <QSet>
 #include "canvas_sort.h"
-#include <QCheckBox>
+#include <QRadioButton>
 #include "canvas_sort_toggle.h"
 #include "semantik.h"
 #include <QTextCursor> 
@@ -1244,23 +1245,52 @@ void canvas_view::export_map_size()
 	export_map_dialog dlg(this);
 	dlg.kurlrequester->setMode(KFile::File | KFile::LocalOnly);
 	dlg.kurlrequester->setFilter(trUtf8("*.png|PNG Files (*.png)"));
-	dlg.m_oWidth->setValue(l_oRect.width());
-	dlg.m_oHeight->setValue(l_oRect.height());
+
+	dlg.kurlrequester->setUrl(KUrl(m_oMediator->m_sExportUrl));
+	dlg.m_oWidthC->setChecked(m_oMediator->m_bExportIsWidth);
+
+	if (m_oMediator->m_iExportWidth > 0)
+		dlg.m_oWidth->setValue(m_oMediator->m_iExportWidth);
+	else
+		dlg.m_oWidth->setValue(l_oRect.width());
+
+	if (m_oMediator->m_iExportHeight > 0)
+		dlg.m_oHeight->setValue(m_oMediator->m_iExportHeight);
+	else
+		dlg.m_oHeight->setValue(l_oRect.height());
 
 	if (dlg.exec() == QDialog::Accepted)
 	{
+		if (m_oMediator->m_iExportWidth != dlg.m_oWidth->value())
+		{
+			m_oMediator->m_iExportWidth = dlg.m_oWidth->value();
+			m_oMediator->set_dirty();
+		}
+
+		if (m_oMediator->m_iExportHeight != dlg.m_oHeight->value())
+		{
+			m_oMediator->m_iExportHeight = dlg.m_oHeight->value();
+			m_oMediator->set_dirty();
+		}
+
 		if (!dlg.kurlrequester->url().isValid() || dlg.kurlrequester->url().isEmpty())
 		{
 			m_oMediator->notify_message(trUtf8("No destination file selected"), 5000);
 			return;
 		}
 
+		if (m_oMediator->m_sExportUrl != dlg.kurlrequester->url().url())
+		{
+			m_oMediator->m_sExportUrl = dlg.kurlrequester->url().url();
+			m_oMediator->set_dirty();
+		}
+
 		QImage l_oImage((int) l_oRect.width(), (int) l_oRect.height(), QImage::Format_RGB32);
-		if (dlg.m_oWidthC->checkState())
+		if (dlg.m_oWidthC->isChecked())
 		{
 			l_oImage = l_oImage.scaledToWidth(dlg.m_oWidth->value());
 		}
-		else if (dlg.m_oWidthC->checkState())
+		else
 		{
 			l_oImage = l_oImage.scaledToHeight(dlg.m_oHeight->value());
 		}
@@ -1272,8 +1302,8 @@ void canvas_view::export_map_size()
 		scene()->render(&l_oP, l_oImage.rect(), l_oRect);
 		l_oP.end();
 
-		l_oImage.save(dlg.kurlrequester->url().path());
-		m_oMediator->notify_message(trUtf8("Exported '%1'").arg(dlg.kurlrequester->url().path()), 2000);
+		l_oImage.save(dlg.kurlrequester->url().toLocalFile());
+		m_oMediator->notify_message(trUtf8("Exported '%1'").arg(dlg.kurlrequester->url().toLocalFile()), 2000);
 	}
 }
 

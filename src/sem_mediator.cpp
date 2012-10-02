@@ -73,6 +73,23 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		//m_oMediator->m_sEmail = i_oAttrs.value("email");
 		m_oMediator->m_sHints = i_oAttrs.value(notr("hints"));
 		m_iVersion = i_oAttrs.value(notr("version")).toInt();
+		m_oMediator->m_bExportIsWidth = i_oAttrs.value(notr("export_is_width")) != notr("false");
+
+		if (i_oAttrs.index(notr("export_width")) > -1)
+			m_oMediator->m_iExportWidth = i_oAttrs.value(notr("export_width")).toInt();
+		else
+			m_oMediator->m_iExportWidth = 0;
+		if (m_oMediator->m_iExportWidth < 0 || m_oMediator->m_iExportWidth > 30000)
+			m_oMediator->m_iExportWidth = 0;
+
+		if (i_oAttrs.index(notr("export_height")) > -1)
+			m_oMediator->m_iExportHeight = i_oAttrs.value(notr("export_height")).toInt();
+		else
+			m_oMediator->m_iExportHeight = 0;
+		if (m_oMediator->m_iExportHeight < 0 || m_oMediator->m_iExportHeight > 30000)
+			m_oMediator->m_iExportHeight = 0;
+
+		m_oMediator->m_sExportUrl = i_oAttrs.value(notr("export_url"));
 
 		if (i_oAttrs.value(notr("location")).size()) m_oMediator->m_sOutDir = i_oAttrs.value(notr("location"));
 		if (i_oAttrs.value(notr("dir")).size()) m_oMediator->m_sOutProject = i_oAttrs.value(notr("dir"));
@@ -453,6 +470,12 @@ QString sem_mediator::doc_to_xml()
 	l_oS<<notr(" dir=\"%1\"").arg(bind_node::protectXML(m_sOutProject));
 	l_oS<<notr(" output=\"%1\"").arg(bind_node::protectXML(m_sOutTemplate));
 	l_oS<<notr(" hints=\"%1\"").arg(bind_node::protectXML(m_sHints));
+
+	l_oS<<notr(" export_is_width=\"%1\"").arg(m_bExportIsWidth ? notr("true") : notr("false"));
+	l_oS<<notr(" export_width=\"%1\"").arg(QString::number(m_iExportWidth));
+	l_oS<<notr(" export_height=\"%1\"").arg(QString::number(m_iExportHeight));
+	l_oS<<notr(" export_url=\"%1\"").arg(bind_node::protectXML(m_sExportUrl));
+
 	l_oS<<notr("/>\n");
 
 	l_oS<<notr("<color_schemes>\n");
@@ -1227,6 +1250,10 @@ sem_mediator::sem_mediator(QObject* i_oParent) : QObject(i_oParent)
 	m_sOutDir = "";
 	m_iTimerValue = 21 / 4;
 	m_bDirty = false;
+
+	m_bExportIsWidth = true;
+	m_iExportWidth = 0;
+	m_iExportHeight = 0;
 
 	m_oTimer = NULL;
 	m_sOutProject = "";

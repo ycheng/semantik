@@ -90,6 +90,10 @@ class sem_mediator: public QObject
 		QString m_sOutDir;
 		QString m_sOutProject;
 		QString m_sOutTemplate;
+		bool m_bExportIsWidth;
+		int m_iExportWidth;
+		int m_iExportHeight;
+		QString m_sExportUrl;
 
 		void set_dirty(bool b = true);
 		bool m_bDirty;
