@@ -54,6 +54,8 @@ export_map_dialog::export_map_dialog(QWidget *i_oParent): QWidget(i_oParent)
 
 	connect(m_oHeightC, SIGNAL(clicked(bool)), this, SLOT(radio(bool)));
 	connect(m_oWidthC, SIGNAL(clicked(bool)), this, SLOT(radio(bool)));
+	connect(m_oWidth, SIGNAL(valueChanged(int)), this, SLOT(widthChanged(int)));
+	connect(m_oHeight, SIGNAL(valueChanged(int)), this, SLOT(heightChanged(int)));
 }
 
 void export_map_dialog::radio(bool)
@@ -68,6 +70,20 @@ void export_map_dialog::radio(bool)
 		m_oWidth->setEnabled(true);
 		m_oHeight->setEnabled(false);
 	}
+}
+
+void export_map_dialog::widthChanged(int v)
+{
+	if (m_oHeightC->isChecked())
+		return;
+	m_oHeight->setValue((v * m_iBaseHeight) / m_iBaseWidth);
+}
+
+void export_map_dialog::heightChanged(int v)
+{
+	if (m_oWidthC->isChecked())
+		return;
+	m_oWidth->setValue((v * m_iBaseWidth) / m_iBaseHeight);
 }
 
 #include "export_map_dialog.moc"

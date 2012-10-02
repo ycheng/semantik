@@ -20,8 +20,13 @@ class export_map_dialog : public QWidget
 		QRadioButton *m_oHeightC;
 		QSpinBox *m_oHeight;
 
+		int m_iBaseWidth;
+		int m_iBaseHeight;
+
 	public slots:
 		void radio(bool);
+		void widthChanged(int);
+		void heightChanged(int);
 };
 
 #endif

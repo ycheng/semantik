@@ -1256,16 +1256,23 @@ void canvas_view::export_map_size()
 
 	exp->kurlrequester->setUrl(KUrl(m_oMediator->m_sExportUrl));
 	exp->m_oWidthC->setChecked(m_oMediator->m_bExportIsWidth);
+	exp->m_iBaseWidth = l_oRect.width();
+	exp->m_iBaseHeight = l_oRect.height();
 
-	if (m_oMediator->m_iExportWidth > 0)
-		exp->m_oWidth->setValue(m_oMediator->m_iExportWidth);
+	if (m_oMediator->m_bExportIsWidth)
+	{
+		if (m_oMediator->m_iExportWidth > 0)
+			exp->m_oWidth->setValue(m_oMediator->m_iExportWidth);
+		else
+			exp->m_oWidth->setValue(l_oRect.width());
+	}
 	else
-		exp->m_oWidth->setValue(l_oRect.width());
-
-	if (m_oMediator->m_iExportHeight > 0)
-		exp->m_oHeight->setValue(m_oMediator->m_iExportHeight);
-	else
-		exp->m_oHeight->setValue(l_oRect.height());
+	{
+		if (m_oMediator->m_iExportHeight > 0)
+			exp->m_oHeight->setValue(m_oMediator->m_iExportHeight);
+		else
+			exp->m_oHeight->setValue(l_oRect.height());
+	}
 
 	if (dialog->exec() == KDialog::Accepted)
 	{
