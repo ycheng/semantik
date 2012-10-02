@@ -15,6 +15,7 @@
 #include<QCoreApplication>
 #include <QSet>
 #include "canvas_sort.h"
+#include <QCheckBox>
 #include "canvas_sort_toggle.h"
 #include "semantik.h"
 #include <QTextCursor> 
@@ -30,6 +31,7 @@
 #include <KFileDialog>
 #include <QSpinBox>
 #include "export_map_dialog.h"
+#include "kurlrequester.h"
 
  #include <QGraphicsTextItem>
 
@@ -1236,22 +1238,42 @@ void canvas_view::pack(QMap<int, double> &width, QMap<int, double> &height, QMap
 
 void canvas_view::export_map_size()
 {
-	qDebug()<<"not implemented";
-
 	QRectF l_oRect = scene()->itemsBoundingRect();
         l_oRect = QRectF(l_oRect.topLeft() - QPointF(25, 25), l_oRect.bottomRight() + QPointF(25, 25));
-        QRectF l_oR(0, 0, l_oRect.width(), l_oRect.height());
 
 	export_map_dialog dlg(this);
-	qDebug()<< l_oR.width() << l_oR.height();
-
-	dlg.m_oWidth->setValue(l_oR.width());
-	dlg.m_oHeight->setValue(l_oR.height());
-
+	dlg.kurlrequester->setMode(KFile::File | KFile::LocalOnly);
+	dlg.kurlrequester->setFilter(trUtf8("*.png|PNG Files (*.png)"));
+	dlg.m_oWidth->setValue(l_oRect.width());
+	dlg.m_oHeight->setValue(l_oRect.height());
 
 	if (dlg.exec() == QDialog::Accepted)
 	{
-		qDebug()<<"test";
+		if (!dlg.kurlrequester->url().isValid() || dlg.kurlrequester->url().isEmpty())
+		{
+			m_oMediator->notify_message(trUtf8("No destination file selected"), 5000);
+			return;
+		}
+
+		QImage l_oImage((int) l_oRect.width(), (int) l_oRect.height(), QImage::Format_RGB32);
+		if (dlg.m_oWidthC->checkState())
+		{
+			l_oImage = l_oImage.scaledToWidth(dlg.m_oWidth->value());
+		}
+		else if (dlg.m_oWidthC->checkState())
+		{
+			l_oImage = l_oImage.scaledToHeight(dlg.m_oHeight->value());
+		}
+		l_oImage.fill(qRgb(255,255,255));
+	
+		QPainter l_oP;
+		l_oP.begin(&l_oImage);
+		l_oP.setRenderHints(QPainter::Antialiasing);
+		scene()->render(&l_oP, l_oImage.rect(), l_oRect);
+		l_oP.end();
+
+		l_oImage.save(dlg.kurlrequester->url().path());
+		m_oMediator->notify_message(trUtf8("Exported '%1'").arg(dlg.kurlrequester->url().path()), 2000);
 	}
 }
 
