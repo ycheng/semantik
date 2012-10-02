@@ -24,11 +24,8 @@
 
 #include "export_map_dialog.h"
 
-export_map_dialog::export_map_dialog(QWidget *i_oParent):
-	QDialog(i_oParent)
+export_map_dialog::export_map_dialog(QWidget *i_oParent): QWidget(i_oParent)
 {
-	resize(600, 100);
-
         QGridLayout * gridLayout = new QGridLayout(this);
 
 	QLabel *label = new QLabel(this);
@@ -54,20 +51,6 @@ export_map_dialog::export_map_dialog(QWidget *i_oParent):
 	m_oHeight->setMaximum(20000);
 	m_oHeight->setEnabled(false);
         gridLayout->addWidget(m_oHeight, 2, 1, 1, 1);
-
-        QSpacerItem *verticalSpacer = new QSpacerItem(0, 10, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-        gridLayout->addItem(verticalSpacer, 3, 1, 1, 1);
-
-
-        QDialogButtonBox *buttonBox = new QDialogButtonBox(this);
-        buttonBox->setOrientation(Qt::Horizontal);
-        buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
-
-        gridLayout->addWidget(buttonBox, 4, 0, 1, 2);
-
-        QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-        QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 
 	connect(m_oHeightC, SIGNAL(clicked(bool)), this, SLOT(radio(bool)));
 	connect(m_oWidthC, SIGNAL(clicked(bool)), this, SLOT(radio(bool)));

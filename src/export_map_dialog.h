@@ -3,12 +3,12 @@
 #ifndef EXPORT_MAP_DIALOG_H
 #define EXPORT_MAP_DIALOG_H
 
-#include <KDialog>
+#include <QWidget>
 
 class QSpinBox;
 class QRadioButton;
 class KUrlRequester;
-class export_map_dialog : public QDialog
+class export_map_dialog : public QWidget
 {
 	Q_OBJECT
 	public:

@@ -9,6 +9,7 @@
 #include <QToolTip>
 #include  <QColorDialog> 
 #include<KToolBar> 
+#include <KDialog>
 #include <KUrl>
 #include  <QActionGroup> 
 #include "canvas_item.h"
@@ -1242,57 +1243,64 @@ void canvas_view::export_map_size()
 	QRectF l_oRect = scene()->itemsBoundingRect();
         l_oRect = QRectF(l_oRect.topLeft() - QPointF(25, 25), l_oRect.bottomRight() + QPointF(25, 25));
 
-	export_map_dialog dlg(this);
-	dlg.kurlrequester->setMode(KFile::File | KFile::LocalOnly);
-	dlg.kurlrequester->setFilter(trUtf8("*.png|PNG Files (*.png)"));
+	KDialog *dialog = new KDialog(this);
+	dialog->setCaption(trUtf8("Export Map to size"));
+	dialog->setButtons(KDialog::Ok | KDialog::Cancel);
+	dialog->resize(600, 100);
 
-	dlg.kurlrequester->setUrl(KUrl(m_oMediator->m_sExportUrl));
-	dlg.m_oWidthC->setChecked(m_oMediator->m_bExportIsWidth);
+	export_map_dialog* exp = new export_map_dialog(dialog);
+	dialog->setMainWidget(exp);
+
+	exp->kurlrequester->setMode(KFile::File | KFile::LocalOnly);
+	exp->kurlrequester->setFilter(trUtf8("*.png|PNG Files (*.png)"));
+
+	exp->kurlrequester->setUrl(KUrl(m_oMediator->m_sExportUrl));
+	exp->m_oWidthC->setChecked(m_oMediator->m_bExportIsWidth);
 
 	if (m_oMediator->m_iExportWidth > 0)
-		dlg.m_oWidth->setValue(m_oMediator->m_iExportWidth);
+		exp->m_oWidth->setValue(m_oMediator->m_iExportWidth);
 	else
-		dlg.m_oWidth->setValue(l_oRect.width());
+		exp->m_oWidth->setValue(l_oRect.width());
 
 	if (m_oMediator->m_iExportHeight > 0)
-		dlg.m_oHeight->setValue(m_oMediator->m_iExportHeight);
+		exp->m_oHeight->setValue(m_oMediator->m_iExportHeight);
 	else
-		dlg.m_oHeight->setValue(l_oRect.height());
+		exp->m_oHeight->setValue(l_oRect.height());
 
-	if (dlg.exec() == QDialog::Accepted)
+	if (dialog->exec() == KDialog::Accepted)
 	{
-		if (m_oMediator->m_iExportWidth != dlg.m_oWidth->value())
+		if (m_oMediator->m_iExportWidth != exp->m_oWidth->value())
 		{
-			m_oMediator->m_iExportWidth = dlg.m_oWidth->value();
+			m_oMediator->m_iExportWidth = exp->m_oWidth->value();
 			m_oMediator->set_dirty();
 		}
 
-		if (m_oMediator->m_iExportHeight != dlg.m_oHeight->value())
+		if (m_oMediator->m_iExportHeight != exp->m_oHeight->value())
 		{
-			m_oMediator->m_iExportHeight = dlg.m_oHeight->value();
+			m_oMediator->m_iExportHeight = exp->m_oHeight->value();
 			m_oMediator->set_dirty();
 		}
 
-		if (!dlg.kurlrequester->url().isValid() || dlg.kurlrequester->url().isEmpty())
+		if (!exp->kurlrequester->url().isValid() || exp->kurlrequester->url().isEmpty())
 		{
 			m_oMediator->notify_message(trUtf8("No destination file selected"), 5000);
 			return;
 		}
 
-		if (m_oMediator->m_sExportUrl != dlg.kurlrequester->url().url())
+		if (m_oMediator->m_sExportUrl != exp->kurlrequester->url().url())
 		{
-			m_oMediator->m_sExportUrl = dlg.kurlrequester->url().url();
+			m_oMediator->m_sExportUrl = exp->kurlrequester->url().url();
 			m_oMediator->set_dirty();
 		}
 
 		QImage l_oImage((int) l_oRect.width(), (int) l_oRect.height(), QImage::Format_RGB32);
-		if (dlg.m_oWidthC->isChecked())
+		if (exp->m_oWidthC->isChecked())
 		{
-			l_oImage = l_oImage.scaledToWidth(dlg.m_oWidth->value());
+			l_oImage = l_oImage.scaledToWidth(exp->m_oWidth->value());
 		}
 		else
 		{
-			l_oImage = l_oImage.scaledToHeight(dlg.m_oHeight->value());
+			l_oImage = l_oImage.scaledToHeight(exp->m_oHeight->value());
 		}
 		l_oImage.fill(qRgb(255,255,255));
 	
@@ -1302,8 +1310,8 @@ void canvas_view::export_map_size()
 		scene()->render(&l_oP, l_oImage.rect(), l_oRect);
 		l_oP.end();
 
-		l_oImage.save(dlg.kurlrequester->url().toLocalFile());
-		m_oMediator->notify_message(trUtf8("Exported '%1'").arg(dlg.kurlrequester->url().toLocalFile()), 2000);
+		l_oImage.save(exp->kurlrequester->url().toLocalFile());
+		m_oMediator->notify_message(trUtf8("Exported '%1'").arg(exp->kurlrequester->url().toLocalFile()), 2000);
 	}
 }
 
