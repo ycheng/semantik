@@ -27,6 +27,8 @@
 export_map_dialog::export_map_dialog(QWidget *i_oParent):
 	QDialog(i_oParent)
 {
+	resize(600, 100);
+
         QGridLayout * gridLayout = new QGridLayout(this);
 
 	QLabel *label = new QLabel(this);
