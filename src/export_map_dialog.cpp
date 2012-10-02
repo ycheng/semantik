@@ -66,6 +66,23 @@ export_map_dialog::export_map_dialog(QWidget *i_oParent):
 
         QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
         QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+
+	connect(m_oHeightC, SIGNAL(clicked(bool)), this, SLOT(radio(bool)));
+	connect(m_oWidthC, SIGNAL(clicked(bool)), this, SLOT(radio(bool)));
+}
+
+void export_map_dialog::radio(bool)
+{
+	if (m_oHeightC->isChecked())
+	{
+		m_oHeight->setEnabled(true);
+		m_oWidth->setEnabled(false);
+	}
+	else
+	{
+		m_oWidth->setEnabled(true);
+		m_oHeight->setEnabled(false);
+	}
 }
 
 #include "export_map_dialog.moc"

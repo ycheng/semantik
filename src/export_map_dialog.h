@@ -19,6 +19,9 @@ class export_map_dialog : public QDialog
 		QSpinBox *m_oWidth;
 		QRadioButton *m_oHeightC;
 		QSpinBox *m_oHeight;
+
+	public slots:
+		void radio(bool);
 };
 
 #endif
