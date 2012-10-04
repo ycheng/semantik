@@ -11,7 +11,7 @@
 class QLineEdit;
 class QTextEdit;
 class QTreeWidgetItem;
-class generator_dialog : public QDialog
+class generator_dialog : public KDialog
 {
 	Q_OBJECT
 	public:
@@ -26,7 +26,7 @@ class generator_dialog : public QDialog
 
 	public slots:
 		void selection_changed(QTreeWidgetItem *i_o, int i_oCol);
-		void slot_accept();
+		void slotButtonClicked(int button);
 		void activate_from_name(const QString &i_s);
 };
 
