@@ -3,7 +3,7 @@
 #ifndef GENERATOR_DIALOG_H
 #define GENERATOR_DIALOG_H
 
-#include <QDialog>
+#include <KDialog>
 
 #include "con.h"
 #include "template_entry.h"

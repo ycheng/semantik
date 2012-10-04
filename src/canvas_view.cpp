@@ -1243,13 +1243,7 @@ void canvas_view::export_map_size()
 	QRectF l_oRect = scene()->itemsBoundingRect();
         l_oRect = QRectF(l_oRect.topLeft() - QPointF(25, 25), l_oRect.bottomRight() + QPointF(25, 25));
 
-	KDialog *dialog = new KDialog(this);
-	dialog->setCaption(trUtf8("Export Map to size"));
-	dialog->setButtons(KDialog::Ok | KDialog::Cancel);
-	dialog->resize(600, 100);
-
-	export_map_dialog* exp = new export_map_dialog(dialog);
-	dialog->setMainWidget(exp);
+	export_map_dialog* exp = new export_map_dialog(this);
 
 	exp->kurlrequester->setMode(KFile::File | KFile::LocalOnly);
 	exp->kurlrequester->setFilter(trUtf8("*.png|PNG Files (*.png)"));
@@ -1274,7 +1268,7 @@ void canvas_view::export_map_size()
 			exp->m_oHeight->setValue(l_oRect.height());
 	}
 
-	if (dialog->exec() == KDialog::Accepted)
+	if (exp->exec() == KDialog::Accepted)
 	{
 		if (m_oMediator->m_iExportWidth != exp->m_oWidth->value())
 		{

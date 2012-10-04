@@ -3,14 +3,14 @@
 #ifndef CONFIG_DIALOG_H
 #define CONFIG_DIALOG_H
 
-#include <QDialog>
+#include <KDialog>
 #include <con.h>
 
 class QComboBox;
 class QSpinBox;
 class QTreeWidgetItem;
 class QPushButton;
-class config_dialog : public QDialog
+class config_dialog : public KDialog
 {
 	Q_OBJECT
 	public:
