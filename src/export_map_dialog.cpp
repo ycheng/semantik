@@ -65,6 +65,19 @@ export_map_dialog::export_map_dialog(QWidget *i_oParent): KDialog(i_oParent)
 	setMainWidget(widget);
 	QSize size(600, 100);
 	resize(size.expandedTo(minimumSizeHint()));
+
+	kurlrequester->setFocus();
+}
+
+void export_map_dialog::slotButtonClicked(int button) {
+	if (button == KDialog::Ok)
+	{
+		accept();
+	}
+	else
+	{
+		KDialog::slotButtonClicked(button);
+	}
 }
 
 void export_map_dialog::radio(bool)

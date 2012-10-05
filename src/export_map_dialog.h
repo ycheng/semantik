@@ -24,6 +24,7 @@ class export_map_dialog : public KDialog
 		int m_iBaseHeight;
 
 	public slots:
+		void slotButtonClicked(int button);
 		void radio(bool);
 		void widthChanged(int);
 		void heightChanged(int);

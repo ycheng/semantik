@@ -105,7 +105,6 @@ class canvas_view : public QGraphicsView
 		QAction *m_oNextRootAction;
 
 	public slots:
-		void export_map();
 		void export_map_size();
 		void change_colors(QAction*);
 		void fit_zoom();
