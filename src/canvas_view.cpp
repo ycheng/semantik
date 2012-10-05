@@ -9,6 +9,7 @@
 #include <QToolTip>
 #include  <QColorDialog> 
 #include<KToolBar> 
+#include<KMessageBox>
 #include <KDialog>
 #include <KUrl>
 #include  <QActionGroup> 
@@ -1311,8 +1312,17 @@ void canvas_view::export_map_size()
 		scene()->render(&l_oP, l_oImage.rect(), l_oRect);
 		l_oP.end();
 
-		l_oImage.save(exp->kurlrequester->url().toLocalFile());
-		m_oMediator->notify_message(trUtf8("Exported '%1'").arg(exp->kurlrequester->url().pathOrUrl()), 2000);
+		// TODO upload remote files
+		QString path = exp->kurlrequester->url().toLocalFile();
+		if (exp->kurlrequester->url().isRelative())
+		{
+			path = QDir::homePath() + notr("/") + path;
+		}
+		bool isOk = l_oImage.save(path);
+		if (isOk)
+			m_oMediator->notify_message(trUtf8("Exported '%1'").arg(path), 2000);
+		else
+			KMessageBox::sorry(this, trUtf8("Could not save to %1").arg(path), trUtf8("Missing picture"));
 	}
 }
 
