@@ -5,6 +5,7 @@
 #define BOX_ITEM_H
 
 #include <QGraphicsRectItem>
+#include <QLineEdit>
 #include <QBrush>
 #include "res:zable.h"
 #include "ed:table.h"

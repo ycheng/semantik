@@ -514,7 +514,7 @@ void box_link::properties()
 	props.m_oStyle->setCurrentIndex((int) m_oInnerLink.pen_style);
 	props.m_oLeftArrow->setCurrentIndex(m_oInnerLink.m_iLeftArrow);
 	props.m_oRightArrow->setCurrentIndex(m_oInnerLink.m_iRightArrow);
-	if (props.exec() == QDialog::Accepted)
+	if (props.exec() == KDialog::Accepted)
 	{
 		mem_edit_link *mem = new mem_edit_link(m_oView->m_oMediator, m_oView->m_iId);
 		mem->link = m_oLink;

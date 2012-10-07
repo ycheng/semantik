@@ -2,7 +2,7 @@
 
 #include <QApplication>
 #include <QAbstractTextDocumentLayout>
-#include <QInputDialog>
+#include <KInputDialog>
 #include <QTextDocument>
 #include <QTextDocumentFragment>
 #include <QAbstractTextDocumentLayout>
@@ -186,8 +186,8 @@ void box_item::update_size() {
 void box_item::properties()
 {
 	bool ok = false;
-	QString text = QInputDialog::getText(m_oView, m_oView->trUtf8("Properties for diagram box"),
-			m_oView->trUtf8("Text:"), QLineEdit::Normal, m_oBox->m_sText, &ok);
+	QString text = KInputDialog::getText(m_oView->trUtf8("Properties for diagram box"),
+			m_oView->trUtf8("Text:"), m_oBox->m_sText, &ok);
 	if (ok && text != m_oBox->m_sText)
 	{
 		mem_edit_box *ed = new mem_edit_box(m_oView->m_oMediator, m_oView->m_iId, m_iId);

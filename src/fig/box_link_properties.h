@@ -7,7 +7,7 @@
 
 class QSpinBox;
 class QComboBox;
-class box_link_properties : public QDialog
+class box_link_properties : public KDialog
 {
 	Q_OBJECT
 	public:
