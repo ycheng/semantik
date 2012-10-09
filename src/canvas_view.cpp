@@ -80,7 +80,7 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphi
 
 	QAction *l_o = NULL;
 
-	m_oAddItemAction = new QAction(trUtf8("Insert child"), this);
+	m_oAddItemAction = new QAction(trUtf8("Add an element"), this);
 	m_oAddItemAction->setShortcut(notr("Ctrl+Return"));
 	connect(m_oAddItemAction, SIGNAL(triggered()), this, SLOT(slot_add_item()));
 	addAction(m_oAddItemAction);
@@ -90,7 +90,7 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphi
 	connect(m_oDeleteAction, SIGNAL(triggered()), this, SLOT(slot_delete()));
 	addAction(m_oDeleteAction);
 
-	m_oInsertSiblingAction = l_o = new QAction(trUtf8("Insert sibling"), this);
+	m_oInsertSiblingAction = l_o = new QAction(trUtf8("Insert a sibling"), this);
 	l_o->setShortcut(notr("Shift+Return"));
 	connect(l_o, SIGNAL(triggered()), this, SLOT(slot_add_sibling()));
 	addAction(l_o);

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/semantik/issues\n"
-"POT-Creation-Date: 2012-10-09 23:12+0200\n"
+"POT-Creation-Date: 2012-10-09 23:25+0200\n"
 "PO-Revision-Date: 2011-05-10 00:58+0400\n"
 "Last-Translator: Alexey D. Kouznetsov Alexey.Kouznetsov gmail.com\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -22,15 +22,17 @@ msgid "Toggle fullscreen"
 msgstr ""
 
 #: canvas_view.cpp:83
-msgid "Insert child"
-msgstr "Вставить потомка"
+#, fuzzy
+msgid "Add an element"
+msgstr "Вставлен столбец"
 
 #: canvas_view.cpp:88 fig/box_view.cpp:170
 msgid "Delete selection"
 msgstr "Удалить выбранное"
 
 #: canvas_view.cpp:93
-msgid "Insert sibling"
+#, fuzzy
+msgid "Insert a sibling"
 msgstr "Добавить равнозначный элемент"
 
 #: canvas_view.cpp:98 fig/box_view.cpp:180
@@ -880,6 +882,9 @@ msgstr "Код готов"
 #: vars_view.cpp:77
 msgid "Ctrl+space"
 msgstr ""
+
+#~ msgid "Insert child"
+#~ msgstr "Вставить потомка"
 
 #~ msgid "dirty"
 #~ msgstr "черновик"
