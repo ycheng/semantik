@@ -220,7 +220,7 @@ void canvas_view::edit_off() {
 			if (sel->textInteractionFlags() & Qt::TextEditorInteraction) {
 
 				sel->setTextInteractionFlags(Qt::NoTextInteraction);
-				if (sel->toPlainText() == QObject::trUtf8("")) {
+				if (sel->toPlainText() == QObject::notr("")) {
 					sel->setPlainText(QObject::trUtf8("Empty"));
 					sel->update_links();
 				}
@@ -272,7 +272,7 @@ void canvas_view::slot_toggle_edit()
 	if (sel) {
 		if (sel->textInteractionFlags() & Qt::TextEditorInteraction) {
 			sel->setTextInteractionFlags(Qt::NoTextInteraction);
-			if (sel->toPlainText() == QObject::trUtf8("")) {
+			if (sel->toPlainText() == QObject::notr("")) {
 				sel->setPlainText(QObject::trUtf8("Empty"));
 				sel->update(); // seems to update faster
 				sel->update_links();

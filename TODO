@@ -5,6 +5,7 @@ diagram:
   - straight arrows
   - resize the diagram scene properly
 
+s5 picture size
 crash: resize a box, unselect the diagram, then undo?
 
 display pictures on the canvas...

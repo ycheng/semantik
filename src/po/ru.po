@@ -4,119 +4,195 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: http://www.google.com\n"
-"POT-Creation-Date: 2009-04-26 15:20+0200\n"
+"Report-Msgid-Bugs-To: http://code.google.com/p/semantik/issues\n"
+"POT-Creation-Date: 2012-10-09 23:12+0200\n"
 "PO-Revision-Date: 2011-05-10 00:58+0400\n"
 "Last-Translator: Alexey D. Kouznetsov Alexey.Kouznetsov gmail.com\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Lokalize 1.2\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
-"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"Language: ru\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-msgid "Empty"
-msgstr "Пусто"
+#: browser.cpp:21 canvas_view.cpp:134
+msgid "Toggle fullscreen"
+msgstr ""
 
-msgid "Toggle edit"
-msgstr "Правка"
-
+#: canvas_view.cpp:83
 msgid "Insert child"
 msgstr "Вставить потомка"
 
+#: canvas_view.cpp:88 fig/box_view.cpp:170
 msgid "Delete selection"
 msgstr "Удалить выбранное"
 
+#: canvas_view.cpp:93
 msgid "Insert sibling"
 msgstr "Добавить равнозначный элемент"
 
+#: canvas_view.cpp:98 fig/box_view.cpp:180
 msgid "Move up"
 msgstr "Поднять"
 
+#: canvas_view.cpp:99 fig/box_view.cpp:185
 msgid "Move down"
 msgstr "Опустить"
 
+#: canvas_view.cpp:100
 msgid "Move left"
 msgstr "Сдвинуть влево"
 
+#: canvas_view.cpp:101
 msgid "Move right"
 msgstr "Сдвинуть вправо"
 
+#: canvas_view.cpp:103
 msgid "Select up"
 msgstr "Перейти выше"
 
+#: canvas_view.cpp:104
 msgid "Select down"
 msgstr "Перейти ниже"
 
+#: canvas_view.cpp:105
 msgid "Select left"
 msgstr "Перейти влево"
 
+#: canvas_view.cpp:106
 msgid "Select right"
 msgstr "Перейти вправо"
 
+#: canvas_view.cpp:109
+#, fuzzy
+msgid "Select subtree"
+msgstr "Перейти выше"
+
+#: canvas_view.cpp:114
 msgid "Next root"
 msgstr "Следующий корень"
 
+#: canvas_view.cpp:117
+msgid "Toggle edit"
+msgstr "Правка"
+
+#: canvas_view.cpp:122
+#, fuzzy
+msgid "Cancel edit"
+msgstr "&Отменить"
+
+#: canvas_view.cpp:138
 msgid "Colors"
 msgstr "Цвета"
 
+#: canvas_view.cpp:139
 msgid "Data type"
 msgstr "Тип данных"
 
+#: canvas_view.cpp:148
 msgid "Text"
 msgstr "Текст"
 
+#: canvas_view.cpp:149
 msgid "Diagram"
 msgstr "Диаграмма"
 
+#: canvas_view.cpp:150
 msgid "Table"
 msgstr "Таблица"
 
+#: canvas_view.cpp:151
 msgid "Image"
 msgstr "Картинка"
 
-msgid "Flag"
-msgstr "Флаг"
+#: canvas_view.cpp:224 canvas_view.cpp:276 canvas_view.cpp:288
+#: data_item.cpp:27
+msgid "Empty"
+msgstr "Пусто"
 
+#: canvas_view.cpp:573
 msgid "Color"
 msgstr "Цвет"
 
-#, kde-format
+#: canvas_view.cpp:623
+msgid "Flag"
+msgstr "Флаг"
+
+#: canvas_view.cpp:940
 msgid "Click to set Item %1"
 msgstr "Нажмите, чтобы установить объект %1"
 
+#: canvas_view.cpp:1250
+msgid "*.png|PNG Files (*.png)"
+msgstr ""
+
+#: canvas_view.cpp:1288
+msgid "No destination file selected"
+msgstr ""
+
+#: canvas_view.cpp:1323
+#, fuzzy
+msgid "Exported '%1'"
+msgstr "«%1» сохранён"
+
+#: canvas_view.cpp:1325
+#, fuzzy
+msgid "Could not save to %1"
+msgstr "Нажмите, чтобы установить объект %1"
+
+#: canvas_view.cpp:1325
+#, fuzzy
+msgid "Missing picture"
+msgstr "Изменить картинку"
+
+#: config_dialog.cpp:29
+#, fuzzy
+msgid "Document settings"
+msgstr "Заголовок документа"
+
+#: config_dialog.cpp:37
 msgid "Reorganization type"
 msgstr "Вид группировки"
 
+#: config_dialog.cpp:41
 msgid "Connection type"
 msgstr "Вид соединений"
 
+#: config_dialog.cpp:45
 msgid "Save document automatically"
 msgstr "Сохранять автоматически"
 
+#: config_dialog.cpp:49
 msgid "Background color"
 msgstr "Цвет фона"
 
+#: config_dialog.cpp:54
 msgid "Fixed"
 msgstr ""
 
+#: config_dialog.cpp:54
 msgid "Force-based"
 msgstr ""
 
+#: config_dialog.cpp:54
 msgid "Incremental"
 msgstr ""
 
+#: config_dialog.cpp:58
 msgid "Lines"
 msgstr "Отрезки"
 
+#: config_dialog.cpp:58
 msgid "Splines"
 msgstr "Кривые"
 
+#: config_dialog.cpp:62
 msgid " min"
 msgstr " мин"
 
+#: config_dialog.cpp:65
 msgid ""
 "Interval in minutes for saving the document automatically, 0 for disabling "
 "this feature"
@@ -124,261 +200,429 @@ msgstr ""
 "Период автоматического сохранения документа в минутах,\n"
 "«0» отключает автосохранение."
 
-#, kde-format
-msgid "Automatic save failed for file: %1"
-msgstr "Не удалось сохранить автоматически файл «%1»"
-
-#, kde-format
-msgid "%1 saved automatically"
-msgstr "«%1» автоматически сохранён."
-
-#, kde-format
-msgid "Color %1"
-msgstr "Цвет %1"
-
-#, kde-format
-msgid "File saving: missing file %1"
-msgstr "Сохранение файла: файл «%1» не существует"
-
-msgid "Missing bindings for opening files"
-msgstr "Не могу открыть файл: ошибка поддержки Python"
-
-#, kde-format
-msgid "Missing filter file %1 for opening files"
-msgstr "Не найден файл фильтра «%1» для открытия файлов"
-
-msgid "dirty"
-msgstr "черновик"
-
-#, kde-format
-msgid "Code generation failed: missing file %1"
-msgstr "Не удалось генерировать код: нет файла «%1»"
-
+#: data_view.cpp:17
 msgid "<p align='center'>No item selected</p>"
 msgstr "<p align='center'>Ничего не выбрано</p>"
 
+#: doc_dialog.cpp:30
 msgid "First Name"
 msgstr "Имя"
 
+#: doc_dialog.cpp:34 generator_dialog.cpp:56
 msgid "Name"
 msgstr "Фамилия"
 
+#: doc_dialog.cpp:38
 msgid "Organization"
 msgstr "Учреждение"
 
+#: doc_dialog.cpp:42
 msgid "Email"
 msgstr "Эл. почта"
 
-msgid "Add Box"
-msgstr "Добавить элемент"
+#: export_map_dialog.cpp:31
+#, fuzzy
+msgid "Export the map"
+msgstr "Пустой план"
 
+#: export_map_dialog.cpp:37
+msgid "File to write"
+msgstr ""
+
+#: export_map_dialog.cpp:43
+msgid "Width"
+msgstr ""
+
+#: export_map_dialog.cpp:51
+#, fuzzy
+msgid "Height"
+msgstr "Сдвинуть вправо"
+
+#: fig/box_fork.cpp:334 fig/box_item.cpp:133
+msgid "%1 x %2"
+msgstr ""
+
+#: fig/box_item.cpp:189
+msgid "Properties for diagram box"
+msgstr ""
+
+#: fig/box_item.cpp:190
+#, fuzzy
+msgid "Text:"
+msgstr "Текст"
+
+#: fig/box_link_properties.cpp:21
+msgid "Link properties"
+msgstr ""
+
+#: fig/box_link_properties.cpp:29
+msgid "Thickness"
+msgstr ""
+
+#: fig/box_link_properties.cpp:33
+msgid "Line Style"
+msgstr ""
+
+#: fig/box_link_properties.cpp:37
+msgid "Left arrow"
+msgstr ""
+
+#: fig/box_link_properties.cpp:41
+msgid "Right arrow"
+msgstr ""
+
+#: fig/box_link_properties.cpp:51
+msgid "Invisible line"
+msgstr ""
+
+#: fig/box_link_properties.cpp:52
+#, fuzzy
+msgid "Solid Line"
+msgstr "сплошная линия"
+
+#: fig/box_link_properties.cpp:53
+#, fuzzy
+msgid "Dot Line"
+msgstr "Отрезки"
+
+#: fig/box_link_properties.cpp:54
+#, fuzzy
+msgid "Dash Line"
+msgstr "штриховая линия"
+
+#: fig/box_link_properties.cpp:58 fig/box_link_properties.cpp:63
+msgid "No arrow"
+msgstr ""
+
+#: fig/box_link_properties.cpp:59 fig/box_link_properties.cpp:64
+msgid "Triangle"
+msgstr ""
+
+#: fig/box_view.cpp:83
+msgid "box_item"
+msgstr ""
+
+#: fig/box_view.cpp:85
+msgid "id"
+msgstr ""
+
+#: fig/box_view.cpp:90 fig/box_view.cpp:100
+msgid "c1"
+msgstr ""
+
+#: fig/box_view.cpp:91 fig/box_view.cpp:102
+msgid "c2"
+msgstr ""
+
+#: fig/box_view.cpp:92
+msgid "text"
+msgstr ""
+
+#: fig/box_view.cpp:93
+#, fuzzy
+msgid "col"
+msgstr "&Прокрутка"
+
+#: fig/box_view.cpp:96 fig/box_view.cpp:132
+msgid "box_link"
+msgstr ""
+
+#: fig/box_view.cpp:99
+msgid "p1"
+msgstr ""
+
+#: fig/box_view.cpp:101
+msgid "p2"
+msgstr ""
+
+#: fig/box_view.cpp:114
+msgid "sl"
+msgstr ""
+
+#: fig/box_view.cpp:115
+msgid "wl"
+msgstr ""
+
+#: fig/box_view.cpp:119
+msgid "box_link_offset"
+msgstr ""
+
+#: fig/box_view.cpp:123
+msgid "x"
+msgstr ""
+
+#: fig/box_view.cpp:123
+msgid "y"
+msgstr ""
+
+#: fig/box_view.cpp:160
+msgid "Properties..."
+msgstr ""
+
+#: fig/box_view.cpp:165
+msgid "Activity"
+msgstr ""
+
+#: fig/box_view.cpp:166
+msgid "Ctrl+Return"
+msgstr ""
+
+#: fig/box_view.cpp:171
 msgid "Delete"
 msgstr "Удалить"
 
+#: fig/box_view.cpp:175
 msgid "Color..."
 msgstr "Цвет..."
 
-msgid "Connection width"
-msgstr "Толщина соед. линии"
+#: fig/box_view.cpp:181
+msgid "PgUp"
+msgstr ""
 
-# Не нашёл стандартного сокращения для пикселя, пока что "п."
+#: fig/box_view.cpp:186
+msgid "PgDown"
+msgstr ""
+
+#: fig/box_view.cpp:190
+msgid "Floating text"
+msgstr ""
+
+#: fig/box_view.cpp:192
+msgid "Component"
+msgstr ""
+
+#: fig/box_view.cpp:194
+msgid "Node"
+msgstr ""
+
+#: fig/box_view.cpp:196
+msgid "Activity start"
+msgstr ""
+
+#: fig/box_view.cpp:198
+msgid "Activity end"
+msgstr ""
+
+#: fig/box_view.cpp:200
+msgid "Horizontal fork/join"
+msgstr ""
+
+#: fig/box_view.cpp:202
+msgid "Vertical fork/join"
+msgstr ""
+
+#: fig/box_view.cpp:204
+msgid "Actor"
+msgstr ""
+
+#: fig/box_view.cpp:206
+msgid "Usecase"
+msgstr ""
+
+#: fig/box_view.cpp:215
+msgid "More elements"
+msgstr ""
+
+#: fig/box_view.cpp:247
+msgid "Alignment"
+msgstr ""
+
+#: fig/box_view.cpp:249
+msgid "Align left"
+msgstr ""
+
+#: fig/box_view.cpp:250
+msgid "Align center"
+msgstr ""
+
+#: fig/box_view.cpp:251
 #, fuzzy
-msgid "1px"
-msgstr "1 п."
+msgid "Align right"
+msgstr "Перейти вправо"
 
-# Не нашёл стандартного сокращения для пикселя, пока что "п."
+#: fig/box_view.cpp:253
+msgid "Align top"
+msgstr ""
+
+#: fig/box_view.cpp:254
+msgid "Align middle"
+msgstr ""
+
+#: fig/box_view.cpp:255
+msgid "Align bottom"
+msgstr ""
+
+#: fig/box_view.cpp:258
+msgid "Size"
+msgstr ""
+
+#: fig/box_view.cpp:260
+msgid "Same width"
+msgstr ""
+
+#: fig/box_view.cpp:261
 #, fuzzy
-msgid "2px"
-msgstr "2 п."
+msgid "Same height"
+msgstr "Перейти вправо"
 
-# Не нашёл стандартного сокращения для пикселя, пока что "п."
-#, fuzzy
-msgid "3px"
-msgstr "3 п."
+#: fig/box_view.cpp:262
+msgid "Same width and height"
+msgstr ""
 
-msgid "Connection style"
-msgstr "Тип соединений"
-
-msgid "solid line"
-msgstr "сплошная линия"
-
-msgid "dot line"
-msgstr "пунктир"
-
-msgid "dash line"
-msgstr "штриховая линия"
-
+#: flag_scheme.cpp:14
 msgid "Flag item(s) as..."
 msgstr "Пометить элемент(ы) как..."
 
-msgid "exclude the table"
-msgstr "исключить таблицу"
+#: generator_dialog.cpp:30
+#, fuzzy
+msgid "Generate documents"
+msgstr "Генераторы"
 
-msgid "fit the item on one slide"
-msgstr "Закрепить элементы на одном слайде"
-
-msgid "picture caption"
-msgstr "Захват картинки"
-
-msgid "picture dimension in pdf files"
-msgstr "Размеры картинки в файлах PDF"
-
-msgid "html div style: style=\"width: 99px;\""
-msgstr "html div style: style=\"width: 99px;\""
-
-msgid "html picture style: style=\"width: 99px;\""
-msgstr "html picture style: style=\"width: 99px;\""
-
-msgid "do not use this item for generating slides"
-msgstr "Не использовать этот элемент при создании слайда"
-
-#, c-format
-msgid "command to launch (%s is the resulting file)"
-msgstr "Выполняемая команда («%s» - имя целевого файла)"
-
-#, c-format
-msgid "cd `echo %s | sed s/main.tex//` && ./waf configure && waf --view"
-msgstr "cd `echo %s | sed s/main.tex//` && ./waf configure && waf --view"
-
-#, c-format
-msgid "firefox %s"
-msgstr "firefox %s"
-
-# In Russia we generally use OO.o build from the Infra-resource (http://i-rs.ru) which uses "openoffice.org3 -impress" syntax
-#, c-format
-msgid "ooimpress %s"
-msgstr "openoffice.org3 -impress %s"
-
-#, c-format
-msgid "oowriter %s"
-msgstr "openoffice.org3 -writer %s"
-
-msgid "document author"
-msgstr "Автор документа"
-
-msgid "turn off the document author (latex)"
-msgstr "Скрыть автора документа (LaTeX)"
-
-msgid "document class (latex: a4, report, book)"
-msgstr "Класс документа (latex: a4, report, book)"
-
-msgid "company"
-msgstr "Учреждение"
-
-msgid "document date"
-msgstr "Дата документа"
-
-msgid "turn of the document date (latex)"
-msgstr "Скрыть дату (LaTeX)"
-
-msgid "location of the presentation"
-msgstr "Расположение презентации"
-
-msgid "document title"
-msgstr "Заголовок документа"
-
-msgid "turn off the document title (latex)"
-msgstr "Скрыть заголовок (LaTeX)"
-
-msgid "footer center (pdflatex)"
-msgstr "Нижний колонтитул, по центру"
-
-msgid "footer left (pdflatex)"
-msgstr "Нижний колонтитул, слева"
-
-msgid "turn off the fancy output"
-msgstr "не использовать \"украшенный\" вывод (latex)"
-
-msgid "footer right"
-msgstr "Нижний колонтитул, справа"
-
-msgid "header center (pdflatex)"
-msgstr "Верхний колонтитул, по центру"
-
-msgid "header left"
-msgstr "Верхний колонтитул, слева"
-
-msgid "header right"
-msgstr "Верхний колонтитул, справа"
-
-msgid "openoffice.org language (fr_FR)"
-msgstr "язык для openoffice.org (ru_RU)"
-
-msgid "openoffice.org presentation language"
-msgstr "Язык для презентации openoffice.org"
-
-msgid "openoffice.org text language"
-msgstr "Язык для текстового документа openoffice.org"
-
-msgid "Warsaw (JuanLesPins, Montpellier, )"
-msgstr ""
-
-msgid "Generator dialog"
-msgstr "Диалог создания документа"
-
+#: generator_dialog.cpp:36
 msgid "Generators"
 msgstr "Генераторы"
 
+#: generator_dialog.cpp:39
 msgid "Description"
 msgstr "Описание"
 
+#: generator_dialog.cpp:63
 msgid "Location"
 msgstr "Расположение"
 
-msgid "&Ok"
-msgstr "&Угу"
-
-msgid "&Cancel"
-msgstr "&Отменить"
-
+#: generator_dialog.cpp:114
 msgid "No document generator chosen."
 msgstr "Не выбран генератор документа."
 
+#: generator_dialog.cpp:114
 msgid "Missing data"
 msgstr "Нет данных"
 
-#, kde-format
+#: generator_dialog.cpp:120
 msgid "Invalid output directory %1"
 msgstr "Неверный целевой каталог «%1»"
 
+#: generator_dialog.cpp:120
 msgid "Missing location"
 msgstr "Не указано расположение"
 
+#: image_view.cpp:36
 msgid "Change picture"
 msgstr "Изменить картинку"
 
+#: image_view.cpp:40
 msgid "Clear picture"
 msgstr "Убрать картинку"
 
+#: image_view.cpp:65
 msgid "Click to set a picture"
 msgstr "Нажмите, чтобы задать картинку"
 
+#: image_view.cpp:69
 msgid "Select an item on the map"
 msgstr "Выбрать объект на плане"
 
-msgid "Choose a file"
-msgstr "Выбор файла"
-
-msgid "Image files (*.png *.jpg *.jpeg *.gif)"
+#: image_view.cpp:165
+#, fuzzy
+msgid "*.png *.jpg *.jpeg *.gif|Image Files (*.png *.jpg *.jpeg *.gif)"
 msgstr "Файлы изображений (*.png *.jpg *.jpeg *.gif)"
 
-#, kde-format
-msgid "File %1 does not exist"
-msgstr "Файл «%1» не существует"
+#: image_view.cpp:166
+#, fuzzy
+msgid "Choose a picture"
+msgstr "Выбор файла"
 
-#, kde-format
-msgid "File %1 could not be opened"
-msgstr "Файл «%1» не может быть открыт"
+#: image_view.cpp:178
+#, fuzzy
+msgid "Could not load the picture"
+msgstr "Нажмите, чтобы задать картинку"
 
-msgid "something bad happened"
-msgstr "случилось нечто плохое"
+#: main.cpp:25
+msgid ""
+"A mind-mapping tool for KDE\n"
+"Available exclusively for open systems such as OpenSuse, Gentoo or Fedora."
+msgstr ""
 
-msgid "something worse happened"
-msgstr "случилось нечто страшное"
+#: main.cpp:41
+msgid "A file to open on startup"
+msgstr ""
 
+#: main.cpp:43
+msgid "Semantik"
+msgstr "Semantik"
+
+#: main.cpp:44
+msgid "(C) 2007-2012 Thomas Nagy"
+msgstr ""
+
+#: main.cpp:47
+msgid "Thomas Nagy"
+msgstr ""
+
+#. i18n: file: data/semantikui.rc:5
+#. i18n: ectx: Menu (file)
+#: po/rc.cpp:3 rc.cpp:3
+msgid "&File"
+msgstr ""
+
+#. i18n: file: data/semantikui.rc:7
+#. i18n: ectx: Menu (edit)
+#: po/rc.cpp:6 rc.cpp:6
+msgid "&Edit"
+msgstr ""
+
+#. i18n: file: data/semantikui.rc:12
+#. i18n: ectx: Menu (view)
+#: po/rc.cpp:9 rc.cpp:9
+msgid "&View"
+msgstr ""
+
+#. i18n: file: data/semantikui.rc:20
+#. i18n: ectx: Menu (tools)
+#: po/rc.cpp:12 rc.cpp:12
+msgid "&Tools"
+msgstr ""
+
+#. i18n: file: data/semantikui.rc:23
+#. i18n: ectx: Menu (settings)
+#: po/rc.cpp:15 rc.cpp:15
+msgid "&Settings"
+msgstr ""
+
+#. i18n: file: data/semantikui.rc:26
+#. i18n: ectx: Menu (help)
+#: po/rc.cpp:18 rc.cpp:18
+msgid "&Help"
+msgstr ""
+
+#. i18n: file: data/semantikui.rc:40
+#. i18n: ectx: ToolBar (colorsToolBar)
+#: po/rc.cpp:21 rc.cpp:21
+#, fuzzy
+msgid "Colors Toolbar"
+msgstr "Цвета"
+
+#. i18n: file: data/semantikui.rc:44
+#. i18n: ectx: ToolBar (flagsToolBar)
+#: po/rc.cpp:24 rc.cpp:24
+msgid "Flags Toolbar"
+msgstr ""
+
+#: po/rc.cpp:25 rc.cpp:25
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr ""
+
+#: po/rc.cpp:26 rc.cpp:26
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr ""
+
+#: pre_view.cpp:23
 msgid "<p align='center'>No preview available<br/>at this time</p>"
 msgstr "<p align='center'>В настоящее время<br/>предпросмотр недоступен</p>"
 
+#: semantik.cpp:45
 msgid ""
 "The map is empty, Semantik\n"
 "cannot create documents from it"
@@ -386,78 +630,116 @@ msgstr ""
 "План пуст; Semantik\n"
 "не может создать документ."
 
+#: semantik.cpp:45
 msgid "Empty map"
 msgstr "Пустой план"
 
-#, kde-format
+#: semantik.cpp:52
 msgid "Template folder %1 is not readable"
 msgstr "Каталог с шаблонами («%1») недоступен для чтения"
 
+#: semantik.cpp:166
 msgid "&Reorganize the map"
 msgstr "&Перегруппировать"
 
+#: semantik.cpp:168
+msgid "Ctrl+R"
+msgstr ""
+
+#: semantik.cpp:171
+msgid "&Export the map..."
+msgstr ""
+
+#: semantik.cpp:173
+msgid "Ctrl+Shift+E"
+msgstr ""
+
+#: semantik.cpp:178
 msgid "&Generate..."
 msgstr "&Создать..."
 
-msgid "&Select"
-msgstr "&Выбрать"
+#: semantik.cpp:181
+msgid "Ctrl+G"
+msgstr ""
 
-msgid "&Link"
-msgstr "&Ссылка"
-
-msgid "&Sort"
-msgstr "&Упорядочить"
-
-msgid "&Scroll"
-msgstr "&Прокрутка"
-
+#: semantik.cpp:187
 msgid "CustomColor"
 msgstr "Другой цвет"
 
+#: semantik.cpp:201
+msgid "Ctrl+H"
+msgstr ""
+
+#: semantik.cpp:210
 msgid "Data"
 msgstr "Данные"
 
+#: semantik.cpp:233
 msgid "Variables"
 msgstr "Переменные"
 
+#: semantik.cpp:242
 msgid "Preview"
 msgstr "Предв. просмотр"
 
+#: semantik.cpp:254
 msgid "Linear view"
 msgstr "Структура"
 
+#: semantik.cpp:347
 msgid "Welcome to Semantik"
 msgstr "Добро пожаловать в Semantik"
 
+#: semantik.cpp:393
 msgid "Ready"
 msgstr "Готово"
 
+#: semantik.cpp:400
 msgid "*.sem|Semantik file (*.sem)"
 msgstr "*.sem|Файлы Semantik (*.sem)"
 
+#: semantik.cpp:401 semantik.cpp:463
 msgid "Choose a file name"
 msgstr "Укажите имя файла"
 
-#, kde-format
+#: semantik.cpp:414
+msgid ""
+"The file \"%1\" already exists.\n"
+"Overwrite it?"
+msgstr ""
+
+#: semantik.cpp:415
+msgid "Overwrite existing file"
+msgstr ""
+
+#: semantik.cpp:426 semantik.cpp:448
 msgid "Saved '%1'"
 msgstr "«%1» сохранён"
 
+#: semantik.cpp:462
 msgid "*.sem *.kdi *.mm *.vym|All Supported Files (*.sem *.kdi *.mm *.vym)"
 msgstr ""
-"*.sem *.kdi *.mm *.vym|Файлы поддерживаемых форматов (*.sem *.kdi *.mm *."
-"vym)"
+"*.sem *.kdi *.mm *.vym|Файлы поддерживаемых форматов (*.sem *.kdi *.mm *.vym)"
 
-msgid "Semantik"
+#: semantik.cpp:474
+msgid " [Modified] "
+msgstr ""
+
+#: semantik.cpp:479
+#, fuzzy
+msgid "Semantik %1"
 msgstr "Semantik"
 
-#, kde-format
-msgid "%1 - Semantik"
+#: semantik.cpp:483
+#, fuzzy
+msgid "%1 %2 - Semantik"
 msgstr "%1 - Semantik"
 
+#: semantik.cpp:530
 msgid "Untitled"
 msgstr "Неназванный"
 
-#, kde-format
+#: semantik.cpp:533
 msgid ""
 "The document \"%1\" has been modified.\n"
 "Do you want to save your changes or discard them?"
@@ -465,62 +747,293 @@ msgstr ""
 "Документ «%1» изменён. \n"
 "Сохранить изменения или отклонить их?"
 
+#: semantik.cpp:534
 msgid "Close Document"
 msgstr "Закрыть документ"
 
+#: sem_mediator.cpp:270
+msgid "Automatic save failed for file: %1"
+msgstr "Не удалось сохранить автоматически файл «%1»"
+
+#: sem_mediator.cpp:273
+msgid "%1 saved automatically"
+msgstr "«%1» автоматически сохранён."
+
+#: sem_mediator.cpp:292
+msgid "Color %1"
+msgstr "Цвет %1"
+
+#: sem_mediator.cpp:618
+msgid "File saving: missing file %1"
+msgstr "Сохранение файла: файл «%1» не существует"
+
+#: sem_mediator.cpp:643 sem_mediator.cpp:1142 sem_mediator.cpp:1185
+msgid "Missing bindings for opening files"
+msgstr "Не могу открыть файл: ошибка поддержки Python"
+
+#: sem_mediator.cpp:694
+msgid "Missing filter file %1 for opening files"
+msgstr "Не найден файл фильтра «%1» для открытия файлов"
+
+#: sem_mediator.cpp:694 sem_mediator.cpp:709
+msgid "Broken installation"
+msgstr ""
+
+#: sem_mediator.cpp:709
+#, fuzzy
+msgid "Missing python bindings for opening files"
+msgstr "Не могу открыть файл: ошибка поддержки Python"
+
+#: sem_mediator.cpp:725
+msgid "Could not load the document %1"
+msgstr ""
+
+#: sem_mediator.cpp:725
+#, fuzzy
+msgid "Broken document"
+msgstr "Закрыть документ"
+
+#: sem_mediator.cpp:1108
+msgid "Code generation failed: missing file %1"
+msgstr "Не удалось генерировать код: нет файла «%1»"
+
+#: sem_mediator.cpp:1147
+msgid "Document generation completed successfully"
+msgstr ""
+
+#: table_dialog.cpp:32
 msgid "Rows"
 msgstr "Строки"
 
+#: table_dialog.cpp:36
 msgid "Columns"
 msgstr "Столбцы"
 
+#: table_view.cpp:25 table_view.cpp:79
 msgid "Add Row"
 msgstr "Добавить строку"
 
+#: table_view.cpp:26
 msgid "Add a row"
 msgstr "Вставлена строка"
 
+#: table_view.cpp:30 table_view.cpp:80
 msgid "Add Column"
 msgstr "Добавить столбец"
 
+#: table_view.cpp:31
 msgid "Add a column"
 msgstr "Вставлен столбец"
 
+#: table_view.cpp:36 table_view.cpp:81
 msgid "Remove Row"
 msgstr "Удалить строку"
 
+#: table_view.cpp:37
 msgid "Remove a row"
 msgstr "Строка удалена"
 
+#: table_view.cpp:41 table_view.cpp:82
 msgid "Remove Column"
 msgstr "Удалить столбец"
 
+#: table_view.cpp:42
 msgid "Remove a column"
 msgstr "Столбец удалён"
 
+#: table_view.cpp:46
 msgid "Redimension"
 msgstr "Указать размер таблицы"
 
+#: table_view.cpp:47
 msgid "Change table dimensions"
 msgstr "Изменение размеров таблицы"
 
+#: text_view.cpp:40
 msgid "&Bold"
 msgstr "Полу&жирный"
 
+#: text_view.cpp:41
+msgid "Ctrl+B"
+msgstr ""
+
+#: text_view.cpp:44
 msgid "&Italic"
 msgstr "&Курсив"
 
+#: text_view.cpp:45
+msgid "Ctrl+I"
+msgstr ""
+
+#: text_view.cpp:48
 msgid "&Underline"
 msgstr "&Подчёркнутый"
 
+#: text_view.cpp:49
+msgid "Ctrl+U"
+msgstr ""
+
+#: vars_view.cpp:76
 msgid "Code complete"
 msgstr "Код готов"
 
-msgid "exclude the picture"
-msgstr "исключить изображение"
+#: vars_view.cpp:77
+msgid "Ctrl+space"
+msgstr ""
 
-msgid "latex language: english (frenchb, )"
-msgstr "langage pour latex: english (frenchb, )"
+#~ msgid "dirty"
+#~ msgstr "черновик"
+
+#~ msgid "Add Box"
+#~ msgstr "Добавить элемент"
+
+#~ msgid "Connection width"
+#~ msgstr "Толщина соед. линии"
+
+# Не нашёл стандартного сокращения для пикселя, пока что "п."
+#, fuzzy
+#~ msgid "1px"
+#~ msgstr "1 п."
+
+# Не нашёл стандартного сокращения для пикселя, пока что "п."
+#, fuzzy
+#~ msgid "2px"
+#~ msgstr "2 п."
+
+# Не нашёл стандартного сокращения для пикселя, пока что "п."
+#, fuzzy
+#~ msgid "3px"
+#~ msgstr "3 п."
+
+#~ msgid "Connection style"
+#~ msgstr "Тип соединений"
+
+#~ msgid "dot line"
+#~ msgstr "пунктир"
+
+#~ msgid "exclude the table"
+#~ msgstr "исключить таблицу"
+
+#~ msgid "fit the item on one slide"
+#~ msgstr "Закрепить элементы на одном слайде"
+
+#~ msgid "picture caption"
+#~ msgstr "Захват картинки"
+
+#~ msgid "picture dimension in pdf files"
+#~ msgstr "Размеры картинки в файлах PDF"
+
+#~ msgid "html div style: style=\"width: 99px;\""
+#~ msgstr "html div style: style=\"width: 99px;\""
+
+#~ msgid "html picture style: style=\"width: 99px;\""
+#~ msgstr "html picture style: style=\"width: 99px;\""
+
+#~ msgid "do not use this item for generating slides"
+#~ msgstr "Не использовать этот элемент при создании слайда"
+
+#~ msgid "command to launch (%s is the resulting file)"
+#~ msgstr "Выполняемая команда («%s» - имя целевого файла)"
+
+#~ msgid "cd `echo %s | sed s/main.tex//` && ./waf configure && waf --view"
+#~ msgstr "cd `echo %s | sed s/main.tex//` && ./waf configure && waf --view"
+
+#~ msgid "firefox %s"
+#~ msgstr "firefox %s"
+
+# In Russia we generally use OO.o build from the Infra-resource (http://i-rs.ru) which uses "openoffice.org3 -impress" syntax
+#~ msgid "ooimpress %s"
+#~ msgstr "openoffice.org3 -impress %s"
+
+#~ msgid "oowriter %s"
+#~ msgstr "openoffice.org3 -writer %s"
+
+#~ msgid "document author"
+#~ msgstr "Автор документа"
+
+#~ msgid "turn off the document author (latex)"
+#~ msgstr "Скрыть автора документа (LaTeX)"
+
+#~ msgid "document class (latex: a4, report, book)"
+#~ msgstr "Класс документа (latex: a4, report, book)"
+
+#~ msgid "company"
+#~ msgstr "Учреждение"
+
+#~ msgid "document date"
+#~ msgstr "Дата документа"
+
+#~ msgid "turn of the document date (latex)"
+#~ msgstr "Скрыть дату (LaTeX)"
+
+#~ msgid "location of the presentation"
+#~ msgstr "Расположение презентации"
+
+#~ msgid "turn off the document title (latex)"
+#~ msgstr "Скрыть заголовок (LaTeX)"
+
+#~ msgid "footer center (pdflatex)"
+#~ msgstr "Нижний колонтитул, по центру"
+
+#~ msgid "footer left (pdflatex)"
+#~ msgstr "Нижний колонтитул, слева"
+
+#~ msgid "turn off the fancy output"
+#~ msgstr "не использовать \"украшенный\" вывод (latex)"
+
+#~ msgid "footer right"
+#~ msgstr "Нижний колонтитул, справа"
+
+#~ msgid "header center (pdflatex)"
+#~ msgstr "Верхний колонтитул, по центру"
+
+#~ msgid "header left"
+#~ msgstr "Верхний колонтитул, слева"
+
+#~ msgid "header right"
+#~ msgstr "Верхний колонтитул, справа"
+
+#~ msgid "openoffice.org language (fr_FR)"
+#~ msgstr "язык для openoffice.org (ru_RU)"
+
+#~ msgid "openoffice.org presentation language"
+#~ msgstr "Язык для презентации openoffice.org"
+
+#~ msgid "openoffice.org text language"
+#~ msgstr "Язык для текстового документа openoffice.org"
+
+#~ msgid "Generator dialog"
+#~ msgstr "Диалог создания документа"
+
+#~ msgid "&Ok"
+#~ msgstr "&Угу"
+
+#~ msgid "File %1 does not exist"
+#~ msgstr "Файл «%1» не существует"
+
+#~ msgid "File %1 could not be opened"
+#~ msgstr "Файл «%1» не может быть открыт"
+
+#~ msgid "something bad happened"
+#~ msgstr "случилось нечто плохое"
+
+#~ msgid "something worse happened"
+#~ msgstr "случилось нечто страшное"
+
+#~ msgid "&Select"
+#~ msgstr "&Выбрать"
+
+#~ msgid "&Link"
+#~ msgstr "&Ссылка"
+
+#~ msgid "&Sort"
+#~ msgstr "&Упорядочить"
+
+#~ msgid "exclude the picture"
+#~ msgstr "исключить изображение"
+
+#~ msgid "latex language: english (frenchb, )"
+#~ msgstr "langage pour latex: english (frenchb, )"
 
 #~ msgid "Code generation failed: missing bindings"
 #~ msgstr "La génération a échoué: le support Python est manquant"

@@ -1,115 +1,191 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: http://www.google.com\n"
-"POT-Creation-Date: 2009-04-26 15:20+0200\n"
+"Report-Msgid-Bugs-To: http://code.google.com/p/semantik/issues\n"
+"POT-Creation-Date: 2012-10-09 23:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Empty"
-msgstr "Vide"
+#: browser.cpp:21 canvas_view.cpp:134
+msgid "Toggle fullscreen"
+msgstr ""
 
-msgid "Toggle edit"
-msgstr "Bascule l'édition"
-
+#: canvas_view.cpp:83
 msgid "Insert child"
 msgstr "Insérer une branche"
 
+#: canvas_view.cpp:88 fig/box_view.cpp:170
 msgid "Delete selection"
 msgstr "Effacer la sélection"
 
+#: canvas_view.cpp:93
 msgid "Insert sibling"
 msgstr "Insérer un frère"
 
+#: canvas_view.cpp:98 fig/box_view.cpp:180
 msgid "Move up"
 msgstr "Déplacer vers le haut"
 
+#: canvas_view.cpp:99 fig/box_view.cpp:185
 msgid "Move down"
 msgstr "Déplacer vers le bas"
 
+#: canvas_view.cpp:100
 msgid "Move left"
 msgstr "Déplacer vers la gauche"
 
+#: canvas_view.cpp:101
 msgid "Move right"
 msgstr "Déplacer vers la droite"
 
+#: canvas_view.cpp:103
 msgid "Select up"
 msgstr "Sélectionner au dessus"
 
+#: canvas_view.cpp:104
 msgid "Select down"
 msgstr "Sélectionner en dessous"
 
+#: canvas_view.cpp:105
 msgid "Select left"
 msgstr "Sélectionner à gauche"
 
+#: canvas_view.cpp:106
 msgid "Select right"
 msgstr "Sélectionner à droite"
 
+#: canvas_view.cpp:109
+#, fuzzy
+msgid "Select subtree"
+msgstr "Sélectionner au dessus"
+
+#: canvas_view.cpp:114
 msgid "Next root"
 msgstr "Racine suivante"
 
+#: canvas_view.cpp:117
+msgid "Toggle edit"
+msgstr "Bascule l'édition"
+
+#: canvas_view.cpp:122
+msgid "Cancel edit"
+msgstr ""
+
+#: canvas_view.cpp:138
 msgid "Colors"
 msgstr "Couleurs"
 
+#: canvas_view.cpp:139
 msgid "Data type"
 msgstr "Type de donnée"
 
+#: canvas_view.cpp:148
 msgid "Text"
 msgstr "Texte"
 
+#: canvas_view.cpp:149
 msgid "Diagram"
 msgstr "Diagramme"
 
+#: canvas_view.cpp:150
 msgid "Table"
 msgstr "Table"
 
+#: canvas_view.cpp:151
 msgid "Image"
 msgstr "Image"
 
-msgid "Flag"
-msgstr "Drapeau"
+#: canvas_view.cpp:224 canvas_view.cpp:276 canvas_view.cpp:288
+#: data_item.cpp:27
+msgid "Empty"
+msgstr "Vide"
 
+#: canvas_view.cpp:573
 msgid "Color"
 msgstr "Couleur"
 
-#, kde-format
+#: canvas_view.cpp:623
+msgid "Flag"
+msgstr "Drapeau"
+
+#: canvas_view.cpp:940
 msgid "Click to set Item %1"
 msgstr "Cliquer pour mettre en place l'item %1"
 
+#: canvas_view.cpp:1250
+msgid "*.png|PNG Files (*.png)"
+msgstr ""
+
+#: canvas_view.cpp:1288
+msgid "No destination file selected"
+msgstr ""
+
+#: canvas_view.cpp:1323
+#, fuzzy
+msgid "Exported '%1'"
+msgstr "'%1' Sauvegardé"
+
+#: canvas_view.cpp:1325
+#, fuzzy
+msgid "Could not save to %1"
+msgstr "Cliquer pour mettre en place l'item %1"
+
+#: canvas_view.cpp:1325
+#, fuzzy
+msgid "Missing picture"
+msgstr "Changer l'image"
+
+#: config_dialog.cpp:29
+#, fuzzy
+msgid "Document settings"
+msgstr "titre du document"
+
+#: config_dialog.cpp:37
 msgid "Reorganization type"
 msgstr "Type de réorganisation"
 
+#: config_dialog.cpp:41
 msgid "Connection type"
 msgstr "Type de connexion"
 
+#: config_dialog.cpp:45
 msgid "Save document automatically"
 msgstr "Sauvegarder automatiquement"
 
+#: config_dialog.cpp:49
 msgid "Background color"
 msgstr "Couleur de fond"
 
+#: config_dialog.cpp:54
 msgid "Fixed"
 msgstr "Fixe"
 
+#: config_dialog.cpp:54
 msgid "Force-based"
 msgstr "Equilibre de forces"
 
+#: config_dialog.cpp:54
 msgid "Incremental"
 msgstr "Incrémental"
 
+#: config_dialog.cpp:58
 msgid "Lines"
 msgstr "Lignes"
 
+#: config_dialog.cpp:58
 msgid "Splines"
 msgstr "Courbes"
 
+#: config_dialog.cpp:62
 msgid " min"
 msgstr " min"
 
+#: config_dialog.cpp:65
 msgid ""
 "Interval in minutes for saving the document automatically, 0 for disabling "
 "this feature"
@@ -117,257 +193,432 @@ msgstr ""
 "Intervalle en minutes pour la sauvegarde automatique de documents, 0 pour "
 "désactiver cette fonctionnalité"
 
-#, kde-format
-msgid "Automatic save failed for file: %1"
-msgstr "La sauvegarde automatique a échoué pour le fichier: %1"
-
-#, kde-format
-msgid "%1 saved automatically"
-msgstr "%1 sauvegardé automatiquement"
-
-#, kde-format
-msgid "Color %1"
-msgstr "Couleur %1"
-
-#, kde-format
-msgid "File saving: missing file %1"
-msgstr "Sauvegarde de fichier: le fichier %1 est absent"
-
-msgid "Missing bindings for opening files"
-msgstr "Support Python absent: ouverture de fichier impossible"
-
-#, kde-format
-msgid "Missing filter file %1 for opening files"
-msgstr "Le filtre %1 pour l'ouverture de fichiers est manquant"
-
-msgid "dirty"
-msgstr ""
-
-#, kde-format
-msgid "Code generation failed: missing file %1"
-msgstr "La génération de code a échoué: le fichier %1 est absent"
-
+#: data_view.cpp:17
 msgid "<p align='center'>No item selected</p>"
 msgstr "<p align='center'>Aucune sélection</p>"
 
+#: doc_dialog.cpp:30
 msgid "First Name"
 msgstr "Prénom"
 
+#: doc_dialog.cpp:34 generator_dialog.cpp:56
 msgid "Name"
 msgstr "Nom"
 
+#: doc_dialog.cpp:38
 msgid "Organization"
 msgstr "Entreprise"
 
+#: doc_dialog.cpp:42
 msgid "Email"
 msgstr "Email"
 
-msgid "Add Box"
-msgstr "Ajouter un élément"
+#: export_map_dialog.cpp:31
+#, fuzzy
+msgid "Export the map"
+msgstr "Carte vide"
 
+#: export_map_dialog.cpp:37
+msgid "File to write"
+msgstr ""
+
+#: export_map_dialog.cpp:43
+msgid "Width"
+msgstr ""
+
+#: export_map_dialog.cpp:51
+#, fuzzy
+msgid "Height"
+msgstr "Déplacer vers la droite"
+
+#: fig/box_fork.cpp:334 fig/box_item.cpp:133
+msgid "%1 x %2"
+msgstr ""
+
+#: fig/box_item.cpp:189
+msgid "Properties for diagram box"
+msgstr ""
+
+#: fig/box_item.cpp:190
+#, fuzzy
+msgid "Text:"
+msgstr "Texte"
+
+#: fig/box_link_properties.cpp:21
+msgid "Link properties"
+msgstr ""
+
+#: fig/box_link_properties.cpp:29
+msgid "Thickness"
+msgstr ""
+
+#: fig/box_link_properties.cpp:33
+msgid "Line Style"
+msgstr ""
+
+#: fig/box_link_properties.cpp:37
+msgid "Left arrow"
+msgstr ""
+
+#: fig/box_link_properties.cpp:41
+msgid "Right arrow"
+msgstr ""
+
+#: fig/box_link_properties.cpp:51
+msgid "Invisible line"
+msgstr ""
+
+#: fig/box_link_properties.cpp:52
+#, fuzzy
+msgid "Solid Line"
+msgstr "ligne"
+
+#: fig/box_link_properties.cpp:53
+#, fuzzy
+msgid "Dot Line"
+msgstr "Lignes"
+
+#: fig/box_link_properties.cpp:54
+#, fuzzy
+msgid "Dash Line"
+msgstr "ligne brisée"
+
+#: fig/box_link_properties.cpp:58 fig/box_link_properties.cpp:63
+msgid "No arrow"
+msgstr ""
+
+#: fig/box_link_properties.cpp:59 fig/box_link_properties.cpp:64
+msgid "Triangle"
+msgstr ""
+
+#: fig/box_view.cpp:83
+msgid "box_item"
+msgstr ""
+
+#: fig/box_view.cpp:85
+msgid "id"
+msgstr ""
+
+#: fig/box_view.cpp:90 fig/box_view.cpp:100
+msgid "c1"
+msgstr ""
+
+#: fig/box_view.cpp:91 fig/box_view.cpp:102
+msgid "c2"
+msgstr ""
+
+#: fig/box_view.cpp:92
+msgid "text"
+msgstr ""
+
+#: fig/box_view.cpp:93
+#, fuzzy
+msgid "col"
+msgstr "&Parcourir la carte"
+
+#: fig/box_view.cpp:96 fig/box_view.cpp:132
+msgid "box_link"
+msgstr ""
+
+#: fig/box_view.cpp:99
+msgid "p1"
+msgstr ""
+
+#: fig/box_view.cpp:101
+msgid "p2"
+msgstr ""
+
+#: fig/box_view.cpp:114
+msgid "sl"
+msgstr ""
+
+#: fig/box_view.cpp:115
+msgid "wl"
+msgstr ""
+
+#: fig/box_view.cpp:119
+msgid "box_link_offset"
+msgstr ""
+
+#: fig/box_view.cpp:123
+msgid "x"
+msgstr ""
+
+#: fig/box_view.cpp:123
+msgid "y"
+msgstr ""
+
+#: fig/box_view.cpp:160
+msgid "Properties..."
+msgstr ""
+
+#: fig/box_view.cpp:165
+msgid "Activity"
+msgstr ""
+
+#: fig/box_view.cpp:166
+msgid "Ctrl+Return"
+msgstr ""
+
+#: fig/box_view.cpp:171
 #, fuzzy
 msgid "Delete"
 msgstr "&Sélectionner"
 
+#: fig/box_view.cpp:175
 msgid "Color..."
 msgstr "Couleur..."
 
-msgid "Connection width"
-msgstr "Largeur de connexion"
+#: fig/box_view.cpp:181
+msgid "PgUp"
+msgstr ""
 
-msgid "1px"
-msgstr "1px"
+#: fig/box_view.cpp:186
+msgid "PgDown"
+msgstr ""
 
-msgid "2px"
-msgstr "2px"
+#: fig/box_view.cpp:190
+msgid "Floating text"
+msgstr ""
 
-msgid "3px"
-msgstr "3px"
+#: fig/box_view.cpp:192
+msgid "Component"
+msgstr ""
 
-msgid "Connection style"
-msgstr "Style de connexion"
+#: fig/box_view.cpp:194
+msgid "Node"
+msgstr ""
 
-msgid "solid line"
-msgstr "ligne"
+#: fig/box_view.cpp:196
+msgid "Activity start"
+msgstr ""
 
-msgid "dot line"
-msgstr "pointillés"
+#: fig/box_view.cpp:198
+msgid "Activity end"
+msgstr ""
 
-msgid "dash line"
-msgstr "ligne brisée"
+#: fig/box_view.cpp:200
+msgid "Horizontal fork/join"
+msgstr ""
 
+#: fig/box_view.cpp:202
+msgid "Vertical fork/join"
+msgstr ""
+
+#: fig/box_view.cpp:204
+msgid "Actor"
+msgstr ""
+
+#: fig/box_view.cpp:206
+msgid "Usecase"
+msgstr ""
+
+#: fig/box_view.cpp:215
+msgid "More elements"
+msgstr ""
+
+#: fig/box_view.cpp:247
+msgid "Alignment"
+msgstr ""
+
+#: fig/box_view.cpp:249
+msgid "Align left"
+msgstr ""
+
+#: fig/box_view.cpp:250
+msgid "Align center"
+msgstr ""
+
+#: fig/box_view.cpp:251
+#, fuzzy
+msgid "Align right"
+msgstr "Sélectionner à droite"
+
+#: fig/box_view.cpp:253
+msgid "Align top"
+msgstr ""
+
+#: fig/box_view.cpp:254
+msgid "Align middle"
+msgstr ""
+
+#: fig/box_view.cpp:255
+msgid "Align bottom"
+msgstr ""
+
+#: fig/box_view.cpp:258
+msgid "Size"
+msgstr ""
+
+#: fig/box_view.cpp:260
+msgid "Same width"
+msgstr ""
+
+#: fig/box_view.cpp:261
+#, fuzzy
+msgid "Same height"
+msgstr "Sélectionner à droite"
+
+#: fig/box_view.cpp:262
+msgid "Same width and height"
+msgstr ""
+
+#: flag_scheme.cpp:14
 msgid "Flag item(s) as..."
 msgstr "Marquer l'objet comme..."
 
-msgid "exclude the table"
-msgstr "exclure la table"
+#: generator_dialog.cpp:30
+#, fuzzy
+msgid "Generate documents"
+msgstr "Générateurs"
 
-msgid "fit the item on one slide"
-msgstr ""
-
-msgid "picture caption"
-msgstr "légende pour l'image"
-
-msgid "picture dimension in pdf files"
-msgstr "dimension de l'image dans les fichiers pdf"
-
-msgid "html div style: style=\"width: 99px;\""
-msgstr "html div style: style=\"width: 99px;\""
-
-msgid "html picture style: style=\"width: 99px;\""
-msgstr "html picture style: style=\"width: 99px;\""
-
-msgid "do not use this item for generating slides"
-msgstr "ne pas utiliser cet objet pour la génération de slides"
-
-#, c-format
-msgid "command to launch (%s is the resulting file)"
-msgstr "commande à lancer (%s représente le fichier généré)"
-
-#, c-format
-msgid "cd `echo %s | sed s/main.tex//` && ./waf configure && waf --view"
-msgstr "cd `echo %s | sed s/main.tex//` && ./waf configure && waf --view"
-
-#, c-format
-msgid "firefox %s"
-msgstr "firefox %s"
-
-#, c-format
-msgid "ooimpress %s"
-msgstr "ooimpress %s"
-
-#, c-format
-msgid "oowriter %s"
-msgstr "oowriter %s"
-
-msgid "document author"
-msgstr "auteur du document"
-
-msgid "turn off the document author (latex)"
-msgstr "masquer l'auteur du document (latex)"
-
-msgid "document class (latex: a4, report, book)"
-msgstr "classe du document (latex: a4, report, book)"
-
-msgid "company"
-msgstr "entreprise"
-
-msgid "document date"
-msgstr "date du docment"
-
-msgid "turn of the document date (latex)"
-msgstr "masquer la date du document (latex)"
-
-msgid "location of the presentation"
-msgstr "répertoire de la présentation"
-
-msgid "document title"
-msgstr "titre du document"
-
-msgid "turn off the document title (latex)"
-msgstr "masquer le titre du document"
-
-msgid "footer center (pdflatex)"
-msgstr "pied de page au centre (pdflatex)"
-
-msgid "footer left (pdflatex)"
-msgstr "pied de page  gauche (pdflatex)"
-
-msgid "turn off the fancy output"
-msgstr "ne pas utiliser la sortie 'fancy' (latex)"
-
-msgid "footer right"
-msgstr "pied de page à droite"
-
-msgid "header center (pdflatex)"
-msgstr "En-tête central (pdflatex)"
-
-msgid "header left"
-msgstr "En-tête à gauche"
-
-msgid "header right"
-msgstr "En-tête à droite"
-
-msgid "openoffice.org language (fr_FR)"
-msgstr "langage pour openoffice.org (fr_FR)"
-
-msgid "openoffice.org presentation language"
-msgstr "langage pour la prsentation openoffice.org"
-
-msgid "openoffice.org text language"
-msgstr "langage pour le document text openoffice.org"
-
-msgid "Warsaw (JuanLesPins, Montpellier, )"
-msgstr ""
-
-msgid "Generator dialog"
-msgstr "Dialogue de génération de documents"
-
+#: generator_dialog.cpp:36
 msgid "Generators"
 msgstr "Générateurs"
 
+#: generator_dialog.cpp:39
 msgid "Description"
 msgstr "Description"
 
+#: generator_dialog.cpp:63
 msgid "Location"
 msgstr "Lieu"
 
-msgid "&Ok"
-msgstr ""
-
-msgid "&Cancel"
-msgstr ""
-
+#: generator_dialog.cpp:114
 msgid "No document generator chosen."
 msgstr "Aucun générateur de document sélectionné"
 
+#: generator_dialog.cpp:114
 msgid "Missing data"
 msgstr "Données manquantes"
 
-#, kde-format
+#: generator_dialog.cpp:120
 msgid "Invalid output directory %1"
 msgstr "Répertoire de sortie %1 invalide"
 
+#: generator_dialog.cpp:120
 msgid "Missing location"
 msgstr "Lieu manquant"
 
+#: image_view.cpp:36
 msgid "Change picture"
 msgstr "Changer l'image"
 
+#: image_view.cpp:40
 msgid "Clear picture"
 msgstr "Effacer l'image"
 
+#: image_view.cpp:65
 msgid "Click to set a picture"
 msgstr "Cliquer pour mettre une image"
 
+#: image_view.cpp:69
 msgid "Select an item on the map"
 msgstr "Sélectionner un objet sur la carte"
 
-msgid "Choose a file"
-msgstr "Choisir un fichier"
-
-msgid "Image files (*.png *.jpg *.jpeg *.gif)"
+#: image_view.cpp:165
+#, fuzzy
+msgid "*.png *.jpg *.jpeg *.gif|Image Files (*.png *.jpg *.jpeg *.gif)"
 msgstr "Images (*.png *.jpg *.jpeg *.gif)"
 
-#, kde-format
-msgid "File %1 does not exist"
-msgstr "Le fichier %1 n'existe pas"
+#: image_view.cpp:166
+#, fuzzy
+msgid "Choose a picture"
+msgstr "Choisir un fichier"
 
-#, kde-format
-msgid "File %1 could not be opened"
-msgstr "Le fichier %1 ne peut être ouvert"
+#: image_view.cpp:178
+#, fuzzy
+msgid "Could not load the picture"
+msgstr "Cliquer pour mettre une image"
 
-msgid "something bad happened"
-msgstr "une erreur s'est produite"
+#: main.cpp:25
+msgid ""
+"A mind-mapping tool for KDE\n"
+"Available exclusively for open systems such as OpenSuse, Gentoo or Fedora."
+msgstr ""
 
-msgid "something worse happened"
-msgstr "une grave erreur s'est produite"
+#: main.cpp:41
+msgid "A file to open on startup"
+msgstr ""
 
+#: main.cpp:43
+msgid "Semantik"
+msgstr "Semantik"
+
+#: main.cpp:44
+msgid "(C) 2007-2012 Thomas Nagy"
+msgstr ""
+
+#: main.cpp:47
+msgid "Thomas Nagy"
+msgstr ""
+
+#. i18n: file: data/semantikui.rc:5
+#. i18n: ectx: Menu (file)
+#: po/rc.cpp:3 rc.cpp:3
+msgid "&File"
+msgstr ""
+
+#. i18n: file: data/semantikui.rc:7
+#. i18n: ectx: Menu (edit)
+#: po/rc.cpp:6 rc.cpp:6
+msgid "&Edit"
+msgstr ""
+
+#. i18n: file: data/semantikui.rc:12
+#. i18n: ectx: Menu (view)
+#: po/rc.cpp:9 rc.cpp:9
+msgid "&View"
+msgstr ""
+
+#. i18n: file: data/semantikui.rc:20
+#. i18n: ectx: Menu (tools)
+#: po/rc.cpp:12 rc.cpp:12
+msgid "&Tools"
+msgstr ""
+
+#. i18n: file: data/semantikui.rc:23
+#. i18n: ectx: Menu (settings)
+#: po/rc.cpp:15 rc.cpp:15
+msgid "&Settings"
+msgstr ""
+
+#. i18n: file: data/semantikui.rc:26
+#. i18n: ectx: Menu (help)
+#: po/rc.cpp:18 rc.cpp:18
+msgid "&Help"
+msgstr ""
+
+#. i18n: file: data/semantikui.rc:40
+#. i18n: ectx: ToolBar (colorsToolBar)
+#: po/rc.cpp:21 rc.cpp:21
+#, fuzzy
+msgid "Colors Toolbar"
+msgstr "Couleurs"
+
+#. i18n: file: data/semantikui.rc:44
+#. i18n: ectx: ToolBar (flagsToolBar)
+#: po/rc.cpp:24 rc.cpp:24
+msgid "Flags Toolbar"
+msgstr ""
+
+#: po/rc.cpp:25 rc.cpp:25
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr ""
+
+#: po/rc.cpp:26 rc.cpp:26
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr ""
+
+#: pre_view.cpp:23
 #, fuzzy
 msgid "<p align='center'>No preview available<br/>at this time</p>"
 msgstr ""
 "<p align='center'>Aucune prévisualisation<br/>disponible pour le moment</p>"
 
+#: semantik.cpp:45
 msgid ""
 "The map is empty, Semantik\n"
 "cannot create documents from it"
@@ -375,138 +626,391 @@ msgstr ""
 "La carte est vide, Semantik\n"
 "ne peut pas générer de documents"
 
+#: semantik.cpp:45
 msgid "Empty map"
 msgstr "Carte vide"
 
-#, kde-format
+#: semantik.cpp:52
 msgid "Template folder %1 is not readable"
 msgstr "Le répertoire des modèles %1 n'est pas disponible"
 
+#: semantik.cpp:166
 msgid "&Reorganize the map"
 msgstr "&Réorganiser la carte"
 
+#: semantik.cpp:168
+msgid "Ctrl+R"
+msgstr ""
+
+#: semantik.cpp:171
+msgid "&Export the map..."
+msgstr ""
+
+#: semantik.cpp:173
+msgid "Ctrl+Shift+E"
+msgstr ""
+
+#: semantik.cpp:178
 msgid "&Generate..."
 msgstr "&Générer..."
 
-msgid "&Select"
-msgstr "&Sélectionner"
+#: semantik.cpp:181
+msgid "Ctrl+G"
+msgstr ""
 
-msgid "&Link"
-msgstr "&Lier"
-
-msgid "&Sort"
-msgstr "&Trier"
-
-msgid "&Scroll"
-msgstr "&Parcourir la carte"
-
+#: semantik.cpp:187
 msgid "CustomColor"
 msgstr ""
 
+#: semantik.cpp:201
+msgid "Ctrl+H"
+msgstr ""
+
+#: semantik.cpp:210
 msgid "Data"
 msgstr "Données"
 
+#: semantik.cpp:233
 msgid "Variables"
 msgstr "Variables"
 
+#: semantik.cpp:242
 msgid "Preview"
 msgstr "Prévisualisation"
 
+#: semantik.cpp:254
 msgid "Linear view"
 msgstr "Représentation linaire"
 
+#: semantik.cpp:347
 msgid "Welcome to Semantik"
 msgstr "Bienvenue  Semantik"
 
+#: semantik.cpp:393
 msgid "Ready"
 msgstr "Prêt"
 
+#: semantik.cpp:400
 msgid "*.sem|Semantik file (*.sem)"
 msgstr "*.sem|Fichier Semantik (*.sem)"
 
+#: semantik.cpp:401 semantik.cpp:463
 msgid "Choose a file name"
 msgstr "Choisir un nom de fichier"
 
-#, kde-format
+#: semantik.cpp:414
+msgid ""
+"The file \"%1\" already exists.\n"
+"Overwrite it?"
+msgstr ""
+
+#: semantik.cpp:415
+msgid "Overwrite existing file"
+msgstr ""
+
+#: semantik.cpp:426 semantik.cpp:448
 msgid "Saved '%1'"
 msgstr "'%1' Sauvegardé"
 
+#: semantik.cpp:462
 msgid "*.sem *.kdi *.mm *.vym|All Supported Files (*.sem *.kdi *.mm *.vym)"
 msgstr ""
 "*.sem *.kdi *.mm *.vym|Tous les fichiers supports (*.sem *.kdi *.mm *.vym)"
 
-msgid "Semantik"
+#: semantik.cpp:474
+msgid " [Modified] "
+msgstr ""
+
+#: semantik.cpp:479
+#, fuzzy
+msgid "Semantik %1"
 msgstr "Semantik"
 
-#, kde-format
-msgid "%1 - Semantik"
+#: semantik.cpp:483
+#, fuzzy
+msgid "%1 %2 - Semantik"
 msgstr "%1 - Semantik"
 
+#: semantik.cpp:530
 msgid "Untitled"
 msgstr ""
 
-#, kde-format
+#: semantik.cpp:533
 msgid ""
 "The document \"%1\" has been modified.\n"
 "Do you want to save your changes or discard them?"
 msgstr ""
 
+#: semantik.cpp:534
 msgid "Close Document"
 msgstr ""
 
+#: sem_mediator.cpp:270
+msgid "Automatic save failed for file: %1"
+msgstr "La sauvegarde automatique a échoué pour le fichier: %1"
+
+#: sem_mediator.cpp:273
+msgid "%1 saved automatically"
+msgstr "%1 sauvegardé automatiquement"
+
+#: sem_mediator.cpp:292
+msgid "Color %1"
+msgstr "Couleur %1"
+
+#: sem_mediator.cpp:618
+msgid "File saving: missing file %1"
+msgstr "Sauvegarde de fichier: le fichier %1 est absent"
+
+#: sem_mediator.cpp:643 sem_mediator.cpp:1142 sem_mediator.cpp:1185
+msgid "Missing bindings for opening files"
+msgstr "Support Python absent: ouverture de fichier impossible"
+
+#: sem_mediator.cpp:694
+msgid "Missing filter file %1 for opening files"
+msgstr "Le filtre %1 pour l'ouverture de fichiers est manquant"
+
+#: sem_mediator.cpp:694 sem_mediator.cpp:709
+msgid "Broken installation"
+msgstr ""
+
+#: sem_mediator.cpp:709
+#, fuzzy
+msgid "Missing python bindings for opening files"
+msgstr "Support Python absent: ouverture de fichier impossible"
+
+#: sem_mediator.cpp:725
+msgid "Could not load the document %1"
+msgstr ""
+
+#: sem_mediator.cpp:725
+msgid "Broken document"
+msgstr ""
+
+#: sem_mediator.cpp:1108
+msgid "Code generation failed: missing file %1"
+msgstr "La génération de code a échoué: le fichier %1 est absent"
+
+#: sem_mediator.cpp:1147
+msgid "Document generation completed successfully"
+msgstr ""
+
+#: table_dialog.cpp:32
 msgid "Rows"
 msgstr "Lignes"
 
+#: table_dialog.cpp:36
 msgid "Columns"
 msgstr "Colonnes"
 
+#: table_view.cpp:25 table_view.cpp:79
 msgid "Add Row"
 msgstr "Ajouter une ligne"
 
+#: table_view.cpp:26
 msgid "Add a row"
 msgstr "Ajoute une ligne"
 
+#: table_view.cpp:30 table_view.cpp:80
 msgid "Add Column"
 msgstr "Ajouter une colonne"
 
+#: table_view.cpp:31
 msgid "Add a column"
 msgstr "Ajoute une colonne"
 
+#: table_view.cpp:36 table_view.cpp:81
 msgid "Remove Row"
 msgstr "Enlever une ligne"
 
+#: table_view.cpp:37
 msgid "Remove a row"
 msgstr "Enlève une ligne"
 
+#: table_view.cpp:41 table_view.cpp:82
 msgid "Remove Column"
 msgstr "Enlever une colonne"
 
+#: table_view.cpp:42
 msgid "Remove a column"
 msgstr "Enlève une colonne"
 
+#: table_view.cpp:46
 msgid "Redimension"
 msgstr "Redimensionner"
 
+#: table_view.cpp:47
 msgid "Change table dimensions"
 msgstr "Changer les dimensions de la table"
 
+#: text_view.cpp:40
 msgid "&Bold"
 msgstr ""
 
+#: text_view.cpp:41
+msgid "Ctrl+B"
+msgstr ""
+
+#: text_view.cpp:44
 msgid "&Italic"
 msgstr ""
 
+#: text_view.cpp:45
+msgid "Ctrl+I"
+msgstr ""
+
+#: text_view.cpp:48
 msgid "&Underline"
 msgstr ""
 
+#: text_view.cpp:49
+msgid "Ctrl+U"
+msgstr ""
+
+#: vars_view.cpp:76
 msgid "Code complete"
 msgstr ""
 
-msgid "exclude the picture"
-msgstr "exclure l'image"
+#: vars_view.cpp:77
+msgid "Ctrl+space"
+msgstr ""
 
-msgid "latex language: english (frenchb, )"
-msgstr "langage pour latex: english (frenchb, )"
+#~ msgid "Add Box"
+#~ msgstr "Ajouter un élément"
+
+#~ msgid "Connection width"
+#~ msgstr "Largeur de connexion"
+
+#~ msgid "1px"
+#~ msgstr "1px"
+
+#~ msgid "2px"
+#~ msgstr "2px"
+
+#~ msgid "3px"
+#~ msgstr "3px"
+
+#~ msgid "Connection style"
+#~ msgstr "Style de connexion"
+
+#~ msgid "dot line"
+#~ msgstr "pointillés"
+
+#~ msgid "exclude the table"
+#~ msgstr "exclure la table"
+
+#~ msgid "picture caption"
+#~ msgstr "légende pour l'image"
+
+#~ msgid "picture dimension in pdf files"
+#~ msgstr "dimension de l'image dans les fichiers pdf"
+
+#~ msgid "html div style: style=\"width: 99px;\""
+#~ msgstr "html div style: style=\"width: 99px;\""
+
+#~ msgid "html picture style: style=\"width: 99px;\""
+#~ msgstr "html picture style: style=\"width: 99px;\""
+
+#~ msgid "do not use this item for generating slides"
+#~ msgstr "ne pas utiliser cet objet pour la génération de slides"
+
+#~ msgid "command to launch (%s is the resulting file)"
+#~ msgstr "commande à lancer (%s représente le fichier généré)"
+
+#~ msgid "cd `echo %s | sed s/main.tex//` && ./waf configure && waf --view"
+#~ msgstr "cd `echo %s | sed s/main.tex//` && ./waf configure && waf --view"
+
+#~ msgid "firefox %s"
+#~ msgstr "firefox %s"
+
+#~ msgid "ooimpress %s"
+#~ msgstr "ooimpress %s"
+
+#~ msgid "oowriter %s"
+#~ msgstr "oowriter %s"
+
+#~ msgid "document author"
+#~ msgstr "auteur du document"
+
+#~ msgid "turn off the document author (latex)"
+#~ msgstr "masquer l'auteur du document (latex)"
+
+#~ msgid "document class (latex: a4, report, book)"
+#~ msgstr "classe du document (latex: a4, report, book)"
+
+#~ msgid "company"
+#~ msgstr "entreprise"
+
+#~ msgid "document date"
+#~ msgstr "date du docment"
+
+#~ msgid "turn of the document date (latex)"
+#~ msgstr "masquer la date du document (latex)"
+
+#~ msgid "location of the presentation"
+#~ msgstr "répertoire de la présentation"
+
+#~ msgid "turn off the document title (latex)"
+#~ msgstr "masquer le titre du document"
+
+#~ msgid "footer center (pdflatex)"
+#~ msgstr "pied de page au centre (pdflatex)"
+
+#~ msgid "footer left (pdflatex)"
+#~ msgstr "pied de page  gauche (pdflatex)"
+
+#~ msgid "turn off the fancy output"
+#~ msgstr "ne pas utiliser la sortie 'fancy' (latex)"
+
+#~ msgid "footer right"
+#~ msgstr "pied de page à droite"
+
+#~ msgid "header center (pdflatex)"
+#~ msgstr "En-tête central (pdflatex)"
+
+#~ msgid "header left"
+#~ msgstr "En-tête à gauche"
+
+#~ msgid "header right"
+#~ msgstr "En-tête à droite"
+
+#~ msgid "openoffice.org language (fr_FR)"
+#~ msgstr "langage pour openoffice.org (fr_FR)"
+
+#~ msgid "openoffice.org presentation language"
+#~ msgstr "langage pour la prsentation openoffice.org"
+
+#~ msgid "openoffice.org text language"
+#~ msgstr "langage pour le document text openoffice.org"
+
+#~ msgid "Generator dialog"
+#~ msgstr "Dialogue de génération de documents"
+
+#~ msgid "File %1 does not exist"
+#~ msgstr "Le fichier %1 n'existe pas"
+
+#~ msgid "File %1 could not be opened"
+#~ msgstr "Le fichier %1 ne peut être ouvert"
+
+#~ msgid "something bad happened"
+#~ msgstr "une erreur s'est produite"
+
+#~ msgid "something worse happened"
+#~ msgstr "une grave erreur s'est produite"
+
+#~ msgid "&Select"
+#~ msgstr "&Sélectionner"
+
+#~ msgid "&Link"
+#~ msgstr "&Lier"
+
+#~ msgid "&Sort"
+#~ msgstr "&Trier"
+
+#~ msgid "exclude the picture"
+#~ msgstr "exclure l'image"
+
+#~ msgid "latex language: english (frenchb, )"
+#~ msgstr "langage pour latex: english (frenchb, )"
 
 #~ msgid "Code generation failed: missing bindings"
 #~ msgstr "La génération a échoué: le support Python est manquant"
