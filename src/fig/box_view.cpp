@@ -36,6 +36,7 @@
 #include "box_link.h"
 #include "box_component.h"
 #include "box_node.h"
+#include "box_decision.h"
 #include "box_actor.h"
 #include "data_item.h"
 #include "box_usecase.h"
@@ -193,6 +194,8 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	connect(m_oAddComponent, SIGNAL(triggered()), this, SLOT(slot_add_element()));
 	m_oAddNode = new QAction(QObject::trUtf8("Node"), this);
 	connect(m_oAddNode, SIGNAL(triggered()), this, SLOT(slot_add_element()));
+	m_oAddDecision = new QAction(QObject::trUtf8("Decision"), this);
+	connect(m_oAddDecision, SIGNAL(triggered()), this, SLOT(slot_add_element()));
 	m_oAddDotStart = new QAction(QObject::trUtf8("Activity start"), this);
 	connect(m_oAddDotStart, SIGNAL(triggered()), this, SLOT(slot_add_element()));
 	m_oAddDotEnd = new QAction(QObject::trUtf8("Activity end"), this);
@@ -217,6 +220,7 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	m_oAddBoxMenu->addAction(m_oAddDotEnd);
 	m_oAddBoxMenu->addAction(m_oAddParallelHorizontal);
 	m_oAddBoxMenu->addAction(m_oAddParallelVertical);
+	m_oAddBoxMenu->addAction(m_oAddDecision);
 	m_oAddBoxMenu->addAction(m_oAddActor);
 	m_oAddBoxMenu->addAction(m_oAddUsecase);
 
@@ -374,6 +378,10 @@ void box_view::sync_view()
 		else if (box->m_iType == data_box::NODE)
 		{
 			l_o = new box_node(this, box->m_iId);
+		}
+		else if (box->m_iType == data_box::DECISION)
+		{
+			l_o = new box_decision(this, box->m_iId);
 		}
 		else if (box->m_iType == data_box::ACTIVITY_START)
 		{
@@ -739,6 +747,13 @@ void box_view::slot_add_element()
 		add->box->m_iHH = 180;
 		add->box->color = QColor("#FFFFCC");
 	}
+	else if (sender == m_oAddDecision)
+	{
+		add->box->m_iType = data_box::DECISION;
+		add->box->m_iWW = 50;
+		add->box->m_iHH = 50;
+	}
+
 	add->apply();
 
 	QGraphicsItem *l_o = dynamic_cast<QGraphicsItem*>(m_oItems.value(add->box->m_iId));
@@ -975,6 +990,10 @@ void box_view::notify_add_box(int id, int box)
 	else if (db->m_iType == data_box::NODE)
 	{
 		l_o = new box_node(this, box);
+	}
+	else if (db->m_iType == data_box::DECISION)
+	{
+		l_o = new box_decision(this, box);
 	}
 	else if (db->m_iType == data_box::ACTIVITY_START)
 	{
