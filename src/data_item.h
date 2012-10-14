@@ -45,6 +45,7 @@ class data_link : public diagram_item
 
 	bool m_iLeftArrow;
 	bool m_iRightArrow;
+	bool m_bIsStraight;
 
 	QPoint m_oStartPoint;
 	QPoint m_oEndPoint;

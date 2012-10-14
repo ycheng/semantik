@@ -140,6 +140,7 @@ data_link::data_link() : diagram_item()
 	m_iChildPos = NORTH;
 	m_iLeftArrow = 0;
 	m_iRightArrow = 1;
+	m_bIsStraight = false;
 }
 
 void data_link::copy_from(const data_link& i_oLink)

@@ -12,6 +12,7 @@
 #include "box_view.h"
 #include "data_item.h"
 #include "mem_box.h"
+#include <math.h>
 #include <box_control_point.h>
 #include "box_link_properties.h"
 
@@ -64,40 +65,68 @@ box_link::~box_link()
 	delete m_oEndPoint;
 }
 
+#define xw 3.
+#define yw 8.
+
 void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *option, QWidget * i_oW)
 {
-	//i_oPainter->setPen(pen());
-	//QGraphicsRectItem::paint(i_oPainter, option, i_oW);
-
 	i_oPainter->setBrush(m_oInnerLink.color);
 
 	QPen l_oPen(m_oInnerLink.pen_style);
 	l_oPen.setWidth(m_oInnerLink.border_width);
-
 	l_oPen.setColor(m_oInnerLink.color);
 	i_oPainter->setPen(l_oPen);
 
-	for (int i=0; i<m_oGood.size() - 1; ++i)
+	if (m_oInnerLink.m_bIsStraight)
 	{
-		QLineF l_oLine(m_oGood[i].x(), m_oGood[i].y(), m_oGood[i+1].x(), m_oGood[i+1].y());
+		int last = m_oGood.size() - 1;
+		QLineF l_oLine(m_oGood[0].x(), m_oGood[0].y(), m_oGood[last].x(), m_oGood[last].y());
 		i_oPainter->drawLine(l_oLine);
-		//qDebug()<<m_oGood[i].x()<<m_oGood[i].y()<<m_oGood[i+1].x()<<m_oGood[i+1].y();
+
+		qreal dx = m_oGood[last].x() - m_oGood[0].x();
+		qreal dy = m_oGood[last].y() - m_oGood[0].y();
+		qreal tot = sqrt(dx * dx + dy * dy);
+		if (tot > 0.01)
+		{
+			l_oPen.setStyle(Qt::SolidLine);
+			i_oPainter->setPen(l_oPen);
+
+			qreal sinphi = dy / tot;
+			qreal cosphi = dx / tot;
+			QPolygonF l_oPol(3);
+
+			if (m_oInnerLink.m_iRightArrow)
+			{
+				l_oPol[0] = m_oGood[0];
+				l_oPol[1] = m_oGood[0] + QPointF(yw * cosphi - xw * sinphi, yw * sinphi + xw * cosphi);
+				l_oPol[2] = m_oGood[0] + QPointF(yw * cosphi + xw * sinphi, yw * sinphi - xw * cosphi);
+				i_oPainter->drawPolygon(l_oPol);
+			}
+			if (m_oInnerLink.m_iLeftArrow)
+			{
+				l_oPol[0] = m_oGood[last];
+				l_oPol[1] = m_oGood[last] + QPointF( - yw * cosphi + xw * sinphi, - yw * sinphi - xw * cosphi);
+				l_oPol[2] = m_oGood[last] + QPointF( - yw * cosphi - xw * sinphi, - yw * sinphi + xw * cosphi);
+				i_oPainter->drawPolygon(l_oPol);
+			}
+		}
 	}
-	//QPen l_oPen = pen();
-	//l_oPen.setStyle(Qt::SolidLine);
-	//i_oPainter->setPen(l_oPen);
+	else
+	{
+		for (int i=0; i<m_oGood.size() - 1; ++i)
+		{
+			QLineF l_oLine(m_oGood[i].x(), m_oGood[i].y(), m_oGood[i+1].x(), m_oGood[i+1].y());
+			i_oPainter->drawLine(l_oLine);
+		}
 
-	l_oPen.setStyle(Qt::SolidLine);
-	i_oPainter->setPen(l_oPen);
-	if (m_oInnerLink.m_iRightArrow)
-		draw_triangle(i_oPainter, m_oInnerLink.m_iChildPos, m_oGood[m_oGood.size()-1]);
-	if (m_oInnerLink.m_iLeftArrow)
-		draw_triangle(i_oPainter, m_oInnerLink.m_iParentPos, m_oGood[0]);
+		l_oPen.setStyle(Qt::SolidLine);
+		i_oPainter->setPen(l_oPen);
+		if (m_oInnerLink.m_iRightArrow)
+			draw_triangle(i_oPainter, m_oInnerLink.m_iChildPos, m_oGood[m_oGood.size()-1]);
+		if (m_oInnerLink.m_iLeftArrow)
+			draw_triangle(i_oPainter, m_oInnerLink.m_iParentPos, m_oGood[0]);
+	}
 }
-
-
-#define xw 3.
-#define yw 8.
 
 void box_link::draw_triangle(QPainter *i_oPainter, int i_iPos, QPointF i_oP)
 {
@@ -443,11 +472,14 @@ void box_link::update_ratio()
 		if (i < m_oGood.size() - 3)
 		{
 			b->init_pos();
-
-			if (isSelected())
+			if (isSelected() && !m_oInnerLink.m_bIsStraight)
+			{
 				b->show();
+			}
 			else
+			{
 				b->hide();
+			}
 		}
 		else
 		{
