@@ -95,14 +95,14 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 			qreal cosphi = dx / tot;
 			QPolygonF l_oPol(3);
 
-			if (m_oInnerLink.m_iRightArrow)
+			if (m_oInnerLink.m_iLeftArrow)
 			{
 				l_oPol[0] = m_oGood[0];
 				l_oPol[1] = m_oGood[0] + QPointF(yw * cosphi - xw * sinphi, yw * sinphi + xw * cosphi);
 				l_oPol[2] = m_oGood[0] + QPointF(yw * cosphi + xw * sinphi, yw * sinphi - xw * cosphi);
 				i_oPainter->drawPolygon(l_oPol);
 			}
-			if (m_oInnerLink.m_iLeftArrow)
+			if (m_oInnerLink.m_iRightArrow)
 			{
 				l_oPol[0] = m_oGood[last];
 				l_oPol[1] = m_oGood[last] + QPointF( - yw * cosphi + xw * sinphi, - yw * sinphi - xw * cosphi);
@@ -488,20 +488,33 @@ void box_link::update_ratio()
 	}
 
 	QPainterPath p;
-	for (int i = 0; i < m_oGood.size() - 1; ++i)
+	if (m_oInnerLink.m_bIsStraight)
 	{
-		int x1 = qMin(m_oGood[i].x(), m_oGood[i+1].x());
-		int x2 = qMax(m_oGood[i].x(), m_oGood[i+1].x());
-		int y1 = qMin(m_oGood[i].y(), m_oGood[i+1].y());
-		int y2 = qMax(m_oGood[i].y(), m_oGood[i+1].y());
-
-		if (x1 == x2)
+		if (m_oGood.size() > 0)
 		{
-			p.addRect(x1 - 5, y1, 10, y2 - y1);
+			QPolygonF l_oPol(2);
+			l_oPol[0] = m_oGood[0];
+			l_oPol[1] = m_oGood[m_oGood.size() - 1];
+			p.addPolygon(l_oPol);
 		}
-		else
+	}
+	else
+	{
+		for (int i = 0; i < m_oGood.size() - 1; ++i)
 		{
-			p.addRect(x1, y1 - 5, x2 - x1, 10);
+			int x1 = qMin(m_oGood[i].x(), m_oGood[i+1].x());
+			int x2 = qMax(m_oGood[i].x(), m_oGood[i+1].x());
+			int y1 = qMin(m_oGood[i].y(), m_oGood[i+1].y());
+			int y2 = qMax(m_oGood[i].y(), m_oGood[i+1].y());
+
+			if (x1 == x2)
+			{
+				p.addRect(x1 - 5, y1, 10, y2 - y1);
+			}
+			else
+			{
+				p.addRect(x1, y1 - 5, x2 - x1, 10);
+			}
 		}
 	}
 
