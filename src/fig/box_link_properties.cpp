@@ -30,16 +30,20 @@ box_link_properties::box_link_properties(QWidget *i_oParent):
 	l_oGridLayout->addWidget(l_sLabel, 0, 0);
 
 	l_sLabel = new QLabel(widget);
-	l_sLabel->setText(trUtf8("Line Style"));
+	l_sLabel->setText(trUtf8("Line Type"));
 	l_oGridLayout->addWidget(l_sLabel, 1, 0);
 
 	l_sLabel = new QLabel(widget);
-	l_sLabel->setText(trUtf8("Left arrow"));
+	l_sLabel->setText(trUtf8("Line Style"));
 	l_oGridLayout->addWidget(l_sLabel, 2, 0);
 
 	l_sLabel = new QLabel(widget);
-	l_sLabel->setText(trUtf8("Right arrow"));
+	l_sLabel->setText(trUtf8("Left arrow"));
 	l_oGridLayout->addWidget(l_sLabel, 3, 0);
+
+	l_sLabel = new QLabel(widget);
+	l_sLabel->setText(trUtf8("Right arrow"));
+	l_oGridLayout->addWidget(l_sLabel, 4, 0);
 
 
 	m_oThickness = new QSpinBox(widget);
@@ -47,22 +51,27 @@ box_link_properties::box_link_properties(QWidget *i_oParent):
 	m_oThickness->setMaximum(3);
 	l_oGridLayout->addWidget(m_oThickness, 0, 1);
 
+	m_oType = new QComboBox(widget);
+	m_oType->addItem(trUtf8("Zigzag"), 0);
+	m_oType->addItem(trUtf8("Straight"), 0);
+	l_oGridLayout->addWidget(m_oType, 1, 1);
+
 	m_oStyle = new QComboBox(widget);
 	m_oStyle->addItem(trUtf8("Invisible line"), (int) Qt::NoPen);
 	m_oStyle->addItem(trUtf8("Solid Line"), (int) Qt::SolidLine);
 	m_oStyle->addItem(trUtf8("Dot Line"),   (int) Qt::DotLine);
 	m_oStyle->addItem(trUtf8("Dash Line"),  (int) Qt::DashLine);
-	l_oGridLayout->addWidget(m_oStyle, 1, 1);
+	l_oGridLayout->addWidget(m_oStyle, 2, 1);
 
 	m_oLeftArrow = new QComboBox(widget);
 	m_oLeftArrow->addItem(trUtf8("No arrow"), 0);
 	m_oLeftArrow->addItem(trUtf8("Triangle"), 0);
-	l_oGridLayout->addWidget(m_oLeftArrow, 2, 1);
+	l_oGridLayout->addWidget(m_oLeftArrow, 3, 1);
 
 	m_oRightArrow = new QComboBox(widget);
 	m_oRightArrow->addItem(trUtf8("No arrow"), 0);
 	m_oRightArrow->addItem(trUtf8("Triangle"), 0);
-	l_oGridLayout->addWidget(m_oRightArrow, 3, 1);
+	l_oGridLayout->addWidget(m_oRightArrow, 4, 1);
 
 	setMainWidget(widget);
 	QSize size(350, 120);

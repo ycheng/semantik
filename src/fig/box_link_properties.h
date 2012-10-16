@@ -13,6 +13,7 @@ class box_link_properties : public KDialog
 	public:
 		box_link_properties(QWidget *i_oParent);
 		QSpinBox *m_oThickness;
+		QComboBox *m_oType;
 		QComboBox *m_oStyle;
 		QComboBox *m_oLeftArrow;
 		QComboBox *m_oRightArrow;

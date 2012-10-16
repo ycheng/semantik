@@ -140,7 +140,7 @@ data_link::data_link() : diagram_item()
 	m_iChildPos = NORTH;
 	m_iLeftArrow = 0;
 	m_iRightArrow = 1;
-	m_bIsStraight = false;
+	m_iLineType = 0;
 }
 
 void data_link::copy_from(const data_link& i_oLink)
@@ -151,6 +151,7 @@ void data_link::copy_from(const data_link& i_oLink)
 	m_iChild      = i_oLink.m_iChild;
 	m_iParentPos  = i_oLink.m_iParentPos;
 	m_iChildPos   = i_oLink.m_iChildPos;
+	m_iLineType   = i_oLink.m_iLineType;
 	m_oStartPoint = i_oLink.m_oStartPoint;
 	m_oEndPoint   = i_oLink.m_oEndPoint;
 	m_oOffsets    = i_oLink.m_oOffsets;

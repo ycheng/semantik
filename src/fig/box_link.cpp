@@ -77,7 +77,7 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 	l_oPen.setColor(m_oInnerLink.color);
 	i_oPainter->setPen(l_oPen);
 
-	if (m_oInnerLink.m_bIsStraight)
+	if (m_oInnerLink.m_iLineType)
 	{
 		int last = m_oGood.size() - 1;
 		QLineF l_oLine(m_oGood[0].x(), m_oGood[0].y(), m_oGood[last].x(), m_oGood[last].y());
@@ -472,7 +472,7 @@ void box_link::update_ratio()
 		if (i < m_oGood.size() - 3)
 		{
 			b->init_pos();
-			if (isSelected() && !m_oInnerLink.m_bIsStraight)
+			if (isSelected() && !m_oInnerLink.m_iLineType)
 			{
 				b->show();
 			}
@@ -488,7 +488,7 @@ void box_link::update_ratio()
 	}
 
 	QPainterPath p;
-	if (m_oInnerLink.m_bIsStraight)
+	if (m_oInnerLink.m_iLineType)
 	{
 		if (m_oGood.size() > 0)
 		{
@@ -556,6 +556,7 @@ void box_link::properties()
 {
 	box_link_properties props(m_oView);
 	props.m_oThickness->setValue(m_oInnerLink.border_width);
+	props.m_oType->setCurrentIndex(m_oInnerLink.m_iLineType);
 	props.m_oStyle->setCurrentIndex((int) m_oInnerLink.pen_style);
 	props.m_oLeftArrow->setCurrentIndex(m_oInnerLink.m_iLeftArrow);
 	props.m_oRightArrow->setCurrentIndex(m_oInnerLink.m_iRightArrow);
@@ -567,6 +568,7 @@ void box_link::properties()
 		mem->prev.copy_from(m_oInnerLink);
 		mem->next.copy_from(m_oInnerLink);
 		mem->next.border_width = props.m_oThickness->value();
+		mem->next.m_iLineType = props.m_oType->currentIndex();
 		mem->next.pen_style = (Qt::PenStyle) props.m_oStyle->currentIndex();
 		mem->next.m_iLeftArrow = props.m_oLeftArrow->currentIndex();
 		mem->next.m_iRightArrow = props.m_oRightArrow->currentIndex();

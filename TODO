@@ -1,13 +1,8 @@
 Priority:
 ---------
 
-diagram:
-  - straight arrows
-  - resize the diagram scene properly
-
-s5 picture size
+s5 default picture size?
 crash: resize a box, unselect the diagram, then undo?
-
 display pictures on the canvas...
 
 Ideas:
