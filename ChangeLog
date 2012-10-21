@@ -3,6 +3,7 @@ Semantik 0.8.3
 * New dialog for exporting the map as a picture with a specific size
 * More consistent gui elements (dialog buttons, menus)
 * New UML shapes
+* Straight arrows on the diagrams
 
 Semantik 0.8.2
 --------------
