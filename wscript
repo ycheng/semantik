@@ -81,17 +81,6 @@ def build(bld):
 	bld.install_as('${KDE4_ICON_INSTALL_DIR}/hicolor/22x22/apps/semantik.png', 'src/data/hi22-app-semantik.png')
 	bld.install_files('${KDE4_DATA_INSTALL_DIR}/semantik', 'src/data/semantikui.rc src/data/tips')
 
-	if bld.cmd in ['install', 'uninstall']:
-		lst = os.listdir('src/images')
-		lst = [x for x in lst if (x.rfind('hi')>-1)]
-		for x in lst:
-			els = x.split('-')
-			size = els[0][2:]
-
-			uh = els[2].replace('.png', '')
-			uh = 'oxygen/%sx%s/actions/%s.png' % (size, size, uh)
-			bld.install_as('${KDE4_ICON_INSTALL_DIR}/' + uh, 'src/images/%s' % x)
-
 	bld.add_post_fun(post_build)
 
 def configure(conf):
