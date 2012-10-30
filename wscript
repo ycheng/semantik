@@ -51,7 +51,7 @@ def build(bld):
 	bld.install_files('${SEMANTIK_DIR}/flags', glob('src/flags/*.svg'))
 	bld.install_files('${TEMPLATE_DIR}', glob(rt+'*.py'))
 
-	bld.install_as('${TEMPLATE_DIR}/waf', 'waf')
+	bld.install_as('${TEMPLATE_DIR}/waf', 'waf', chmod=0755)
 
 	bld.install_files('${TEMPLATE_DIR}/pdflatex', glob(rt+'pdflatex/*'))
 	for x in 'html odt odp java'.split():
