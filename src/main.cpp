@@ -39,6 +39,7 @@ int main(int i_iArgc, char **i_iArgv)
 
 	KCmdLineOptions options;
 	options.add("+[url]", ki18n("A file to open on startup"));
+	options.add("o <file>", ki18n("An output file for printing the map"));
 
 	KAboutData l_o("semantik", 0, ki18n("Semantik"), version, ki18n(description),
 			KAboutData::License_GPL_V3, ki18n("(C) 2007-2012 Thomas Nagy"), KLocalizedString(),
@@ -54,14 +55,25 @@ int main(int i_iArgc, char **i_iArgv)
 	KGlobal::locale()->insertCatalog("libkdeedu");
 
 	semantik_win *l_oMainWin = new semantik_win;
-	l_oMainWin->show();
 
 	const KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
-	for (int i = 0; i < args->count(); ++i)
-	{
-		l_oMainWin->slot_recent(args->url(i));
+	if (!args->getOption("o").isEmpty()) {
+		if (args->count()) {
+			if (args->url(0).isEmpty()) {
+				qDebug()<<"a file requires a url";
+				return 1;
+			} else {
+				l_oMainWin->slot_recent(args->url(0));
+				QPair<int, int> p;
+				return l_oMainWin->print_to_file(args->getOption("o"), p);
+			}
+		}
+	} else {
+		l_oMainWin->show();
+		if (args->count() && !args->url(0).isEmpty()) {
+			l_oMainWin->slot_recent(args->url(0));
+		}
 	}
-
 	return l_oApp.exec();
 }
 

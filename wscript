@@ -124,7 +124,7 @@ def configure(conf):
 	try:
 		conf.load('kde4')
 		Logs.pprint('GREEN', "And you even have kde4! we will use it")
-	except Configure.ConfigurationError:
+	except Errors.ConfigurationError:
 		raise
 		#Logs.pprint('YELLOW', "kde4 is disabled (missing)")
 		conf.fatal('Compiling Semantik requires kde4 -devel')

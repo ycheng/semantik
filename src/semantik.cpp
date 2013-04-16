@@ -393,6 +393,11 @@ void semantik_win::slot_print()
         statusBar()->showMessage(trUtf8("Ready"), 2000);
 }
 
+int semantik_win::print_to_file(const QString & url, QPair<int, int> p)
+{
+	return m_oCanvas->batch_print_map(url, p);
+}
+
 bool semantik_win::slot_save_as()
 {
 	choose:

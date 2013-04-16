@@ -3,6 +3,7 @@
 <gui name="semantik" version="0.6.0">
  <MenuBar>
   <Menu name="file"><text>&amp;File</text>
+    <Action name="file_new"/>
   </Menu>
   <Menu name="edit"><text>&amp;Edit</text>
       <Action name="export_map" />

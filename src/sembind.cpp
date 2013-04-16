@@ -181,6 +181,7 @@ QString bind_node::protectXML(const QString& i_s)
 	l_s.replace(">", "&gt;");
 	l_s.replace("\'", "&apos;");
 	l_s.replace("\"", "&quot;");
+	l_s.replace("\x00", ""); // yeah, null bytes...
 
 	return l_s;
 }

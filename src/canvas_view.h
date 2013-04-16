@@ -35,6 +35,7 @@ class canvas_view : public QGraphicsView
 
 
 		bool m_bDeleting;
+		bool m_bDisableGradient;
 
 		void focusInEvent(QFocusEvent *);
 		void focusOutEvent(QFocusEvent *);
@@ -61,6 +62,7 @@ class canvas_view : public QGraphicsView
 		void deselect_all(bool i_oSignal=true);
 		void show_sort(int i_iId, bool i_b);
 		void enable_menu_actions(); // like check_actions, but only for the popup menu
+		int batch_print_map(const QString& url, QPair<int, int> & size);
 
 		double compute_height(QMap<int, double> &map, QMap<int, QList<int> >&children, int id);
 		void compute_width(QMap<int, double> &map, QMap<int, QList<int> >&children, int id, int level);
