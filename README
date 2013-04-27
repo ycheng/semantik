@@ -1,4 +1,4 @@
-Semantik 0.8.3, Thomas Nagy
+Semantik 0.8.4, Thomas Nagy
 contact: tnagy1024 at gmail dot com
 http://code.google.com/p/semantik
 
@@ -64,6 +64,9 @@ More help in about->help
 
   this is only necessary for documents that do not have a KDE mapping for opening them
 * LaTeX commands can be inserted by using all_latex=1
+
+It is also possible to export maps from the command-line:
+semantik foo.sem -o foo.pdf
 
 -----------------------------------------------
 
