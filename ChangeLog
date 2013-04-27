@@ -1,3 +1,8 @@
+Semantik 0.8.4
+--------------
+* Export maps to pdf pictures from the command-line
+* Color scheme fixes #30
+
 Semantik 0.8.3
 --------------
 * New dialog for exporting the map as a picture with a specific size
