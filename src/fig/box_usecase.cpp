@@ -62,6 +62,7 @@ void box_usecase::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 
 	QAbstractTextDocumentLayout::PaintContext ctx;
 	ctx.palette = QApplication::palette("QTextControl");
+	ctx.palette.setColor(QPalette::Text, Qt::black); // white on black kde themes
 	QAbstractTextDocumentLayout * lay = doc.documentLayout();
 	qreal yoff = lay->documentSize().height();
 

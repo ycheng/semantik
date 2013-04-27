@@ -4,7 +4,6 @@
 #include <QAbstractTextDocumentLayout>
 #include <QTextDocument>
 #include <QTextDocumentFragment>
-#include <QAbstractTextDocumentLayout>
 #include <QTextList>
 #include <QClipboard>
 #include <QPainter>

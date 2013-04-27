@@ -295,8 +295,8 @@ void canvas_item::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	}
 	//painter->translate(5, 5);
 
-
 	QAbstractTextDocumentLayout::PaintContext ctx;
+	ctx.palette.setColor(QPalette::Text, Qt::black); // white on black kde themes
 	if (textInteractionFlags() & Qt::TextEditorInteraction) {
 		QTextCursor cursor = textCursor();
 		ctx.cursorPosition = cursor.position();

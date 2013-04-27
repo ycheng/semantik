@@ -96,6 +96,7 @@ void box_node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	painter->translate(OFF, OFF + 10);
 	QAbstractTextDocumentLayout::PaintContext ctx;
 	ctx.palette = QApplication::palette("QTextControl");
+	ctx.palette.setColor(QPalette::Text, Qt::black); // white on black kde themes
 	doc.documentLayout()->draw(painter, ctx);
 
 	painter->restore();
