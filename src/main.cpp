@@ -13,7 +13,6 @@
 #include <KGlobal>
 
 #include <X11/Xlib.h>
-#include <X11/extensions/Xrender.h>
 
 #include <KApplication>
 #include <KAboutData>
