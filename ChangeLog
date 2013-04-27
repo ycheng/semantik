@@ -2,6 +2,7 @@ Semantik 0.8.4
 --------------
 * Export maps to pdf pictures from the command-line
 * Color scheme fixes #30
+* Null byte fix for text pasted from Chrome #26
 
 Semantik 0.8.3
 --------------
