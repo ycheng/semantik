@@ -25,6 +25,8 @@ elif name.endswith('.kdi'):
 elif name.endswith('.sem'):
 	import semantik
 	ret = semantik.parse_file(infile)
+	# FIXME null bytes should not be allowed in the first place :-(
+	ret = ret.replace('\x00', '')
 elif name.endswith('.mm'):
 	import others
 	ret = others.parse_file(infile)
