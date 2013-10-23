@@ -1,5 +1,13 @@
 // Thomas Nagy 2007-2012 GPLV3
 
+#include <KFileDialog>
+#include <KMessageBox>
+#include <KMenuBar>
+#include <KApplication>
+#include <KStandardAction>
+#include <KRecentFilesAction>
+#include <KActionCollection>
+
 #include <QMouseEvent>
 #include <QAction>
 #include <QGraphicsScene>
@@ -209,7 +217,19 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	m_oAddUsecase = new QAction(QObject::trUtf8("Usecase"), this);
 	connect(m_oAddUsecase, SIGNAL(triggered()), this, SLOT(slot_add_element()));
 
+
+	m_oFileImport = new QAction(QObject::trUtf8("Import from file..."), this);
+	connect(m_oFileImport, SIGNAL(triggered()), this, SLOT(slot_import_from_file()));
+	m_oFileExport = new QAction(QObject::trUtf8("Export to file..."), this);
+	connect(m_oFileExport, SIGNAL(triggered()), this, SLOT(slot_export_to_file()));
+
 	m_oMenu = new QMenu(this);
+
+	m_oFileMenu = m_oMenu->addMenu(QObject::trUtf8("File operations"));
+	m_oFileMenu->addAction(m_oFileImport);
+	m_oFileMenu->addAction(m_oFileExport);
+
+	m_oMenu->addSeparator();
 	m_oMenu->addAction(m_oAddLabel);
 	m_oMenu->addAction(m_oAddItemAction);
 	m_oMenu->addAction(m_oAddComponent);
@@ -339,7 +359,7 @@ void box_view::notify_select(const QList<int>& unsel, const QList<int>& sel)
 void box_view::sync_view()
 {
 	if (!m_iId) return;
-	
+
 	data_item *item = m_oMediator->m_oItems.value(m_iId);
 	Q_ASSERT(item);
 	if (item->m_iDataType != VIEW_DIAG)
@@ -482,13 +502,13 @@ void box_view::notify_export_item(int id)
 	l_oPrinter.setPaperSize(l_oR.size(), QPrinter::DevicePixel);
 	l_oPrinter.setPageMargins(0, 0, 0, 0, QPrinter::DevicePixel);
 	l_oPrinter.setOutputFileName(QString(m_oMediator->m_sTempDir + QString("/") + QString("diag-%1.pdf")).arg(QString::number(m_iId)));
-	
+
 	QPainter l_oPdf;
 	if (l_oPdf.begin(&l_oPrinter))
 	{
 		m_bDisableGradient = true;
 		scene()->render(&l_oPdf, l_oR, l_oRect, rat);
-        	l_oPdf.end();
+		l_oPdf.end();
 		m_bDisableGradient = false;
 	}
 
@@ -705,7 +725,7 @@ void box_view::slot_add_element()
 	}
 
 	add->box->m_bIsEnd = sender == m_oAddDotEnd;
-	
+
 	if (sender == m_oAddDotEnd || sender == m_oAddDotStart) {
 		add->box->m_iType = data_box::ACTIVITY_START;
 		add->box->color = QColor(Qt::black);
@@ -1118,7 +1138,7 @@ void box_view::slot_size()
 	foreach (QGraphicsItem* l_oItem, scene()->selectedItems())
 	{
 		if (connectable* c = dynamic_cast<connectable*>(l_oItem))
-		{	
+		{
 			data_box *box = c->m_oBox;
 			mem->prev_values[box] = QRect(box->m_iXX, box->m_iYY, box->m_iWW, box->m_iHH);
 			mem->next_values[box] = QRect(box->m_iXX, box->m_iYY, w, h);
@@ -1453,6 +1473,61 @@ void box_view::notify_focus(void* ptr)
 void box_view::message(const QString &s, int d)
 {
 	emit sig_message(s, d);
+}
+
+void box_view::slot_import_from_file() {
+	KUrl l_o = KFileDialog::getOpenUrl(KUrl(notr("kfiledialog:///document")),
+		trUtf8("*.uml|Semantik diagram (*.uml)"), this,
+		trUtf8("Choose a file name"));
+
+	if (l_o.path().isEmpty()) return;
+
+	// use a full semantik document, even if we are only interested in one item
+	sem_mediator *x = new sem_mediator(this);
+
+	if (x->open_file(l_o.path())) {
+		qDebug()<<"parsing succeeded, but functionality not implemented";
+	}
+
+	delete x;
+}
+
+void box_view::slot_export_to_file() {
+	choose_export:
+	KUrl l_o = KFileDialog::getSaveUrl(KUrl(notr("kfiledialog:///document")),
+		trUtf8("*.uml|Semantik diagram (*.uml)"), this,
+		trUtf8("Choose a file name"));
+
+	if (l_o.path().isEmpty()) return;
+	if (!l_o.path().endsWith(notr(".uml")))
+	{
+		l_o = KUrl(l_o.path()+notr(".uml"));
+	}
+
+	// TODO?
+	//if (m_oMediator->m_sLastSaved != l_o.path())
+	{
+		if (l_o.isLocalFile() && QFile::exists(l_o.path()))
+		{
+			int mu = KMessageBox::questionYesNo(NULL, //this,
+			trUtf8("The file \"%1\" already exists.\nOverwrite it?").arg(l_o.path()),
+			trUtf8("Overwrite existing file"),
+			KStandardGuiItem::yes(),
+			KStandardGuiItem::no(),
+			notr("OverwriteExistingFile"));
+			if (!mu)
+				goto choose_export;
+		}
+	}
+
+	// now the magic
+	sem_mediator *x = new sem_mediator(this);
+	data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
+	x->m_oItems[1] = l_oData;
+	x->m_oColorSchemes = m_oMediator->m_oColorSchemes;
+
+	x->save_file(l_o.path());
+	emit sig_message(trUtf8("Saved '%1'").arg(l_o.path()), 2000);
 }
 
 #include "box_view.moc"

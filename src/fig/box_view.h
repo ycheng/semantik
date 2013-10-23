@@ -46,6 +46,7 @@ class box_view : public QGraphicsView
 		QMenu* m_oAddBoxMenu;
 		QMenu* m_oAlignMenu;
 		QMenu* m_oSizeMenu;
+		QMenu* m_oFileMenu;
 
 		QAction *m_oAddItemAction;
 		QAction *m_oAddLabel;
@@ -58,6 +59,8 @@ class box_view : public QGraphicsView
 		QAction *m_oAddDecision;
 		QAction *m_oAddParallelHorizontal;
 		QAction *m_oAddParallelVertical;
+		QAction *m_oFileExport;
+		QAction *m_oFileImport;
 
 		QAction *m_oPropertiesAction;
 		QAction *m_oDeleteAction;
@@ -135,6 +138,9 @@ class box_view : public QGraphicsView
 
 		void notify_select(const QList<int>& unsel, const QList<int>& sel);
 		void notify_export_item(int);
+
+		void slot_import_from_file();
+		void slot_export_to_file();
 
 	signals:
 		void sig_message(const QString &, int);

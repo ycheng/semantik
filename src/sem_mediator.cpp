@@ -590,10 +590,9 @@ QString sem_mediator::doc_to_xml()
 			foreach (QPoint p, link->m_oOffsets) {
 				l_oS<<notr("    <linkbox_offset x=\"%1\" y=\"%2\"/>\n").arg(QString::number(p.x()), QString::number(p.y()));
 			}
-			l_oS<<notr("</linkbox>\n");			
+			l_oS<<notr("</linkbox>\n");
 
 		}
-		
 		l_oS<<notr("</item>\n");
 	}
 
@@ -610,7 +609,7 @@ QString sem_mediator::doc_to_xml()
 
 bool sem_mediator::save_file(QString i_sUrl)
 {
-	Q_ASSERT(i_sUrl.endsWith(".sem"));
+	//Q_ASSERT(i_sUrl.endsWith(".sem"));
 
 	QFile l_o2(QString(TEMPLATE_DIR)+notr("/semantik.sem.py"));
 	if (!l_o2.open(QIODevice::ReadOnly))
@@ -712,7 +711,7 @@ bool sem_mediator::open_file(const QString& i_sUrl)
 	}
 	PyRun_SimpleString(l_oBa.constData());
 
-	//qDebug()<<"full text "<<bind_node::fulldoc()<<endl;
+	//qDebug()<<"full text "<<bind_node::get_var(notr("fulldoc"))<<endl;
 
 	semantik_reader l_oHandler(this);
 	QXmlInputSource l_oSource;
@@ -1261,7 +1260,7 @@ sem_mediator::sem_mediator(QObject* i_oParent) : QObject(i_oParent)
 	init_temp_dir();
 
 	if (!QFile::exists(SEMANTIK_DIR "/templates/waf")) {
-		qDebug()<<"You cannot use Semantik if it is not installed";
+		qDebug()<<"Access denied ^ô^";
 		Q_ASSERT(false);
 	}
 }
@@ -1344,7 +1343,7 @@ bool sem_mediator::save_and_load_picture(const KUrl& i_sPath, int id)
 	QStringList sp = i_sPath.path().split(".");
 	if (sp.size() < 2) return false;
 	QString dest = QString(m_sTempDir+"/img-%1.%2").arg(QString::number(id)).arg(sp[sp.size()-1]);
-	
+
 	bool ok = KIO::NetAccess::file_copy(i_sPath, KUrl(dest), NULL);
 	if (!ok)
 		goto cleanup;

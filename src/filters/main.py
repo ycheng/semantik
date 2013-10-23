@@ -12,6 +12,8 @@ infile = sembind.get_var('pname')
 
 def debug(s):
 	sys.stderr.write(s)
+	sys.stderr.write('\n')
+	sys.stderr.flush()
 
 os.chdir(tmpdir)
 
@@ -22,7 +24,7 @@ if sys.platform == 'win32' or sys.platform == 'darwin':
 elif name.endswith('.kdi'):
 	import kdissert
 	ret = kdissert.parse_file(infile)
-elif name.endswith('.sem'):
+elif name.endswith('.sem') or name.endswith('.uml'):
 	import semantik
 	ret = semantik.parse_file(infile)
 	# FIXME null bytes should not be allowed in the first place :-(
@@ -33,6 +35,8 @@ elif name.endswith('.mm'):
 elif name.endswith('.vym'):
 	import fvym
 	ret = fvym.parse_file(infile)
+else:
+	debug('Unsupported file format')
 
 sembind.set_var("fulldoc", ret)
 
