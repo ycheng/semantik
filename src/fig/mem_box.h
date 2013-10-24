@@ -159,5 +159,22 @@ class mem_edit_link: public mem_command {
 		IType type() { return EDIT_LINK; }
 };
 
+class mem_import_box : public mem_command {
+	public:
+		mem_import_box(sem_mediator*, int id);
+		void init(QList<data_box*>, QList<data_link*>);
+		void undo();
+		void redo();
+
+		int m_iId;
+		QList<data_box*> new_items;
+		QList<data_link*> new_links;
+		QList<data_box*> old_items;
+		QList<data_link*> old_links;
+
+		IType type() { return IMPORT_BOX; }
+};
+
+
 #endif
 

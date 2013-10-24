@@ -1485,8 +1485,11 @@ void box_view::slot_import_from_file() {
 	// use a full semantik document, even if we are only interested in one item
 	sem_mediator *x = new sem_mediator(this);
 
-	if (x->open_file(l_o.path())) {
-		qDebug()<<"parsing succeeded, but functionality not implemented";
+	if (x->open_file(l_o.path()) && x->m_oItems.size() == 1) {
+		data_item *tmp = x->m_oItems.values().at(0);
+		mem_import_box *imp = new mem_import_box(m_oMediator, m_iId);
+		imp->init(tmp->m_oBoxes.values(), tmp->m_oLinks);
+		imp->apply();
 	}
 
 	delete x;

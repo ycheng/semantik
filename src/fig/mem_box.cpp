@@ -297,3 +297,66 @@ void mem_edit_link::undo() {
 	undo_dirty();
 }
 
+///////////////////////////////////////////////////////////////////
+
+mem_import_box::mem_import_box(sem_mediator* mod, int id) : mem_command(mod)
+{
+	m_iId = id;
+}
+
+void mem_import_box::init(QList<data_box*> _items, QList<data_link*> _links)
+{
+	new_items = _items;
+	new_links = _links;
+
+	data_item *item = model->m_oItems[m_iId];
+	old_items.append(item->m_oBoxes.values());
+	old_links.append(item->m_oLinks);
+}
+
+
+void mem_import_box::undo()
+{
+	data_item *item = model->m_oItems[m_iId];
+	foreach (data_link *k, new_links) {
+		model->notify_unlink_box(m_iId, k);
+		item->m_oLinks.removeAll(k);
+	}
+	foreach (data_box *k, new_items) {
+		model->notify_del_box(m_iId, k->m_iId);
+		item->m_oBoxes.remove(k->m_iId);
+	}
+	foreach (data_box *k, old_items) {
+		item->m_oBoxes[k->m_iId] = k;
+		model->notify_add_box(m_iId, k->m_iId);
+	}
+	foreach (data_link *k, old_links) {
+		item->m_oLinks.append(k);
+		model->notify_link_box(m_iId, k);
+	}
+	undo_dirty();
+}
+
+void mem_import_box::redo()
+{
+	data_item *item = model->m_oItems[m_iId];
+	foreach (data_link *k, old_links) {
+		model->notify_unlink_box(m_iId, k);
+		item->m_oLinks.removeAll(k);
+	}
+	foreach (data_box *k, old_items) {
+		model->notify_del_box(m_iId, k->m_iId);
+		item->m_oBoxes.remove(k->m_iId);
+	}
+	foreach (data_box *k, new_items) {
+		item->m_oBoxes[k->m_iId] = k;
+		model->notify_add_box(m_iId, k->m_iId);
+	}
+	foreach (data_link *k, new_links) {
+		item->m_oLinks.append(k);
+		model->notify_link_box(m_iId, k);
+	}
+	redo_dirty();
+}
+
+
