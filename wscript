@@ -27,18 +27,25 @@ def build(bld):
 	os.environ['LD_LIBRARY_PATH'] = ':'.join(bld.env['LIBPATH_KDECORE'] + [os.environ.get('LD_LIBRARY_PATH', '')])
 	bld.targets = '*' # build all targets by default
 
-	bld(
+	tg = bld(
 		features = 'cxx qt4 cxxshlib',
-		source = bld.path.ant_glob('src/wp/*.cpp'),
-		target = 'nablah',
-		use = 'QTCORE QTGUI QTWEBKIT',
-		includes='. src src/wp',
+		source = bld.path.ant_glob('src/fig/*.cpp', excl='src/fig/semd.cpp'),
+		target = 'semd',
+		use = 'QTCORE QTGUI QTWEBKIT QTXML QTSVG KDECORE KIO KDEUI KHTML',
+		includes='. src src/fig',
 		install_path = '${KDE4_LIB_INSTALL_DIR}/')
 
 	bld(features='cxx qt4 cxxprogram pyembed',
-		source = bld.path.ant_glob('src/*.cpp src/fig/*.cpp'),
-		use = 'QTCORE QTGUI QTXML QTSVG NABLAH KDECORE KIO KDEUI KHTML nablah',
+		source = bld.path.ant_glob('src/*.cpp'),
+		use = 'QTCORE QTGUI QTWEBKIT QTXML QTSVG KDECORE KIO KDEUI KHTML semd',
 		target = 'src/semantik',
+		install_path = '${KDE4_BIN_INSTALL_DIR}/',
+		includes = '. src src/fig')
+
+	bld(features='cxx qt4 cxxprogram pyembed',
+		source = 'src/fig/semd.cpp',
+		use = 'QTCORE QTGUI QTWEBKIT QTXML QTSVG KDECORE KIO KDEUI KHTML semd',
+		target = 'src/semantik-d',
 		install_path = '${KDE4_BIN_INSTALL_DIR}/',
 		includes = '. src src/fig')
 
@@ -196,7 +203,7 @@ def configure(conf):
 def options(opt):
 	opt.load('kde4')
 	opt.load('qt4')
-	opt.load('python')
+	opt.load('python ')
 	opt.add_option('--exe', action='store_true', default=False, help='execute after the compilation (developers)')
 	opt.add_option('--icons', action='store', default='', help='icon dirs where to look for kde icons (configuration)')
 	opt.add_option('--use64', action='store_true', default=False, help='set the installation into lib+64 (configuration)')

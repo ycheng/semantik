@@ -38,11 +38,11 @@ box_link_properties::box_link_properties(QWidget *i_oParent):
 	l_oGridLayout->addWidget(l_sLabel, 2, 0);
 
 	l_sLabel = new QLabel(widget);
-	l_sLabel->setText(trUtf8("Left arrow"));
+	l_sLabel->setText(trUtf8("Origin arrow"));
 	l_oGridLayout->addWidget(l_sLabel, 3, 0);
 
 	l_sLabel = new QLabel(widget);
-	l_sLabel->setText(trUtf8("Right arrow"));
+	l_sLabel->setText(trUtf8("Destination arrow"));
 	l_oGridLayout->addWidget(l_sLabel, 4, 0);
 
 

@@ -1477,7 +1477,7 @@ void box_view::message(const QString &s, int d)
 
 void box_view::slot_import_from_file() {
 	KUrl l_o = KFileDialog::getOpenUrl(KUrl(notr("kfiledialog:///document")),
-		trUtf8("*.uml|Semantik diagram (*.uml)"), this,
+		trUtf8("*.semd|Semantik diagram (*.semd)"), this,
 		trUtf8("Choose a file name"));
 
 	if (l_o.path().isEmpty()) return;
@@ -1498,13 +1498,13 @@ void box_view::slot_import_from_file() {
 void box_view::slot_export_to_file() {
 	choose_export:
 	KUrl l_o = KFileDialog::getSaveUrl(KUrl(notr("kfiledialog:///document")),
-		trUtf8("*.uml|Semantik diagram (*.uml)"), this,
+		trUtf8("*.semd|Semantik diagram (*.semd)"), this,
 		trUtf8("Choose a file name"));
 
 	if (l_o.path().isEmpty()) return;
-	if (!l_o.path().endsWith(notr(".uml")))
+	if (!l_o.path().endsWith(notr(".semd")))
 	{
-		l_o = KUrl(l_o.path()+notr(".uml"));
+		l_o = KUrl(l_o.path()+notr(".semd"));
 	}
 
 	// TODO?
@@ -1518,8 +1518,9 @@ void box_view::slot_export_to_file() {
 			KStandardGuiItem::yes(),
 			KStandardGuiItem::no(),
 			notr("OverwriteExistingFile"));
-			if (!mu)
+			if (!mu) {
 				goto choose_export;
+			}
 		}
 	}
 
