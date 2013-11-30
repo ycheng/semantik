@@ -9,17 +9,21 @@
 #include <QHeaderView>
 #include <QDirModel>
 #include <QCompleter>
+#include "mem_box.h"
+#include "box_view.h"
 
 #include <QtDebug>
 
 #include "box_link_properties.h"
 
-box_link_properties::box_link_properties(QWidget *i_oParent):
+box_link_properties::box_link_properties(QWidget *i_oParent, box_link *i_oLink):
 	KDialog(i_oParent)
 {
 	QWidget *widget = new QWidget(this);
 	setCaption(trUtf8("Link properties"));
-        setButtons(KDialog::Ok | KDialog::Cancel);
+        setButtons(KDialog::Ok | KDialog::Apply | KDialog::Cancel);
+	enableButtonApply(false);
+	m_oLink = i_oLink;
 
 	QGridLayout *l_oGridLayout = new QGridLayout(widget);
 
@@ -42,7 +46,7 @@ box_link_properties::box_link_properties(QWidget *i_oParent):
 	l_oGridLayout->addWidget(l_sLabel, 3, 0);
 
 	l_sLabel = new QLabel(widget);
-	l_sLabel->setText(trUtf8("Destination arrow"));
+	l_sLabel->setText(trUtf8("Target arrow"));
 	l_oGridLayout->addWidget(l_sLabel, 4, 0);
 
 
@@ -76,6 +80,39 @@ box_link_properties::box_link_properties(QWidget *i_oParent):
 	setMainWidget(widget);
 	QSize size(350, 120);
 	resize(size.expandedTo(minimumSizeHint()));
+
+	connect(this, SIGNAL(applyClicked()), this, SLOT(apply()));
+	connect(this, SIGNAL(okClicked()), this, SLOT(apply()));
+
+	connect(m_oThickness, SIGNAL(valueChanged(int)), this, SLOT(enable_apply(int)));
+	connect(m_oType, SIGNAL(currentIndexChanged(int)), this, SLOT(enable_apply(int)));
+	connect(m_oStyle, SIGNAL(currentIndexChanged(int)), this, SLOT(enable_apply(int)));
+	connect(m_oLeftArrow, SIGNAL(currentIndexChanged(int)), this, SLOT(enable_apply(int)));
+	connect(m_oRightArrow, SIGNAL(currentIndexChanged(int)), this, SLOT(enable_apply(int)));
+}
+
+void box_link_properties::enable_apply(int) {
+	enableButtonApply(true);
+}
+
+void box_link_properties::apply() {
+	if (!isButtonEnabled(KDialog::Apply)) {
+		return;
+	}
+
+	mem_edit_link *mem = new mem_edit_link(m_oLink->m_oView->m_oMediator, m_oLink->m_oView->m_iId);
+	mem->link = m_oLink->m_oLink;
+
+	mem->prev.copy_from(m_oLink->m_oInnerLink);
+	mem->next.copy_from(m_oLink->m_oInnerLink);
+	mem->next.border_width = m_oThickness->value();
+	mem->next.m_iLineType = m_oType->currentIndex();
+	mem->next.pen_style = (Qt::PenStyle) m_oStyle->currentIndex();
+	mem->next.m_iLeftArrow = m_oLeftArrow->currentIndex();
+	mem->next.m_iRightArrow = m_oRightArrow->currentIndex();
+
+	mem->apply();
+	enableButtonApply(false);
 }
 
 #include "box_link_properties.moc"

@@ -554,27 +554,13 @@ QVariant box_link::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oV
 
 void box_link::properties()
 {
-	box_link_properties props(m_oView);
+	box_link_properties props(m_oView, this);
 	props.m_oThickness->setValue(m_oInnerLink.border_width);
 	props.m_oType->setCurrentIndex(m_oInnerLink.m_iLineType);
 	props.m_oStyle->setCurrentIndex((int) m_oInnerLink.pen_style);
 	props.m_oLeftArrow->setCurrentIndex(m_oInnerLink.m_iLeftArrow);
 	props.m_oRightArrow->setCurrentIndex(m_oInnerLink.m_iRightArrow);
-	if (props.exec() == KDialog::Accepted)
-	{
-		mem_edit_link *mem = new mem_edit_link(m_oView->m_oMediator, m_oView->m_iId);
-		mem->link = m_oLink;
-
-		mem->prev.copy_from(m_oInnerLink);
-		mem->next.copy_from(m_oInnerLink);
-		mem->next.border_width = props.m_oThickness->value();
-		mem->next.m_iLineType = props.m_oType->currentIndex();
-		mem->next.pen_style = (Qt::PenStyle) props.m_oStyle->currentIndex();
-		mem->next.m_iLeftArrow = props.m_oLeftArrow->currentIndex();
-		mem->next.m_iRightArrow = props.m_oRightArrow->currentIndex();
-
-		mem->apply();
-	}
+	props.exec();
 }
 
 
