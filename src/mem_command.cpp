@@ -11,34 +11,6 @@ inline uint qHash(const QPoint &p) {
 	return p.x() + p.y();
 }
 
-mem_command::mem_command(sem_mediator* mod) {
-	model = mod;
-}
-
-void mem_command::apply() {
-	while (!model->m_oRedoStack.isEmpty())
-		delete model->m_oRedoStack.pop();
-	redo();
-	model->m_oUndoStack.push(this);
-	model->check_undo(true);
-}
-
-void mem_command::add() {
-	while (!model->m_oRedoStack.isEmpty())
-		delete model->m_oRedoStack.pop();
-	model->m_oUndoStack.push(this);
-	model->check_undo(true);
-}
-
-void mem_command::redo_dirty() {
-	was_dirty = model->m_bDirty;
-	model->set_dirty(true);
-}
-
-void mem_command::undo_dirty() {
-	model->set_dirty(was_dirty);
-}
-
 ///////////////////////////////////////////////////////////////////
 
 mem_delete::mem_delete(sem_mediator* mod) : mem_command(mod) {

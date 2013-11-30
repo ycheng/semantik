@@ -59,6 +59,7 @@
 <ul>
  <li>To connect diagram elements, drag the pointer from one box to another while maintaining the shift key pressed</li>
  <li>Right-click on a link or on a box to change the properties</li>
+ <li>Diagrams can be saved as individual files and edited with the <b>semantik-d</b> application</li>
 </ul>
 </html>
 </tip>

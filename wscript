@@ -12,15 +12,17 @@ from waflib import Options, Logs, Configure, Errors
 
 def compile_py(task):
 	outfile = task.m_outputs[0].abspath()
-	f = open(outfile, 'w') # cpython close the file handles for you
-	w = f.write
-	w('<!DOCTYPE RCC><RCC version="1.0">\n<qresource>\n')
-	for k in task.m_inputs:
-		w(' <file>')
-		w(k.m_name)
-		w('</file>\n')
-		w('</qresource>\n</RCC>')
-	f.close()
+	f = open(outfile, 'w')
+	try:
+		w = f.write
+		w('<!DOCTYPE RCC><RCC version="1.0">\n<qresource>\n')
+		for k in task.m_inputs:
+			w(' <file>')
+			w(k.m_name)
+			w('</file>\n')
+			w('</qresource>\n</RCC>')
+	finally:
+		f.close()
 
 def build(bld):
 
@@ -29,10 +31,11 @@ def build(bld):
 
 	tg = bld(
 		features = 'cxx qt4 cxxshlib',
-		source = bld.path.ant_glob('src/fig/*.cpp', excl='src/fig/semd.cpp'),
+		source = bld.path.ant_glob('src/fig/*.cpp src/base/*.cpp', excl='src/fig/semd.cpp'),
 		target = 'semd',
+		vnum = VERSION,
 		use = 'QTCORE QTGUI QTWEBKIT QTXML QTSVG KDECORE KIO KDEUI KHTML',
-		includes='. src src/fig',
+		includes='. src src/fig src/base',
 		install_path = '${KDE4_LIB_INSTALL_DIR}/')
 
 	bld(features='cxx qt4 cxxprogram pyembed',
@@ -40,14 +43,14 @@ def build(bld):
 		use = 'QTCORE QTGUI QTWEBKIT QTXML QTSVG KDECORE KIO KDEUI KHTML semd',
 		target = 'src/semantik',
 		install_path = '${KDE4_BIN_INSTALL_DIR}/',
-		includes = '. src src/fig')
+		includes = '. src src/fig src/base')
 
 	bld(features='cxx qt4 cxxprogram pyembed',
 		source = 'src/fig/semd.cpp',
 		use = 'QTCORE QTGUI QTWEBKIT QTXML QTSVG KDECORE KIO KDEUI KHTML semd',
 		target = 'src/semantik-d',
 		install_path = '${KDE4_BIN_INSTALL_DIR}/',
-		includes = '. src src/fig')
+		includes = '. src src/fig src/base')
 
 	bld.install_files('${SEMANTIK_DIR}', 'src/sembind.py')
 
