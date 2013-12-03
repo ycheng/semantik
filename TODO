@@ -1,6 +1,7 @@
 Priority:
 ---------
 
+crossing diagram arrows for the one with higher z-index
 s5 default picture size?
 crash: resize a box, unselect the diagram, then undo?
 display pictures on the canvas...

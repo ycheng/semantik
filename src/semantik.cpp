@@ -259,8 +259,7 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	l_oDock->setObjectName(notr("LinearDock"));
 
 
-	setXMLFile(notr("semantikui.rc"));
-	setupGUI();
+	setupGUI(QSize(800, 800), Default, notr("semantikui.rc"));
 
 	m_oMediator->m_oCurrentUrl = KUrl();
 	update_title();

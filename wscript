@@ -90,7 +90,7 @@ def build(bld):
 	bld.install_as('${KDE4_ICON_INSTALL_DIR}/hicolor/48x48/apps/semantik.png', 'src/data/hi48-app-semantik.png')
 	bld.install_as('${KDE4_ICON_INSTALL_DIR}/hicolor/32x32/apps/semantik.png', 'src/data/hi32-app-semantik.png')
 	bld.install_as('${KDE4_ICON_INSTALL_DIR}/hicolor/22x22/apps/semantik.png', 'src/data/hi22-app-semantik.png')
-	bld.install_files('${KDE4_DATA_INSTALL_DIR}/semantik', 'src/data/semantikui.rc src/data/tips')
+	bld.install_files('${KDE4_DATA_INSTALL_DIR}/semantik', 'src/data/semantikui.rc src/data/semantik-dui.rc src/data/tips')
 
 	bld.add_post_fun(post_build)
 

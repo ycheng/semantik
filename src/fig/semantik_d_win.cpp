@@ -22,6 +22,7 @@
 #include "semantik_d_win.h"
 #include "sem_mediator.h"
 #include "box_view.h"
+# include  "sembind.h"
 
 semantik_d_win::semantik_d_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 {
@@ -53,8 +54,11 @@ semantik_d_win::semantik_d_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	m_oRecentFilesAct = KStandardAction::openRecent(this, SLOT(slot_recent(const KUrl&)), actionCollection());
 
 
-	setXMLFile(notr("semantikui.rc"));
-        setupGUI();
+        setupGUI(QSize(800, 800), Default, notr("semantik/semantik-dui.rc"));
+
+	read_config();
+	statusBar()->showMessage(trUtf8("Welcome to Semantik"), 2000);
+	setAutoSaveSettings();
 }
 
 semantik_d_win::~semantik_d_win()
@@ -62,5 +66,67 @@ semantik_d_win::~semantik_d_win()
 
 }
 
+void semantik_d_win::read_config()
+{
+	KConfigGroup l_oConfig(KGlobal::config(), notr("General Options"));
+	m_oRecentFilesAct->loadEntries(KGlobal::config()->group(notr("Recent Files")));
+	move(l_oConfig.readEntry(notr("winpos"), QPoint(0, 0)));
+	m_oMediator->m_sOutDir = l_oConfig.readEntry(notr("outdir"), notr("/tmp/"));
+	bind_node::set_var(notr("outdir"), m_oMediator->m_sOutDir);
+}
+
+void semantik_d_win::write_config()
+{
+	KConfigGroup l_oConfig(KGlobal::config(), notr("General Options"));
+	m_oRecentFilesAct->saveEntries(KGlobal::config()->group(notr("Recent Files")));
+	l_oConfig.writeEntry(notr("winpos"), pos());
+	l_oConfig.writeEntry(notr("outdir"), bind_node::get_var(notr("outdir")));
+	l_oConfig.sync();
+}
+
+bool semantik_d_win::queryClose()
+{
+	write_config();
+	//if (!m_oMediator->m_bDirty) return true;
+	//return proceed_save();
+	return true;
+}
+
+void semantik_d_win::update_title() {
+}
+
+void semantik_d_win::slot_open() {
+}
+
+bool semantik_d_win::slot_save() {
+	return true;
+}
+
+bool semantik_d_win::slot_save_as() {
+	return true;
+}
+
+void semantik_d_win::slot_print() {
+}
+
+void semantik_d_win::slot_recent(const KUrl &) {
+}
+
+void semantik_d_win::slot_enable_undo(bool, bool) {
+}
+
+void semantik_d_win::slot_properties() {
+}
+
+void semantik_d_win::slot_generate() {
+}
+
+void semantik_d_win::slot_tip_of_day() {
+}
+
+void semantik_d_win::slot_message(const QString &, int) {
+}
+
 #include "semantik_d_win.moc"
+
 
