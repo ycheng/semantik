@@ -18,6 +18,7 @@
 #include "sem_mediator.h"
 #include "text_view.h"
 #include "semantik.h"
+#include "mem_command.h"
 
 text_view::text_view(QWidget *i_oParent, sem_mediator *i_oControl) : QWidget(i_oParent)
 {

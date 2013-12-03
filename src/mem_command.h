@@ -12,18 +12,6 @@
 
 #include "data_item.h"
 
-class mem_delete : public mem_command {
-	public:
-		mem_delete(sem_mediator*);
-		void init(QList<int> ids);
-		void undo();
-		void redo();
-
-		QList<data_item*> items;
-		QSet<QPoint> links;
-
-		IType type() { return DELETE; }
-};
 
 class mem_add : public mem_command {
 	public:
@@ -40,18 +28,6 @@ class mem_add : public mem_command {
 		IType type() { return ADD; }
 };
 
-class mem_link : public mem_command {
-	public:
-		mem_link(sem_mediator*);
-		void undo();
-		void redo();
-
-		int parent;
-		int child;
-
-		IType type() { return LINK; }
-};
-
 class mem_unlink : public mem_command {
 	public:
 		mem_unlink(sem_mediator*);
@@ -61,17 +37,6 @@ class mem_unlink : public mem_command {
 		int parent;
 		int child;
 		IType type() { return UNLINK; }
-};
-
-class mem_sel : public mem_command {
-	public:
-		mem_sel(sem_mediator*);
-		void undo();
-		void redo();
-		void apply();
-		QList<int> unsel;
-		QList<int> sel;
-		IType type() { return SELECT; }
 };
 
 class mem_move : public mem_command {

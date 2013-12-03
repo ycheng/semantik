@@ -10,6 +10,7 @@
 #include "sem_mediator.h"
 #include "linear_view.h"
 #include "con.h" 
+#include "mem_command.h"
 
 linear_view::linear_view(QWidget *i_oParent, sem_mediator *i_oControl) : QTreeWidget(i_oParent)
 {

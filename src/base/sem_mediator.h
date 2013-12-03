@@ -11,9 +11,11 @@
 
 #include "aux.h"
 #include "con.h"
-#include "mem_command.h"
+#include "mem_base.h"
 #include "flag_scheme.h"
 #include "color_scheme.h"
+
+#include "data_item.h"
 
 class QTimer;
 class html_converter : public QXmlDefaultHandler
@@ -33,6 +35,7 @@ class html_converter : public QXmlDefaultHandler
 class semantik_reader;
 class data_item;
 class bind_node;
+class data_link;
 class sem_mediator: public QObject
 {
 	Q_OBJECT

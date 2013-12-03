@@ -13,6 +13,7 @@
 #include "data_item.h"
 #include "sem_mediator.h"
 #include "vars_view.h"
+#include "mem_command.h"
 
 vars_view::vars_view(QWidget *i_oParent, sem_mediator *i_oControl) : QTextEdit(i_oParent)
 {

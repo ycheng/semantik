@@ -6,7 +6,6 @@
 #include  <QX11Info>
 #include <QTranslator>
 #include "con.h"
-#include "semantik.h"
 #include <stdlib.h>
 #include <iostream>
 
@@ -21,7 +20,9 @@
 #include <KDebug>
 #include <KGlobal>
 
-static const char description[] = I18N_NOOP("A mind-mapping tool for KDE\nAvailable exclusively for open systems such as OpenSuse, Gentoo, Ubuntu or Fedora.");
+#include "semantik_d_win.h"
+
+static const char description[] = I18N_NOOP("A diagramming tool for KDE\nAvailable exclusively for open systems such as OpenSuse, Gentoo, Ubuntu or Fedora.");
 static const char version[] = VERSION;
 
 int grid_int(int x) {
@@ -40,7 +41,7 @@ int main(int i_iArgc, char **i_iArgv)
 	options.add("+[url]", ki18n("A file to open on startup"));
 	options.add("o <file>", ki18n("An output file for exporting the diagram"));
 
-	KAboutData l_o("semantikd", 0, ki18n("Semantik-d"), version, ki18n(description), KAboutData::License_GPL_V3, ki18n("(C) 2013 Thomas Nagy"), KLocalizedString());
+	KAboutData l_o("semantik-d", 0, ki18n("Semantik-d"), version, ki18n(description), KAboutData::License_GPL_V3, ki18n("(C) 2013 Thomas Nagy"), KLocalizedString());
 	l_o.setBugAddress("http://code.google.com/p/semantik/issues/list");
 	l_o.addAuthor(ki18n("Thomas Nagy"), KLocalizedString());
 
@@ -51,8 +52,7 @@ int main(int i_iArgc, char **i_iArgv)
 
 	KGlobal::locale()->insertCatalog("libkdeedu");
 
-	/*
-	semantik_win *l_oMainWin = new semantik_win;
+	semantik_d_win *l_oMainWin = new semantik_d_win;
 
 	const KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 	if (!args->getOption("o").isEmpty()) {
@@ -61,18 +61,17 @@ int main(int i_iArgc, char **i_iArgv)
 				qDebug()<<"a file requires a url";
 				return 1;
 			} else {
-				l_oMainWin->slot_recent(args->url(0));
+				/*l_oMainWin->slot_recent(args->url(0));
 				QPair<int, int> p;
-				return l_oMainWin->print_to_file(args->getOption("o"), p);
+				return l_oMainWin->print_to_file(args->getOption("o"), p);*/
 			}
 		}
 	} else {
 		l_oMainWin->show();
-		if (args->count() && !args->url(0).isEmpty()) {
+		/*if (args->count() && !args->url(0).isEmpty()) {
 			l_oMainWin->slot_recent(args->url(0));
-		}
+		}*/
 	}
-	*/
 	return l_oApp.exec();
 }
 

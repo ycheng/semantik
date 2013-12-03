@@ -23,6 +23,7 @@
 #include "data_item.h"
 #include "sem_mediator.h"
 #include "image_view.h"
+#include "mem_command.h"
 
 image_view::image_view(QWidget *i_oParent, sem_mediator *i_oControl) : QWidget(i_oParent)
 {

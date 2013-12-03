@@ -36,6 +36,8 @@
 #include <QSpinBox>
 #include "export_map_dialog.h"
 #include "kurlrequester.h"
+#include <QPoint>
+ #include "mem_command.h"
 
  #include <QGraphicsTextItem>
 

@@ -32,22 +32,23 @@ def build(bld):
 	tg = bld(
 		features = 'cxx qt4 cxxshlib',
 		source = bld.path.ant_glob('src/fig/*.cpp src/base/*.cpp', excl='src/fig/semd.cpp'),
-		target = 'semd',
+		target = 'semantik',
+		name = 'semlib',
 		vnum = VERSION,
-		use = 'QTCORE QTGUI QTWEBKIT QTXML QTSVG KDECORE KIO KDEUI KHTML',
+		use = 'QTCORE QTGUI QTWEBKIT QTXML PYEMBED QTSVG KDECORE KIO KDEUI KHTML',
 		includes='. src src/fig src/base',
 		install_path = '${KDE4_LIB_INSTALL_DIR}/')
 
 	bld(features='cxx qt4 cxxprogram pyembed',
 		source = bld.path.ant_glob('src/*.cpp'),
-		use = 'QTCORE QTGUI QTWEBKIT QTXML QTSVG KDECORE KIO KDEUI KHTML semd',
+		use = 'QTCORE QTGUI QTWEBKIT QTXML QTSVG KDECORE KIO KDEUI KHTML semlib',
 		target = 'src/semantik',
 		install_path = '${KDE4_BIN_INSTALL_DIR}/',
 		includes = '. src src/fig src/base')
 
 	bld(features='cxx qt4 cxxprogram pyembed',
 		source = 'src/fig/semd.cpp',
-		use = 'QTCORE QTGUI QTWEBKIT QTXML QTSVG KDECORE KIO KDEUI KHTML semd',
+		use = 'QTCORE QTGUI QTWEBKIT QTXML QTSVG KDECORE KIO KDEUI KHTML semlib',
 		target = 'src/semantik-d',
 		install_path = '${KDE4_BIN_INSTALL_DIR}/',
 		includes = '. src src/fig src/base')

@@ -12,6 +12,7 @@
 #include "data_item.h"
 #include "sem_mediator.h"
 #include "table_view.h"
+#include "mem_command.h"
 
 numbered_action::numbered_action(QString x, QWidget *y) : QAction(x, y) {
 
