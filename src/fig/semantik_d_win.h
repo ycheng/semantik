@@ -21,8 +21,7 @@ class QListWidget;
 class KMenu;
 class QTextEdit;
 
-class box_view;
-class sem_mediator;
+class diagram_widget;
 
 class semantik_d_win : public KXmlGuiWindow
 {
@@ -32,13 +31,11 @@ class semantik_d_win : public KXmlGuiWindow
 		semantik_d_win(QWidget *i_oParent=0);
 		~semantik_d_win();
 
-		box_view *m_oDiagramView;
-		sem_mediator *m_oMediator;
+		diagram_widget *m_oDiagramView;
 		KAction *m_oUndoAct;
 		KAction *m_oRedoAct;
 
 		KRecentFilesAction* m_oRecentFilesAct;
-
 
 		void read_config();
 		void write_config();

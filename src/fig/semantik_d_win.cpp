@@ -20,22 +20,21 @@
 #include <QFrame>
 
 #include "semantik_d_win.h"
-#include "sem_mediator.h"
-#include "box_view.h"
+#include "diagram_widget.h"
+//#include "sem_mediator.h"
+//#include "box_view.h"
 # include  "sembind.h"
 
 semantik_d_win::semantik_d_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 {
-	setObjectName("semantik_win");
+	setObjectName("semantik_d_win");
 
 	setWindowIcon(KIcon("semantik"));
-
-	m_oMediator = new sem_mediator(this);
 
 	QFrame *fr = new QFrame(this);
         fr->setLineWidth(0);
         fr->setFrameStyle(QFrame::NoFrame);
-        m_oDiagramView = new box_view(fr, m_oMediator);
+        m_oDiagramView = new diagram_widget(fr);
         setCentralWidget(fr);
         QGridLayout *ll = new QGridLayout(fr);
         ll->addWidget(m_oDiagramView);
@@ -46,18 +45,17 @@ semantik_d_win::semantik_d_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	KStandardAction::open(this, SLOT(slot_open()), actionCollection());
 	KStandardAction::print(this, SLOT(slot_print()), actionCollection());
 	KStandardAction::tipOfDay(this, SLOT(slot_tip_of_day()), actionCollection());
-	m_oUndoAct = KStandardAction::undo(m_oMediator, SLOT(slot_undo()), actionCollection());
-	m_oUndoAct->setEnabled(false);
-	m_oRedoAct = KStandardAction::redo(m_oMediator, SLOT(slot_redo()), actionCollection());
-	m_oRedoAct->setEnabled(false);
+	//m_oUndoAct = KStandardAction::undo(m_oMediator, SLOT(slot_undo()), actionCollection());
+	//m_oUndoAct->setEnabled(false);
+	//m_oRedoAct = KStandardAction::redo(m_oMediator, SLOT(slot_redo()), actionCollection());
+	//m_oRedoAct->setEnabled(false);
 
 	m_oRecentFilesAct = KStandardAction::openRecent(this, SLOT(slot_recent(const KUrl&)), actionCollection());
-
 
         setupGUI(QSize(800, 800), Default, notr("semantik/semantik-dui.rc"));
 
 	read_config();
-	statusBar()->showMessage(trUtf8("Welcome to Semantik"), 2000);
+	statusBar()->showMessage(trUtf8("This is Semantik-d"), 2000);
 	setAutoSaveSettings();
 }
 
@@ -71,16 +69,16 @@ void semantik_d_win::read_config()
 	KConfigGroup l_oConfig(KGlobal::config(), notr("General Options"));
 	m_oRecentFilesAct->loadEntries(KGlobal::config()->group(notr("Recent Files")));
 	move(l_oConfig.readEntry(notr("winpos"), QPoint(0, 0)));
-	m_oMediator->m_sOutDir = l_oConfig.readEntry(notr("outdir"), notr("/tmp/"));
-	bind_node::set_var(notr("outdir"), m_oMediator->m_sOutDir);
+	//m_oMediator->m_sOutDir = l_oConfig.readEntry(notr("outdir"), notr("/tmp/"));
+	//bind_node::set_var(notr("outdir"), m_oMediator->m_sOutDir);
 }
 
 void semantik_d_win::write_config()
 {
 	KConfigGroup l_oConfig(KGlobal::config(), notr("General Options"));
 	m_oRecentFilesAct->saveEntries(KGlobal::config()->group(notr("Recent Files")));
-	l_oConfig.writeEntry(notr("winpos"), pos());
-	l_oConfig.writeEntry(notr("outdir"), bind_node::get_var(notr("outdir")));
+	//l_oConfig.writeEntry(notr("winpos"), pos());
+	//l_oConfig.writeEntry(notr("outdir"), bind_node::get_var(notr("outdir")));
 	l_oConfig.sync();
 }
 

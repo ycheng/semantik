@@ -1,6 +1,10 @@
 Priority:
 ---------
 
+z-index in diagrams
+tabbed gui for diagram library
+svg export?
+class diagrams
 crossing diagram arrows for the one with higher z-index
 s5 default picture size?
 crash: resize a box, unselect the diagram, then undo?
