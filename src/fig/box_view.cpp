@@ -604,8 +604,8 @@ void box_view::slot_add_item()
 	}
 
 	mem_add_box *add = new mem_add_box(m_oMediator, m_iId, next_seq());
-	add->box->m_iXX = m_oLastPoint.x();
-	add->box->m_iYY = m_oLastPoint.y();
+	add->box->m_iXX = m_oLastPoint.x() - 20;
+	add->box->m_iYY = m_oLastPoint.y() - 20;
 	add->box->m_iWW = 80;
 	add->apply();
 
