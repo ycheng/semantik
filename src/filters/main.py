@@ -24,7 +24,7 @@ if sys.platform == 'win32' or sys.platform == 'darwin':
 elif name.endswith('.kdi'):
 	import kdissert
 	ret = kdissert.parse_file(infile)
-elif name.endswith('.sem') or name.endswith('.uml'):
+elif name.endswith('.sem') or name.endswith('.semd'):
 	import semantik
 	ret = semantik.parse_file(infile)
 	# FIXME null bytes should not be allowed in the first place :-(
