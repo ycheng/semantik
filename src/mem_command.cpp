@@ -9,50 +9,6 @@
 
 ///////////////////////////////////////////////////////////////////
 
-mem_add::mem_add(sem_mediator* mod) : mem_command(mod) {
-	parent = NO_ITEM;
-}
-
-void mem_add::init() {
-	item = new data_item(model, model->next_seq());
-	sel = new mem_sel(model);
-}
-
-void mem_add::redo() {
-	//qDebug()<<"redo mem_add"<<item->m_iId;
-	Q_ASSERT(!model->m_oItems.contains(item->m_iId));
-	model->m_oItems[item->m_iId] = item;
-	model->notify_add_item(item->m_iId);
-	if (parent) {
-		Q_ASSERT(!model->m_oLinks.contains(QPoint(parent, item->m_iId)));
-		model->m_oLinks.append(QPoint(parent, item->m_iId));
-		model->notify_link_items(parent, item->m_iId);
-	}
-
-	if (sel->sel.size() != 1) {
-		sel->sel.append(item->m_iId);
-	}
-	sel->redo();
-	redo_dirty();
-}
-
-void mem_add::undo() {
-	//qDebug()<<"undo mem_add"<<item->m_iId;
-	sel->undo();
-
-	if (parent) {
-		Q_ASSERT(model->m_oLinks.contains(QPoint(parent, item->m_iId)));
-		model->m_oLinks.removeAll(QPoint(parent, item->m_iId));
-		model->notify_unlink_items(parent, item->m_iId);
-	}
-	Q_ASSERT(model->m_oItems.contains(item->m_iId));
-	model->notify_delete_item(item->m_iId);
-	model->m_oItems.remove(item->m_iId);
-	undo_dirty();
-}
-
-///////////////////////////////////////////////////////////////////
-
 mem_unlink::mem_unlink(sem_mediator* mod) : mem_command(mod) {
 
 }

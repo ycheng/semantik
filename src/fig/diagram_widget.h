@@ -21,6 +21,7 @@ class diagram_widget : public QFrame
 	public:
 		diagram_widget(QWidget *i_oParent=0);
 		~diagram_widget();
+		void init();
 
 		box_view *m_oDiagramView;
 		sem_mediator *m_oMediator;

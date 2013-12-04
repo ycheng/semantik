@@ -57,6 +57,8 @@ semantik_d_win::semantik_d_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	read_config();
 	statusBar()->showMessage(trUtf8("This is Semantik-d"), 2000);
 	setAutoSaveSettings();
+
+	m_oDiagramView->init();
 }
 
 semantik_d_win::~semantik_d_win()

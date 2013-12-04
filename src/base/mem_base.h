@@ -62,5 +62,20 @@ class mem_link : public mem_command {
 		IType type() { return LINK; }
 };
 
+class mem_add : public mem_command {
+	public:
+		mem_add(sem_mediator*);
+		void init();
+		void undo();
+		void redo();
+
+		data_item* item;
+		int parent;
+
+		mem_sel *sel;
+
+		IType type() { return ADD; }
+};
+
 #endif
 
