@@ -156,6 +156,7 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	m_oMediator = i_oControl;
 	m_iId = NO_ITEM;
 	m_bDisableGradient = false;
+	m_bShowFileMenu = false;
 
 	QGraphicsScene *l_oScene = new QGraphicsScene(this);
 	l_oScene->setSceneRect(-400, -400, 400, 400);
@@ -223,13 +224,32 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	m_oFileExport = new QAction(QObject::trUtf8("Export to file..."), this);
 	connect(m_oFileExport, SIGNAL(triggered()), this, SLOT(slot_export_to_file()));
 
+	m_oColorAction->setEnabled(false);
+
+	m_oLastMovePoint = QPointF(-100, -100);
+
+	m_oCurrent = NULL;
+	m_bPressed = false;
+	m_bScroll = false;
+
+	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+
+	m_oMenu = NULL;
+}
+
+void box_view::init_menu()
+{
+
 	m_oMenu = new QMenu(this);
 
-	m_oFileMenu = m_oMenu->addMenu(QObject::trUtf8("File operations"));
-	m_oFileMenu->addAction(m_oFileImport);
-	m_oFileMenu->addAction(m_oFileExport);
+	if (m_bShowFileMenu) {
+		m_oFileMenu = m_oMenu->addMenu(QObject::trUtf8("File operations"));
+		m_oFileMenu->addAction(m_oFileImport);
+		m_oFileMenu->addAction(m_oFileExport);
+		m_oMenu->addSeparator();
+	}
 
-	m_oMenu->addSeparator();
 	m_oMenu->addAction(m_oAddLabel);
 	m_oMenu->addAction(m_oAddItemAction);
 	m_oMenu->addAction(m_oAddComponent);
@@ -295,16 +315,6 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	m_oMenu->addSeparator();
 	m_oMenu->addAction(m_oColorAction);
 	m_oMenu->addAction(m_oPropertiesAction);
-	m_oColorAction->setEnabled(false);
-
-	m_oLastMovePoint = QPointF(-100, -100);
-
-	m_oCurrent = NULL;
-	m_bPressed = false;
-	m_bScroll = false;
-
-	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 }
 
 box_view::~box_view()
@@ -1242,6 +1252,10 @@ void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 
 void box_view::mousePressEvent(QMouseEvent *i_oEv)
 {
+	if (m_oMenu == NULL) {
+		init_menu();
+	}
+
 	if (i_oEv->button() == Qt::RightButton)
 	{
 		m_oLastPoint = mapToScene(i_oEv->pos());

@@ -225,6 +225,7 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	m_oDataView->addWidget(m_oTableView);
 
 	m_oDiagramView = new box_view(m_oDataView, m_oMediator);
+	m_oDiagramView->m_bShowFileMenu = true;
 	m_oDataView->addWidget(m_oDiagramView);
 	connect(m_oColorGroup, SIGNAL(triggered(QAction*)), m_oDiagramView, SLOT(change_colors(QAction*)));
 	connect(m_oDiagramView, SIGNAL(sig_message(const QString&, int)), this, SLOT(slot_message(const QString&, int)));

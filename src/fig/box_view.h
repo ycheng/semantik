@@ -105,6 +105,8 @@ class box_view : public QGraphicsView
 
 		void message(const QString &, int);
 		bool m_bDisableGradient;
+		bool m_bShowFileMenu;
+		void init_menu();
 
 	public slots:
 		void change_colors(QAction* i_oAct);
