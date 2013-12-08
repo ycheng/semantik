@@ -67,10 +67,15 @@ int main(int i_iArgc, char **i_iArgv)
 			}
 		}
 	} else {
+		if (args->count() && !args->url(0).isEmpty())
+		{
+			//l_oMainWin->slot_recent(args->url(0));
+		}
+		else
+		{
+			l_oMainWin->slot_add_tab();
+		}
 		l_oMainWin->show();
-		/*if (args->count() && !args->url(0).isEmpty()) {
-			l_oMainWin->slot_recent(args->url(0));
-		}*/
 	}
 	return l_oApp.exec();
 }

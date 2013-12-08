@@ -33,20 +33,21 @@ semantik_d_win::semantik_d_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	setWindowIcon(KIcon("semantik"));
 
 	m_oTabWidget = new KTabWidget(this);
-	m_oActiveDiagramView = new diagram_document(m_oTabWidget);
-	m_oActiveDiagramView->init();
-
-	m_oTabWidget->insertTab(0, m_oActiveDiagramView, trUtf8("[New diagram]"));
-
+	m_oTabWidget->setCloseButtonEnabled(true);
+	m_oTabWidget->setAutomaticResizeTabs(true);
 	setCentralWidget(m_oTabWidget);
+	m_oActiveDiagramView = NULL;
 
+	connect(m_oTabWidget, SIGNAL(closeRequest(QWidget*)), this, SLOT(slot_remove_tab(QWidget*)));
+	connect(m_oTabWidget, SIGNAL(currentChanged(int)), this, SLOT(slot_tab_changed(int)));
 
-	KStandardAction::openNew(this, SLOT(close()), actionCollection());
+	KStandardAction::openNew(this, SLOT(slot_add_tab()), actionCollection());
 	KStandardAction::quit(this, SLOT(close()), actionCollection());
-	KStandardAction::save(this, SLOT(slot_save()), actionCollection());
-	KStandardAction::saveAs(this, SLOT(slot_save_as()), actionCollection());
+	KStandardAction::save(this, NULL, actionCollection());
+	KStandardAction::saveAs(this, NULL, actionCollection());
+	KStandardAction::print(this, NULL, actionCollection());
+
 	KStandardAction::open(this, SLOT(slot_open()), actionCollection());
-	KStandardAction::print(this, SLOT(slot_print()), actionCollection());
 	KStandardAction::tipOfDay(this, SLOT(slot_tip_of_day()), actionCollection());
 	//m_oUndoAct = KStandardAction::undo(m_oMediator, SLOT(slot_undo()), actionCollection());
 	//m_oUndoAct->setEnabled(false);
@@ -65,6 +66,68 @@ semantik_d_win::semantik_d_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 semantik_d_win::~semantik_d_win()
 {
 
+}
+
+void semantik_d_win::wire_actions() {
+	QAction *l_oTmp = actionCollection()->action(KStandardAction::name(KStandardAction::Save));
+	if (m_oActiveDiagramView)
+	{
+		l_oTmp->setEnabled(true);
+		connect(l_oTmp, SIGNAL(triggered()), m_oActiveDiagramView, SLOT(slot_save()));
+	}
+	else
+	{
+		l_oTmp->setEnabled(false);
+	}
+
+	l_oTmp = actionCollection()->action(KStandardAction::name(KStandardAction::SaveAs));
+	if (m_oActiveDiagramView)
+	{
+		l_oTmp->setEnabled(true);
+		connect(l_oTmp, SIGNAL(triggered()), m_oActiveDiagramView, SLOT(slot_save_as()));
+	}
+	else
+	{
+		l_oTmp->setEnabled(false);
+	}
+
+	l_oTmp = actionCollection()->action(KStandardAction::name(KStandardAction::Print));
+	if (m_oActiveDiagramView)
+	{
+		l_oTmp->setEnabled(true);
+		connect(l_oTmp, SIGNAL(triggered()), m_oActiveDiagramView, SLOT(slot_print()));
+	}
+	else
+	{
+		l_oTmp->setEnabled(false);
+	}
+}
+
+void semantik_d_win::slot_add_tab()
+{
+	m_oActiveDiagramView = new diagram_document(m_oTabWidget);
+	m_oActiveDiagramView->init();
+	int l_iIndex = m_oTabWidget->addTab(m_oActiveDiagramView, trUtf8("[Untitled]"));
+	m_oTabWidget->setCurrentIndex(l_iIndex);
+	wire_actions();
+}
+
+void semantik_d_win::slot_remove_tab(QWidget* widget)
+{
+	m_oActiveDiagramView->disconnect();
+	delete m_oActiveDiagramView;
+	m_oActiveDiagramView = NULL;
+	slot_tab_changed(m_oTabWidget->currentIndex());
+	wire_actions();
+}
+
+void semantik_d_win::slot_tab_changed(int i_iIndex)
+{
+	if (m_oActiveDiagramView != NULL) {
+		m_oActiveDiagramView->disconnect();
+	}
+	m_oActiveDiagramView = static_cast<diagram_document*>(m_oTabWidget->currentWidget());
+	wire_actions();
 }
 
 void semantik_d_win::read_config()
@@ -97,17 +160,6 @@ void semantik_d_win::update_title() {
 }
 
 void semantik_d_win::slot_open() {
-}
-
-bool semantik_d_win::slot_save() {
-	return true;
-}
-
-bool semantik_d_win::slot_save_as() {
-	return true;
-}
-
-void semantik_d_win::slot_print() {
 }
 
 void semantik_d_win::slot_recent(const KUrl &) {

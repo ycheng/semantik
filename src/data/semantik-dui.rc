@@ -4,7 +4,24 @@
  <MenuBar>
   <Menu name="file"><text>&amp;File</text>
     <Action name="file_new"/>
+    <Separator/>
+
+    <Action name="file_open"/>
+    <Action name="file_open_recent"/>
+    <Separator/>
+
+    <Action name="file_save" group="save_merge" />
+    <Action name="file_save_as" group="save_merge" />
+    <Separator/>
+    <Action name="file_print" group="print_merge" />
+    <Separator/>
+
+    <Action name="file_close"/>
+    <Separator/>
+
+    <Action name="file_quit"/>
   </Menu>
+
   <Menu name="edit"><text>&amp;Edit</text>
       <Action name="export_map" />
       <Action name="export_map_size" />

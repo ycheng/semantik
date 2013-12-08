@@ -43,13 +43,12 @@ class semantik_d_win : public KXmlGuiWindow
 		void write_config();
 		bool queryClose();
 
+		void wire_actions();
+
 	public slots:
 		void update_title();
 
 		void slot_open();
-		bool slot_save();
-		bool slot_save_as();
-		void slot_print();
 
 		void slot_recent(const KUrl &);
 
@@ -62,6 +61,9 @@ class semantik_d_win : public KXmlGuiWindow
 		void slot_tip_of_day();
 		void slot_message(const QString &, int);
 
+		void slot_add_tab();
+		void slot_tab_changed(int);
+		void slot_remove_tab(QWidget*);
 };
 
 #endif
