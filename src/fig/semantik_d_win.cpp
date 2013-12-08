@@ -104,6 +104,11 @@ void semantik_d_win::wire_actions() {
 	{
 		l_oTmp->setEnabled(false);
 	}
+
+	if (m_oActiveDiagramView)
+	{
+		connect(m_oActiveDiagramView->m_oDiagramView, SIGNAL(sig_message(const QString&, int)), statusBar(), SLOT(showMessage(const QString&, int)));
+	}
 }
 
 void semantik_d_win::slot_add_tab()

@@ -1,9 +1,9 @@
 #! /usr/bin/env python
 # encoding: utf-8
-# Thomas Nagy, 2007-2012 (ita)
+# Thomas Nagy, 2007-2013 (ita)
 
 APPNAME = 'semantik'
-VERSION = '0.8.4'
+VERSION = '0.9.0'
 
 top = '.'
 

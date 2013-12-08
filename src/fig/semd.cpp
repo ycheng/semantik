@@ -22,7 +22,7 @@
 
 #include "semantik_d_win.h"
 
-static const char description[] = I18N_NOOP("A diagramming tool for KDE\nAvailable exclusively for open systems such as OpenSuse, Gentoo, Ubuntu or Fedora.");
+static const char description[] = I18N_NOOP("A tool for editing and organizing Semantik diagrams");
 static const char version[] = VERSION;
 
 int grid_int(int x) {
