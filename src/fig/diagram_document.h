@@ -31,6 +31,10 @@ class diagram_document : public QFrame
 	public slots:
 		void slot_open();
 		void slot_print();
+		void slot_tab_name(const KUrl&);
+
+	signals:
+		void sig_tab_name(diagram_document*, const KUrl&);
 };
 
 #endif

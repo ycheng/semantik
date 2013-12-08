@@ -32,7 +32,7 @@ class semantik_d_win : public KXmlGuiWindow
 		semantik_d_win(QWidget *i_oParent=0);
 		~semantik_d_win();
 
-		diagram_document *m_oActiveDiagramView;
+		diagram_document *m_oActiveDocument;
 		KAction *m_oUndoAct;
 		KAction *m_oRedoAct;
 
@@ -46,8 +46,6 @@ class semantik_d_win : public KXmlGuiWindow
 		void wire_actions();
 
 	public slots:
-		void update_title();
-
 		void slot_open();
 
 		void slot_recent(const KUrl &);
@@ -64,6 +62,7 @@ class semantik_d_win : public KXmlGuiWindow
 		void slot_add_tab();
 		void slot_tab_changed(int);
 		void slot_remove_tab(QWidget*);
+		void slot_update_tab_text(diagram_document*, const KUrl &);
 };
 
 #endif

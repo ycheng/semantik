@@ -53,6 +53,8 @@ void diagram_document::init()
 	connect(m_oMediator, SIGNAL(sig_size_box(int, const QList<data_box*>&)), m_oDiagramView, SLOT(notify_size_box(int, const QList<data_box*>&)));
 	connect(m_oMediator, SIGNAL(sig_focus(void *)), m_oDiagramView, SLOT(notify_focus(void *)));
 
+	connect(m_oDiagramView, SIGNAL(sig_Url(const KUrl&)), this, SLOT(slot_tab_name(const KUrl&)));
+
 	mem_add *add = new mem_add(m_oMediator);
 	add->init();
 	add->item->m_iXX = 0;
@@ -68,7 +70,14 @@ void diagram_document::init()
 
 diagram_document::~diagram_document()
 {
+	m_oMediator->disconnect();
+	delete m_oMediator;
+	delete m_oDiagramView;
+}
 
+void diagram_document::slot_tab_name(const KUrl& i_oUrl)
+{
+	emit sig_tab_name(this, i_oUrl);
 }
 
 void diagram_document::slot_open() {
