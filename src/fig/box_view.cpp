@@ -240,7 +240,6 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 
 void box_view::init_menu()
 {
-
 	m_oMenu = new QMenu(this);
 
 	if (m_bShowFileMenu) {

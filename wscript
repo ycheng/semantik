@@ -29,9 +29,11 @@ def build(bld):
 	os.environ['LD_LIBRARY_PATH'] = ':'.join(bld.env['LIBPATH_KDECORE'] + [os.environ.get('LD_LIBRARY_PATH', '')])
 	bld.targets = '*' # build all targets by default
 
+	lst = 'src/fig/semd.cpp src/fig/semantik_d_win.cpp src/fig/diagram_document.cpp'
+
 	tg = bld(
 		features = 'cxx qt4 cxxshlib',
-		source = bld.path.ant_glob('src/fig/*.cpp src/base/*.cpp', excl='src/fig/semd.cpp src/fig/semantik_d_win.cpp src/fig/diagram_widget.cpp'),
+		source = bld.path.ant_glob('src/fig/*.cpp src/base/*.cpp', excl=lst),
 		target = 'semantik',
 		name = 'semlib',
 		vnum = VERSION,
@@ -47,7 +49,7 @@ def build(bld):
 		includes = '. src src/fig src/base')
 
 	bld(features='cxx qt4 cxxprogram pyembed',
-		source = 'src/fig/semd.cpp src/fig/semantik_d_win.cpp src/fig/diagram_widget.cpp',
+		source = lst,
 		use = 'QTCORE QTGUI QTWEBKIT QTXML QTSVG KDECORE KIO KDEUI KHTML semlib',
 		target = 'src/semantik-d',
 		install_path = '${KDE4_BIN_INSTALL_DIR}/',

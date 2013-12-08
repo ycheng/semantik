@@ -19,13 +19,13 @@
 #include <ktip.h>
 #include <QFrame>
 
-#include "diagram_widget.h"
+#include "diagram_document.h"
 #include "sem_mediator.h"
 #include "box_view.h"
 # include  "sembind.h"
 #include "mem_base.h"
 
-diagram_widget::diagram_widget(QWidget *i_oParent) : QFrame(i_oParent)
+diagram_document::diagram_document(QWidget *i_oParent) : QFrame(i_oParent)
 {
         setLineWidth(0);
         setFrameStyle(QFrame::NoFrame);
@@ -37,7 +37,7 @@ diagram_widget::diagram_widget(QWidget *i_oParent) : QFrame(i_oParent)
         ll->addWidget(m_oDiagramView);
 }
 
-void diagram_widget::init()
+void diagram_document::init()
 {
 	connect(m_oMediator, SIGNAL(sig_add_item(int)), m_oDiagramView, SLOT(notify_add_item(int)));
 	connect(m_oMediator, SIGNAL(sig_select(const QList<int>&, const QList<int>&)), m_oDiagramView, SLOT(notify_select(const QList<int>&, const QList<int>&)));
@@ -66,25 +66,25 @@ void diagram_widget::init()
 	m_oMediator->notify_focus(m_oDiagramView);
 }
 
-diagram_widget::~diagram_widget()
+diagram_document::~diagram_document()
 {
 
 }
 
-void diagram_widget::slot_open() {
+void diagram_document::slot_open() {
 }
 
-bool diagram_widget::slot_save() {
+bool diagram_document::slot_save() {
 	return true;
 }
 
-bool diagram_widget::slot_save_as() {
+bool diagram_document::slot_save_as() {
 	return true;
 }
 
-void diagram_widget::slot_print() {
+void diagram_document::slot_print() {
 }
 
-#include "diagram_widget.moc"
+#include "diagram_document.moc"
 
 

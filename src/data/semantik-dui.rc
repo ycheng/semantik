@@ -11,10 +11,7 @@
       <Action name="reorganize_map" />
   </Menu>
   <Menu name="view"><text>&amp;View</text>
-   <Action name="show_dock_data" />
-   <Action name="show_dock_vars" />
-   <Action name="show_dock_preview" />
-   <Action name="show_dock_linear" />
+   <Action name="show_dock_files" />
    <Separator/>
    <Action name="zoom_map" />
   </Menu>
@@ -37,4 +34,5 @@
   </Menu>
 
  </MenuBar>
+
 </gui>

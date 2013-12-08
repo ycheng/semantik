@@ -18,9 +18,10 @@
 #include <KMessageBox>
 #include <ktip.h>
 #include <QFrame>
+#include <KTabWidget>
 
 #include "semantik_d_win.h"
-#include "diagram_widget.h"
+#include "diagram_document.h"
 //#include "sem_mediator.h"
 //#include "box_view.h"
 # include  "sembind.h"
@@ -31,14 +32,16 @@ semantik_d_win::semantik_d_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 
 	setWindowIcon(KIcon("semantik"));
 
-	QFrame *fr = new QFrame(this);
-        fr->setLineWidth(0);
-        fr->setFrameStyle(QFrame::NoFrame);
-        m_oDiagramView = new diagram_widget(fr);
-        setCentralWidget(fr);
-        QGridLayout *ll = new QGridLayout(fr);
-        ll->addWidget(m_oDiagramView);
+	m_oTabWidget = new KTabWidget(this);
+	m_oActiveDiagramView = new diagram_document(m_oTabWidget);
+	m_oActiveDiagramView->init();
 
+	m_oTabWidget->insertTab(0, m_oActiveDiagramView, trUtf8("[New diagram]"));
+
+	setCentralWidget(m_oTabWidget);
+
+
+	KStandardAction::openNew(this, SLOT(close()), actionCollection());
 	KStandardAction::quit(this, SLOT(close()), actionCollection());
 	KStandardAction::save(this, SLOT(slot_save()), actionCollection());
 	KStandardAction::saveAs(this, SLOT(slot_save_as()), actionCollection());
@@ -52,13 +55,11 @@ semantik_d_win::semantik_d_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 
 	m_oRecentFilesAct = KStandardAction::openRecent(this, SLOT(slot_recent(const KUrl&)), actionCollection());
 
-        setupGUI(QSize(800, 800), Default, notr("semantik/semantik-dui.rc"));
+	setupGUI(QSize(800, 800), Default, notr("semantik/semantik-dui.rc"));
 
 	read_config();
 	statusBar()->showMessage(trUtf8("This is Semantik-d"), 2000);
 	setAutoSaveSettings();
-
-	m_oDiagramView->init();
 }
 
 semantik_d_win::~semantik_d_win()
