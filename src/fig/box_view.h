@@ -4,6 +4,7 @@
 #ifndef BOX_VIEW_H
 #define BOX_VIEW_H
 
+#include <KUrl>
 #include <QGraphicsView>
 #include <QList>
 #include <QPoint>
@@ -107,6 +108,7 @@ class box_view : public QGraphicsView
 		bool m_bDisableGradient;
 		bool m_bShowFileMenu;
 		void init_menu();
+		KUrl m_oCurrentUrl;
 
 	public slots:
 		void change_colors(QAction* i_oAct);
@@ -141,11 +143,13 @@ class box_view : public QGraphicsView
 		void notify_select(const QList<int>& unsel, const QList<int>& sel);
 		void notify_export_item(int);
 
-		void slot_import_from_file();
+		bool slot_import_from_file();
 		void slot_export_to_file();
+		void slot_save();
 
 	signals:
 		void sig_message(const QString &, int);
+		void sig_Url(const KUrl&);
 };
 
 #endif

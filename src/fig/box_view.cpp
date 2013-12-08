@@ -1488,24 +1488,33 @@ void box_view::message(const QString &s, int d)
 	emit sig_message(s, d);
 }
 
-void box_view::slot_import_from_file() {
+bool box_view::slot_import_from_file() {
 	KUrl l_o = KFileDialog::getOpenUrl(KUrl(notr("kfiledialog:///document")),
 		trUtf8("*.semd|Semantik diagram (*.semd)"), this,
-		trUtf8("Choose a file name"));
+		trUtf8("Choose a file to open"));
 
-	if (l_o.path().isEmpty()) return;
+	if (l_o.path().isEmpty()) {
+		return false;
+	}
 
 	// use a full semantik document, even if we are only interested in one item
 	sem_mediator *x = new sem_mediator(this);
 
+	bool l_bOk = false;
 	if (x->open_file(l_o.path()) && x->m_oItems.size() == 1) {
+		l_bOk = true;
 		data_item *tmp = x->m_oItems.values().at(0);
 		mem_import_box *imp = new mem_import_box(m_oMediator, m_iId);
 		imp->init(tmp->m_oBoxes.values(), tmp->m_oLinks);
 		imp->apply();
+
+		m_oCurrentUrl = l_o;
+		emit sig_Url(m_oCurrentUrl);
 	}
 
 	delete x;
+
+	return l_bOk;
 }
 
 void box_view::slot_export_to_file() {
@@ -1537,6 +1546,9 @@ void box_view::slot_export_to_file() {
 		}
 	}
 
+	m_oCurrentUrl = l_o;
+	emit sig_Url(m_oCurrentUrl);
+
 	// now the magic
 	sem_mediator *x = new sem_mediator(this);
 	data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
@@ -1545,6 +1557,23 @@ void box_view::slot_export_to_file() {
 
 	x->save_file(l_o.path());
 	emit sig_message(trUtf8("Saved '%1'").arg(l_o.path()), 2000);
+}
+
+void box_view::slot_save() {
+	if (m_oCurrentUrl.isValid())
+	{
+		sem_mediator *x = new sem_mediator(this);
+		data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
+		x->m_oItems[1] = l_oData;
+		x->m_oColorSchemes = m_oMediator->m_oColorSchemes;
+
+		x->save_file(m_oCurrentUrl.path());
+		emit sig_message(trUtf8("Saved '%1'").arg(m_oCurrentUrl.path()), 2000);
+	}
+	else
+	{
+		slot_export_to_file();
+	}
 }
 
 #include "box_view.moc"

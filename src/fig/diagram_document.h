@@ -26,10 +26,10 @@ class diagram_document : public QFrame
 		box_view *m_oDiagramView;
 		sem_mediator *m_oMediator;
 
+		void update_title();
+
 	public slots:
 		void slot_open();
-		bool slot_save();
-		bool slot_save_as();
 		void slot_print();
 };
 

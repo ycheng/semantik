@@ -22,8 +22,8 @@
 
 #include "semantik_d_win.h"
 #include "diagram_document.h"
-//#include "sem_mediator.h"
-//#include "box_view.h"
+#include "sem_mediator.h"
+#include "box_view.h"
 # include  "sembind.h"
 
 semantik_d_win::semantik_d_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
@@ -70,10 +70,11 @@ semantik_d_win::~semantik_d_win()
 
 void semantik_d_win::wire_actions() {
 	QAction *l_oTmp = actionCollection()->action(KStandardAction::name(KStandardAction::Save));
+	l_oTmp->disconnect();
 	if (m_oActiveDiagramView)
 	{
 		l_oTmp->setEnabled(true);
-		connect(l_oTmp, SIGNAL(triggered()), m_oActiveDiagramView, SLOT(slot_save()));
+		connect(l_oTmp, SIGNAL(triggered()), m_oActiveDiagramView->m_oDiagramView, SLOT(slot_save()));
 	}
 	else
 	{
@@ -81,10 +82,11 @@ void semantik_d_win::wire_actions() {
 	}
 
 	l_oTmp = actionCollection()->action(KStandardAction::name(KStandardAction::SaveAs));
+	l_oTmp->disconnect();
 	if (m_oActiveDiagramView)
 	{
 		l_oTmp->setEnabled(true);
-		connect(l_oTmp, SIGNAL(triggered()), m_oActiveDiagramView, SLOT(slot_save_as()));
+		connect(l_oTmp, SIGNAL(triggered()), m_oActiveDiagramView->m_oDiagramView, SLOT(slot_export_to_file()));
 	}
 	else
 	{
@@ -92,6 +94,7 @@ void semantik_d_win::wire_actions() {
 	}
 
 	l_oTmp = actionCollection()->action(KStandardAction::name(KStandardAction::Print));
+	l_oTmp->disconnect();
 	if (m_oActiveDiagramView)
 	{
 		l_oTmp->setEnabled(true);
@@ -114,7 +117,6 @@ void semantik_d_win::slot_add_tab()
 
 void semantik_d_win::slot_remove_tab(QWidget* widget)
 {
-	m_oActiveDiagramView->disconnect();
 	delete m_oActiveDiagramView;
 	m_oActiveDiagramView = NULL;
 	slot_tab_changed(m_oTabWidget->currentIndex());
@@ -123,9 +125,6 @@ void semantik_d_win::slot_remove_tab(QWidget* widget)
 
 void semantik_d_win::slot_tab_changed(int i_iIndex)
 {
-	if (m_oActiveDiagramView != NULL) {
-		m_oActiveDiagramView->disconnect();
-	}
 	m_oActiveDiagramView = static_cast<diagram_document*>(m_oTabWidget->currentWidget());
 	wire_actions();
 }
@@ -159,7 +158,40 @@ bool semantik_d_win::queryClose()
 void semantik_d_win::update_title() {
 }
 
-void semantik_d_win::slot_open() {
+/*
+	if (m_oActiveDiagramView->m_oMediator->open_file(l_o.path()))
+		{
+			l_oTmp->disconnect();
+
+			m_oActiveDiagramView->m_oMediator->m_oCurrentUrl = l_o;
+			int l_iIndex = m_oTabWidget->addTab(m_oActiveDiagramView, l_o.fileName());
+			m_oTabWidget->setCurrentIndex(l_iIndex);
+			wire_actions();
+		}
+		else
+		{
+			KMessageBox::sorry(this, trUtf8("Could not import the file %1").arg(l_o.pathOrUrl()), trUtf8("Invalid file"));
+			delete m_oActiveDiagramView;
+			m_oActiveDiagramView = l_oTmp;
+		}
+*/
+
+void semantik_d_win::slot_open()
+{
+	diagram_document *l_oTmp = m_oActiveDiagramView;
+	m_oActiveDiagramView = new diagram_document(m_oTabWidget);
+	m_oActiveDiagramView->init();
+	if (m_oActiveDiagramView->m_oDiagramView->slot_import_from_file())
+	{
+		int l_iIndex = m_oTabWidget->addTab(m_oActiveDiagramView, m_oActiveDiagramView->m_oDiagramView->m_oCurrentUrl.fileName());
+		m_oTabWidget->setCurrentIndex(l_iIndex);
+		wire_actions();
+	}
+	else
+	{
+		delete m_oActiveDiagramView;
+		m_oActiveDiagramView = l_oTmp;
+	}
 }
 
 void semantik_d_win::slot_recent(const KUrl &) {

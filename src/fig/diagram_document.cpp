@@ -74,12 +74,8 @@ diagram_document::~diagram_document()
 void diagram_document::slot_open() {
 }
 
-bool diagram_document::slot_save() {
-	return true;
-}
+void diagram_document::update_title() {
 
-bool diagram_document::slot_save_as() {
-	return true;
 }
 
 void diagram_document::slot_print() {
