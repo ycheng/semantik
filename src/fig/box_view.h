@@ -78,6 +78,7 @@ class box_view : public QGraphicsView
 
 		void sync_view();
 		void from_string(const QString &);
+		void resizeEvent(QResizeEvent*);
 
 		sem_mediator *m_oMediator;
 

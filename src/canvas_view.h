@@ -106,6 +106,8 @@ class canvas_view : public QGraphicsView
 		QAction *m_oInsertSiblingAction;
 		QAction *m_oNextRootAction;
 
+		void resizeEvent(QResizeEvent*);
+
 	public slots:
 		void export_map_size();
 		void change_colors(QAction*);

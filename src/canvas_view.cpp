@@ -160,6 +160,18 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphi
 	setDragMode(QGraphicsView::RubberBandDrag);
 }
 
+void canvas_view::resizeEvent(QResizeEvent* e)
+{
+	QGraphicsView::resizeEvent(e);
+
+	QRect l_oRect = viewport()->rect();
+	QRectF ar = QRectF(mapToScene(l_oRect.topLeft()), mapToScene(l_oRect.bottomRight()));
+	QRectF br = scene()->itemsBoundingRect();
+	br = br.united(ar);
+
+	scene()->setSceneRect(br);
+}
+
 void canvas_view::check_selection() {
 
 	if (m_bDeleting) return;

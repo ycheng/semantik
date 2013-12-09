@@ -321,6 +321,18 @@ box_view::~box_view()
 
 }
 
+void box_view::resizeEvent(QResizeEvent* e)
+{
+	QGraphicsView::resizeEvent(e);
+
+	QRect l_oRect = viewport()->rect();
+	QRectF ar = QRectF(mapToScene(l_oRect.topLeft()), mapToScene(l_oRect.bottomRight()));
+	QRectF br = scene()->itemsBoundingRect();
+	br = br.united(ar);
+
+	scene()->setSceneRect(br);
+}
+
 void box_view::notify_add_item(int id)
 {
 	m_iId = id;
