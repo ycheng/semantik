@@ -42,19 +42,7 @@ void box_node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	QRectF l_oRect = boundingRect().adjusted(PAD, PAD, -PAD, -PAD);
 
 	QColor bc(m_oBox->color);
-	if (m_oView->m_bDisableGradient)
-	{
-		painter->setBrush(bc);
-	}
-	else
-	{
-		QLinearGradient linearGradient(0, 0, l_oRect.width(), 0);
-		linearGradient.setColorAt(0.0, bc);
-		linearGradient.setColorAt(1.0, bc.darker(GRADVAL));
-		painter->setBrush(linearGradient);
-	}
-
-
+	painter->setBrush(bc);
 
 	QPen l_oPen = QPen(Qt::SolidLine);
 	l_oPen.setColor(Qt::black);
@@ -69,6 +57,9 @@ void box_node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	QRectF br = l_oRect.adjusted(0, 10, -10, 0);
 	painter->drawRect(br);
 
+
+	painter->setBrush(bc.lighter(GRADVAL));
+
 	QPointF pts[4];
 	pts[0] = br.topLeft();
 	pts[1] = br.topLeft() + QPointF(10, -10);
@@ -76,6 +67,8 @@ void box_node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	pts[3] = br.topRight();
 
 	painter->drawPolygon(pts, 4);
+
+	painter->setBrush(bc.darker(GRADVAL));
 
 	pts[0] = br.topRight();
 	pts[1] = br.topRight() + QPointF(10, -10);
