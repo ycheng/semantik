@@ -148,6 +148,7 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		cur_link->m_oEndPoint = QPoint(i_oAttrs.value(notr("endx")).toInt(), i_oAttrs.value(notr("endy")).toInt());
 		cur_link->border_width = i_oAttrs.value(notr("border_width")).toInt();
 		cur_link->pen_style = (Qt::PenStyle) i_oAttrs.value(notr("pen_style")).toInt();
+		cur_link->m_iLineType = i_oAttrs.value(notr("line_type")).toInt();
 	}
 	else if (i_sName == notr("linkbox_offset")) {
 		Q_ASSERT(cur_link);
@@ -578,13 +579,14 @@ QString sem_mediator::doc_to_xml()
 				link->color.name(),
 				QString::number(link->border_width),
 				QString::number(link->pen_style),
-				QString("\n    startx=\"%1\" starty=\"%2\" endx=\"%3\" endy=\"%4\" leftarrow=\"%5\" rightarrow=\"%6\"").arg(
+				QString("\n    startx=\"%1\" starty=\"%2\" endx=\"%3\" endy=\"%4\" leftarrow=\"%5\" rightarrow=\"%6\" line_type=\"%7\"").arg(
 					QString::number(link->m_oStartPoint.x()),
 					QString::number(link->m_oStartPoint.y()),
 					QString::number(link->m_oEndPoint.x()),
 					QString::number(link->m_oEndPoint.y()),
 					QString::number(link->m_iLeftArrow),
-					QString::number(link->m_iRightArrow)
+					QString::number(link->m_iRightArrow),
+					QString::number(link->m_iLineType)
 					)
 				);
 			foreach (QPoint p, link->m_oOffsets) {
