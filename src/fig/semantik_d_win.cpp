@@ -15,6 +15,7 @@
 #include<KToolBar>
 #include <KAction>
 #include <KMenu>
+#include <QDockWidget>
 #include <KMessageBox>
 #include <ktip.h>
 #include <QFrame>
@@ -56,11 +57,25 @@ semantik_d_win::semantik_d_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 
 	m_oRecentFilesAct = KStandardAction::openRecent(this, SLOT(slot_recent(const KUrl&)), actionCollection());
 
-	setupGUI(QSize(800, 800), Default, notr("semantik/semantik-dui.rc"));
+	QDockWidget *l_oDock = new QDockWidget(trUtf8("Files"), this);
+	l_oDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::BottomDockWidgetArea);
+	//l_oDockVars->setWidget(m_oVarsView);
+	addDockWidget(Qt::LeftDockWidgetArea, l_oDock);
+	l_oDock->setObjectName(notr("VarsDock"));
+
+	KAction* l_o = actionCollection()->addAction("show_dock_files");
+	l_o->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F));
+	l_o->setText(trUtf8("Files"));
+	l_o->setIcon(KIcon("dolphin"));
+	l_o->setCheckable(true);
+	l_o->setChecked(l_oDock->isVisible());
+	connect(l_o, SIGNAL(toggled(bool)), l_oDock, SLOT(setVisible(bool)));
 
 	read_config();
-	statusBar()->showMessage(trUtf8("This is Semantik-d"), 2000);
 	setAutoSaveSettings();
+
+	setupGUI(QSize(800, 800), Default, notr("semantik/semantik-dui.rc"));
+	statusBar()->showMessage(trUtf8("This is Semantik-d"), 2000);
 }
 
 semantik_d_win::~semantik_d_win()
