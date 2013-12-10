@@ -87,9 +87,6 @@ void diagram_document::update_title() {
 
 }
 
-void diagram_document::slot_print() {
-}
-
 #include "diagram_document.moc"
 
 

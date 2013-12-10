@@ -98,7 +98,7 @@ void semantik_d_win::wire_actions() {
 	if (m_oActiveDocument)
 	{
 		l_oTmp->setEnabled(true);
-		connect(l_oTmp, SIGNAL(triggered()), m_oActiveDocument, SLOT(slot_print()));
+		connect(l_oTmp, SIGNAL(triggered()), m_oActiveDocument->m_oDiagramView, SLOT(slot_print()));
 	}
 	else
 	{
@@ -179,6 +179,8 @@ void semantik_d_win::slot_open()
 		int l_iIndex = m_oTabWidget->addTab(m_oActiveDocument, m_oActiveDocument->m_oDiagramView->m_oCurrentUrl.fileName());
 		m_oTabWidget->setCurrentIndex(l_iIndex);
 		wire_actions();
+
+		m_oRecentFilesAct->addUrl(m_oActiveDocument->m_oDiagramView->m_oCurrentUrl);
 	}
 	else
 	{
@@ -187,8 +189,26 @@ void semantik_d_win::slot_open()
 	}
 }
 
-void semantik_d_win::slot_recent(const KUrl &) {
+void semantik_d_win::slot_recent(const KUrl& i_oUrl)
+{
+	if (i_oUrl.path().isEmpty()) return;
+
+	diagram_document *l_oTmp = m_oActiveDocument;
+	m_oActiveDocument = new diagram_document(m_oTabWidget);
+	m_oActiveDocument->init();
+	if (m_oActiveDocument->m_oDiagramView->import_from_file(i_oUrl))
+	{
+		int l_iIndex = m_oTabWidget->addTab(m_oActiveDocument, m_oActiveDocument->m_oDiagramView->m_oCurrentUrl.fileName());
+		m_oTabWidget->setCurrentIndex(l_iIndex);
+		wire_actions();
+	}
+	else
+	{
+		delete m_oActiveDocument;
+		m_oActiveDocument = l_oTmp;
+	}
 }
+
 
 void semantik_d_win::slot_enable_undo(bool, bool) {
 }

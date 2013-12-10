@@ -111,6 +111,9 @@ class box_view : public QGraphicsView
 		void init_menu();
 		KUrl m_oCurrentUrl;
 
+		int batch_print_map(const QString& url, QPair<int, int> & p);
+		bool import_from_file(const KUrl& l_o);
+
 	public slots:
 		void change_colors(QAction* i_oAct);
 		void enable_actions(); // used on focus in
@@ -128,6 +131,7 @@ class box_view : public QGraphicsView
 		void slot_penwidth();
 
 		void slot_add_element();
+		void slot_print();
 
 		void notify_focus(void* ptr);
 		void notify_add_item(int);

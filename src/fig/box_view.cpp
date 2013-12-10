@@ -1504,7 +1504,11 @@ bool box_view::slot_import_from_file() {
 	KUrl l_o = KFileDialog::getOpenUrl(KUrl(notr("kfiledialog:///document")),
 		trUtf8("*.semd|Semantik diagram (*.semd)"), this,
 		trUtf8("Choose a file to open"));
+	return import_from_file(l_o);
+}
 
+bool box_view::import_from_file(const KUrl& l_o)
+{
 	if (l_o.path().isEmpty()) {
 		return false;
 	}
@@ -1586,6 +1590,86 @@ void box_view::slot_save() {
 	{
 		slot_export_to_file();
 	}
+}
+
+int box_view::batch_print_map(const QString& url, QPair<int, int> & p) {
+
+	QRectF l_oRect;
+	foreach (QGraphicsItem*it, scene()->items())
+	{
+		if (it->isVisible())
+		{
+			if (l_oRect.width() < 1)
+			{
+				l_oRect = it->boundingRect();
+				l_oRect.translate(it->pos());
+			}
+			else
+			{
+				QRectF tmp = it->boundingRect();
+				tmp.translate(it->pos());
+				l_oRect = l_oRect.united(tmp);
+			}
+		}
+		it->setCacheMode(QGraphicsItem::NoCache); // the magic happens here
+	}
+
+	l_oRect = l_oRect.adjusted(-15, -15, 15, 15);
+
+	QRectF l_oR(0, 0, l_oRect.width(), l_oRect.height());
+
+	if (p.first != 0) {
+		l_oR.setWidth(p.first);
+		if (p.second == 0) {
+			l_oR.setHeight((p.first * l_oRect.height()) / (double) l_oRect.width());
+		}
+	}
+	if (p.second != 0) {
+		l_oR.setHeight(p.second);
+		if (p.first == 0) {
+			l_oR.setWidth((p.second * l_oRect.width()) / (double) l_oRect.height());
+		}
+	}
+
+	Qt::AspectRatioMode rat = (p.first == 0 || p.second == 0) ? Qt::KeepAspectRatio : Qt::IgnoreAspectRatio;
+
+	if (url.endsWith("png")) {
+		// fill with white
+		QImage l_oImage((int) l_oR.width(), (int) l_oR.height(), QImage::Format_RGB32);
+		l_oImage.fill(qRgb(255,255,255));
+
+		QPainter l_oP;
+		l_oP.begin(&l_oImage);
+		l_oP.setRenderHints(QPainter::Antialiasing);
+		scene()->render(&l_oP, l_oR, l_oRect, rat);
+		l_oP.end();
+
+		l_oImage.save(url);
+	} else if (url.endsWith("pdf")) {
+		QPrinter l_oPrinter;
+		//l_oPrinter.setResolution(QPrinter::HighResolution);
+		l_oPrinter.setOrientation(QPrinter::Portrait);
+		l_oPrinter.setOutputFormat(QPrinter::PdfFormat);
+		l_oPrinter.setPaperSize(l_oR.size(), QPrinter::DevicePixel);
+		l_oPrinter.setPageMargins(0, 0, 0, 0, QPrinter::DevicePixel);
+		l_oPrinter.setOutputFileName(url);
+
+		QPainter l_oPdf;
+		if (l_oPdf.begin(&l_oPrinter))
+		{
+			m_bDisableGradient = true;
+			scene()->render(&l_oPdf, l_oR, l_oRect, rat);
+			l_oPdf.end();
+			m_bDisableGradient = false;
+		}
+	} else {
+		return 12;
+	}
+	return 0;
+}
+
+void box_view::slot_print() {
+
 }
 
 #include "box_view.moc"
