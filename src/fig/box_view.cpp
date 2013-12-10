@@ -120,8 +120,8 @@ bool box_reader::startElement(const QString&, const QString&, const QString& i_s
 		if (link->m_iParentPos == 2) link->m_iParentPos = data_link::SOUTH;
 		if (link->m_iParentPos == 3) link->m_iParentPos = data_link::EAST;
 
-		link->pen_style = (Qt::PenStyle) i_oAttrs.value(QObject::trUtf8("sl")).toInt();
-		link->border_width = i_oAttrs.value(QObject::trUtf8("wl")).toInt();
+		link->pen_style = (Qt::PenStyle) i_oAttrs.value(QObject::trUtf8("pen_style")).toInt();
+		link->border_width = i_oAttrs.value(QObject::trUtf8("border_width")).toInt();
 		m_oCurrent = link;
 		m_oMediator->m_oMediator->m_oItems.value(m_iId)->m_oLinks.append(link);
 	}
