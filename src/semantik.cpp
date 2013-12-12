@@ -154,7 +154,7 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	KStandardAction::save(this, SLOT(slot_save()), actionCollection());
 	KStandardAction::saveAs(this, SLOT(slot_save_as()), actionCollection());
 	KStandardAction::open(this, SLOT(slot_open()), actionCollection());
-	KStandardAction::print(this, SLOT(slot_print()), actionCollection());
+	KStandardAction::print(m_oCanvas, SLOT(slot_print()), actionCollection());
 	KStandardAction::tipOfDay(this, SLOT(slot_tip_of_day()), actionCollection());
 	m_oUndoAct = KStandardAction::undo(m_oMediator, SLOT(slot_undo()), actionCollection());
 	m_oUndoAct->setEnabled(false);
@@ -378,19 +378,6 @@ void semantik_win::write_config()
 semantik_win::~semantik_win()
 {
 
-}
-
-void semantik_win::slot_print()
-{
-        QPrinter *l_oP = new QPrinter;
-	//l_oP->setResolution(QPrinter::HighResolution);
-        QPrintDialog l_oD(l_oP, m_oCanvas);
-        if (l_oD.exec() == QDialog::Accepted)
-        {
-                QPainter l_oPa(l_oP);
-                m_oCanvas->render(&l_oPa);
-        }
-        statusBar()->showMessage(trUtf8("Ready"), 2000);
 }
 
 int semantik_win::print_to_file(const QString & url, QPair<int, int> p)

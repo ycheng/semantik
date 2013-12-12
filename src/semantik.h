@@ -48,7 +48,6 @@ class semantik_win : public KXmlGuiWindow
 		void read_config();
 		void write_config();
 		int print_to_file(const QString&, QPair<int, int> p);
-	//private:
 
 		canvas_view *m_oCanvas;
 		image_view *m_oImageView;
@@ -106,7 +105,6 @@ class semantik_win : public KXmlGuiWindow
 		void slot_open();
 		bool slot_save();
 		bool slot_save_as();
-		void slot_print();
 
 		void slot_recent(const KUrl &);
 

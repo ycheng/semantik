@@ -123,6 +123,7 @@ class canvas_view : public QGraphicsView
 		void slot_sel();
 		void slot_next_root();
 		void zoom_in();
+		void slot_print();
 		void zoom_out();
 		void toggle_fullscreen();
 		void slot_select_subtree();

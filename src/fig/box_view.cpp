@@ -13,6 +13,7 @@
 #include <QGraphicsScene>
 #include <QApplication>
 #include<QList>
+#include<QPrintDialog>
 #include <QSet>
 #include <QRegExp>
 #include <QScrollBar>
@@ -1668,9 +1669,62 @@ int box_view::batch_print_map(const QString& url, QPair<int, int> & p) {
 	return 0;
 }
 
-void box_view::slot_print() {
+// The following is copy-pasted. Watch carefully
+void box_view::slot_print()
+{
+        QPrinter *l_oP = new QPrinter;
 
+	QRectF l_oRect;
+	foreach (QGraphicsItem*it, scene()->items())
+	{
+		if (it->isVisible())
+		{
+			if (l_oRect.width() < 1)
+			{
+				l_oRect = it->boundingRect();
+				l_oRect.translate(it->pos());
+			}
+			else
+			{
+				QRectF tmp = it->boundingRect();
+				tmp.translate(it->pos());
+				l_oRect = l_oRect.united(tmp);
+			}
+		}
+		it->setCacheMode(QGraphicsItem::NoCache); // the magic happens here
+	}
+
+	l_oRect = l_oRect.adjusted(-15, -15, 15, 15);
+
+	QRectF l_oR(0, 0, l_oRect.width(), l_oRect.height());
+
+	l_oP->setOrientation(QPrinter::Portrait);
+	l_oP->setOutputFormat(QPrinter::PdfFormat);
+	l_oP->setPaperSize(l_oR.size(), QPrinter::DevicePixel);
+	l_oP->setPageMargins(0, 0, 0, 0, QPrinter::DevicePixel);
+
+        QPrintDialog l_oD(l_oP, this);
+        if (l_oD.exec() != QDialog::Accepted)
+        {
+		emit sig_message(trUtf8("Printing cancelled"), 3000);
+		return;
+	}
+
+	QPainter l_oPdf;
+	if (l_oPdf.begin(l_oP))
+	{
+		m_bDisableGradient = true;
+		scene()->render(&l_oPdf, QRectF(), l_oRect, Qt::KeepAspectRatio);
+		l_oPdf.end();
+		m_bDisableGradient = false;
+		emit sig_message(trUtf8("Printing completed"), 5000);
+	}
+	else
+	{
+		emit sig_message(trUtf8("Problem during printing :-("), 5000);
+	}
 }
+
 
 #include "box_view.moc"
 
