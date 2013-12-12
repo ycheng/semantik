@@ -178,10 +178,28 @@ void semantik_d_win::slot_update_tab_text(diagram_document* i_oDoc, const KUrl &
 
 void semantik_d_win::slot_open()
 {
+	KUrl l_o = KFileDialog::getOpenUrl(KUrl(notr("kfiledialog:///document")),
+                trUtf8("*.semd|Semantik diagram (*.semd)"), this,
+                trUtf8("Choose a file to open"));
+	if (l_o.isEmpty()) return;
+
+	// file already open in a tab
+	for (int i = 0; i < m_oTabWidget->count(); ++i)
+	{
+		diagram_document *l_oDoc = static_cast<diagram_document*>(m_oTabWidget->widget(i));
+		if (l_oDoc->m_oDiagramView->m_oCurrentUrl.equals(l_o))
+		{
+			m_oTabWidget->setCurrentWidget(l_oDoc);
+			m_oRecentFilesAct->addUrl(m_oActiveDocument->m_oDiagramView->m_oCurrentUrl);
+			return;
+		}
+	}
+
+	// just open a new tab
 	diagram_document *l_oTmp = m_oActiveDocument;
 	m_oActiveDocument = new diagram_document(m_oTabWidget);
 	m_oActiveDocument->init();
-	if (m_oActiveDocument->m_oDiagramView->slot_import_from_file())
+	if (m_oActiveDocument->m_oDiagramView->import_from_file(l_o))
 	{
 		int l_iIndex = m_oTabWidget->addTab(m_oActiveDocument, m_oActiveDocument->m_oDiagramView->m_oCurrentUrl.fileName());
 		m_oTabWidget->setCurrentIndex(l_iIndex);
@@ -198,7 +216,19 @@ void semantik_d_win::slot_open()
 
 void semantik_d_win::slot_recent(const KUrl& i_oUrl)
 {
-	if (i_oUrl.path().isEmpty()) return;
+	if (i_oUrl.isEmpty()) return;
+
+	// file already open in a tab
+	for (int i = 0; i < m_oTabWidget->count(); ++i)
+	{
+		diagram_document *l_oDoc = static_cast<diagram_document*>(m_oTabWidget->widget(i));
+		if (l_oDoc->m_oDiagramView->m_oCurrentUrl.equals(i_oUrl))
+		{
+			m_oTabWidget->setCurrentWidget(l_oDoc);
+			m_oRecentFilesAct->addUrl(m_oActiveDocument->m_oDiagramView->m_oCurrentUrl);
+			return;
+		}
+	}
 
 	diagram_document *l_oTmp = m_oActiveDocument;
 	m_oActiveDocument = new diagram_document(m_oTabWidget);
