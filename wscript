@@ -8,7 +8,7 @@ VERSION = '0.9.0'
 top = '.'
 
 import os, sys, re, time
-from waflib import Options, Logs, Configure, Errors
+from waflib import Options, Logs, Configure, Errors, Utils
 
 def compile_py(task):
 	outfile = task.m_outputs[0].abspath()
@@ -86,12 +86,13 @@ def build(bld):
 	bld.install_files('${SEMANTIK_DIR}/images', glob('src/images/*.svg'))
 	bld.install_files('${FILTER_DIR}/', glob('src/filters/*'))
 
-	bld.install_files('${KDE4_XDG_APPS_INSTALL_DIR}/', 'src/data/semantik.desktop')
-	bld.install_as('${KDE4_ICON_INSTALL_DIR}/hicolor/128x128/apps/semantik.png', 'src/data/hi128-app-semantik.png')
-	bld.install_as('${KDE4_ICON_INSTALL_DIR}/hicolor/64x64/apps/semantik.png', 'src/data/hi64-app-semantik.png')
-	bld.install_as('${KDE4_ICON_INSTALL_DIR}/hicolor/48x48/apps/semantik.png', 'src/data/hi48-app-semantik.png')
-	bld.install_as('${KDE4_ICON_INSTALL_DIR}/hicolor/32x32/apps/semantik.png', 'src/data/hi32-app-semantik.png')
-	bld.install_as('${KDE4_ICON_INSTALL_DIR}/hicolor/22x22/apps/semantik.png', 'src/data/hi22-app-semantik.png')
+	bld.install_files('${KDE4_XDG_APPS_INSTALL_DIR}/', 'src/data/semantik.desktop src/data/semantik-d.desktop')
+	bld.install_files('${MIME_DIR}/', 'src/data/semantik.xml')
+	bld.install_as('${KDE4_ICON_INSTALL_DIR}/oxygen/128x128/apps/semantik.png', 'src/data/hi128-app-semantik.png')
+	bld.install_as('${KDE4_ICON_INSTALL_DIR}/oxygen/64x64/apps/semantik.png', 'src/data/hi64-app-semantik.png')
+	bld.install_as('${KDE4_ICON_INSTALL_DIR}/oxygen/48x48/apps/semantik.png', 'src/data/hi48-app-semantik.png')
+	bld.install_as('${KDE4_ICON_INSTALL_DIR}/oxygen/32x32/apps/semantik.png', 'src/data/hi32-app-semantik.png')
+	bld.install_as('${KDE4_ICON_INSTALL_DIR}/oxygen/22x22/apps/semantik.png', 'src/data/hi22-app-semantik.png')
 	bld.install_files('${KDE4_DATA_INSTALL_DIR}/semantik', 'src/data/semantikui.rc src/data/semantik-dui.rc src/data/tips')
 
 	bld.add_post_fun(post_build)
@@ -146,7 +147,10 @@ def configure(conf):
 	conf.define('ICONS', icons)
 	conf.define('VERSION', VERSION)
 
+	kdeconfig = conf.find_program('kde4-config')
+	prefix = conf.cmd_and_log(Utils.to_list(kdeconfig) + ['--prefix']).strip()
 	conf.env.SEMANTIK_DIR = conf.env.KDE4_DATA_INSTALL_DIR + '/semantik'
+	conf.env.MIME_DIR = prefix + '/share/mime/packages'
 	conf.define('SEMANTIK_DIR', conf.env.SEMANTIK_DIR)
 
 	conf.env.TEMPLATE_DIR = conf.env.KDE4_DATA_INSTALL_DIR + '/semantik/templates/'

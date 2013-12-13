@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+<mime-type type="application/x-semantik">
+	<glob pattern="*.sem"/>
+	<generic-icon name="semantik"/>
+	<comment>Semantik file</comment>
+</mime-type>
+<mime-type type="application/x-semantikd">
+	<glob pattern="*.semd"/>
+	<comment>Semantik diagram</comment>
+	<generic-icon name="semantik"/>
+</mime-type>
+</mime-info>

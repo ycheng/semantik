@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Semantik Diagrams
+Exec=semantik-d %F
+GenericName=Semantik diagrams
+Type=Application
+Terminal=false
+Icon=semantik
+MimeType=application/x-semantikd;
+X-KDE-StartupNotify=true
+X-DBUS-StartupType=Multi
+Categories=Qt;KDE;Office;

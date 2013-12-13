@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Semantik
-Exec=semantik
+Exec=semantik %f
 GenericName=Mind mapping software
 GenericName[tr]=Zihin haritalama uygulaması
 Type=Application

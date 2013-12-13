@@ -44,6 +44,7 @@ class semantik_d_win : public KXmlGuiWindow
 		bool queryClose();
 
 		void wire_actions();
+		void print_current(KUrl i_oUrl);
 
 	public slots:
 		void slot_open();

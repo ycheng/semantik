@@ -56,20 +56,24 @@ int main(int i_iArgc, char **i_iArgv)
 
 	const KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 	if (!args->getOption("o").isEmpty()) {
-		if (args->count()) {
-			if (args->url(0).isEmpty()) {
-				qDebug()<<"a file requires a url";
-				return 1;
-			} else {
-				/*l_oMainWin->slot_recent(args->url(0));
-				QPair<int, int> p;
-				return l_oMainWin->print_to_file(args->getOption("o"), p);*/
-			}
-		}
+                       if (args->url(0).isEmpty()) {
+                               qDebug()<<"a file requires a url";
+                               return 1;
+                       } else {
+			       l_oMainWin->slot_recent(args->url(0));
+			       l_oMainWin->print_current(args->getOption("o"));
+                       }
 	} else {
-		if (args->count() && !args->url(0).isEmpty())
+		if (args->count())
 		{
-			//l_oMainWin->slot_recent(args->url(0));
+			for (int i = 0; i < args->count(); ++i)
+			{
+				if (!args->url(i).isValid())
+				{
+					continue;
+				}
+				l_oMainWin->slot_recent(args->url(i));
+			}
 		}
 		else
 		{
