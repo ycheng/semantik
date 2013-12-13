@@ -1593,8 +1593,8 @@ void box_view::slot_save() {
 	}
 }
 
-int box_view::batch_print_map(const QString& url, QPair<int, int> & p) {
-
+int box_view::batch_print_map(const QString& url, QPair<int, int> & p)
+{
 	QRectF l_oRect;
 	foreach (QGraphicsItem*it, scene()->items())
 	{

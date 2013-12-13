@@ -55,14 +55,18 @@ int main(int i_iArgc, char **i_iArgv)
 	semantik_d_win *l_oMainWin = new semantik_d_win;
 
 	const KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
-	if (!args->getOption("o").isEmpty()) {
-                       if (args->url(0).isEmpty()) {
-                               qDebug()<<"a file requires a url";
-                               return 1;
-                       } else {
-			       l_oMainWin->slot_recent(args->url(0));
-			       l_oMainWin->print_current(args->getOption("o"));
-                       }
+	if (!args->getOption("o").isEmpty())
+	{
+		if (!args->url(0).isValid())
+		{
+			return 1;
+		}
+		else
+		{
+			l_oMainWin->slot_recent(args->url(0));
+			l_oMainWin->print_current(args->getOption("o"));
+			return 0;
+		}
 	} else {
 		if (args->count())
 		{
