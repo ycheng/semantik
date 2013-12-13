@@ -21,6 +21,7 @@ class QListWidget;
 class KMenu;
 class QTextEdit;
 class KTabWidget;
+class filetree;
 
 class diagram_document;
 
@@ -38,6 +39,7 @@ class semantik_d_win : public KXmlGuiWindow
 
 		KRecentFilesAction* m_oRecentFilesAct;
 		KTabWidget *m_oTabWidget;
+		filetree *m_oFileTree;
 
 		void read_config();
 		void write_config();

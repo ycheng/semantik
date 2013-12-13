@@ -26,6 +26,7 @@
 #include "sem_mediator.h"
 #include "box_view.h"
 # include  "sembind.h"
+#include  "filetree.h"
 
 semantik_d_win::semantik_d_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 {
@@ -62,6 +63,8 @@ semantik_d_win::semantik_d_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	addDockWidget(Qt::LeftDockWidgetArea, l_oDock);
 	l_oDock->setObjectName(notr("VarsDock"));
 	actionCollection()->addAction(notr("show_dock_files"), l_oDock->toggleViewAction());
+	m_oFileTree = new filetree(l_oDock);
+	l_oDock->setWidget(m_oFileTree);
 
 	read_config();
 	setAutoSaveSettings();

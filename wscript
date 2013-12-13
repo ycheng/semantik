@@ -29,7 +29,7 @@ def build(bld):
 	os.environ['LD_LIBRARY_PATH'] = ':'.join(bld.env['LIBPATH_KDECORE'] + [os.environ.get('LD_LIBRARY_PATH', '')])
 	bld.targets = '*' # build all targets by default
 
-	lst = 'src/fig/semd.cpp src/fig/semantik_d_win.cpp src/fig/diagram_document.cpp'
+	lst = 'src/fig/semd.cpp src/fig/semantik_d_win.cpp src/fig/diagram_document.cpp src/fig/filetree.cpp'
 
 	tg = bld(
 		features = 'cxx qt4 cxxshlib',
