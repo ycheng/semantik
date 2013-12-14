@@ -492,6 +492,7 @@ void box_link::update_ratio()
 	{
 		if (m_oGood.size() > 0)
 		{
+			// TODO compute a user-friendly shape
 			QPolygonF l_oPol(2);
 			l_oPol[0] = m_oGood[0];
 			l_oPol[1] = m_oGood[m_oGood.size() - 1];

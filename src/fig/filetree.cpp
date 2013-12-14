@@ -55,20 +55,26 @@ filetree::filetree(QWidget *i_oWidget) : QTreeView(i_oWidget)
 	setHeaderHidden(true);
 	setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-	QStringList l_o("*.semd");
-	m_oProxy = new fileproxy(this);
-	m_oProxy->setDynamicSortFilter(true);
-
 	m_oModel = new KDirModel(this);
+	m_oProxy = new fileproxy(this);
 	m_oProxy->setSourceModel(m_oModel);
-
+	m_oProxy->setDynamicSortFilter(true);
 	setModel(m_oProxy);
-	m_oModel->dirLister()->openUrl(KUrl("/"), KDirLister::Keep);
-	setSortingEnabled(true);
 
+	m_oModel->dirLister()->openUrl(KUrl("/"), KDirLister::Keep);
+
+	setSortingEnabled(true);
 	sortByColumn(0, Qt::AscendingOrder);
 
 	connect(this, SIGNAL(clicked(const QModelIndex&)), this, SLOT(reclick(const QModelIndex&)));
+	connect(m_oModel, SIGNAL(expand(const QModelIndex&)), this, SLOT(slot_expand(const QModelIndex&)));
+}
+
+void filetree::slot_expand(const QModelIndex& i_oIndex)
+{
+	QModelIndex l_o = m_oProxy->mapFromSource(i_oIndex);
+	expand(l_o);
+	selectionModel()->select(l_o, QItemSelectionModel::ClearAndSelect);
 }
 
 void filetree::reclick(const QModelIndex& i_oModelIndex)

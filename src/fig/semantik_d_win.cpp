@@ -20,6 +20,7 @@
 #include <ktip.h>
 #include <QFrame>
 #include <KTabWidget>
+#include <KDirModel>
 
 #include "semantik_d_win.h"
 #include "diagram_document.h"
@@ -73,14 +74,13 @@ semantik_d_win::semantik_d_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	statusBar()->showMessage(trUtf8("This is Semantik-d"), 2000);
 
 	connect(m_oFileTree, SIGNAL(url_selected(const KUrl&)), this, SLOT(slot_recent(const KUrl&)));
+	connect(this, SIGNAL(url_opened(const KUrl&)), this, SLOT(record_open_url(const KUrl&)));
+
+	m_oFileTree->m_oModel->expandToUrl(KUrl("~"));
 }
 
-semantik_d_win::~semantik_d_win()
+void semantik_d_win::wire_actions()
 {
-
-}
-
-void semantik_d_win::wire_actions() {
 	QAction *l_oTmp = actionCollection()->action(KStandardAction::name(KStandardAction::Save));
 	l_oTmp->disconnect();
 	if (m_oActiveDocument)
@@ -145,6 +145,7 @@ void semantik_d_win::slot_tab_changed(int i_iIndex)
 {
 	m_oActiveDocument = static_cast<diagram_document*>(m_oTabWidget->currentWidget());
 	wire_actions();
+	emit url_opened(m_oActiveDocument->m_oDiagramView->m_oCurrentUrl);
 }
 
 void semantik_d_win::read_config()
@@ -179,6 +180,7 @@ void semantik_d_win::slot_update_tab_text(diagram_document* i_oDoc, const KUrl &
 	{
 		m_oTabWidget->setTabText(l_iIndex, i_oUrl.fileName());
 	}
+	emit url_opened(i_oUrl);
 }
 
 void semantik_d_win::slot_open()
@@ -195,7 +197,7 @@ void semantik_d_win::slot_open()
 		if (l_oDoc->m_oDiagramView->m_oCurrentUrl.equals(l_o))
 		{
 			m_oTabWidget->setCurrentWidget(l_oDoc);
-			m_oRecentFilesAct->addUrl(m_oActiveDocument->m_oDiagramView->m_oCurrentUrl);
+			emit url_opened(m_oActiveDocument->m_oDiagramView->m_oCurrentUrl);
 			return;
 		}
 	}
@@ -209,8 +211,7 @@ void semantik_d_win::slot_open()
 		int l_iIndex = m_oTabWidget->addTab(m_oActiveDocument, m_oActiveDocument->m_oDiagramView->m_oCurrentUrl.fileName());
 		m_oTabWidget->setCurrentIndex(l_iIndex);
 		wire_actions();
-
-		m_oRecentFilesAct->addUrl(m_oActiveDocument->m_oDiagramView->m_oCurrentUrl);
+		emit url_opened(m_oActiveDocument->m_oDiagramView->m_oCurrentUrl);
 	}
 	else
 	{
@@ -230,7 +231,7 @@ void semantik_d_win::slot_recent(const KUrl& i_oUrl)
 		if (l_oDoc->m_oDiagramView->m_oCurrentUrl.equals(i_oUrl))
 		{
 			m_oTabWidget->setCurrentWidget(l_oDoc);
-			m_oRecentFilesAct->addUrl(m_oActiveDocument->m_oDiagramView->m_oCurrentUrl);
+			emit url_opened(m_oActiveDocument->m_oDiagramView->m_oCurrentUrl);
 			return;
 		}
 	}
@@ -242,6 +243,7 @@ void semantik_d_win::slot_recent(const KUrl& i_oUrl)
 	{
 		int l_iIndex = m_oTabWidget->addTab(m_oActiveDocument, m_oActiveDocument->m_oDiagramView->m_oCurrentUrl.fileName());
 		m_oTabWidget->setCurrentIndex(l_iIndex);
+		emit url_opened(m_oActiveDocument->m_oDiagramView->m_oCurrentUrl);
 		wire_actions();
 	}
 	else
@@ -251,6 +253,12 @@ void semantik_d_win::slot_recent(const KUrl& i_oUrl)
 	}
 }
 
+void semantik_d_win::record_open_url(const KUrl & i_oUrl)
+{
+	if (!i_oUrl.isValid()) return;
+	m_oRecentFilesAct->addUrl(i_oUrl);
+	m_oFileTree->m_oModel->expandToUrl(i_oUrl);
+}
 
 void semantik_d_win::slot_enable_undo(bool, bool) {
 }

@@ -29,6 +29,7 @@ class filetree : public QTreeView
 
 	public slots:
 		void reclick(const QModelIndex& i_oModelIndex);
+		void slot_expand(const QModelIndex& i_oIndex);
 
 	signals:
 		void url_selected(const KUrl&);

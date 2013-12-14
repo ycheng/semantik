@@ -31,7 +31,6 @@ class semantik_d_win : public KXmlGuiWindow
 
 	public:
 		semantik_d_win(QWidget *i_oParent=0);
-		~semantik_d_win();
 
 		diagram_document *m_oActiveDocument;
 		KAction *m_oUndoAct;
@@ -66,6 +65,9 @@ class semantik_d_win : public KXmlGuiWindow
 		void slot_tab_changed(int);
 		void slot_remove_tab(QWidget*);
 		void slot_update_tab_text(diagram_document*, const KUrl &);
+		void record_open_url(const KUrl&);
+	signals:
+		void url_opened(const KUrl&);
 };
 
 #endif
