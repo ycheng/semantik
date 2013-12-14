@@ -133,19 +133,21 @@ void semantik_d_win::slot_add_tab()
 	wire_actions();
 }
 
-void semantik_d_win::slot_remove_tab(QWidget* widget)
+void semantik_d_win::slot_remove_tab(QWidget* i_oWidget)
 {
-	delete m_oActiveDocument;
-	m_oActiveDocument = NULL;
-	slot_tab_changed(m_oTabWidget->currentIndex());
-	wire_actions();
+	int l_iIdx = m_oTabWidget->indexOf(i_oWidget);
+	m_oTabWidget->removeTab(l_iIdx);
+	delete i_oWidget;
 }
 
 void semantik_d_win::slot_tab_changed(int i_iIndex)
 {
 	m_oActiveDocument = static_cast<diagram_document*>(m_oTabWidget->currentWidget());
-	wire_actions();
-	emit url_opened(m_oActiveDocument->m_oDiagramView->m_oCurrentUrl);
+	if (m_oActiveDocument != NULL)
+	{
+		wire_actions();
+		emit url_opened(m_oActiveDocument->m_oDiagramView->m_oCurrentUrl);
+	}
 }
 
 void semantik_d_win::read_config()
