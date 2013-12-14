@@ -52,10 +52,10 @@ semantik_d_win::semantik_d_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 
 	KStandardAction::open(this, SLOT(slot_open()), actionCollection());
 	KStandardAction::tipOfDay(this, SLOT(slot_tip_of_day()), actionCollection());
-	//m_oUndoAct = KStandardAction::undo(m_oMediator, SLOT(slot_undo()), actionCollection());
-	//m_oUndoAct->setEnabled(false);
-	//m_oRedoAct = KStandardAction::redo(m_oMediator, SLOT(slot_redo()), actionCollection());
-	//m_oRedoAct->setEnabled(false);
+	m_oUndoAct = KStandardAction::undo(this, NULL, actionCollection());
+	m_oUndoAct->setEnabled(false);
+	m_oRedoAct = KStandardAction::redo(this, NULL, actionCollection());
+	m_oRedoAct->setEnabled(false);
 
 	m_oRecentFilesAct = KStandardAction::openRecent(this, SLOT(slot_recent(const KUrl&)), actionCollection());
 
@@ -116,6 +116,32 @@ void semantik_d_win::wire_actions()
 	{
 		l_oTmp->setEnabled(false);
 	}
+
+	l_oTmp = actionCollection()->action(KStandardAction::name(KStandardAction::Undo));
+	l_oTmp->disconnect();
+	if (m_oActiveDocument)
+	{
+		l_oTmp->setEnabled(true);
+		connect(l_oTmp, SIGNAL(triggered()), m_oActiveDocument->m_oMediator, SLOT(slot_undo()));
+	}
+	else
+	{
+		l_oTmp->setEnabled(false);
+	}
+
+	l_oTmp = actionCollection()->action(KStandardAction::name(KStandardAction::Redo));
+	l_oTmp->disconnect();
+	if (m_oActiveDocument)
+	{
+		l_oTmp->setEnabled(true);
+		connect(l_oTmp, SIGNAL(triggered()), m_oActiveDocument->m_oMediator, SLOT(slot_redo()));
+	}
+	else
+	{
+		l_oTmp->setEnabled(false);
+	}
+
+
 
 	if (m_oActiveDocument)
 	{
