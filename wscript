@@ -218,7 +218,8 @@ def options(opt):
 	opt.load('kde4')
 	opt.load('qt4')
 	opt.load('python ')
-	opt.add_option('--exe', action='store_true', default=False, help='execute after the compilation (developers)')
+	opt.add_option('--exe', action='store_true', default=False, help='execute semantik after the compilation (developers)')
+	opt.add_option('--exed', action='store_true', default=False, help='execute semantik-d after the compilation (developers)')
 	opt.add_option('--icons', action='store', default='', help='icon dirs where to look for kde icons (configuration)')
 	opt.add_option('--use64', action='store_true', default=False, help='set the installation into lib+64 (configuration)')
 
@@ -229,6 +230,8 @@ def post_build(bld):
 	if Options.options.exe:
 		#os.popen('export LD_LIBRARY_PATH=out/default/:$LD_LIBRARY_PATH; PATH=plugins:$PATH out/default/src/semantik')
 		bld.exec_command('LD_LIBRARY_PATH=build/:$LD_LIBRARY_PATH build/src/semantik --style plastique', stdout=None, stderr=None)
+	if Options.options.exed:
+		bld.exec_command('LD_LIBRARY_PATH=build/:$LD_LIBRARY_PATH build/src/semantik-d --style plastique', stdout=None, stderr=None)
 
 	return
 	# display the graph of header dependencies

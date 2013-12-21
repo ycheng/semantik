@@ -492,10 +492,21 @@ void box_link::update_ratio()
 	{
 		if (m_oGood.size() > 0)
 		{
-			// TODO compute a user-friendly shape
-			QPolygonF l_oPol(2);
-			l_oPol[0] = m_oGood[0];
-			l_oPol[1] = m_oGood[m_oGood.size() - 1];
+			double ax = m_oGood[0].x();
+			double ay = m_oGood[0].y();
+			double bx = m_oGood[m_oGood.size() - 1].x();
+			double by = m_oGood[m_oGood.size() - 1].y();
+			double coeff = 5. / sqrt((by - ay) * (by - ay) + (bx - ax) * (bx - ax));
+
+			QPolygonF l_oPol(4);
+			l_oPol[0].setX(ax - coeff * (by - ay));
+			l_oPol[0].setY(ay - coeff * (ax - bx));
+			l_oPol[1].setX(ax + coeff * (by - ay));
+			l_oPol[1].setY(ay + coeff * (ax - bx));
+			l_oPol[2].setX(bx + coeff * (by - ay));
+			l_oPol[2].setY(by + coeff * (ax - bx));
+			l_oPol[3].setX(bx - coeff * (by - ay));
+			l_oPol[3].setY(by - coeff * (ax - bx));
 			p.addPolygon(l_oPol);
 		}
 	}
