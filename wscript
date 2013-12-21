@@ -88,14 +88,18 @@ def build(bld):
 
 	bld.install_files('${KDE4_XDG_APPS_INSTALL_DIR}/', 'src/data/semantik.desktop src/data/semantik-d.desktop')
 	bld.install_files('${MIME_DIR}/', 'src/data/semantik.xml')
-	bld.install_as('${KDE4_ICON_INSTALL_DIR}/oxygen/128x128/apps/semantik.png', 'src/data/hi128-app-semantik.png')
-	bld.install_as('${KDE4_ICON_INSTALL_DIR}/oxygen/64x64/apps/semantik.png', 'src/data/hi64-app-semantik.png')
-	bld.install_as('${KDE4_ICON_INSTALL_DIR}/oxygen/48x48/apps/semantik.png', 'src/data/hi48-app-semantik.png')
-	bld.install_as('${KDE4_ICON_INSTALL_DIR}/oxygen/32x32/apps/semantik.png', 'src/data/hi32-app-semantik.png')
-	bld.install_as('${KDE4_ICON_INSTALL_DIR}/oxygen/22x22/apps/semantik.png', 'src/data/hi22-app-semantik.png')
+
+	for x in ('', '-d'):
+		bld.install_as('${KDE4_ICON_INSTALL_DIR}/oxygen/128x128/apps/semantik%s.png' % x, 'src/data/hi128-app-semantik%s.png'%x)
+		bld.install_as('${KDE4_ICON_INSTALL_DIR}/oxygen/64x64/apps/semantik%s.png'% x, 'src/data/hi64-app-semantik%s.png'%x)
+		bld.install_as('${KDE4_ICON_INSTALL_DIR}/oxygen/48x48/apps/semantik%s.png'% x, 'src/data/hi48-app-semantik%s.png'%x)
+		bld.install_as('${KDE4_ICON_INSTALL_DIR}/oxygen/32x32/apps/semantik%s.png'% x, 'src/data/hi32-app-semantik%s.png'%x)
+		bld.install_as('${KDE4_ICON_INSTALL_DIR}/oxygen/22x22/apps/semantik%s.png'% x, 'src/data/hi22-app-semantik%s.png'%x)
+
 	bld.install_files('${KDE4_DATA_INSTALL_DIR}/semantik', 'src/data/semantikui.rc src/data/semantik-dui.rc src/data/tips')
 
 	bld.add_post_fun(post_build)
+	# update-mime-database /usr/share/mime ?
 
 def configure(conf):
 	def test(system):

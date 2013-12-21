@@ -8,6 +8,6 @@
 <mime-type type="application/x-semantikd">
 	<glob pattern="*.semd"/>
 	<comment>Semantik diagram</comment>
-	<generic-icon name="semantik"/>
+	<generic-icon name="semantik-d"/>
 </mime-type>
 </mime-info>
