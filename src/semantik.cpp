@@ -306,6 +306,7 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 
 
 	connect(m_oMediator, SIGNAL(sig_datatype(int)), m_oDataView, SLOT(notify_datatype(int)));
+	connect(m_oMediator, SIGNAL(sig_datatype(int)), ln, SLOT(notify_datatype(int)));
 
 	connect(m_oMediator, SIGNAL(sig_pic(int)), m_oCanvas, SLOT(notify_pic(int)));
 	connect(m_oMediator, SIGNAL(sig_pic(int)), m_oImageView, SLOT(notify_pic(int)));

@@ -5,12 +5,14 @@
 #include <QHeaderView>
 #include <QDragEnterEvent>
 #include <QDropEvent>
+#include <QIcon>
 
 #include "data_item.h"
 #include "sem_mediator.h"
 #include "linear_view.h"
 #include "con.h" 
 #include "mem_command.h"
+#include <KIconLoader>
 
 linear_view::linear_view(QWidget *i_oParent, sem_mediator *i_oControl) : QTreeWidget(i_oParent)
 {
@@ -32,6 +34,7 @@ void linear_view::notify_add_item(int id)
 	//l_oItem->setFlags(Qt::ItemIsDragEnabled | Qt::ItemIsEnabled | Qt::ItemIsDropEnabled);
 	addTopLevelItem(l_oItem);
 	m_oItems[id] = l_oItem;
+	notify_datatype(id);
 }
 
 void linear_view::notify_delete_item(int id)
@@ -275,10 +278,34 @@ void linear_view::notify_sort(int id)
 	}
 }
 
-void linear_view::notify_edit(int id)
+void linear_view::notify_edit(int i_iId)
 {
-	QTreeWidgetItem *l_oItem = m_oItems.value(id);
-	l_oItem->setText(0, m_oMediator->m_oItems.value(id)->m_sSummary);
+	QTreeWidgetItem *l_oItem = m_oItems.value(i_iId);
+	l_oItem->setText(0, m_oMediator->m_oItems.value(i_iId)->m_sSummary);
+}
+
+void linear_view::notify_datatype(int i_iId)
+{
+	QTreeWidgetItem *l_oItem = m_oItems.value(i_iId);
+	QIcon l_oIcon;
+	switch (m_oMediator->m_oItems.value(i_iId)->m_iDataType)
+	{
+		case VIEW_TEXT:
+			//l_oIcon = KIconLoader::global()->loadIconSet("text-plain", KIconLoader::Small);
+			break;
+		case VIEW_IMG:
+			l_oIcon = KIconLoader::global()->loadIconSet("image-x-generic", KIconLoader::Small);
+			break;
+		case VIEW_DIAG:
+			l_oIcon = KIconLoader::global()->loadIconSet("semantik-d", KIconLoader::Small);
+			break;
+		case VIEW_TABLE:
+			l_oIcon = KIconLoader::global()->loadIconSet("x-office-spreadsheet", KIconLoader::Small);
+			break;
+		default:
+			qDebug()<<"unknown datatype, this should not occur";
+	};
+	l_oItem->setIcon(0, l_oIcon);
 }
 
 #include "linear_view.moc"
