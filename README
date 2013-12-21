@@ -1,4 +1,4 @@
-Semantik 0.8.4, Thomas Nagy
+Semantik 0.9.0, Thomas Nagy
 contact: tnagy1024 at gmail dot com
 http://code.google.com/p/semantik
 
@@ -43,7 +43,7 @@ Getting started with the diagrams:
 * use the + to start dragging a connection
 * select a connection and move the points to change its dimensions
 
-More help in about->help
+More information can be found in about->help
 
 -----------------------------------------------
 
@@ -65,8 +65,11 @@ More help in about->help
   this is only necessary for documents that do not have a KDE mapping for opening them
 * LaTeX commands can be inserted by using all_latex=1
 
-It is also possible to export maps from the command-line:
+It is also possible to export maps from the command-line (png or pdf):
 semantik foo.sem -o foo.pdf
+
+Diagrams can be exported in a similar fashion:
+semantik-d diag.semd -o foo.pdf
 
 -----------------------------------------------
 
@@ -74,18 +77,12 @@ semantik foo.sem -o foo.pdf
 
 GPL V3
 
-Semantik does not Endorse non-free systems:
-
-- Due to restrictive Debian policies regarding "binary" files, Semantik cannot be
-packaged on it. Fortunately, there are less restrictive Linux distributions around.
-
-- Do not port Semantik to proprietary platforms (Windows, Mac). You may be free
-to do it, but the author is also free to stop the development, or to keep the
-next versions for himself.
+Do not annoy the author with requests for porting Semantik to proprietary platforms such as Windows or Mac.
+The author is busy, and such messages will be ignored.
 
 -----------------------------------------------
 
 Enjoy Semantik
 
-Thomas Nagy, 2007-2012
+Thomas Nagy, 2007-2013
 
