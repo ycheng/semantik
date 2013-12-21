@@ -678,10 +678,10 @@ void sem_mediator::undo_purge() {
 }
 
 void sem_mediator::check_undo(bool enable) {
-	if (!enable) {
-		emit enable_undo(false, false);
-	} else {
+	if (enable) {
 		emit enable_undo(!m_oUndoStack.isEmpty(), !m_oRedoStack.isEmpty());
+	} else {
+		emit enable_undo(false, false);
 	}
 }
 

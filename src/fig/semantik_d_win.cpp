@@ -147,7 +147,16 @@ void semantik_d_win::wire_actions()
 	{
 		connect(m_oActiveDocument->m_oDiagramView, SIGNAL(sig_message(const QString&, int)), statusBar(), SLOT(showMessage(const QString&, int)));
 		connect(m_oActiveDocument, SIGNAL(sig_tab_name(diagram_document*, const KUrl&)), this, SLOT(slot_update_tab_text(diagram_document*, const KUrl&)));
+		connect(m_oActiveDocument->m_oMediator, SIGNAL(enable_undo(bool, bool)), this, SLOT(slot_enable_undo(bool, bool)));
+
+		m_oActiveDocument->m_oMediator->check_undo(true);
 	}
+}
+
+void semantik_d_win::slot_enable_undo(bool i_bUndo, bool i_bRedo)
+{
+	actionCollection()->action(KStandardAction::name(KStandardAction::Undo))->setEnabled(i_bUndo);
+	actionCollection()->action(KStandardAction::name(KStandardAction::Redo))->setEnabled(i_bRedo);
 }
 
 void semantik_d_win::slot_add_tab()
@@ -238,6 +247,7 @@ void semantik_d_win::slot_open()
 	{
 		int l_iIndex = m_oTabWidget->addTab(m_oActiveDocument, m_oActiveDocument->m_oDiagramView->m_oCurrentUrl.fileName());
 		m_oTabWidget->setCurrentIndex(l_iIndex);
+		m_oActiveDocument->m_oMediator->m_oUndoStack.clear();
 		wire_actions();
 		emit url_opened(m_oActiveDocument->m_oDiagramView->m_oCurrentUrl);
 	}
@@ -272,6 +282,7 @@ void semantik_d_win::slot_recent(const KUrl& i_oUrl)
 		int l_iIndex = m_oTabWidget->addTab(m_oActiveDocument, m_oActiveDocument->m_oDiagramView->m_oCurrentUrl.fileName());
 		m_oTabWidget->setCurrentIndex(l_iIndex);
 		emit url_opened(m_oActiveDocument->m_oDiagramView->m_oCurrentUrl);
+		m_oActiveDocument->m_oMediator->m_oUndoStack.clear();
 		wire_actions();
 	}
 	else
@@ -288,9 +299,6 @@ void semantik_d_win::record_open_url(const KUrl & i_oUrl)
 	m_oFileTree->m_oModel->expandToUrl(i_oUrl);
 }
 
-void semantik_d_win::slot_enable_undo(bool, bool) {
-}
-
 void semantik_d_win::slot_properties() {
 }
 
@@ -298,9 +306,6 @@ void semantik_d_win::slot_generate() {
 }
 
 void semantik_d_win::slot_tip_of_day() {
-}
-
-void semantik_d_win::slot_message(const QString &, int) {
 }
 
 void semantik_d_win::print_current(KUrl i_oUrl)

@@ -49,18 +49,14 @@ class semantik_d_win : public KXmlGuiWindow
 
 	public slots:
 		void slot_open();
-
-		void slot_recent(const KUrl &);
-
 		void slot_enable_undo(bool, bool);
+		void slot_recent(const KUrl &);
 
 		void slot_properties();
 
 		void slot_generate();
 
 		void slot_tip_of_day();
-		void slot_message(const QString &, int);
-
 		void slot_add_tab();
 		void slot_tab_changed(int);
 		void slot_remove_tab(QWidget*);
