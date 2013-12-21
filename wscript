@@ -222,11 +222,18 @@ def options(opt):
 	opt.add_option('--exed', action='store_true', default=False, help='execute semantik-d after the compilation (developers)')
 	opt.add_option('--icons', action='store', default='', help='icon dirs where to look for kde icons (configuration)')
 	opt.add_option('--use64', action='store_true', default=False, help='set the installation into lib+64 (configuration)')
+	opt.add_option('--nomimes', action='store_true', default=False, help='do not run update-mime-database when installing')
+	opt.add_option('--noldconfig', action='store_true', default=False, help='do not run lconfig when installing')
 
 def post_build(bld):
 	if bld.cmd == 'install':
-		try: bld.exec_command('/sbin/ldconfig 2> /dev/null')
-		except: pass
+		if not Options.options.noldconfig:
+			try: bld.exec_command('/sbin/ldconfig 2> /dev/null')
+			except Exception: pass
+		if not Options.options.nomimes:
+			try: bld.exec_command('update-mime-database %s' % os.path.split(bld.env.MIME_DIR)[0])
+			except Exception: pass
+
 	if Options.options.exe:
 		#os.popen('export LD_LIBRARY_PATH=out/default/:$LD_LIBRARY_PATH; PATH=plugins:$PATH out/default/src/semantik')
 		bld.exec_command('LD_LIBRARY_PATH=build/:$LD_LIBRARY_PATH build/src/semantik --style plastique', stdout=None, stderr=None)
