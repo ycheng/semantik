@@ -50,6 +50,8 @@ semantik_d_win::semantik_d_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	KStandardAction::saveAs(this, NULL, actionCollection());
 	KStandardAction::print(this, NULL, actionCollection());
 
+	KStandardAction::copy(this, NULL, actionCollection());
+
 	KStandardAction::open(this, SLOT(slot_open()), actionCollection());
 	KStandardAction::tipOfDay(this, SLOT(slot_tip_of_day()), actionCollection());
 	m_oUndoAct = KStandardAction::undo(this, NULL, actionCollection());
@@ -141,7 +143,17 @@ void semantik_d_win::wire_actions()
 		l_oTmp->setEnabled(false);
 	}
 
-
+	l_oTmp = actionCollection()->action(KStandardAction::name(KStandardAction::Copy));
+	l_oTmp->disconnect();
+	if (m_oActiveDocument)
+	{
+		l_oTmp->setEnabled(true);
+		connect(l_oTmp, SIGNAL(triggered()), m_oActiveDocument->m_oDiagramView, SLOT(slot_copy_picture()));
+	}
+	else
+	{
+		l_oTmp->setEnabled(false);
+	}
 
 	if (m_oActiveDocument)
 	{
@@ -173,6 +185,8 @@ void semantik_d_win::slot_remove_tab(QWidget* i_oWidget)
 	int l_iIdx = m_oTabWidget->indexOf(i_oWidget);
 	m_oTabWidget->removeTab(l_iIdx);
 	delete i_oWidget;
+
+	wire_actions();
 }
 
 void semantik_d_win::slot_tab_changed(int i_iIndex)

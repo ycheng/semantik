@@ -151,6 +151,7 @@ class box_view : public QGraphicsView
 		bool slot_import_from_file();
 		void slot_export_to_file();
 		void slot_save();
+		void slot_copy_picture();
 
 	signals:
 		void sig_message(const QString &, int);

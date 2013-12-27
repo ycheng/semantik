@@ -8,6 +8,7 @@
 #include <KRecentFilesAction>
 #include <KActionCollection>
 
+#include <QClipboard>
 #include <QMouseEvent>
 #include <QAction>
 #include <QGraphicsScene>
@@ -1725,6 +1726,45 @@ void box_view::slot_print()
 	}
 }
 
+void box_view::slot_copy_picture()
+{
+	QRectF l_oRect;
+	foreach (QGraphicsItem*it, scene()->items())
+	{
+		if (it->isVisible())
+		{
+			if (l_oRect.width() < 1)
+			{
+				l_oRect = it->boundingRect();
+				l_oRect.translate(it->pos());
+			}
+			else
+			{
+				QRectF tmp = it->boundingRect();
+				tmp.translate(it->pos());
+				l_oRect = l_oRect.united(tmp);
+			}
+		}
+		it->setCacheMode(QGraphicsItem::NoCache); // the magic happens here
+	}
+
+	l_oRect = l_oRect.adjusted(-15, -15, 15, 15);
+
+	QRectF l_oR(0, 0, l_oRect.width(), l_oRect.height());
+	Qt::AspectRatioMode rat = Qt::KeepAspectRatio;
+
+	QImage l_oImage((int) l_oR.width(), (int) l_oR.height(), QImage::Format_RGB32);
+	l_oImage.fill(qRgb(255,255,255));
+
+	QPainter l_oP;
+	l_oP.begin(&l_oImage);
+	l_oP.setRenderHints(QPainter::Antialiasing);
+	scene()->render(&l_oP, l_oR, l_oRect, rat);
+	l_oP.end();
+
+	//QApplication::clipboard()->setMimeType("application/x-png");
+	QApplication::clipboard()->setImage(l_oImage);
+}
 
 #include "box_view.moc"
 
