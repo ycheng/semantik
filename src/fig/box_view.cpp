@@ -1195,9 +1195,9 @@ void box_view::slot_align()
 			if (l_i == ALIGN_RIGHT)
 				best = qMax(r.x() + r.width(), best);
 			if (l_i == ALIGN_BOTTOM)
-				best = qMax(r.y() , best);
+				best = qMax(r.y() + r.height(), best);
 			if (l_i == ALIGN_TOP)
-				best = qMin(r.y() + r.height(), best);
+				best = qMin(r.y(), best);
 			if (l_i == ALIGN_CENTER)
 				best = r.x() + r.width() / 2.; // TODO do not pick one randomly
 			if (l_i == ALIGN_MIDDLE)
