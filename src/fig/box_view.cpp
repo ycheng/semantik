@@ -225,6 +225,8 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	connect(m_oFileImport, SIGNAL(triggered()), this, SLOT(slot_import_from_file()));
 	m_oFileExport = new QAction(QObject::trUtf8("Export to file..."), this);
 	connect(m_oFileExport, SIGNAL(triggered()), this, SLOT(slot_export_to_file()));
+	m_oCopyToClipboard = new QAction(QObject::trUtf8("Copy image to clipboard"), this);
+	connect(m_oCopyToClipboard, SIGNAL(triggered()), this, SLOT(slot_copy_picture()));
 
 	m_oColorAction->setEnabled(false);
 
@@ -248,6 +250,7 @@ void box_view::init_menu()
 		m_oFileMenu = m_oMenu->addMenu(QObject::trUtf8("File operations"));
 		m_oFileMenu->addAction(m_oFileImport);
 		m_oFileMenu->addAction(m_oFileExport);
+		m_oFileMenu->addAction(m_oCopyToClipboard);
 		m_oMenu->addSeparator();
 	}
 

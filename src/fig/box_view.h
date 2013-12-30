@@ -62,6 +62,7 @@ class box_view : public QGraphicsView
 		QAction *m_oAddParallelVertical;
 		QAction *m_oFileExport;
 		QAction *m_oFileImport;
+		QAction *m_oCopyToClipboard;
 
 		QAction *m_oPropertiesAction;
 		QAction *m_oDeleteAction;
