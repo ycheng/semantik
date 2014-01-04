@@ -48,13 +48,17 @@ void box_actor::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 	qreal xcoord = xtop + l_oRect.width() / 2.0;
 	qreal ycoord = l_oRect.height() / 5.;
 
-	painter->drawLine(xcoord, ytop + 2 * ycoord, xcoord, ytop + 4 * ycoord);
-	painter->drawLine(xtop, ytop + 3 * ycoord, xtop + l_oRect.width(), ytop + 3 * ycoord);
+	painter->drawLine(QLineF(xcoord, ytop + 2 * ycoord, xcoord, ytop + 4 * ycoord));
+	painter->drawLine(QLineF(xtop, ytop + 3 * ycoord, xtop + l_oRect.width(), ytop + 3 * ycoord));
 
-	painter->drawLine(xtop, ytop + l_oRect.height(), xcoord, ytop + 4 * ycoord);
-	painter->drawLine(xtop + l_oRect.width(), ytop + l_oRect.height(), xcoord, ytop + 4 * ycoord);
+	painter->drawLine(QLineF(xtop, ytop + l_oRect.height(), xcoord, ytop + 4 * ycoord));
+	painter->drawLine(QLineF(xtop + l_oRect.width(), ytop + l_oRect.height(), xcoord, ytop + 4 * ycoord));
 
-	painter->drawEllipse(l_oRect.x(), l_oRect.y(), l_oRect.width(), 2 * ycoord);
+	double cir = 4 * l_oRect.width() / 10.;
+	if (cir > ycoord) {
+		cir = ycoord;
+	}
+	painter->drawEllipse(QRectF(xcoord - cir, ytop + 2 * ycoord - 2 * cir, 2 * cir, 2 * cir));
 
 	if (isSelected())
 	{
