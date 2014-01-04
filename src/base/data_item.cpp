@@ -43,6 +43,7 @@ data_item::data_item(sem_mediator *i_oControl, int i_iId)
 	m_iObjectHeightHint = 0;
 
 	m_iYY = m_iXX = -200000.0;
+	m_bSelected = false;
 }
 
 QPixmap data_item::getPix()

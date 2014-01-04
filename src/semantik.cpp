@@ -539,8 +539,11 @@ bool semantik_win::proceed_save()
 	return false;
 }
 
-void semantik_win::slot_recent(const KUrl& i_oUrl)
+void semantik_win::slot_recent(const KUrl& i_oBadUrl)
 {
+	// deep copy or it will crash
+	KUrl i_oUrl = i_oBadUrl;
+
 	if (i_oUrl.path().isEmpty()) return;
 	if (m_oMediator->m_bDirty)
 	{
