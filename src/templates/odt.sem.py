@@ -109,7 +109,12 @@ def print_nodes(node, niv, lbl_lst):
 
 	if typo == 'text':
 		y = node.get_val('text')
-		if y: out(clear_html(y))
+		if y:
+			out('<text:p text:style-name="P1">')
+			out('<text:span text:style-name="T1">')
+			out(clear_html(y))
+			out('</text:span>')
+			out('</text:p>')
 
 	elif typo == 'table':
 		rows = node.num_rows()
