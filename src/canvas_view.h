@@ -3,6 +3,7 @@
 #ifndef CANVAS_VIEW_H
 #define CANVAS_VIEW_H
 
+#include "KUrl"
 #include <QtGui/QGraphicsView>
 #include  <QGraphicsRectItem>
 #include   <QVector>
@@ -62,7 +63,7 @@ class canvas_view : public QGraphicsView
 		void deselect_all(bool i_oSignal=true);
 		void show_sort(int i_iId, bool i_b);
 		void enable_menu_actions(); // like check_actions, but only for the popup menu
-		int batch_print_map(const QString& url, QPair<int, int> & size);
+		int batch_print_map(const KUrl& url, QPair<int, int> & size);
 
 		double compute_height(QMap<int, double> &map, QMap<int, QList<int> >&children, int id);
 		void compute_width(QMap<int, double> &map, QMap<int, QList<int> >&children, int id, int level);

@@ -61,9 +61,12 @@ int main(int i_iArgc, char **i_iArgv)
 				qDebug()<<"a file requires a url";
 				return 1;
 			} else {
+				KUrl l_oUrl(args->getOption("o"));
+				if (!l_oUrl.isValid()) return 2;
+
 				l_oMainWin->slot_recent(args->url(0));
 				QPair<int, int> p;
-				return l_oMainWin->print_to_file(args->getOption("o"), p);
+				return l_oMainWin->print_to_file(l_oUrl, p);
 			}
 		}
 	} else {

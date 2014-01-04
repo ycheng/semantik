@@ -63,8 +63,13 @@ int main(int i_iArgc, char **i_iArgv)
 		}
 		else
 		{
+			KUrl url(args->getOption("o"));
+			if (!url.isValid()) {
+				return 2;
+			}
+
 			l_oMainWin->slot_recent(args->url(0));
-			l_oMainWin->print_current(args->getOption("o"));
+			l_oMainWin->print_current(url);
 			return 0;
 		}
 	} else {

@@ -47,7 +47,7 @@ class semantik_win : public KXmlGuiWindow
 
 		void read_config();
 		void write_config();
-		int print_to_file(const QString&, QPair<int, int> p);
+		int print_to_file(const KUrl&, QPair<int, int> p);
 
 		canvas_view *m_oCanvas;
 		image_view *m_oImageView;

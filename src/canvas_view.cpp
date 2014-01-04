@@ -8,6 +8,7 @@
 #include <QPrinter>
 #include  <QMenu> 
 #include <QToolTip>
+#include <QSvgGenerator>
 #include  <QColorDialog> 
 #include<KToolBar> 
 #include<KMessageBox>
@@ -1554,7 +1555,7 @@ void canvas_view::slot_select_subtree()
 	sel->apply();
 }
 
-int canvas_view::batch_print_map(const QString& url, QPair<int, int> & p) {
+int canvas_view::batch_print_map(const KUrl& i_oUrl, QPair<int, int> & p) {
 
 	QRectF l_oRect;
 	foreach (QGraphicsItem*it, scene()->items())
@@ -1595,6 +1596,7 @@ int canvas_view::batch_print_map(const QString& url, QPair<int, int> & p) {
 
 	Qt::AspectRatioMode rat = (p.first == 0 || p.second == 0) ? Qt::KeepAspectRatio : Qt::IgnoreAspectRatio;
 
+	QString url = i_oUrl.path();
 	if (url.endsWith("png")) {
 		// fill with white
 		QImage l_oImage((int) l_oR.width(), (int) l_oR.height(), QImage::Format_RGB32);
@@ -1624,6 +1626,17 @@ int canvas_view::batch_print_map(const QString& url, QPair<int, int> & p) {
 			l_oPdf.end();
 			m_bDisableGradient = false;
 		}
+	} else if (url.endsWith("svg")) {
+		QSvgGenerator l_oGenerator;
+		l_oGenerator.setFileName(url);
+		l_oGenerator.setSize(QSize(l_oR.width(), l_oR.height()));
+		l_oGenerator.setViewBox(l_oR);
+
+		QPainter l_oP;
+		l_oP.begin(&l_oGenerator);
+		l_oP.setRenderHints(QPainter::Antialiasing);
+		scene()->render(&l_oP, l_oR, l_oRect, rat);
+		l_oP.end();
 	} else {
 		return 12;
 	}

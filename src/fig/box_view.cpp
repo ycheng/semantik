@@ -32,6 +32,7 @@
 #include <QAction>
 #include <QStandardItemModel>
 #include <QPrinter>
+ #include <QSvgGenerator>
 
 #include "aux.h"
 #include "con.h"
@@ -1667,6 +1668,17 @@ int box_view::batch_print_map(const QString& url, QPair<int, int> & p)
 			l_oPdf.end();
 			m_bDisableGradient = false;
 		}
+	} else if (url.endsWith("svg")) {
+		QSvgGenerator l_oGenerator;
+		l_oGenerator.setFileName(url);
+		l_oGenerator.setSize(QSize(l_oR.width(), l_oR.height()));
+		l_oGenerator.setViewBox(l_oR);
+
+		QPainter l_oP;
+		l_oP.begin(&l_oGenerator);
+		l_oP.setRenderHints(QPainter::Antialiasing);
+		scene()->render(&l_oP, l_oR, l_oRect, rat);
+		l_oP.end();
 	} else {
 		return 12;
 	}

@@ -381,7 +381,7 @@ semantik_win::~semantik_win()
 
 }
 
-int semantik_win::print_to_file(const QString & url, QPair<int, int> p)
+int semantik_win::print_to_file(const KUrl & url, QPair<int, int> p)
 {
 	return m_oCanvas->batch_print_map(url, p);
 }
