@@ -513,13 +513,15 @@ void box_view::notify_export_item(int id)
 	QImage l_oImage((int) l_oR.width(), (int) l_oR.height(), QImage::Format_RGB32);
 	l_oImage.fill(qRgb(255,255,255));
 
-	QPainter l_oP;
-	l_oP.begin(&l_oImage);
-	l_oP.setRenderHints(QPainter::Antialiasing);
 	Qt::AspectRatioMode rat = (p.first == 0 || p.second == 0) ? Qt::KeepAspectRatio : Qt::IgnoreAspectRatio;
-	scene()->render(&l_oP, l_oR, l_oRect, rat);
-	l_oP.end();
 
+	QPainter l_oP;
+	if (l_oP.begin(&l_oImage))
+	{
+		l_oP.setRenderHints(QPainter::Antialiasing);
+		scene()->render(&l_oP, l_oR, l_oRect, rat);
+		l_oP.end();
+	}
 	l_oImage.save(QString(m_oMediator->m_sTempDir + QString("/") + QString("diag-%1.png")).arg(QString::number(m_iId)));
 
 	QPrinter l_oPrinter;
@@ -537,6 +539,20 @@ void box_view::notify_export_item(int id)
 		scene()->render(&l_oPdf, l_oR, l_oRect, rat);
 		l_oPdf.end();
 		m_bDisableGradient = false;
+	}
+
+	// and the svg for html/openoffice
+	QSvgGenerator l_oGenerator;
+	l_oGenerator.setFileName(QString(m_oMediator->m_sTempDir + QString("/") + QString("diag-%1.svg")).arg(QString::number(m_iId)));
+	l_oGenerator.setSize(QSize(l_oR.width(), l_oR.height()));
+	l_oGenerator.setViewBox(l_oR);
+
+	QPainter l_oSvg;
+	if (l_oSvg.begin(&l_oGenerator))
+	{
+		l_oSvg.setRenderHints(QPainter::Antialiasing);
+		scene()->render(&l_oSvg, l_oR, l_oRect, rat);
+		l_oSvg.end();
 	}
 
 	clear_diagram();

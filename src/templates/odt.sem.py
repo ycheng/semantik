@@ -60,15 +60,40 @@ except OSError: debug("Cannot create folder " + outdir)
 try: os.makedirs(outdir+'/Pictures')
 except OSError: debug("Cannot create folder " + outdir)
 
+# f** mimes
+MIMES = {'svg': 'image/svg', 'png': 'image/png', 'jpg': 'image/jpeg', 'jpeg':'image/jpeg', 'gif': 'image/gif'}
+
 # copy the pictures
 cwd = os.getcwd()
 os.chdir(sembind.get_var('temp_dir'))
 pics = {} # map the id to the picture
+tmp_pics = {}
 lst = os.listdir('.')
 for x in lst:
 	if x.startswith('diag-') and not x.endswith('.pdf'):
-		pics[ x.replace('diag-', '').split('.')[0] ] = x
-		shutil.copy2(x, outdir + '/Pictures')
+		tmplst = x.replace('diag-', '').split('.')
+		k = tmplst[0]
+		ext = tmplst[-1]
+		try:
+			tmp_pics[k].append(ext)
+		except KeyError:
+			tmp_pics[k] = [ext]
+
+def best_ext(lst):
+	if 'svg' in lst:
+		return 'svg'
+	if 'png' in lst:
+		return 'png'
+	if 'jpg' in lst:
+		return 'jpg'
+	return lst[0]
+
+for key, val in tmp_pics.items():
+	x = best_ext(val)
+	name = 'diag-%s.%s' % (key, x)
+	shutil.copy2(name, outdir + '/Pictures')
+	pics[key] = x
+
 os.chdir(cwd)
 
 try: os.mkdir(outdir+'/META-INF')
@@ -151,7 +176,7 @@ def print_nodes(node, niv, lbl_lst):
 			caption = node.get_var('pic_caption')
 			if not caption: caption = '(TODO: set a caption for this picture!)'
 
-			p = pics[id]
+			ext = pics[id]
 
 			#out('<draw:frame draw:style-name="fr1" text:anchor-type="paragraph" draw:z-index="0">\n')
 			#out('<draw:text-box min-height="3cm">\n')
@@ -178,23 +203,17 @@ def print_nodes(node, niv, lbl_lst):
 				h = (15 * h) / w
 				w = 15
 
+			name = 'diag-%s.%s' % (id, ext)
 			out('<text:p text:style-name="Standard">\n')
 			out('<draw:frame draw:style-name="fr1" draw:name="Image1" text:anchor-type="paragraph" ')
 			out(' svg:width="%fcm" svg:height="%fcm" ' % (w, h))
 			out(' draw:z-index="0">\n')
-			out('<draw:image xlink:href="Pictures/%s" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/>\n' % p)
+			out('<draw:image xlink:href="Pictures/%s" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/>\n' % name)
 			out('</draw:frame>\n')
 			out('</text:p>\n')
 
-
-			t = 'image/jpeg'
-
-			if p.find('jpg')>0 or p.find('jpeg')>0: t = 'image/jpeg'
-			elif p.find('png')>0: t = 'image/png'
-			elif p.find('gif')>0: t = 'image/gif'
-
-			settings['manif'] += '<manifest:file-entry manifest:media-type="%s" manifest:full-path="Pictures/%s"/>' % (t, p)
-			settings['piclst'].append(p)
+			settings['manif'] += '<manifest:file-entry manifest:media-type="%s" manifest:full-path="Pictures/%s"/>' % (MIMES[ext], name)
+			settings['piclst'].append(name)
 
 	num = node.child_count()
 	for i in range(num):

@@ -1,9 +1,14 @@
+Semantik 0.9.1
+--------------
+* Svg export
+* Odt template fixes
+
 Semantik 0.9.0
 --------------
 * New application for editing and managing diagrams
 * Enhanced printing system from the menu
 * Print diagrams from the command-line
-* Fixed the jitter on the drawing area
+* Fixed the jitter on the map/diagram areas
 
 Semantik 0.8.4
 --------------
