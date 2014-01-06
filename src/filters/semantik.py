@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # encoding: utf-8
-# Thomas Nagy, 2007-2012
+# Thomas Nagy, 2007-2014
 
 import os, sys, tarfile, string
 

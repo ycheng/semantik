@@ -1,7 +1,7 @@
 #sem:name: semantik document generator
 #sem:tip: used for saving semantik documents
 
-# Thomas Nagy, 2007-2012
+# Thomas Nagy, 2007-2014
 
 import os, tarfile
 from cStringIO import StringIO

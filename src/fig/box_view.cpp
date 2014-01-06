@@ -1,4 +1,4 @@
-// Thomas Nagy 2007-2012 GPLV3
+// Thomas Nagy 2007-2014 GPLV3
 
 #include <KFileDialog>
 #include <KMessageBox>
@@ -49,6 +49,7 @@
 #include "box_node.h"
 #include "box_decision.h"
 #include "box_actor.h"
+#include "box_matrix.h"
 #include "data_item.h"
 #include "box_usecase.h"
 #include "box_view.h"
@@ -220,6 +221,8 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	connect(m_oAddActor, SIGNAL(triggered()), this, SLOT(slot_add_element()));
 	m_oAddUsecase = new QAction(QObject::trUtf8("Usecase"), this);
 	connect(m_oAddUsecase, SIGNAL(triggered()), this, SLOT(slot_add_element()));
+	m_oAddMatrix = new QAction(QObject::trUtf8("Matrix"), this);
+	connect(m_oAddMatrix, SIGNAL(triggered()), this, SLOT(slot_add_element()));
 
 
 	m_oFileImport = new QAction(QObject::trUtf8("Import from file..."), this);
@@ -268,6 +271,7 @@ void box_view::init_menu()
 	m_oAddBoxMenu->addAction(m_oAddDecision);
 	m_oAddBoxMenu->addAction(m_oAddActor);
 	m_oAddBoxMenu->addAction(m_oAddUsecase);
+	m_oAddBoxMenu->addAction(m_oAddMatrix);
 
 	//m_oMenu->addAction(m_oEditAction);
 	m_oMenu->addAction(m_oDeleteAction);
@@ -437,6 +441,10 @@ void box_view::sync_view()
 		else if (box->m_iType == data_box::ACTIVITY_PARALLEL)
 		{
 			l_o = new box_fork(this, box->m_iId);
+		}
+		else if (box->m_iType == data_box::MATRIX)
+		{
+			l_o = new box_matrix(this, box->m_iId);
 		}
 		else
 		{
@@ -816,6 +824,12 @@ void box_view::slot_add_element()
 		add->box->m_iWW = 50;
 		add->box->m_iHH = 50;
 	}
+	else if (sender == m_oAddMatrix)
+	{
+		add->box->m_iType = data_box::MATRIX;
+		add->box->m_iWW = 500;
+		add->box->m_iHH = 300;
+	}
 
 	add->apply();
 
@@ -1061,6 +1075,10 @@ void box_view::notify_add_box(int id, int box)
 	else if (db->m_iType == data_box::ACTIVITY_START)
 	{
 		l_o = new box_dot(this, box);
+	}
+	else if (db->m_iType == data_box::MATRIX)
+	{
+		l_o = new box_matrix(this, box);
 	}
 	else if (db->m_iType == data_box::ACTIVITY_PARALLEL)
 	{

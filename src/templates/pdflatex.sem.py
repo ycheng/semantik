@@ -1,7 +1,7 @@
 #sem:name: PDF LaTeX
 #sem:tip: Generates a LaTeX project for obtaining PDF files
 
-# Thomas Nagy, 2007-2012
+# Thomas Nagy, 2007-2014
 
 import os, time, shutil, re, StringIO, getpass
 

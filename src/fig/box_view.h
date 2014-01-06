@@ -1,4 +1,4 @@
-// Thomas Nagy 2007-2012 GPLV3
+// Thomas Nagy 2007-2014 GPLV3
 
 
 #ifndef BOX_VIEW_H
@@ -60,6 +60,7 @@ class box_view : public QGraphicsView
 		QAction *m_oAddDecision;
 		QAction *m_oAddParallelHorizontal;
 		QAction *m_oAddParallelVertical;
+		QAction *m_oAddMatrix;
 		QAction *m_oFileExport;
 		QAction *m_oFileImport;
 		QAction *m_oCopyToClipboard;

@@ -1,4 +1,4 @@
-// Thomas Nagy 2007-2012 GPLV3
+// Thomas Nagy 2007-2014 GPLV3
 
 #include <khtml_part.h>
 #include <khtmlview.h>

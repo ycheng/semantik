@@ -1,4 +1,4 @@
-// Thomas Nagy 2007-2012 GPLV3
+// Thomas Nagy 2007-2014 GPLV3
 
 #ifndef BOX_NODE_H
 #define BOX_NODE_H

@@ -1,4 +1,4 @@
-// Thomas Nagy 2007-2012 GPLV3
+// Thomas Nagy 2007-2014 GPLV3
 
 #ifndef LINEAR_VIEW_H
 #define LINEAR_VIEW_H

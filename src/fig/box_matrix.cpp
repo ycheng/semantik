@@ -4,14 +4,13 @@
 #include <QAbstractTextDocumentLayout>
 #include <QTextDocument>
 #include <QTextDocumentFragment>
-#include <QAbstractTextDocumentLayout>
 #include <QTextList>
 #include <QClipboard>
 #include <QPainter>
 #include <QtDebug>
 #include <QAction>
 #include <QTextDocument>
-#include "box_usecase.h"
+#include "box_matrix.h"
 #include "data_item.h"
  #include "res:zable.h"
 #include "box_view.h"
@@ -24,14 +23,14 @@
 #define PAD 2
 #define MIN_FORK_SIZE 30
 
-box_usecase::box_usecase(box_view* view, int id) : box_item(view, id)
+box_matrix::box_matrix(box_view* view, int id) : box_item(view, id)
 {
 	QFont font = doc.defaultFont();
 	font.setPointSize(font.pointSize() - 2);
 	doc.setDefaultFont(font);
 }
 
-void box_usecase::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void box_matrix::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 	painter->save();
 
@@ -43,39 +42,31 @@ void box_usecase::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	l_oPen.setWidth(1);
 	painter->setPen(l_oPen);
 
-	QColor bc(m_oBox->color);
-	if (m_oView->m_bDisableGradient)
-	{
-		painter->setBrush(bc);
+
+	qreal xtop = l_oRect.x();
+	qreal ytop = l_oRect.y();
+	qreal xcoord = xtop + l_oRect.width() / 2.0;
+	qreal ycoord = l_oRect.height() / 5.;
+
+	painter->drawLine(QLineF(xcoord, ytop + 2 * ycoord, xcoord, ytop + 4 * ycoord));
+	painter->drawLine(QLineF(xtop, ytop + 3 * ycoord, xtop + l_oRect.width(), ytop + 3 * ycoord));
+
+	painter->drawLine(QLineF(xtop, ytop + l_oRect.height(), xcoord, ytop + 4 * ycoord));
+	painter->drawLine(QLineF(xtop + l_oRect.width(), ytop + l_oRect.height(), xcoord, ytop + 4 * ycoord));
+
+	double cir = 4 * l_oRect.width() / 10.;
+	if (cir > ycoord) {
+		cir = ycoord;
 	}
-	else
-	{
-		QLinearGradient linearGradient(0, 0, l_oRect.width(), 0);
-	        linearGradient.setColorAt(0.0, bc);
-		linearGradient.setColorAt(1.0, bc.darker(GRADVAL));
-		painter->setBrush(linearGradient);
-	}
+	painter->drawEllipse(QRectF(xcoord - cir, ytop + 2 * ycoord - 2 * cir, 2 * cir, 2 * cir));
 
-
-	painter->drawEllipse(l_oRect);
-	painter->save();
-
-	QAbstractTextDocumentLayout::PaintContext ctx;
-	ctx.palette = QApplication::palette("QTextControl");
-	ctx.palette.setColor(QPalette::Text, Qt::black); // white on black kde themes
-	QAbstractTextDocumentLayout * lay = doc.documentLayout();
-	qreal yoff = lay->documentSize().height();
-
-	painter->translate(OFF, OFF + (m_iHH - 2 * OFF - yoff) / 2.);
-	lay->draw(painter, ctx);
-
-	painter->restore();
 	if (isSelected())
 	{
 		painter->setBrush(QColor("#FFFF00"));
 		QRectF l_oR2(m_iWW - 8, m_iHH - 8, 6, 6);
 		painter->drawRect(l_oR2);
 	}
+
 	painter->restore();
 }
 

@@ -1,7 +1,7 @@
 // Thomas Nagy 2007-2014 GPLV3
 
-#ifndef BOX_LABEL_H
-#define BOX_LABEL_H
+#ifndef BOX_MATRIX_H
+#define BOX_MATRIX_H
 
 #include <QGraphicsRectItem>
 #include <QBrush>
@@ -13,13 +13,12 @@
 
 #define OFF 3
 
-class box_label : public box_item
+class box_matrix : public box_item
 {
 	public:
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
-		box_label(box_view*, int i_iId);
-		QVariant itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue);
+		box_matrix(box_view*, int i_iId);
 };
 
-#endif // BOX_LABEL_H
+#endif // BOX_MATRIX_H
 
