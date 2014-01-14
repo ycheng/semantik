@@ -2,6 +2,14 @@ Semantik 0.9.1
 --------------
 * Svg export
 * Odt template fixes
+* Include svg pictures in odt documents
+* command-line svg export
+* More reasonable size for the actors head
+* Prevent the memory corruption when opening the same recent file again
+* Make the text visible in the odt document created (Issue 27)
+* fixed the diagram top/bottom alignment function
+* Copy diagram pictures to clipboard from main window
+* Copy diagrams to the clipboard
 
 Semantik 0.9.0
 --------------
