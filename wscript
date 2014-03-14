@@ -3,7 +3,7 @@
 # Thomas Nagy, 2007-2013 (ita)
 
 APPNAME = 'semantik'
-VERSION = '0.9.0'
+VERSION = '0.9.1'
 
 top = '.'
 

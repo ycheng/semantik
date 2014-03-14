@@ -4,7 +4,7 @@
 
 from sgmllib import SGMLParser
 import htmlentitydefs
-import sys, sembind, re
+import os, sys, sembind, re
 
 protectXML = sembind.protectXML
 sys.path = [sembind.get_var('template_dir')]+sys.path
@@ -42,7 +42,7 @@ class TrucProcessor(SGMLParser):
 	def reset(self):
 		self.pieces = []
 		self.state = ""
-		self.buf = ""
+		self.buf = []
 		self.inli = 0
 		SGMLParser.reset(self)
 
@@ -50,33 +50,33 @@ class TrucProcessor(SGMLParser):
 		if tag == 'ul':
 			if self.inli and self.buf:
 				self.pieces.append('\\item ')
-				self.pieces.append(tex_convert(self.buf))
+				self.pieces.append(tex_convert(''.join(self.buf)))
 				self.pieces.append('\n')
 			self.pieces.append('\\begin{itemize}\n')
-
-		if tag == 'li':
+		elif tag == 'li':
 			self.inli += 1
-
-		self.buf = ""
 
 	def unknown_endtag(self, tag):
 		if tag == 'p':
-			self.pieces.append(tex_convert(self.buf))
+			self.pieces.append(tex_convert(''.join(self.buf)))
 			self.pieces.append('\n')
 		elif tag == 'li':
 			if self.buf:
 				self.pieces.append('\\item ')
-				self.pieces.append(tex_convert(self.buf))
+				self.pieces.append(tex_convert(''.join(self.buf)))
 				self.pieces.append('\n')
 			self.inli -= 1
 		elif tag == 'ul':
 			self.pieces.append('\\end{itemize}\n')
+		elif tag == 'style':
+			pass
+		else:
+			self.pieces.append(tex_convert(''.join(self.buf)))
 
-	def handle_charref(self, ref):
-		self.pieces.append("&#%(ref)s;" % locals())
+		self.buf = []
 
 	def handle_data(self, text):
-		self.buf = text
+		self.buf.append(text)
 
 	def output(self):
 		return "".join(self.pieces)
@@ -91,18 +91,20 @@ class RichProcessor(SGMLParser):
 	def reset(self):
 		self.pieces = []
 		self.state = ""
-		self.buf = ""
+		self.buf = []
 		self.inli = 0
 		SGMLParser.reset(self)
+
+		self.f = open('/tmp/arf2/dump', 'wb')
+
 
 	def unknown_starttag(self, tag, attrs):
 		if tag == 'ul':
 			self.inli += 1
-		self.buf = ""
 
 	def unknown_endtag(self, tag):
 		if tag == 'p':
-			self.pieces.append(self.buf)
+			self.pieces.extend(self.buf)
 			self.pieces.append('\n')
 		elif tag == 'li':
 			if self.buf:
@@ -111,18 +113,25 @@ class RichProcessor(SGMLParser):
 				self.pieces.append('\n')
 		elif tag == 'ul':
 			self.inli -= 1
+		elif tag == 'style':
+			pass
+		else:
+			self.pieces.extend(self.buf)
 
-	def handle_charref(self, ref):
-		self.pieces.append("&#%(ref)s;" % locals())
+		self.buf = []
+
+	def convert_entityref(self, name):
+		return '&%s;' % name
 
 	def handle_data(self, text):
-		self.buf = text
+		self.buf.append(text)
 
 	def output(self):
 		return "".join(self.pieces)
 
 def clear_html(s):
 	parser = RichProcessor()
+	parser.f.write(s)
 	parser.feed(s)
 	parser.close()
 	return parser.output()
