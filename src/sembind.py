@@ -128,7 +128,6 @@ class RichProcessor(SGMLParser):
 
 def clear_html(s):
 	parser = RichProcessor()
-	parser.f.write(s)
 	parser.feed(s)
 	parser.close()
 	return parser.output()
