@@ -95,9 +95,6 @@ class RichProcessor(SGMLParser):
 		self.inli = 0
 		SGMLParser.reset(self)
 
-		self.f = open('/tmp/arf2/dump', 'wb')
-
-
 	def unknown_starttag(self, tag, attrs):
 		if tag == 'ul':
 			self.inli += 1
