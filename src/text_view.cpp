@@ -93,7 +93,7 @@ void text_view::update_edit()
 		tmp->oldText = l_oData->m_sText;
 		tmp->add();
 	}
-	tmp->newText = tmp->sel->m_sText = m_oEdit->toHtml();
+	tmp->newText = tmp->sel->m_sText = m_oEdit->toHtml().replace(QChar(0), "");
 	tmp->sel->m_iTextLength = m_oEdit->toPlainText().length();
 }
 
