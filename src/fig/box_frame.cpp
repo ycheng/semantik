@@ -10,7 +10,7 @@
 #include <QtDebug>
 #include <QAction>
 #include <QTextDocument>
-#include "box_matrix.h"
+#include "box_frame.h"
 #include "data_item.h"
  #include "res:zable.h"
 #include "box_view.h"
@@ -23,7 +23,7 @@
 #define PAD 2
 #define MIN_FORK_SIZE 30
 
-box_matrix::box_matrix(box_view* view, int id) : box_item(view, id)
+box_frame::box_frame(box_view* view, int id) : box_item(view, id)
 {
 	QFont font = doc.defaultFont();
 	font.setPointSize(font.pointSize() - 2);
@@ -32,7 +32,7 @@ box_matrix::box_matrix(box_view* view, int id) : box_item(view, id)
 	setZValue(80);
 }
 
-void box_matrix::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void box_frame::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 	painter->save();
 
@@ -46,25 +46,6 @@ void box_matrix::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 
 
 	painter->drawRect(l_oRect);
-
-	/*
-	qreal xtop = l_oRect.x();
-	qreal ytop = l_oRect.y();
-	qreal xcoord = xtop + l_oRect.width() / 2.0;
-	qreal ycoord = l_oRect.height() / 5.;
-
-	painter->drawLine(QLineF(xcoord, ytop + 2 * ycoord, xcoord, ytop + 4 * ycoord));
-	painter->drawLine(QLineF(xtop, ytop + 3 * ycoord, xtop + l_oRect.width(), ytop + 3 * ycoord));
-
-	painter->drawLine(QLineF(xtop, ytop + l_oRect.height(), xcoord, ytop + 4 * ycoord));
-	painter->drawLine(QLineF(xtop + l_oRect.width(), ytop + l_oRect.height(), xcoord, ytop + 4 * ycoord));
-
-	double cir = 4 * l_oRect.width() / 10.;
-	if (cir > ycoord) {
-		cir = ycoord;
-	}
-	painter->drawEllipse(QRectF(xcoord - cir, ytop + 2 * ycoord - 2 * cir, 2 * cir, 2 * cir));
-	*/
 
 	if (isSelected())
 	{

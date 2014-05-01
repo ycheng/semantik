@@ -50,6 +50,8 @@
 #include "box_decision.h"
 #include "box_actor.h"
 #include "box_matrix.h"
+#include "box_frame.h"
+#include "box_class.h"
 #include "data_item.h"
 #include "box_usecase.h"
 #include "box_view.h"
@@ -191,12 +193,12 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	addAction(m_oColorAction);
 
 
-	m_oMoveUpAction = new QAction(QObject::trUtf8("Move up"), this);
+	m_oMoveUpAction = new QAction(QObject::trUtf8("Raise"), this);
 	m_oMoveUpAction->setShortcut(QObject::trUtf8("PgUp"));
 	connect(m_oMoveUpAction, SIGNAL(triggered()), this, SLOT(slot_move_up()));
 	addAction(m_oMoveUpAction);
 
-	m_oMoveDownAction = new QAction(QObject::trUtf8("Move down"), this);
+	m_oMoveDownAction = new QAction(QObject::trUtf8("Send back"), this);
 	m_oMoveDownAction->setShortcut(QObject::trUtf8("PgDown"));
 	connect(m_oMoveDownAction, SIGNAL(triggered()), this, SLOT(slot_move_down()));
 	addAction(m_oMoveDownAction);
@@ -223,7 +225,10 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	connect(m_oAddUsecase, SIGNAL(triggered()), this, SLOT(slot_add_element()));
 	m_oAddMatrix = new QAction(QObject::trUtf8("Matrix"), this);
 	connect(m_oAddMatrix, SIGNAL(triggered()), this, SLOT(slot_add_element()));
-
+	m_oAddFrame = new QAction(QObject::trUtf8("Boundary"), this);
+	connect(m_oAddFrame, SIGNAL(triggered()), this, SLOT(slot_add_element()));
+	m_oAddClass = new QAction(QObject::trUtf8("Class"), this);
+	connect(m_oAddClass, SIGNAL(triggered()), this, SLOT(slot_add_element()));
 
 	m_oFileImport = new QAction(QObject::trUtf8("Import from file..."), this);
 	connect(m_oFileImport, SIGNAL(triggered()), this, SLOT(slot_import_from_file()));
@@ -272,11 +277,14 @@ void box_view::init_menu()
 	m_oAddBoxMenu->addAction(m_oAddActor);
 	m_oAddBoxMenu->addAction(m_oAddUsecase);
 	m_oAddBoxMenu->addAction(m_oAddMatrix);
+	m_oAddBoxMenu->addAction(m_oAddFrame);
+	m_oAddBoxMenu->addAction(m_oAddClass);
 
 	//m_oMenu->addAction(m_oEditAction);
 	m_oMenu->addAction(m_oDeleteAction);
-	//m_oMenu->addAction(m_oMoveUpAction);
-	//m_oMenu->addAction(m_oMoveDownAction);
+
+	m_oMenu->addAction(m_oMoveUpAction);
+	m_oMenu->addAction(m_oMoveDownAction);
 
 	QAction *l_o;
 
@@ -445,6 +453,14 @@ void box_view::sync_view()
 		else if (box->m_iType == data_box::MATRIX)
 		{
 			l_o = new box_matrix(this, box->m_iId);
+		}
+		else if (box->m_iType == data_box::FRAME)
+		{
+			l_o = new box_frame(this, box->m_iId);
+		}
+		else if (box->m_iType == data_box::CLASS)
+		{
+			l_o = new box_class(this, box->m_iId);
 		}
 		else
 		{
@@ -828,7 +844,19 @@ void box_view::slot_add_element()
 	{
 		add->box->m_iType = data_box::MATRIX;
 		add->box->m_iWW = 500;
-		add->box->m_iHH = 300;
+		add->box->m_iHH = 310;
+	}
+	else if (sender == m_oAddFrame)
+	{
+		add->box->m_iType = data_box::FRAME;
+		add->box->m_iWW = 500;
+		add->box->m_iHH = 310;
+	}
+	else if (sender == m_oAddClass)
+	{
+		add->box->m_iType = data_box::CLASS;
+		add->box->m_iWW = 70;
+		add->box->m_iHH = 30;
 	}
 
 	add->apply();
@@ -1079,6 +1107,14 @@ void box_view::notify_add_box(int id, int box)
 	else if (db->m_iType == data_box::MATRIX)
 	{
 		l_o = new box_matrix(this, box);
+	}
+	else if (db->m_iType == data_box::FRAME)
+	{
+		l_o = new box_frame(this, box);
+	}
+	else if (db->m_iType == data_box::CLASS)
+	{
+		l_o = new box_class(this, box);
 	}
 	else if (db->m_iType == data_box::ACTIVITY_PARALLEL)
 	{

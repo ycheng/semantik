@@ -61,6 +61,8 @@ class box_view : public QGraphicsView
 		QAction *m_oAddParallelHorizontal;
 		QAction *m_oAddParallelVertical;
 		QAction *m_oAddMatrix;
+		QAction *m_oAddFrame;
+		QAction *m_oAddClass;
 		QAction *m_oFileExport;
 		QAction *m_oFileImport;
 		QAction *m_oCopyToClipboard;
