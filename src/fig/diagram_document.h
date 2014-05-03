@@ -1,4 +1,4 @@
-// Thomas Nagy 2013 GPLV3
+// Thomas Nagy 2013-2014 GPLV3
 
 %: ifndef DIAGRAM_WIDGET_H
 #define DIAGRAM_WIDGET_H

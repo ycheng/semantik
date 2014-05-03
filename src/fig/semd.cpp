@@ -41,7 +41,7 @@ int main(int i_iArgc, char **i_iArgv)
 	options.add("+[url]", ki18n("A file to open on startup"));
 	options.add("o <file>", ki18n("An output file for exporting the diagram"));
 
-	KAboutData l_o("semantik-d", 0, ki18n("Semantik-d"), version, ki18n(description), KAboutData::License_GPL_V3, ki18n("(C) 2013 Thomas Nagy"), KLocalizedString());
+	KAboutData l_o("semantik-d", 0, ki18n("Semantik-d"), version, ki18n(description), KAboutData::License_GPL_V3, ki18n("(C) 2013-2014 Thomas Nagy"), KLocalizedString());
 	l_o.setBugAddress("http://code.google.com/p/semantik/issues/list");
 	l_o.addAuthor(ki18n("Thomas Nagy"), KLocalizedString());
 
