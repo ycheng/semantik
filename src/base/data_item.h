@@ -10,11 +10,22 @@
 #include <QMap>
 #include <QSyntaxHighlighter>
 #include <QTextDocument>
+#include <QXmlDefaultHandler>
 
 #include "color_scheme.h"
 #include "con.h"
 
 class sem_mediator;
+class node { // so we can read/write a tree of objects
+	public:
+	node();
+	virtual ~node();
+	virtual node* make_node(const QString&, const QXmlAttributes&);
+	virtual void read_data(const QString&, const QXmlAttributes&);
+	virtual void dump_xml(QStringList & other);
+
+	QList<node*> m_oChildren;
+};
 
 class diagram_item
 {
@@ -55,20 +66,68 @@ class data_link : public diagram_item
 	bool equals(const data_link&);
 };
 
-class data_box : public diagram_item
+class visibility
+{
+	public:
+		enum VisibilityType {PRIVATE=1, PUBLIC=2, PROTECTED=3, PACKAGE=4};
+};
+
+class data_box_method : public node
+{
+	public:
+		QString m_sText;
+		visibility::VisibilityType m_oVisibility;
+		bool m_bStatic;
+		bool m_bAbstract;
+
+		virtual void read_data(const QString&, const QXmlAttributes&);
+		virtual void dump_xml(QStringList & other);
+};
+
+class data_box_attribute : public node
+{
+	public:
+		QString m_sText;
+		visibility::VisibilityType m_oVisibility;
+		bool m_bStatic;
+
+		virtual void read_data(const QString&, const QXmlAttributes&);
+		virtual void dump_xml(QStringList & other);
+};
+
+class data_box : public diagram_item, public node
 {
 	public:
 	data_box(int id);
+	~data_box();
+
 	int m_iId;
 	QString m_sText;
 	int m_iXX;
 	int m_iYY;
 	int m_iWW;
 	int m_iHH;
-	bool m_bIsEnd;
-	bool m_bIsVertical;
 	enum IType { ACTIVITY=1, ACTIVITY_START=2, ACTIVITY_PARALLEL=3, LABEL=4, COMPONENT=5, NODE=6, ACTOR=7, USECASE=8, DECISION=9, MATRIX=10, FRAME=11, CLASS=12 };
 	data_box::IType m_iType;
+
+	node* make_node(const QString&, const QXmlAttributes&);
+	void read_data(const QString&, const QXmlAttributes&);
+	void dump_xml(QStringList & other);
+
+	// activity
+	bool m_bIsEnd;
+
+	// fork
+	bool m_bIsVertical;
+
+	// matrix
+	QList<int> m_oRowPositions;
+	QList<int> m_oColPositions;
+
+	// class
+	QString m_sStereotype;
+	QList<data_box_method*> m_oMethods;
+	QList<data_box_attribute*> m_oAttributes;
 };
 
 class data_pic

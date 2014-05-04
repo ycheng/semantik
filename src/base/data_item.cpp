@@ -14,8 +14,40 @@
 #include <QStandardItemModel>
 #include "con.h"
 
+ #include "sembind.h"
 #include "sem_mediator.h"
 #include "data_item.h"
+
+
+node::node() {
+
+}
+
+node::~node()
+{
+	while (!m_oChildren.isEmpty()) {
+		delete m_oChildren.takeFirst();
+	}
+}
+
+node* node::make_node(const QString& i_sTag, const QXmlAttributes& i_oAttrs) {
+	node* l_oNode = new node();
+	m_oChildren.push_back(l_oNode);
+	l_oNode->read_data(i_sTag, i_oAttrs);
+	return l_oNode;
+}
+
+void node::read_data(const QString&, const QXmlAttributes&)
+{
+
+}
+
+void node::dump_xml(QStringList & other)
+{
+	foreach (node* n, m_oChildren) {
+		n->dump_xml(other);
+	}
+}
 
 data_item::data_item(sem_mediator *i_oControl, int i_iId)
 {
@@ -108,7 +140,7 @@ diagram_item::diagram_item()
 	border_width = 1;
 }
 
-data_box::data_box(int id) : diagram_item()
+data_box::data_box(int id) : diagram_item(), node()
 {
 	m_iId = id;
 	m_bIsEnd = false;
@@ -117,6 +149,103 @@ data_box::data_box(int id) : diagram_item()
 	m_iWW = 100;
 	m_iHH = 40;
 	color = QColor("#a7e89b");
+}
+
+data_box::~data_box()
+{
+	while (!m_oMethods.isEmpty()) {
+		delete m_oMethods.takeFirst();
+	}
+	while (!m_oAttributes.isEmpty()) {
+		delete m_oAttributes.takeFirst();
+	}
+}
+
+void data_box::dump_xml(QStringList & i_oS)
+{
+	i_oS<<notr("<itembox id=\"%1\" text=\"%2\" x=\"%3\" y=\"%4\" w=\"%5\" h=\"%6\" color=\"%7\" t=\"%8\" %9>\n").arg(
+		QString::number(m_iId),
+		bind_node::protectXML(m_sText),
+		QString::number(m_iXX),
+		QString::number(m_iYY),
+		QString::number(m_iWW),
+		QString::number(m_iHH),
+		color.name(),
+		QString::number((int) m_iType),
+		QString(" v=\"%1\" e=\"%2\"").arg( // ugly
+			QString::number((int) m_bIsVertical),
+			QString::number((int) m_bIsEnd)
+		)
+	);
+
+	i_oS<<notr("      <stereotype=\"%1\"/>\n").arg(m_sStereotype);
+	foreach (int l_i, m_oRowPositions) {
+		i_oS<<notr("      <row_position=\"%1\"/>\n").arg(QString::number(l_i));
+	}
+	foreach (int l_i, m_oColPositions) {
+		i_oS<<notr("      <col_position=\"%1\"/>\n").arg(QString::number(l_i));
+	}
+	foreach (data_box_method* l_o, m_oMethods) {
+		l_o->dump_xml(i_oS);
+	}
+	foreach (data_box_attribute* l_o, m_oAttributes) {
+		l_o->dump_xml(i_oS);
+	}
+	//node::dump_xml(i_oS);
+	i_oS<<notr("</itembox>\n");
+}
+
+void data_box::read_data(const QString& i_sTag, const QXmlAttributes& i_oAttrs)
+{
+	m_sText = i_oAttrs.value(notr("text"));
+	m_iXX = i_oAttrs.value(notr("x")).toFloat();
+	m_iYY = i_oAttrs.value(notr("y")).toFloat();
+	m_iWW = i_oAttrs.value(notr("w")).toFloat();
+	m_iHH = i_oAttrs.value(notr("h")).toFloat();
+	m_iType = (data_box::IType) i_oAttrs.value(notr("t")).toInt();
+	m_bIsVertical = i_oAttrs.value(notr("v")).toInt();
+	m_bIsEnd = i_oAttrs.value(notr("e")).toInt();
+	color = QColor(i_oAttrs.value(notr("color")));
+
+	// TODO remove in the future...
+	if (m_iType == data_box::ACTIVITY_START)
+	{
+		if (m_iWW > 20 + m_iHH) m_iWW = m_iHH = 20;
+	}
+}
+
+node* data_box::make_node(const QString& i_sName, const QXmlAttributes& i_oAttrs)
+{
+	if (i_sName == notr("row_position"))
+	{
+		int l_iVal = i_oAttrs.value(notr("val")).toInt();
+		m_oRowPositions.push_back(l_iVal);
+	}
+	else if (i_sName == notr("col_position"))
+	{
+		int l_iVal = i_oAttrs.value(notr("val")).toInt();
+		m_oColPositions.push_back(l_iVal);
+	}
+	else if (i_sName == notr("class_method"))
+	{
+		data_box_method *l_o = new data_box_method();
+		l_o->read_data(i_sName, i_oAttrs);
+		m_oMethods.push_back(l_o);
+		return l_o;
+	}
+	else if (i_sName == notr("class_attribute"))
+	{
+		data_box_attribute *l_o = new data_box_attribute();
+		l_o->read_data(i_sName, i_oAttrs);
+		m_oAttributes.push_back(l_o);
+		return l_o;
+	}
+	else if (i_sName == notr("stereotype"))
+	{
+		m_sStereotype = i_oAttrs.value(notr("stereotype"));
+	}
+	return this;
+	// return node::make_node(i_sName, i_oAttrs);
 }
 
 void diagram_item::setBorderWidth(int bw)
@@ -200,6 +329,47 @@ bool data_link::equals(const data_link& i_oLink)
 
 	return true;
 }
+
+void data_box_method::read_data(const QString&i_sName, const QXmlAttributes& i_oAttrs)
+{
+	Q_ASSERT(i_sName == QString("class_method"));
+	m_sText = i_oAttrs.value(notr("text"));
+	m_oVisibility = (visibility::VisibilityType) i_oAttrs.value(notr("visibility")).toInt();
+	m_bStatic = i_oAttrs.value(notr("static")).toInt();
+        m_bAbstract = i_oAttrs.value(notr("abstract")).toInt();
+}
+
+void data_box_method::dump_xml(QStringList &i_oS)
+{
+	i_oS<<notr("       <class_method text=\"%1\" visibility=\"%2\" static=\"%3\" abstract=\"%4\">\n").arg(
+		m_sText,
+		QString::number((int) m_oVisibility),
+		QString::number((int) m_bStatic),
+		QString::number((int) m_bAbstract)
+	);
+	//node::dump_xml(i_oS);
+	i_oS<<notr("      </class_method>\n");
+}
+
+void data_box_attribute::read_data(const QString& i_sName, const QXmlAttributes& i_oAttrs)
+{
+	Q_ASSERT(i_sName == QString("class_attribute"));
+	m_sText = i_oAttrs.value(notr("text"));
+	m_oVisibility = (visibility::VisibilityType) i_oAttrs.value(notr("visibility")).toInt();
+	m_bStatic = i_oAttrs.value(notr("text")).toInt();
+}
+
+void data_box_attribute::dump_xml(QStringList &i_oS)
+{
+	i_oS<<notr("      <class_attribute text=\"%1\" visibility=\"%2\" static=\"%3\">\n").arg(
+		m_sText,
+		QString::number((int) m_oVisibility),
+		QString::number((int) m_bStatic)
+	);
+	//node::dump_xml(i_oS);
+	i_oS<<notr("      </class_attribute>\n");
+}
+
 
 /*
 #include "main.moc"

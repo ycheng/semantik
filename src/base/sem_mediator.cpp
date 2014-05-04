@@ -25,6 +25,7 @@
 #include<KConfig>
  #include <QProcess>   
   #include <QDir>
+ #include<QStack>
 /*
  */ #include <sys/ioctl.h>
   #include <termios.h>
@@ -48,6 +49,7 @@ class semantik_reader : public QXmlDefaultHandler
 		sem_mediator *m_oMediator;
 		int m_iId;
 		data_link * cur_link;
+		QStack<node*> m_oNodeStack;
 
 	public:
 		bool startElement(const QString&, const QString&, const QString&, const QXmlAttributes&);
@@ -108,28 +110,6 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		data_item *l_oItem = m_oMediator->m_oItems.value(m_iId);
 		l_oItem->m_iNumRows = i_oAttrs.value(notr("rows")).toInt();
 		l_oItem->m_iNumCols = i_oAttrs.value(notr("cols")).toInt();
-	}
-	else if (i_sName == notr("itembox"))
-	{
-		data_item *l_oItem = m_oMediator->m_oItems.value(m_iId);
-		int bid = i_oAttrs.value(notr("id")).toInt();
-		data_box *box = new data_box(bid);
-		l_oItem->m_oBoxes[bid] = box;
-		box->m_sText = i_oAttrs.value(notr("text"));
-		box->m_iXX = i_oAttrs.value(notr("x")).toFloat();
-		box->m_iYY = i_oAttrs.value(notr("y")).toFloat();
-		box->m_iWW = i_oAttrs.value(notr("w")).toFloat();
-		box->m_iHH = i_oAttrs.value(notr("h")).toFloat();
-		box->m_iType = (data_box::IType) i_oAttrs.value(notr("t")).toInt();
-		box->m_bIsVertical = i_oAttrs.value(notr("v")).toInt();
-		box->m_bIsEnd = i_oAttrs.value(notr("e")).toInt();
-		box->color = QColor(i_oAttrs.value(notr("color")));
-
-		// TODO remove in the future...
-		if (box->m_iType == data_box::ACTIVITY_START)
-		{
-			if (box->m_iWW > 20 + box->m_iHH) box->m_iWW = box->m_iHH = 20;
-		}
 	}
 	else if (i_sName == notr("linkbox"))
 	{
@@ -221,11 +201,30 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		data_item *l_oItem = m_oMediator->m_oItems.value(m_iId);
 		l_oItem->m_oFlags.push_back(i_oAttrs.value(notr("id")));
 	}
+	else if (i_sName == notr("itembox"))
+	{
+		data_item *l_oItem = m_oMediator->m_oItems.value(m_iId);
+		int bid = i_oAttrs.value(notr("id")).toInt();
+		data_box *box = new data_box(bid);
+		m_oNodeStack.push(box);
+		l_oItem->m_oBoxes[bid] = box;
+		box->read_data(i_sName, i_oAttrs);
+	}
+	else
+	{
+		// let the current item deal with it
+		Q_ASSERT(m_oNodeStack.top() != NULL);
+		node* l_oNode = m_oNodeStack.top()->make_node(i_sName, i_oAttrs);
+		m_oNodeStack.push(l_oNode);
+	}
 	return true;
 }
 
 bool semantik_reader::endElement(const QString&, const QString&, const QString& i_sName)
 {
+	if (i_sName == notr("data") || i_sName == notr("itembox")) {
+		m_oNodeStack.pop();
+	}
 	return true;
 }
 
@@ -552,21 +551,7 @@ QString sem_mediator::doc_to_xml()
 
 		foreach (data_box *box, l_oItem->m_oBoxes)
 		{
-			l_oS<<notr("<itembox id=\"%1\" text=\"%2\" x=\"%3\" y=\"%4\" w=\"%5\" h=\"%6\" color=\"%7\" t=\"%8\" %9>\n").arg(
-				QString::number(box->m_iId),
-				bind_node::protectXML(box->m_sText),
-				QString::number(box->m_iXX),
-				QString::number(box->m_iYY),
-				QString::number(box->m_iWW),
-				QString::number(box->m_iHH),
-				box->color.name(),
-				QString::number((int) box->m_iType),
-				QString(" v=\"%1\" e=\"%2\"").arg(
-					QString::number((int) box->m_bIsVertical),
-					QString::number((int) box->m_bIsEnd)
-				)
-			);
-			l_oS<<notr("</itembox>\n");
+			box->dump_xml(l_oS);
 		}
 
 		foreach (data_link *link, l_oItem->m_oLinks)
