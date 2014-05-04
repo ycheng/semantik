@@ -210,10 +210,14 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		l_oItem->m_oBoxes[bid] = box;
 		box->read_data(i_sName, i_oAttrs);
 	}
+	else if (i_sName == notr("semantik"))
+	{
+		// TODO
+	}
 	else
 	{
 		// let the current item deal with it
-		Q_ASSERT(m_oNodeStack.top() != NULL);
+		Q_ASSERT(!m_oNodeStack.empty());
 		node* l_oNode = m_oNodeStack.top()->make_node(i_sName, i_oAttrs);
 		m_oNodeStack.push(l_oNode);
 	}
@@ -222,7 +226,8 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 
 bool semantik_reader::endElement(const QString&, const QString&, const QString& i_sName)
 {
-	if (i_sName == notr("data") || i_sName == notr("itembox")) {
+	if (i_sName == notr("data") || i_sName.startsWith(notr("box"))) {
+		Q_ASSERT(!m_oNodeStack.empty());
 		m_oNodeStack.pop();
 	}
 	return true;
@@ -387,7 +392,6 @@ QByteArray new_header(const QString & i_oName, int i_iLen)
 	l_oBuf = l_oBuf.replace(155, l_oFileType.length(), l_oFileType);
 	l_oFileType.fill('0', 1);
 	l_oBuf = l_oBuf.replace(156, l_oFileType.length(), l_oFileType);
-
 
 	// compute the checksum
 	int l_iChk = 32;

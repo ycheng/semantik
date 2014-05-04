@@ -47,19 +47,17 @@ void box_matrix::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 
 
 	qreal l_iHref = l_oRect.top();
-	foreach (int l_iHoff, m_oBox->m_oRowPositions)
+	foreach (int l_iHoff, m_oBox->m_oRowSizes)
 	{
-		qreal l_iHpos = l_iHref + l_iHoff;
-		painter->drawLine(l_oRect.left(), l_iHpos, l_oRect.right(), l_iHpos);
+		l_iHref += l_iHoff;
+		painter->drawLine(l_oRect.left(), l_iHref, l_oRect.right(), l_iHref);
 	}
 	l_iHref = l_oRect.left();
-	foreach (int l_iHoff, m_oBox->m_oColPositions)
+	foreach (int l_iHoff, m_oBox->m_oColSizes)
 	{
-		qreal l_iHpos = l_iHref + l_iHoff;
-		painter->drawLine(l_iHpos, l_oRect.top(), l_iHpos, l_oRect.bottom());
+		l_iHref += l_iHoff;
+		painter->drawLine(l_iHref, l_oRect.top(), l_iHref, l_oRect.bottom());
 	}
-
-
 
 	painter->drawRect(l_oRect);
 
@@ -85,26 +83,24 @@ void box_matrix::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 		if (m_iWW < 2 * GRID) m_iWW = 2 * GRID;
 		m_iWW = grid_int(m_iWW);
 
-		if (!m_oBox->m_oColPositions.empty())
-		{
-			int l_o = m_oBox->m_oColPositions.last();
-			if (m_iWW < l_o + GRID)
-			{
-				m_iWW = l_o + GRID;
-			}
+		int l_i = 0;
+		foreach (int l_iSize, m_oBox->m_oColSizes) {
+			l_i += l_iSize;
+		}
+		if (m_iWW < l_i + 2 * GRID) {
+			m_iWW = l_i + 2 * GRID;
 		}
 
 		m_iHH = m_oBox->m_iHH + y;
 		if (m_iHH < 2 * GRID) m_iHH = 2 * GRID;
 		m_iHH = grid_int(m_iHH);
 
-		if (!m_oBox->m_oRowPositions.empty())
-		{
-			int l_o = m_oBox->m_oRowPositions.last();
-			if (m_iHH < l_o + GRID)
-			{
-				m_iHH = l_o + GRID;
-			}
+		l_i = 0;
+		foreach (int l_iSize, m_oBox->m_oRowSizes) {
+			l_i += l_iSize;
+		}
+		if (m_iHH < l_i + 2 * GRID) {
+			m_iHH = l_i + 2 * GRID;
 		}
 
 		doc.setTextWidth(m_iWW - 2 * OFF);

@@ -212,7 +212,7 @@ void semantik_d_win::write_config()
 {
 	KConfigGroup l_oConfig(KGlobal::config(), notr("General Options"));
 	m_oRecentFilesAct->saveEntries(KGlobal::config()->group(notr("Recent Files")));
-	//l_oConfig.writeEntry(notr("winpos"), pos());
+	l_oConfig.writeEntry(notr("winpos"), pos());
 	//l_oConfig.writeEntry(notr("outdir"), bind_node::get_var(notr("outdir")));
 	l_oConfig.sync();
 }

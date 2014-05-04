@@ -178,12 +178,14 @@ void data_box::dump_xml(QStringList & i_oS)
 		)
 	);
 
-	i_oS<<notr("      <stereotype=\"%1\"/>\n").arg(m_sStereotype);
-	foreach (int l_i, m_oRowPositions) {
-		i_oS<<notr("      <row_position=\"%1\"/>\n").arg(QString::number(l_i));
+	if (!m_sStereotype.isNull()) {
+		i_oS<<notr("      <box_stereotype text=\"%1\"/>\n").arg(m_sStereotype);
 	}
-	foreach (int l_i, m_oColPositions) {
-		i_oS<<notr("      <col_position=\"%1\"/>\n").arg(QString::number(l_i));
+	foreach (int l_i, m_oRowSizes) {
+		i_oS<<notr("      <box_row_size val=\"%1\"/>\n").arg(QString::number(l_i));
+	}
+	foreach (int l_i, m_oColSizes) {
+		i_oS<<notr("      <box_col_size val=\"%1\"/>\n").arg(QString::number(l_i));
 	}
 	foreach (data_box_method* l_o, m_oMethods) {
 		l_o->dump_xml(i_oS);
@@ -216,33 +218,33 @@ void data_box::read_data(const QString& i_sTag, const QXmlAttributes& i_oAttrs)
 
 node* data_box::make_node(const QString& i_sName, const QXmlAttributes& i_oAttrs)
 {
-	if (i_sName == notr("row_position"))
+	if (i_sName == notr("box_row_size"))
 	{
 		int l_iVal = i_oAttrs.value(notr("val")).toInt();
-		m_oRowPositions.push_back(l_iVal);
+		m_oRowSizes.push_back(l_iVal);
 	}
-	else if (i_sName == notr("col_position"))
+	else if (i_sName == notr("box_col_size"))
 	{
 		int l_iVal = i_oAttrs.value(notr("val")).toInt();
-		m_oColPositions.push_back(l_iVal);
+		m_oColSizes.push_back(l_iVal);
 	}
-	else if (i_sName == notr("class_method"))
+	else if (i_sName == notr("box_class_method"))
 	{
 		data_box_method *l_o = new data_box_method();
 		l_o->read_data(i_sName, i_oAttrs);
 		m_oMethods.push_back(l_o);
 		return l_o;
 	}
-	else if (i_sName == notr("class_attribute"))
+	else if (i_sName == notr("box_class_attribute"))
 	{
 		data_box_attribute *l_o = new data_box_attribute();
 		l_o->read_data(i_sName, i_oAttrs);
 		m_oAttributes.push_back(l_o);
 		return l_o;
 	}
-	else if (i_sName == notr("stereotype"))
+	else if (i_sName == notr("box_stereotype"))
 	{
-		m_sStereotype = i_oAttrs.value(notr("stereotype"));
+		m_sStereotype = i_oAttrs.value(notr("text"));
 	}
 	return this;
 	// return node::make_node(i_sName, i_oAttrs);
@@ -332,7 +334,7 @@ bool data_link::equals(const data_link& i_oLink)
 
 void data_box_method::read_data(const QString&i_sName, const QXmlAttributes& i_oAttrs)
 {
-	Q_ASSERT(i_sName == QString("class_method"));
+	Q_ASSERT(i_sName == QString("box_class_method"));
 	m_sText = i_oAttrs.value(notr("text"));
 	m_oVisibility = (visibility::VisibilityType) i_oAttrs.value(notr("visibility")).toInt();
 	m_bStatic = i_oAttrs.value(notr("static")).toInt();
@@ -341,33 +343,33 @@ void data_box_method::read_data(const QString&i_sName, const QXmlAttributes& i_o
 
 void data_box_method::dump_xml(QStringList &i_oS)
 {
-	i_oS<<notr("       <class_method text=\"%1\" visibility=\"%2\" static=\"%3\" abstract=\"%4\">\n").arg(
+	i_oS<<notr("       <box_class_method text=\"%1\" visibility=\"%2\" static=\"%3\" abstract=\"%4\">\n").arg(
 		m_sText,
 		QString::number((int) m_oVisibility),
 		QString::number((int) m_bStatic),
 		QString::number((int) m_bAbstract)
 	);
 	//node::dump_xml(i_oS);
-	i_oS<<notr("      </class_method>\n");
+	i_oS<<notr("      </box_class_method>\n");
 }
 
 void data_box_attribute::read_data(const QString& i_sName, const QXmlAttributes& i_oAttrs)
 {
-	Q_ASSERT(i_sName == QString("class_attribute"));
+	Q_ASSERT(i_sName == QString("box_class_attribute"));
 	m_sText = i_oAttrs.value(notr("text"));
 	m_oVisibility = (visibility::VisibilityType) i_oAttrs.value(notr("visibility")).toInt();
-	m_bStatic = i_oAttrs.value(notr("text")).toInt();
+	m_bStatic = i_oAttrs.value(notr("static")).toInt();
 }
 
 void data_box_attribute::dump_xml(QStringList &i_oS)
 {
-	i_oS<<notr("      <class_attribute text=\"%1\" visibility=\"%2\" static=\"%3\">\n").arg(
+	i_oS<<notr("      <box_class_attribute text=\"%1\" visibility=\"%2\" static=\"%3\">\n").arg(
 		m_sText,
 		QString::number((int) m_oVisibility),
 		QString::number((int) m_bStatic)
 	);
 	//node::dump_xml(i_oS);
-	i_oS<<notr("      </class_attribute>\n");
+	i_oS<<notr("      </box_class_attribute>\n");
 }
 
 

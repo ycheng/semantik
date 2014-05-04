@@ -121,8 +121,8 @@ class data_box : public diagram_item, public node
 	bool m_bIsVertical;
 
 	// matrix
-	QList<int> m_oRowPositions;
-	QList<int> m_oColPositions;
+	QList<int> m_oRowSizes;
+	QList<int> m_oColSizes;
 
 	// class
 	QString m_sStereotype;
