@@ -21,6 +21,7 @@ class box_resize_point : public QGraphicsRectItem
 		bool m_bMoveX;
 
 		int m_iPosition;
+		int m_iOriginalSize; // matrix
 		box_view *m_oView;
 		resizable *m_oParent;
 

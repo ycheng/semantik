@@ -24,7 +24,7 @@
 #define PAD 2
 #define MIN_FORK_SIZE 30
 
-box_matrix::box_matrix(box_view* view, int id) : box_item(view, id)
+box_matrix::box_matrix(box_view* view, int id) : box_item(view, id), resizable()
 {
 	QFont font = doc.defaultFont();
 	font.setPointSize(font.pointSize() - 2);
@@ -116,6 +116,89 @@ void box_matrix::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 	{
 		QGraphicsRectItem::mouseMoveEvent(e);
 	}
+}
+
+void box_matrix::freeze(bool b)
+{
+	if (b)
+	{
+		setFlags(ItemIsSelectable);
+		m_iLastStretch = 0;
+	}
+	else
+	{
+		setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
+	}
+}
+
+QVariant box_matrix::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue)
+{
+	if (scene())
+	{
+		if (i_oChange == ItemPositionChange)
+		{
+			QPointF np = i_oValue.toPointF();
+			np.setX(((int) np.x() / GRID) * GRID);
+			np.setY(((int) np.y() / GRID) * GRID);
+			return np;
+		}
+		else if (i_oChange == ItemPositionHasChanged)
+		{
+			update_links();
+			update_sizers();
+		}
+		else if (i_oChange == ItemSelectedHasChanged)
+		{
+			bool b = isSelected();
+			if (b)
+			{
+				setZValue(101);
+			}
+			else
+			{
+				setZValue(100);
+			}
+
+			/*m_oChain->setVisible(isSelected());
+			if (m_oLeft)  m_oLeft->setVisible(b);
+			if (m_oRight) m_oRight->setVisible(b);
+			if (m_oTop)   m_oTop->setVisible(b);
+			if (m_oDown)  m_oDown->setVisible(b);*/
+		}
+	}
+
+	return QGraphicsItem::itemChange(i_oChange, i_oValue);
+}
+
+void box_matrix::update_sizers()
+{
+	QPointF p = pos();
+	while (m_oRowPoints.size() > m_oBox->m_oRowSizes.size()) {
+                delete m_oRowPoints.takeFirst();
+        }
+	while (m_oRowPoints.size() < m_oBox->m_oRowSizes.size()) {
+		m_oRowPoints.append(new box_resize_point(m_oView, this));
+	}
+
+	while (m_oColPoints.size() > m_oBox->m_oColSizes.size()) {
+                delete m_oColPoints.takeFirst();
+        }
+	while (m_oColPoints.size() < m_oBox->m_oColSizes.size()) {
+		m_oColPoints.append(new box_resize_point(m_oView, this));
+	}
+
+
+	/*
+	if (m_oBox->m_bIsVertical)
+	{
+		m_oTop ->setPos(p.x() + m_oBox->m_iWW/2., p.y());
+		m_oDown->setPos(p.x() + m_oBox->m_iWW/2., p.y() + m_oBox->m_iHH);
+	}
+	else
+	{
+		m_oLeft ->setPos(p.x()                , p.y() + m_oBox->m_iHH / 2.);
+		m_oRight->setPos(p.x() + m_oBox->m_iWW, p.y() + m_oBox->m_iHH / 2.);
+	}*/
 }
 
 
