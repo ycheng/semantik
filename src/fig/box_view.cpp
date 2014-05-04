@@ -843,14 +843,17 @@ void box_view::slot_add_element()
 	else if (sender == m_oAddMatrix)
 	{
 		add->box->m_iType = data_box::MATRIX;
-		add->box->m_iWW = 500;
-		add->box->m_iHH = 310;
+		add->box->m_iWW = 510;
+		add->box->m_iHH = 320;
+		add->box->m_oRowPositions.push_back(160);
+		add->box->m_oColPositions.push_back(170);
+		add->box->m_oColPositions.push_back(170 * 2);
 	}
 	else if (sender == m_oAddFrame)
 	{
 		add->box->m_iType = data_box::FRAME;
-		add->box->m_iWW = 500;
-		add->box->m_iHH = 310;
+		add->box->m_iWW = 510;
+		add->box->m_iHH = 320;
 	}
 	else if (sender == m_oAddClass)
 	{

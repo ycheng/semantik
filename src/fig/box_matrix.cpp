@@ -7,6 +7,7 @@
 #include <QTextList>
 #include <QClipboard>
 #include <QPainter>
+#include <QGraphicsSceneMouseEvent>
 #include <QtDebug>
 #include <QAction>
 #include <QTextDocument>
@@ -45,26 +46,22 @@ void box_matrix::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 	painter->setPen(l_oPen);
 
 
-	painter->drawRect(l_oRect);
-
-	/*
-	qreal xtop = l_oRect.x();
-	qreal ytop = l_oRect.y();
-	qreal xcoord = xtop + l_oRect.width() / 2.0;
-	qreal ycoord = l_oRect.height() / 5.;
-
-	painter->drawLine(QLineF(xcoord, ytop + 2 * ycoord, xcoord, ytop + 4 * ycoord));
-	painter->drawLine(QLineF(xtop, ytop + 3 * ycoord, xtop + l_oRect.width(), ytop + 3 * ycoord));
-
-	painter->drawLine(QLineF(xtop, ytop + l_oRect.height(), xcoord, ytop + 4 * ycoord));
-	painter->drawLine(QLineF(xtop + l_oRect.width(), ytop + l_oRect.height(), xcoord, ytop + 4 * ycoord));
-
-	double cir = 4 * l_oRect.width() / 10.;
-	if (cir > ycoord) {
-		cir = ycoord;
+	qreal l_iHref = l_oRect.top();
+	foreach (int l_iHoff, m_oBox->m_oRowPositions)
+	{
+		qreal l_iHpos = l_iHref + l_iHoff;
+		painter->drawLine(l_oRect.left(), l_iHpos, l_oRect.right(), l_iHpos);
 	}
-	painter->drawEllipse(QRectF(xcoord - cir, ytop + 2 * ycoord - 2 * cir, 2 * cir, 2 * cir));
-	*/
+	l_iHref = l_oRect.left();
+	foreach (int l_iHoff, m_oBox->m_oColPositions)
+	{
+		qreal l_iHpos = l_iHref + l_iHoff;
+		painter->drawLine(l_iHpos, l_oRect.top(), l_iHpos, l_oRect.bottom());
+	}
+
+
+
+	painter->drawRect(l_oRect);
 
 	if (isSelected())
 	{
@@ -75,4 +72,54 @@ void box_matrix::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 
 	painter->restore();
 }
+
+void box_matrix::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
+{
+	if (m_bMoving)
+	{
+		QPointF np = e->pos();
+		int x = np.x() - m_oLastPressPoint.x();
+		int y = np.y() - m_oLastPressPoint.y();
+
+		m_iWW = m_oBox->m_iWW + x;
+		if (m_iWW < 2 * GRID) m_iWW = 2 * GRID;
+		m_iWW = grid_int(m_iWW);
+
+		if (!m_oBox->m_oColPositions.empty())
+		{
+			int l_o = m_oBox->m_oColPositions.last();
+			if (m_iWW < l_o + GRID)
+			{
+				m_iWW = l_o + GRID;
+			}
+		}
+
+		m_iHH = m_oBox->m_iHH + y;
+		if (m_iHH < 2 * GRID) m_iHH = 2 * GRID;
+		m_iHH = grid_int(m_iHH);
+
+		if (!m_oBox->m_oRowPositions.empty())
+		{
+			int l_o = m_oBox->m_oRowPositions.last();
+			if (m_iHH < l_o + GRID)
+			{
+				m_iHH = l_o + GRID;
+			}
+		}
+
+		doc.setTextWidth(m_iWW - 2 * OFF);
+		setRect(0, 0, m_iWW, m_iHH);
+		m_oChain->setPos(m_iWW + 3, 0);
+
+		m_oView->message(m_oView->trUtf8("%1 x %2").arg(QString::number(m_iWW), QString::number(m_iHH)), 1000);
+
+		update();
+		update_links();
+	}
+	else
+	{
+		QGraphicsRectItem::mouseMoveEvent(e);
+	}
+}
+
 
