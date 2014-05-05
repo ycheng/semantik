@@ -14,7 +14,7 @@
 
 #define OFF 3
 
-class box_matrix : public box_item, public resizable
+class box_matrix : public box_item
 {
 	public:
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
@@ -22,17 +22,14 @@ class box_matrix : public box_item, public resizable
 		void mouseMoveEvent(QGraphicsSceneMouseEvent *e);
 
 		// not sure this is the best technique
-		QVariant itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue);
-		void update_sizers();
-
-		int m_iLastStretch;
-		void freeze(bool b);
-		QList<box_resize_point*> m_oRowPoints;
-		QList<box_resize_point*> m_oColPoints;
-
-
-		virtual QPointF validate_point(box_resize_point*, const QPointF& p) { return QPointF(p); }
-		virtual void commit_size(box_resize_point*) {}
+		//QList<box_resize_point*> m_oRowPoints;
+		//QList<box_resize_point*> m_oColPoints;
+		//QVariant itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue);
+		//void update_sizers();
+		//int m_iLastStretch;
+		//void freeze(bool b);
+		//virtual QPointF validate_point(box_resize_point*, const QPointF& p) { return QPointF(p); }
+		//virtual void commit_size(box_resize_point*) {}
 };
 
 #endif // BOX_MATRIX_H

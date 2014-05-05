@@ -24,7 +24,7 @@
 #define PAD 2
 #define MIN_FORK_SIZE 30
 
-box_matrix::box_matrix(box_view* view, int id) : box_item(view, id), resizable()
+box_matrix::box_matrix(box_view* view, int id) : box_item(view, id)
 {
 	QFont font = doc.defaultFont();
 	font.setPointSize(font.pointSize() - 2);
@@ -63,9 +63,22 @@ void box_matrix::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 
 	if (isSelected())
 	{
+		QRectF l_oR(-8, -8, 6, 6);
 		painter->setBrush(QColor("#FFFF00"));
-		QRectF l_oR2(m_iWW - 8, m_iHH - 8, 6, 6);
-		painter->drawRect(l_oR2);
+
+		qreal l_i = 6 - PAD;
+		foreach (int l_iSize, m_oBox->m_oRowSizes) {
+			l_i += l_iSize;
+			painter->drawRect(l_oR.translated(m_iWW, l_i));
+		}
+
+		l_i = 6 - PAD;
+		foreach (int l_iSize, m_oBox->m_oColSizes) {
+			l_i += l_iSize;
+			painter->drawRect(l_oR.translated(l_i, m_iHH));
+		}
+
+		painter->drawRect(l_oR.translated(m_iWW, m_iHH));
 	}
 
 	painter->restore();
@@ -118,6 +131,7 @@ void box_matrix::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 	}
 }
 
+/*
 void box_matrix::freeze(bool b)
 {
 	if (b)
@@ -150,20 +164,12 @@ QVariant box_matrix::itemChange(GraphicsItemChange i_oChange, const QVariant &i_
 		else if (i_oChange == ItemSelectedHasChanged)
 		{
 			bool b = isSelected();
-			if (b)
-			{
-				setZValue(101);
+			foreach(box_resize_point *l_o, m_oColPoints) {
+				l_o->setVisible(b);
 			}
-			else
-			{
-				setZValue(100);
+			foreach(box_resize_point *l_o, m_oRowPoints) {
+				l_o->setVisible(b);
 			}
-
-			/*m_oChain->setVisible(isSelected());
-			if (m_oLeft)  m_oLeft->setVisible(b);
-			if (m_oRight) m_oRight->setVisible(b);
-			if (m_oTop)   m_oTop->setVisible(b);
-			if (m_oDown)  m_oDown->setVisible(b);*/
 		}
 	}
 
@@ -177,28 +183,40 @@ void box_matrix::update_sizers()
                 delete m_oRowPoints.takeFirst();
         }
 	while (m_oRowPoints.size() < m_oBox->m_oRowSizes.size()) {
-		m_oRowPoints.append(new box_resize_point(m_oView, this));
+		box_resize_point *l_o = new box_resize_point(m_oView, this);
+		l_o->hide();
+		l_o->setRect(-CTRLSIZE/2., 0, CTRLSIZE, CTRLSIZE);
+		m_oRowPoints.append(l_o);
 	}
 
 	while (m_oColPoints.size() > m_oBox->m_oColSizes.size()) {
                 delete m_oColPoints.takeFirst();
         }
 	while (m_oColPoints.size() < m_oBox->m_oColSizes.size()) {
-		m_oColPoints.append(new box_resize_point(m_oView, this));
+		box_resize_point *l_o = new box_resize_point(m_oView, this);
+		l_o->hide();
+		l_o->setRect(-CTRLSIZE/2., 0, CTRLSIZE, CTRLSIZE);
+		m_oColPoints.append(l_o);
 	}
 
-
-	/*
-	if (m_oBox->m_bIsVertical)
-	{
-		m_oTop ->setPos(p.x() + m_oBox->m_iWW/2., p.y());
-		m_oDown->setPos(p.x() + m_oBox->m_iWW/2., p.y() + m_oBox->m_iHH);
+	QRectF l_oRect = rect();
+	int l_iYpos = p.y() + l_oRect.height() - CTRLSIZE + PAD/2.;
+	int l_iOff = p.x() - PAD/2.;
+	int i = 0;
+	foreach (int l_iSize, m_oBox->m_oColSizes) {
+		l_iOff += l_iSize;
+		m_oColPoints.at(i)->setPos(l_iOff, l_iYpos);
+		i++;
 	}
-	else
-	{
-		m_oLeft ->setPos(p.x()                , p.y() + m_oBox->m_iHH / 2.);
-		m_oRight->setPos(p.x() + m_oBox->m_iWW, p.y() + m_oBox->m_iHH / 2.);
-	}*/
+
+	int l_iXpos = p.x() + l_oRect.width() - CTRLSIZE / 2. + PAD / 2.;
+	l_iOff = p.y() - CTRLSIZE/2. - PAD / 2.;
+	i = 0;
+	foreach (int l_iSize, m_oBox->m_oRowSizes) {
+		l_iOff += l_iSize;
+		m_oRowPoints.at(i)->setPos(l_iXpos, l_iOff);
+		i++;
+	}
 }
-
+*/
 
