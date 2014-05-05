@@ -19,17 +19,13 @@ class box_matrix : public box_item
 	public:
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
 		box_matrix(box_view*, int i_iId);
+		void mousePressEvent(QGraphicsSceneMouseEvent* e);
 		void mouseMoveEvent(QGraphicsSceneMouseEvent *e);
+		void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
 
-		// not sure this is the best technique
-		//QList<box_resize_point*> m_oRowPoints;
-		//QList<box_resize_point*> m_oColPoints;
-		//QVariant itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue);
-		//void update_sizers();
-		//int m_iLastStretch;
-		//void freeze(bool b);
-		//virtual QPointF validate_point(box_resize_point*, const QPointF& p) { return QPointF(p); }
-		//virtual void commit_size(box_resize_point*) {}
+		int m_iLastSize;
+		int m_iMovingRow;
+		int m_iMovingCol;
 };
 
 #endif // BOX_MATRIX_H

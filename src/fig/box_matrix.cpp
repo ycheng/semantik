@@ -84,43 +84,95 @@ void box_matrix::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 	painter->restore();
 }
 
+void box_matrix::mousePressEvent(QGraphicsSceneMouseEvent* e)
+{
+	m_oLastPressPoint = e->pos();
+	QRectF l_oR(-10, -10, 8, 8);
+
+	qreal l_i = 6 - PAD;
+	int i = 0;
+	foreach (int l_iSize, m_oBox->m_oRowSizes) {
+		l_i += l_iSize;
+		if (l_oR.translated(m_iWW, l_i).contains(m_oLastPressPoint))
+		{
+			m_iLastSize = l_iSize;
+			m_iMovingRow = i;
+			m_iMovingCol = -1;
+			setFlags(ItemIsSelectable | ItemSendsGeometryChanges);
+			m_bMoving = true;
+			QGraphicsRectItem::mousePressEvent(e);
+			return;
+		}
+		i += 1;
+	}
+
+	i = 0;
+	l_i = 6 - PAD;
+	foreach (int l_iSize, m_oBox->m_oColSizes) {
+		l_i += l_iSize;
+		if (l_oR.translated(l_i, m_iHH).contains(m_oLastPressPoint))
+		{
+			m_iLastSize = l_iSize;
+			m_iMovingRow = -1;
+			m_iMovingCol = i;
+			setFlags(ItemIsSelectable | ItemSendsGeometryChanges);
+			m_bMoving = true;
+			QGraphicsRectItem::mousePressEvent(e);
+			return;
+		}
+		i += 1;
+	}
+
+	if (l_oR.translated(m_iWW, m_iHH).contains(m_oLastPressPoint))
+	{
+		m_iMovingRow = m_iMovingCol = -1;
+		setFlags(ItemIsSelectable | ItemSendsGeometryChanges);
+		m_bMoving = true;
+		QGraphicsRectItem::mousePressEvent(e);
+		return;
+	}
+	QGraphicsRectItem::mousePressEvent(e);
+}
+
 void box_matrix::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 {
 	if (m_bMoving)
 	{
-		QPointF np = e->pos();
-		int x = np.x() - m_oLastPressPoint.x();
-		int y = np.y() - m_oLastPressPoint.y();
+		if (m_iMovingRow == -1 && m_iMovingCol == -1) {
+			QPointF np = e->pos();
+			int x = np.x() - m_oLastPressPoint.x();
+			int y = np.y() - m_oLastPressPoint.y();
 
-		m_iWW = m_oBox->m_iWW + x;
-		if (m_iWW < 2 * GRID) m_iWW = 2 * GRID;
-		m_iWW = grid_int(m_iWW);
+			m_iWW = m_oBox->m_iWW + x;
+			if (m_iWW < 2 * GRID) m_iWW = 2 * GRID;
+			m_iWW = grid_int(m_iWW);
 
-		int l_i = 0;
-		foreach (int l_iSize, m_oBox->m_oColSizes) {
-			l_i += l_iSize;
+			int l_i = 0;
+			foreach (int l_iSize, m_oBox->m_oColSizes) {
+				l_i += l_iSize;
+			}
+			if (m_iWW < l_i + 2 * GRID) {
+				m_iWW = l_i + 2 * GRID;
+			}
+
+			m_iHH = m_oBox->m_iHH + y;
+			if (m_iHH < 2 * GRID) m_iHH = 2 * GRID;
+			m_iHH = grid_int(m_iHH);
+
+			l_i = 0;
+			foreach (int l_iSize, m_oBox->m_oRowSizes) {
+				l_i += l_iSize;
+			}
+			if (m_iHH < l_i + 2 * GRID) {
+				m_iHH = l_i + 2 * GRID;
+			}
+
+			doc.setTextWidth(m_iWW - 2 * OFF);
+			setRect(0, 0, m_iWW, m_iHH);
+			m_oChain->setPos(m_iWW + 3, 0);
+
+			m_oView->message(m_oView->trUtf8("%1 x %2").arg(QString::number(m_iWW), QString::number(m_iHH)), 1000);
 		}
-		if (m_iWW < l_i + 2 * GRID) {
-			m_iWW = l_i + 2 * GRID;
-		}
-
-		m_iHH = m_oBox->m_iHH + y;
-		if (m_iHH < 2 * GRID) m_iHH = 2 * GRID;
-		m_iHH = grid_int(m_iHH);
-
-		l_i = 0;
-		foreach (int l_iSize, m_oBox->m_oRowSizes) {
-			l_i += l_iSize;
-		}
-		if (m_iHH < l_i + 2 * GRID) {
-			m_iHH = l_i + 2 * GRID;
-		}
-
-		doc.setTextWidth(m_iWW - 2 * OFF);
-		setRect(0, 0, m_iWW, m_iHH);
-		m_oChain->setPos(m_iWW + 3, 0);
-
-		m_oView->message(m_oView->trUtf8("%1 x %2").arg(QString::number(m_iWW), QString::number(m_iHH)), 1000);
 
 		update();
 		update_links();
@@ -131,92 +183,23 @@ void box_matrix::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 	}
 }
 
-/*
-void box_matrix::freeze(bool b)
-{
-	if (b)
+void box_matrix::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
+	if (m_bMoving)
 	{
-		setFlags(ItemIsSelectable);
-		m_iLastStretch = 0;
+		m_bMoving = false;
+		setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
+
+		if (m_iWW != m_oBox->m_iWW || m_iHH != m_oBox->m_iHH)	
+		{
+			mem_size_box *mem = new mem_size_box(m_oView->m_oMediator, m_oView->m_iId);
+			mem->prev_values[m_oBox] = QRect(m_oBox->m_iXX, m_oBox->m_iYY, m_oBox->m_iWW, m_oBox->m_iHH);
+			mem->next_values[m_oBox] = QRect(m_oBox->m_iXX, m_oBox->m_iYY, m_iWW, m_iHH);
+			mem->apply();
+		}
 	}
 	else
 	{
-		setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
+		QGraphicsRectItem::mouseReleaseEvent(e);
 	}
 }
-
-QVariant box_matrix::itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue)
-{
-	if (scene())
-	{
-		if (i_oChange == ItemPositionChange)
-		{
-			QPointF np = i_oValue.toPointF();
-			np.setX(((int) np.x() / GRID) * GRID);
-			np.setY(((int) np.y() / GRID) * GRID);
-			return np;
-		}
-		else if (i_oChange == ItemPositionHasChanged)
-		{
-			update_links();
-			update_sizers();
-		}
-		else if (i_oChange == ItemSelectedHasChanged)
-		{
-			bool b = isSelected();
-			foreach(box_resize_point *l_o, m_oColPoints) {
-				l_o->setVisible(b);
-			}
-			foreach(box_resize_point *l_o, m_oRowPoints) {
-				l_o->setVisible(b);
-			}
-		}
-	}
-
-	return QGraphicsItem::itemChange(i_oChange, i_oValue);
-}
-
-void box_matrix::update_sizers()
-{
-	QPointF p = pos();
-	while (m_oRowPoints.size() > m_oBox->m_oRowSizes.size()) {
-                delete m_oRowPoints.takeFirst();
-        }
-	while (m_oRowPoints.size() < m_oBox->m_oRowSizes.size()) {
-		box_resize_point *l_o = new box_resize_point(m_oView, this);
-		l_o->hide();
-		l_o->setRect(-CTRLSIZE/2., 0, CTRLSIZE, CTRLSIZE);
-		m_oRowPoints.append(l_o);
-	}
-
-	while (m_oColPoints.size() > m_oBox->m_oColSizes.size()) {
-                delete m_oColPoints.takeFirst();
-        }
-	while (m_oColPoints.size() < m_oBox->m_oColSizes.size()) {
-		box_resize_point *l_o = new box_resize_point(m_oView, this);
-		l_o->hide();
-		l_o->setRect(-CTRLSIZE/2., 0, CTRLSIZE, CTRLSIZE);
-		m_oColPoints.append(l_o);
-	}
-
-	QRectF l_oRect = rect();
-	int l_iYpos = p.y() + l_oRect.height() - CTRLSIZE + PAD/2.;
-	int l_iOff = p.x() - PAD/2.;
-	int i = 0;
-	foreach (int l_iSize, m_oBox->m_oColSizes) {
-		l_iOff += l_iSize;
-		m_oColPoints.at(i)->setPos(l_iOff, l_iYpos);
-		i++;
-	}
-
-	int l_iXpos = p.x() + l_oRect.width() - CTRLSIZE / 2. + PAD / 2.;
-	l_iOff = p.y() - CTRLSIZE/2. - PAD / 2.;
-	i = 0;
-	foreach (int l_iSize, m_oBox->m_oRowSizes) {
-		l_iOff += l_iSize;
-		m_oRowPoints.at(i)->setPos(l_iXpos, l_iOff);
-		i++;
-	}
-}
-*/
 
