@@ -3,7 +3,7 @@
 # Thomas Nagy, 2007-2013 (ita)
 
 APPNAME = 'semantik'
-VERSION = '0.9.1'
+VERSION = '0.9.2'
 
 top = '.'
 
@@ -219,7 +219,7 @@ def options(opt):
 	opt.load('qt4')
 	opt.load('python ')
 	opt.add_option('--exe', action='store_true', default=False, help='execute semantik after the compilation (developers)')
-	opt.add_option('--exed', action='store_true', default=False, help='execute semantik-d after the compilation (developers)')
+	opt.add_option('--ddd', action='store_true', default=False, help='execute semantik-d after the compilation (developers)')
 	opt.add_option('--icons', action='store', default='', help='icon dirs where to look for kde icons (configuration)')
 	opt.add_option('--use64', action='store_true', default=False, help='set the installation into lib+64 (configuration)')
 	opt.add_option('--nomimes', action='store_true', default=False, help='do not run update-mime-database when installing')
@@ -237,7 +237,7 @@ def post_build(bld):
 	if Options.options.exe:
 		#os.popen('export LD_LIBRARY_PATH=out/default/:$LD_LIBRARY_PATH; PATH=plugins:$PATH out/default/src/semantik')
 		bld.exec_command('LD_LIBRARY_PATH=build/:$LD_LIBRARY_PATH build/src/semantik --style plastique', stdout=None, stderr=None)
-	if Options.options.exed:
+	if Options.options.ddd:
 		bld.exec_command('LD_LIBRARY_PATH=build/:$LD_LIBRARY_PATH build/src/semantik-d --style plastique', stdout=None, stderr=None)
 
 	return

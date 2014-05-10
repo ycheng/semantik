@@ -39,6 +39,8 @@ void linear_view::notify_add_item(int id)
 
 void linear_view::notify_delete_item(int id)
 {
+	m_bLockSelect = true;
+
 	QTreeWidgetItem *l_oItem = m_oItems.value(id);
 
 	QTreeWidgetItem *l_oChild = NULL;
@@ -51,6 +53,8 @@ void linear_view::notify_delete_item(int id)
 	else
 		takeTopLevelItem(indexOfTopLevelItem(l_oItem));
 	delete l_oItem;
+
+	m_bLockSelect = false;
 }
 
 void linear_view::notify_link_items(int id1, int id2)
