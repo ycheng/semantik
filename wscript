@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # encoding: utf-8
-# Thomas Nagy, 2007-2013 (ita)
+# Thomas Nagy, 2007-2014 (ita)
 
 APPNAME = 'semantik'
 VERSION = '0.9.2'
@@ -196,9 +196,6 @@ def configure(conf):
 	conf.define('fillloc(x)', ''.join(buf), quote=False)
 
 
-	if Options.options.use64:
-		conf.env.shlib_INST_DIR = 'lib64'
-
 	conf.env.CXXFLAGS_PYEMBED = [x for x in conf.env.CXXFLAGS_PYEMBED if x != '-g']
 
 	if not 'CXXFLAGS' in os.environ:
@@ -221,7 +218,6 @@ def options(opt):
 	opt.add_option('--exe', action='store_true', default=False, help='execute semantik after the compilation (developers)')
 	opt.add_option('--ddd', action='store_true', default=False, help='execute semantik-d after the compilation (developers)')
 	opt.add_option('--icons', action='store', default='', help='icon dirs where to look for kde icons (configuration)')
-	opt.add_option('--use64', action='store_true', default=False, help='set the installation into lib+64 (configuration)')
 	opt.add_option('--nomimes', action='store_true', default=False, help='do not run update-mime-database when installing')
 	opt.add_option('--noldconfig', action='store_true', default=False, help='do not run lconfig when installing')
 
@@ -239,32 +235,4 @@ def post_build(bld):
 		bld.exec_command('LD_LIBRARY_PATH=build/:$LD_LIBRARY_PATH build/src/semantik --style plastique', stdout=None, stderr=None)
 	if Options.options.ddd:
 		bld.exec_command('LD_LIBRARY_PATH=build/:$LD_LIBRARY_PATH build/src/semantik-d --style plastique', stdout=None, stderr=None)
-
-	return
-	# display the graph of header dependencies
-	root = os.path.abspath('.')
-	def rep(x):
-		return str(x).replace(root, '')
-
-	import types
-	f = open('me.dot', 'w')
-	f.write("digraph G {\n")
-	table = bld.depends_on
-	for a in table:
-		for x in table[a]:
-			if type(table[a][x]) is types.ListType:
-				for y in table[a][x]:
-					f.write('"%s" -> "%s";\n' % (rep(x), rep(y)))
-			else:
-				f.write('"%s" -> "%s";\n' % (rep(x), rep(table[a][x])))
-	f.write('}\n')
-	f.close()
-
-	try:
-		os.popen('dot -Tpng me.dot -ofoo.png').read()
-	except:
-		Logs.pprint("the dot program was not found - install graphviz?")
-	else:
-		Logs.pprint("generated foo.png")
-
 

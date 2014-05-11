@@ -23,6 +23,7 @@ class box_matrix : public box_item
 		void mouseMoveEvent(QGraphicsSceneMouseEvent *e);
 		void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
 		void update_size();
+		void properties();
 
 		int m_iLastSize;
 		int m_iMovingRow;

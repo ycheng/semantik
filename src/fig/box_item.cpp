@@ -187,7 +187,7 @@ void box_item::update_size() {
 void box_item::properties()
 {
 	bool ok = false;
-	QString text = KInputDialog::getText(m_oView->trUtf8("Properties for diagram box"),
+	QString text = KInputDialog::getText(m_oView->trUtf8("Diagram box properties"),
 			m_oView->trUtf8("Text:"), m_oBox->m_sText, &ok);
 	if (ok && text != m_oBox->m_sText)
 	{

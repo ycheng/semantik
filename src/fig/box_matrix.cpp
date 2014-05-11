@@ -195,8 +195,8 @@ void box_matrix::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 			m_oView->message(m_oView->trUtf8("Row %1: %2px (size: %3 x %4)").arg(
 				QString::number(m_iMovingRow + 1),
 				QString::number(l_iSize),
-				QString::number(m_iWW - PAD),
-				QString::number(l_iNewHeight - PAD)
+				QString::number(m_iWW),
+				QString::number(l_iNewHeight)
 			), 5000);
 		}
 		else if (m_iMovingCol > -1)
@@ -211,8 +211,8 @@ void box_matrix::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 			m_oView->message(m_oView->trUtf8("Column %1: %2px (size: %3 x %4)").arg(
 				QString::number(m_iMovingCol + 1),
 				QString::number(l_iSize),
-				QString::number(l_iNewWidth - PAD),
-				QString::number(m_iHH - PAD)
+				QString::number(l_iNewWidth),
+				QString::number(m_iHH)
 			), 5000);
 		}
 
@@ -270,6 +270,27 @@ void box_matrix::update_size() {
 	m_oChain->setPos(boundingRect().right() + 3, 0);
 
 	update_links();
+}
+
+void box_matrix::properties()
+{
+	bool ok = false;
+	QString text = KInputDialog::getText(m_oView->trUtf8("Matrix properties"),
+			m_oView->trUtf8("Text:"), m_oBox->m_sText, &ok);
+	if (ok && text != m_oBox->m_sText)
+	{
+		mem_edit_box *ed = new mem_edit_box(m_oView->m_oMediator, m_oView->m_iId, m_iId);
+		ed->newText = text;
+
+		QTextDocument doc;
+		doc.setHtml(QString("<div align='center'>%1</div>").arg(text));
+		doc.setTextWidth(m_oBox->m_iWW - 2 * OFF);
+		ed->newHeight = GRID * (((int) (doc.size().height() + 2 * OFF + GRID - 1)) / GRID);
+		if (ed->newHeight < m_oBox->m_iHH)
+			ed->newHeight = m_oBox->m_iHH;
+
+		ed->apply();
+	}
 }
 
 
