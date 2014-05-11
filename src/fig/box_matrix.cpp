@@ -231,7 +231,6 @@ void box_matrix::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 	{
 		m_bMoving = false;
 		setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
-
 		if (m_iWW != m_oBox->m_iWW || m_iHH != m_oBox->m_iHH)
 		{
 			mem_size_box *mem = new mem_size_box(m_oView->m_oMediator, m_oView->m_iId);
@@ -239,20 +238,16 @@ void box_matrix::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 			mem->next_values[m_oBox] = QRect(m_oBox->m_iXX, m_oBox->m_iYY, m_iWW, m_iHH);
 			mem->apply();
 		} else if (m_iMovingRow > -1) {
-			mem_size_matrix *mem = new mem_size_matrix(m_oView->m_oMediator, m_oView->m_iId);
-			mem->m_oBox = m_oBox;
-			mem->m_iPrevValue = m_iLastSize;
-			mem->m_iNextValue = m_oBox->m_oRowSizes[m_iMovingRow];
-			mem->m_bIsRow = true;
-			mem->m_iIdx = m_iMovingRow;
+			mem_matrix *mem = new mem_matrix(m_oView->m_oMediator, m_oView->m_iId);
+			mem->init(m_oBox);
+			mem->m_oOldRowSizes[m_iMovingRow] = m_iLastSize;
+			mem->m_iNewHH += m_oBox->m_oRowSizes[m_iMovingRow] - m_iLastSize;
 			mem->apply();
 		} else if (m_iMovingCol > -1) {
-			mem_size_matrix *mem = new mem_size_matrix(m_oView->m_oMediator, m_oView->m_iId);
-			mem->m_oBox = m_oBox;
-			mem->m_iPrevValue = m_iLastSize;
-			mem->m_iNextValue = m_oBox->m_oColSizes[m_iMovingCol];
-			mem->m_bIsRow = false;
-			mem->m_iIdx = m_iMovingCol;
+			mem_matrix *mem = new mem_matrix(m_oView->m_oMediator, m_oView->m_iId);
+			mem->init(m_oBox);
+			mem->m_oOldColSizes[m_iMovingCol] = m_iLastSize;
+			mem->m_iNewWW += m_oBox->m_oColSizes[m_iMovingCol] - m_iLastSize;
 			mem->apply();
 		}
 	}
@@ -274,6 +269,7 @@ void box_matrix::update_size() {
 
 void box_matrix::properties()
 {
+	/*
 	bool ok = false;
 	QString text = KInputDialog::getText(m_oView->trUtf8("Matrix properties"),
 			m_oView->trUtf8("Text:"), m_oBox->m_sText, &ok);
@@ -290,7 +286,7 @@ void box_matrix::properties()
 			ed->newHeight = m_oBox->m_iHH;
 
 		ed->apply();
-	}
+	}*/
 }
 
 

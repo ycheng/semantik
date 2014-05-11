@@ -361,37 +361,57 @@ void mem_import_box::redo()
 
 ///////////////////////////////////////////////////////////////////
 
-mem_size_matrix::mem_size_matrix(sem_mediator* mod, int id) : mem_command(mod)
+mem_matrix::mem_matrix(sem_mediator* mod, int id) : mem_command(mod)
 {
 	m_iId = id;
 }
 
-void mem_size_matrix::redo() {
-	if (m_bIsRow) {
-		m_oBox->m_oRowSizes[m_iIdx] = m_iNextValue;
-		m_oBox->m_iHH += m_iNextValue - m_iPrevValue;
-	} else {
-		m_oBox->m_oColSizes[m_iIdx] = m_iNextValue;
-		m_oBox->m_iWW += m_iNextValue - m_iPrevValue;
+void mem_matrix::redo() {
+	m_oBox->m_oRowSizes.clear();
+	foreach (int l_i, m_oNewRowSizes) {
+		m_oBox->m_oRowSizes.append(l_i);
 	}
+	m_oBox->m_oColSizes.clear();
+	foreach (int l_i, m_oNewColSizes) {
+		m_oBox->m_oColSizes.append(l_i);
+	}
+	m_oBox->m_iWW = m_iNewWW;
+	m_oBox->m_iHH = m_iNewHH;
 	QList<data_box*> lst;
 	lst.push_back(m_oBox);
 	model->notify_size_box(m_iId, lst);
 	redo_dirty();
 }
 
-void mem_size_matrix::undo() {
-	if (m_bIsRow) {
-		m_oBox->m_oRowSizes[m_iIdx] = m_iPrevValue;
-		m_oBox->m_iHH -= m_iNextValue - m_iPrevValue;
-	} else {
-		m_oBox->m_oColSizes[m_iIdx] = m_iPrevValue;
-		m_oBox->m_iWW -= m_iNextValue - m_iPrevValue;
+void mem_matrix::undo() {
+	m_oBox->m_oRowSizes.clear();
+	foreach (int l_i, m_oOldRowSizes) {
+		m_oBox->m_oRowSizes.append(l_i);
 	}
+	m_oBox->m_oColSizes.clear();
+	foreach (int l_i, m_oOldColSizes) {
+		m_oBox->m_oColSizes.append(l_i);
+	}
+	m_oBox->m_iWW = m_iOldWW;
+	m_oBox->m_iHH = m_iOldHH;
 	QList<data_box*> lst;
 	lst.push_back(m_oBox);
 	model->notify_size_box(m_iId, lst);
 	undo_dirty();
+}
+
+void mem_matrix::init(data_box *i_oBox) {
+	m_oBox = i_oBox;
+	foreach (int l_i, m_oBox->m_oRowSizes) {
+		m_oOldRowSizes.push_back(l_i);
+		m_oNewRowSizes.push_back(l_i);
+	}
+	foreach (int l_i, m_oBox->m_oColSizes) {
+		m_oOldColSizes.push_back(l_i);
+		m_oNewColSizes.push_back(l_i);
+	}
+	m_iOldWW = m_iNewWW = m_oBox->m_iWW;
+	m_iOldHH = m_iNewHH = m_oBox->m_iHH;
 }
 
 
