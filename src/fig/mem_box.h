@@ -175,6 +175,22 @@ class mem_import_box : public mem_command {
 		IType type() { return IMPORT_BOX; }
 };
 
+class mem_size_matrix : public mem_command {
+	public:
+		mem_size_matrix(sem_mediator*, int);
+		void undo();
+		void redo();
+
+		int m_iId;
+		data_box* m_oBox;
+
+		int m_iIdx;
+		bool m_bIsRow;
+		int m_iPrevValue;
+		int m_iNextValue;
+
+		IType type() { return SIZE_MATRIX; }
+};
 
 #endif
 

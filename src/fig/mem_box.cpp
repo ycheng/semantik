@@ -359,4 +359,39 @@ void mem_import_box::redo()
 	redo_dirty();
 }
 
+///////////////////////////////////////////////////////////////////
+
+mem_size_matrix::mem_size_matrix(sem_mediator* mod, int id) : mem_command(mod)
+{
+	m_iId = id;
+}
+
+void mem_size_matrix::redo() {
+	if (m_bIsRow) {
+		m_oBox->m_oRowSizes[m_iIdx] = m_iNextValue;
+		m_oBox->m_iHH += m_iNextValue - m_iPrevValue;
+	} else {
+		m_oBox->m_oColSizes[m_iIdx] = m_iNextValue;
+		m_oBox->m_iWW += m_iNextValue - m_iPrevValue;
+	}
+	QList<data_box*> lst;
+	lst.push_back(m_oBox);
+	model->notify_size_box(m_iId, lst);
+	redo_dirty();
+}
+
+void mem_size_matrix::undo() {
+	if (m_bIsRow) {
+		m_oBox->m_oRowSizes[m_iIdx] = m_iPrevValue;
+		m_oBox->m_iHH -= m_iNextValue - m_iPrevValue;
+	} else {
+		m_oBox->m_oColSizes[m_iIdx] = m_iPrevValue;
+		m_oBox->m_iWW -= m_iNextValue - m_iPrevValue;
+	}
+	QList<data_box*> lst;
+	lst.push_back(m_oBox);
+	model->notify_size_box(m_iId, lst);
+	undo_dirty();
+}
+
 
