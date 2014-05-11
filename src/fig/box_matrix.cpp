@@ -31,6 +31,7 @@ box_matrix::box_matrix(box_view* view, int id) : box_item(view, id)
 	doc.setDefaultFont(font);
 
 	setZValue(80);
+	update_size();
 }
 
 void box_matrix::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -92,11 +93,15 @@ void box_matrix::mousePressEvent(QGraphicsSceneMouseEvent* e)
 	m_oLastPressPoint = e->pos();
 	QRectF l_oR(-10, -10, 8, 8);
 
+	QRectF l_oR2 = boundingRect();
+	qreal l_oX = l_oR2.right();
+	qreal l_oY = l_oR2.bottom();
+
 	qreal l_i = 6 - PAD;
 	int i = 0;
 	foreach (int l_iSize, m_oBox->m_oRowSizes) {
 		l_i += l_iSize;
-		if (l_oR.translated(m_iWW, l_i).contains(m_oLastPressPoint))
+		if (l_oR.translated(l_oX, l_i).contains(m_oLastPressPoint))
 		{
 			m_iLastSize = l_iSize;
 			m_iMovingRow = i;
@@ -113,7 +118,7 @@ void box_matrix::mousePressEvent(QGraphicsSceneMouseEvent* e)
 	l_i = 6 - PAD;
 	foreach (int l_iSize, m_oBox->m_oColSizes) {
 		l_i += l_iSize;
-		if (l_oR.translated(l_i, m_iHH).contains(m_oLastPressPoint))
+		if (l_oR.translated(l_i, l_oY).contains(m_oLastPressPoint))
 		{
 			m_iLastSize = l_iSize;
 			m_iMovingRow = -1;
@@ -126,7 +131,7 @@ void box_matrix::mousePressEvent(QGraphicsSceneMouseEvent* e)
 		i += 1;
 	}
 
-	if (l_oR.translated(m_iWW, m_iHH).contains(m_oLastPressPoint))
+	if (l_oR.translated(l_oX, l_oY).contains(m_oLastPressPoint))
 	{
 		m_iMovingRow = m_iMovingCol = -1;
 		setFlags(ItemIsSelectable | ItemSendsGeometryChanges);
@@ -150,31 +155,33 @@ void box_matrix::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 			if (m_iWW < 2 * GRID) m_iWW = 2 * GRID;
 			m_iWW = grid_int(m_iWW);
 
-			int l_i = 0;
+			int l_iWidth = 0;
 			foreach (int l_iSize, m_oBox->m_oColSizes) {
-				l_i += l_iSize;
+				l_iWidth += l_iSize;
 			}
-			if (m_iWW < l_i + 2 * GRID) {
-				m_iWW = l_i + 2 * GRID;
+			if (m_iWW < l_iWidth + 2 * GRID) {
+				m_iWW = l_iWidth + 2 * GRID;
 			}
 
 			m_iHH = m_oBox->m_iHH + y;
 			if (m_iHH < 2 * GRID) m_iHH = 2 * GRID;
 			m_iHH = grid_int(m_iHH);
 
-			l_i = 0;
+			int l_iHeight = 0;
 			foreach (int l_iSize, m_oBox->m_oRowSizes) {
-				l_i += l_iSize;
+				l_iHeight += l_iSize;
 			}
-			if (m_iHH < l_i + 2 * GRID) {
-				m_iHH = l_i + 2 * GRID;
+			if (m_iHH < l_iHeight + 2 * GRID) {
+				m_iHH = l_iHeight + 2 * GRID;
 			}
 
-			doc.setTextWidth(m_iWW - 2 * OFF); // TODO: doc?
-			setRect(0, 0, m_iWW, m_iHH);
-			m_oChain->setPos(m_iWW + 3, 0);
-
-			m_oView->message(m_oView->trUtf8("%1 x %2").arg(QString::number(m_iWW), QString::number(m_iHH)), 1000);
+			setRect(0, 0, m_iWW + 2*PAD, m_iHH + 2*PAD);
+			m_oView->message(m_oView->trUtf8("Last row: %2px, last column: %3px (size: %4 x %5)").arg(
+				QString::number(m_iWW - l_iWidth),
+				QString::number(m_iHH - l_iHeight),
+				QString::number(m_iWW),
+				QString::number(m_iHH)
+			), 5000);
 		}
 		else if (m_iMovingRow > -1)
 		{
@@ -183,7 +190,14 @@ void box_matrix::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 				l_iSize = 2 * GRID;
 			}
 			m_oBox->m_oRowSizes[m_iMovingRow] = l_iSize;
-			setRect(0, 0, m_oBox->m_iWW, m_oBox->m_iHH + l_iSize - m_iLastSize);
+			int l_iNewHeight = m_oBox->m_iHH + l_iSize - m_iLastSize;
+			setRect(0, 0, m_oBox->m_iWW + 2 * PAD, l_iNewHeight + 2 * PAD);
+			m_oView->message(m_oView->trUtf8("Row %1: %2px (size: %3 x %4)").arg(
+				QString::number(m_iMovingRow + 1),
+				QString::number(l_iSize),
+				QString::number(m_iWW - PAD),
+				QString::number(l_iNewHeight - PAD)
+			), 5000);
 		}
 		else if (m_iMovingCol > -1)
 		{
@@ -192,9 +206,17 @@ void box_matrix::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 				l_iSize = 2 * GRID;
 			}
 			m_oBox->m_oColSizes[m_iMovingCol] = l_iSize;
-			setRect(0, 0, m_oBox->m_iWW + l_iSize - m_iLastSize, m_oBox->m_iHH);
+			int l_iNewWidth = m_oBox->m_iWW + l_iSize - m_iLastSize;
+			setRect(0, 0, l_iNewWidth +  2 * PAD, m_oBox->m_iHH +  2 * PAD);
+			m_oView->message(m_oView->trUtf8("Column %1: %2px (size: %3 x %4)").arg(
+				QString::number(m_iMovingCol + 1),
+				QString::number(l_iSize),
+				QString::number(l_iNewWidth - PAD),
+				QString::number(m_iHH - PAD)
+			), 5000);
 		}
 
+		m_oChain->setPos(boundingRect().right() + 3, 0);
 		update();
 		update_links();
 	}
@@ -239,4 +261,15 @@ void box_matrix::mouseReleaseEvent(QGraphicsSceneMouseEvent* e) {
 		QGraphicsRectItem::mouseReleaseEvent(e);
 	}
 }
+
+void box_matrix::update_size() {
+	m_iWW = m_oBox->m_iWW;
+	m_iHH = m_oBox->m_iHH;
+
+	setRect(0, 0, m_iWW + 2*PAD, m_iHH + 2*PAD);
+	m_oChain->setPos(boundingRect().right() + 3, 0);
+
+	update_links();
+}
+
 

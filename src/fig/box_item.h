@@ -39,11 +39,11 @@ class box_item : public QGraphicsRectItem, public connectable, public editable
 		void mousePressEvent(QGraphicsSceneMouseEvent* e);
 		void mouseMoveEvent(QGraphicsSceneMouseEvent *e);
 		void mouseReleaseEvent(QGraphicsSceneMouseEvent* e);
-		void properties();
+		virtual void properties();
 
-		void update_data();
-		void update_size();
-		void update_links();
+		virtual void update_data();
+		virtual void update_size();
+		virtual void update_links();
 
 		QVariant itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue);
 

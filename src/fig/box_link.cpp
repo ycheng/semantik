@@ -357,6 +357,7 @@ void box_link::update_pos()
 	}
 	m_oEndPoint->force_position(m_oInnerLink.m_oEndPoint);
 
+	/*
 	int ax1 = (int) l_oR1.x();
 	int ax2 = (int) (l_oR1.x()+l_oR1.width());
 	int ay1 = (int) l_oR1.y();
@@ -366,6 +367,17 @@ void box_link::update_pos()
 	int bx2 = (int) (l_oR2.x()+l_oR2.width());
 	int by1 = (int) l_oR2.y();
 	int by2 = (int) (l_oR2.y()+l_oR2.height());
+	*/
+
+	int ax1 = (int) l_oR1.left();
+	int ax2 = (int) l_oR1.right();
+	int ay1 = (int) l_oR1.top();
+	int ay2 = (int) l_oR1.bottom();
+
+	int bx1 = (int) l_oR2.left();
+	int bx2 = (int) l_oR2.right();
+	int by1 = (int) l_oR2.top();
+	int by2 = (int) l_oR2.bottom();
 
 	set_rectangles(ax1, ax2, ay1, ay2, m_oInnerLink.m_iParentPos, apos, bx1, bx2, by1, by2, m_oInnerLink.m_iChildPos, bpos);
 
