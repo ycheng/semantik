@@ -37,10 +37,14 @@ matrix_dialog::matrix_dialog(QWidget *i_oParent):
 	l_oGridLayout->addWidget(l_sLabel, 1, 0, 1, 1);
 
 
-	QSpinBox *m_oRows = new QSpinBox(this);
+	m_oRows = new QSpinBox(this);
+	m_oRows->setMinimum(1);
+	m_oRows->setMaximum(100);
 	l_oGridLayout->addWidget(m_oRows, 0, 1, 1, 1);
 
-	QSpinBox *m_oCols = new QSpinBox(this);
+	m_oCols = new QSpinBox(this);
+	m_oCols->setMinimum(1);
+	m_oCols->setMaximum(100);
 	l_oGridLayout->addWidget(m_oCols, 1, 1, 1, 1);
 
 

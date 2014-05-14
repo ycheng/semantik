@@ -194,7 +194,7 @@ void box_matrix::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 			m_oBox->m_oRowSizes[m_iMovingRow] = l_iSize;
 			int l_iNewHeight = m_oBox->m_iHH + l_iSize - m_iLastSize;
 			setRect(0, 0, m_oBox->m_iWW + 2 * PAD, l_iNewHeight + 2 * PAD);
-			m_oView->message(m_oView->trUtf8("Row %1: %2px (size: %3 x %4)").arg(
+			m_oView->message(m_oView->trUtf8("Column %1: %2px (size: %3 x %4)").arg(
 				QString::number(m_iMovingRow + 1),
 				QString::number(l_iSize),
 				QString::number(m_iWW),
@@ -210,7 +210,7 @@ void box_matrix::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 			m_oBox->m_oColSizes[m_iMovingCol] = l_iSize;
 			int l_iNewWidth = m_oBox->m_iWW + l_iSize - m_iLastSize;
 			setRect(0, 0, l_iNewWidth +  2 * PAD, m_oBox->m_iHH +  2 * PAD);
-			m_oView->message(m_oView->trUtf8("Column %1: %2px (size: %3 x %4)").arg(
+			m_oView->message(m_oView->trUtf8("Row %1: %2px (size: %3 x %4)").arg(
 				QString::number(m_iMovingCol + 1),
 				QString::number(l_iSize),
 				QString::number(l_iNewWidth),
@@ -272,8 +272,49 @@ void box_matrix::update_size() {
 void box_matrix::properties()
 {
 	matrix_dialog l_o(m_oView);
+	l_o.m_oRows->setValue(m_oBox->m_oRowSizes.length() + 1);
+	l_o.m_oCols->setValue(m_oBox->m_oColSizes.length() + 1);
 	if (l_o.exec() == QDialog::Accepted) {
 		mem_matrix *mem = new mem_matrix(m_oView->m_oMediator, m_oView->m_iId);
+		mem->init(m_oBox);
+		int l_iNew = 2*GRID;
+
+		while (mem->m_oNewRowSizes.size() < l_o.m_oRows->value() - 1)
+		{
+			int l_iTmp = mem->m_iNewHH;
+			foreach (int l_i, mem->m_oNewRowSizes) {
+				l_iTmp -= l_i;
+			}
+			mem->m_oNewRowSizes.push_back(l_iTmp);
+			mem->m_iNewHH += l_iTmp;
+		}
+		while (mem->m_oNewRowSizes.size() > l_o.m_oRows->value() - 1)
+		{
+			mem->m_iNewHH = 0;
+			foreach (int l_i, mem->m_oNewRowSizes) {
+				mem->m_iNewHH += l_i;
+			}
+			mem->m_oNewRowSizes.removeLast();
+		}
+
+		while (mem->m_oNewColSizes.size() < l_o.m_oCols->value() - 1)
+		{
+			int l_iTmp = mem->m_iNewWW;
+			foreach (int l_i, mem->m_oNewColSizes) {
+				l_iTmp -= l_i;
+			}
+			mem->m_oNewColSizes.push_back(l_iTmp);
+			mem->m_iNewWW += l_iTmp;
+		}
+		while (mem->m_oNewColSizes.size() > l_o.m_oCols->value() - 1)
+		{
+			mem->m_iNewWW = 0;
+			foreach (int l_i, mem->m_oNewColSizes) {
+				mem->m_iNewWW += l_i;
+			}
+			mem->m_oNewColSizes.removeLast();
+		}
+
 		mem->apply();
 	}
 }
