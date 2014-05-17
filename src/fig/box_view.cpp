@@ -860,6 +860,22 @@ void box_view::slot_add_element()
 		add->box->m_iType = data_box::CLASS;
 		add->box->m_iWW = 70;
 		add->box->m_iHH = 30;
+
+		add->box->m_sText = "UserEntity";
+		data_box_method *l_o;
+		l_o = new data_box_method();
+		l_o->m_oVisibility = visibility::PUBLIC;
+                l_o->m_bStatic = false;
+                l_o->m_bAbstract = true;
+		l_o->m_sText = "test() : void";
+		add->box->m_oMethods.push_back(l_o);
+
+		l_o = new data_box_method();
+		l_o->m_oVisibility = visibility::PROTECTED;
+                l_o->m_bStatic = false;
+                l_o->m_bAbstract = true;
+		l_o->m_sText = "test2() : void";
+		add->box->m_oMethods.push_back(l_o);
 	}
 
 	add->apply();

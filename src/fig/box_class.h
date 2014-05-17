@@ -18,6 +18,8 @@ class box_class : public box_item
 	public:
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
 		box_class(box_view*, int i_iId);
+		QSizeF size();
+		qreal minVisibility(const QFontMetricsF i_oFm);
 };
 
 #endif // BOX_CLASS_H

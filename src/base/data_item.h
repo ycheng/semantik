@@ -69,7 +69,7 @@ class data_link : public diagram_item
 class visibility
 {
 	public:
-		enum VisibilityType {PRIVATE=1, PUBLIC=2, PROTECTED=3, PACKAGE=4};
+		enum VisibilityType {PRIVATE=1, PUBLIC=2, PROTECTED=3, PACKAGE=4, DERIVED=5};
 };
 
 class data_box_method : public node

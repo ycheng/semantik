@@ -178,14 +178,15 @@ void data_box::dump_xml(QStringList & i_oS)
 		)
 	);
 
-	if (!m_sStereotype.isNull()) {
-		i_oS<<notr("      <box_stereotype text=\"%1\"/>\n").arg(m_sStereotype);
-	}
 	foreach (int l_i, m_oRowSizes) {
 		i_oS<<notr("      <box_row_size val=\"%1\"/>\n").arg(QString::number(l_i));
 	}
 	foreach (int l_i, m_oColSizes) {
 		i_oS<<notr("      <box_col_size val=\"%1\"/>\n").arg(QString::number(l_i));
+	}
+
+	if (!m_sStereotype.isNull()) {
+		i_oS<<notr("      <box_stereotype text=\"%1\"/>\n").arg(m_sStereotype);
 	}
 	foreach (data_box_method* l_o, m_oMethods) {
 		l_o->dump_xml(i_oS);
