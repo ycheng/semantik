@@ -862,11 +862,12 @@ void box_view::slot_add_element()
 		add->box->m_iHH = 30;
 
 		add->box->m_sText = "UserEntity";
+		{
 		data_box_method *l_o;
 		l_o = new data_box_method();
 		l_o->m_oVisibility = visibility::PUBLIC;
                 l_o->m_bStatic = false;
-                l_o->m_bAbstract = true;
+                l_o->m_bAbstract = false;
 		l_o->m_sText = "test() : void";
 		add->box->m_oMethods.push_back(l_o);
 
@@ -876,6 +877,49 @@ void box_view::slot_add_element()
                 l_o->m_bAbstract = true;
 		l_o->m_sText = "test2() : void";
 		add->box->m_oMethods.push_back(l_o);
+
+		l_o = new data_box_method();
+		l_o->m_oVisibility = visibility::PROTECTED;
+                l_o->m_bStatic = true;
+                l_o->m_bAbstract = false;
+		l_o->m_sText = "test3() : void";
+		add->box->m_oMethods.push_back(l_o);
+
+		l_o = new data_box_method();
+		l_o->m_oVisibility = visibility::PROTECTED;
+                l_o->m_bStatic = true;
+                l_o->m_bAbstract = true;
+		l_o->m_sText = "test4() : void";
+		add->box->m_oMethods.push_back(l_o);
+		}
+
+		{
+		data_box_attribute *l_o;
+		l_o = new data_box_attribute();
+		l_o->m_oVisibility = visibility::PROTECTED;
+                l_o->m_bStatic = false;
+		l_o->m_sText = "foo: int";
+		add->box->m_oAttributes.push_back(l_o);
+
+		l_o = new data_box_attribute();
+		l_o->m_oVisibility = visibility::PROTECTED;
+                l_o->m_bStatic = true;
+		l_o->m_sText = "bar: string";
+		add->box->m_oAttributes.push_back(l_o);
+
+		l_o = new data_box_attribute();
+		l_o->m_oVisibility = visibility::PROTECTED;
+                l_o->m_bStatic = true;
+		l_o->m_sText = "bar: string";
+		add->box->m_oAttributes.push_back(l_o);
+
+		l_o = new data_box_attribute();
+		l_o->m_oVisibility = visibility::PROTECTED;
+                l_o->m_bStatic = false;
+		l_o->m_sText = "xxx: int";
+		add->box->m_oAttributes.push_back(l_o);
+
+		}
 	}
 
 	add->apply();

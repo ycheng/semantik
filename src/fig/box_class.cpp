@@ -23,19 +23,31 @@
 #define PAD 2
 #define MIN_FORK_SIZE 30
 
-box_class::box_class(box_view* view, int id) : box_item(view, id)
+box_class::box_class(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), connectable(), m_oView(i_oParent)
 {
-	QFont font = doc.defaultFont();
-	font.setPointSize(font.pointSize() - 2);
-	doc.setDefaultFont(font);
+	m_iId = i_iId;
+
+	m_oItem = m_oView->m_oMediator->m_oItems[m_oView->m_iId];
+	m_oBox = m_oItem->m_oBoxes[m_iId];
+	Q_ASSERT(m_oBox);
+
+	i_oParent->scene()->addItem(this);
+	m_oChain = new box_chain(i_oParent);
+	m_oChain->setParentItem(this);
+
+	setCacheMode(QGraphicsItem::DeviceCoordinateCache);
+
+	update_size();
+	setZValue(100);
+	setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
 
 	QSizeF l_o = size();
 	setRect(0, 0, l_o.width(), l_o.height());
 }
 
-void box_class::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void box_class::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	painter->save();
+	i_oPainter->save();
 
 	QRectF l_oRect = boundingRect().adjusted(PAD, PAD, -PAD, -PAD);
 
@@ -43,41 +55,61 @@ void box_class::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 	l_oPen.setColor(Qt::black);
 	l_oPen.setCosmetic(false);
 	l_oPen.setWidth(1);
-	painter->setPen(l_oPen);
-
-
+	i_oPainter->setPen(l_oPen);
 
 	// oh the text
 	qreal l_oHpos = 0;
-	QFont l_oFont(m_oView->font());
-	l_oFont.setBold(true);
-	painter->setFont(l_oFont);
-	QFontMetricsF l_oFm(l_oFont);
-
 	{
+		QFont l_oBoldFont(m_oView->font());
+		l_oBoldFont.setBold(true);
+		i_oPainter->setFont(l_oBoldFont);
+		QFontMetricsF l_oFm(l_oBoldFont);
+
 		QRectF l_oR = l_oFm.boundingRect(m_oBox->m_sText);
+
+		l_oR.adjust(0, -1, 0, 1);
+		l_oR.moveTo(0, 0);
 		l_oR.setWidth(l_oRect.width());
-		l_oHpos += l_oR.height();
 		l_oR.translate(l_oRect.topLeft() + QPointF(0, l_oHpos));
-		painter->drawText(l_oR, Qt::AlignCenter | Qt::TextSingleLine | Qt::AlignVCenter, m_oBox->m_sText);
+		i_oPainter->drawText(l_oR, Qt::AlignCenter | Qt::TextSingleLine | Qt::AlignVCenter, m_oBox->m_sText);
+
+		l_oHpos += l_oR.height();
 	}
 
-	QFont l_oFont2(m_oView->font());
-	l_oFont2.setBold(false);
-	l_oFm = QFontMetricsF(l_oFont2);
-	painter->setFont(l_oFont2);
+	QFont l_oNormalFont(m_oView->font());
+	QFontMetricsF l_oNormalFm(l_oNormalFont);
+	qreal l_iHVisibility = minVisibility(l_oNormalFm);
 
-	qreal l_iHVisibility = minVisibility(l_oFm);
+	QFont l_oItalicFont(m_oView->font());
+	l_oItalicFont.setItalic(true);
+	QFontMetricsF l_oItalicFm(l_oItalicFont);
 
-	// FIXME painter->drawLine()...
-	foreach (data_box_method *l_o, m_oBox->m_oMethods) {
-		QRectF l_oR = l_oFm.boundingRect(l_o->m_sText);
+	QFont l_oUnderlineFont(m_oView->font());
+	l_oUnderlineFont.setUnderline(true);
+	QFontMetricsF l_oUnderlineFm(l_oUnderlineFont);
+
+	if (m_oBox->m_oAttributes.size() >= 0)
+	{
+		i_oPainter->drawLine(l_oRect.topLeft() + QPointF(0, l_oHpos), l_oRect.topRight() + QPointF(0, l_oHpos));
+		l_oHpos += 1;
+	}
+	foreach (data_box_attribute *l_o, m_oBox->m_oAttributes) {
+		QRectF l_oR;
+		if (l_o->m_bStatic) {
+			l_oR = l_oUnderlineFm.boundingRect(l_o->m_sText);
+			i_oPainter->setFont(l_oUnderlineFont);
+		} else {
+			l_oR = l_oNormalFm.boundingRect(l_o->m_sText);
+			i_oPainter->setFont(l_oNormalFont);
+		}
+
+		l_oR.moveTo(0, 0);
 		l_oR.setWidth(l_oRect.width());
 		qreal l_fOff = 2*PAD + l_iHVisibility;
-		l_oHpos += l_oR.height();
 		l_oR.setWidth(l_oR.width() - l_fOff);
 		l_oR.translate(l_oRect.topLeft() + QPointF(l_fOff, l_oHpos));
-		painter->drawText(l_oR, Qt::AlignLeft | Qt::TextSingleLine | Qt::AlignTop, l_o->m_sText);
+
+		i_oPainter->drawText(l_oR, Qt::AlignLeft | Qt::TextSingleLine | Qt::AlignTop, l_o->m_sText);
 
 		QString l_sVis;
 		if (l_o->m_oVisibility == visibility::PUBLIC) {
@@ -94,22 +126,69 @@ void box_class::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 			Q_ASSERT("invalid visibility " + l_o->m_oVisibility);
 		}
 
+		l_oR.translate(QPointF(PAD - l_fOff, 0));
+		i_oPainter->setFont(l_oNormalFont);
+		i_oPainter->drawText(l_oR, Qt::AlignLeft | Qt::TextSingleLine | Qt::AlignTop, l_sVis);
+		l_oHpos += l_oR.height();
+	}
 
+	if (m_oBox->m_oMethods.size() >= 0)
+	{
+		i_oPainter->drawLine(l_oRect.topLeft() + QPointF(0, l_oHpos), l_oRect.topRight() + QPointF(0, l_oHpos));
+		l_oHpos += 1;
+	}
+	foreach (data_box_method *l_o, m_oBox->m_oMethods) {
+
+		QRectF l_oR;
+		if (l_o->m_bAbstract) {
+			l_oR = l_oItalicFm.boundingRect(l_o->m_sText);
+			i_oPainter->setFont(l_oItalicFont);
+		} else if (l_o->m_bStatic) {
+			l_oR = l_oUnderlineFm.boundingRect(l_o->m_sText);
+			i_oPainter->setFont(l_oUnderlineFont);
+		} else {
+			l_oR = l_oNormalFm.boundingRect(l_o->m_sText);
+			i_oPainter->setFont(l_oNormalFont);
+		}
+
+		l_oR.moveTo(0, 0);
+		l_oR.setWidth(l_oRect.width());
+		qreal l_fOff = 2*PAD + l_iHVisibility;
+		l_oR.setWidth(l_oR.width() - l_fOff);
+		l_oR.translate(l_oRect.topLeft() + QPointF(l_fOff, l_oHpos));
+
+		i_oPainter->drawText(l_oR, Qt::AlignLeft | Qt::TextSingleLine | Qt::AlignTop, l_o->m_sText);
+
+		QString l_sVis;
+		if (l_o->m_oVisibility == visibility::PUBLIC) {
+			l_sVis = "+";
+		} else if (l_o->m_oVisibility == visibility::PROTECTED) {
+			l_sVis = "#";
+		} else if (l_o->m_oVisibility == visibility::PRIVATE) {
+			l_sVis = "-";
+		} else if (l_o->m_oVisibility == visibility::PACKAGE) {
+			l_sVis = "~";
+		} else if (l_o->m_oVisibility == visibility::DERIVED) {
+			l_sVis = "/";
+		} else {
+			Q_ASSERT("invalid visibility " + l_o->m_oVisibility);
+		}
 
 		l_oR.translate(QPointF(PAD - l_fOff, 0));
-		painter->drawText(l_oR, Qt::AlignLeft | Qt::TextSingleLine | Qt::AlignTop, l_sVis);
-
+		//l_oR.translate(l_oRect.topLeft() + QPointF(PAD, l_oHpos));
+		i_oPainter->setFont(l_oNormalFont);
+		i_oPainter->drawText(l_oR, Qt::AlignLeft | Qt::TextSingleLine | Qt::AlignTop, l_sVis);
+		l_oHpos += l_oR.height();
 	}
 
-	painter->drawRect(l_oRect);
-	if (isSelected())
+	i_oPainter->drawRect(l_oRect);
+	/*if (isSelected())
 	{
-		painter->setBrush(QColor("#FFFF00"));
+		i_oPainter->setBrush(QColor("#FFFF00"));
 		QRectF l_oR2(m_iWW - 8, m_iHH - 8, 6, 6);
-		painter->drawRect(l_oR2);
-	}
-
-	painter->restore();
+		i_oPainter->drawRect(l_oR2);
+	}*/
+	i_oPainter->restore();
 }
 
 qreal box_class::minVisibility(const QFontMetricsF i_oFm)
@@ -135,33 +214,66 @@ qreal box_class::minVisibility(const QFontMetricsF i_oFm)
 
 QSizeF box_class::size() {
 	QSizeF l_oRet;
-	QFont l_oFont(m_oView->font());
-	QFontMetricsF l_oFm(l_oFont);
 
-	qreal l_iHVisibility = minVisibility(l_oFm);
+	QFont l_oNormalFont(m_oView->font());
+	QFontMetricsF l_oNormalFm(l_oNormalFont);
+	qreal l_iHVisibility = minVisibility(l_oNormalFm);
+
+	QFont l_oItalicFont(m_oView->font());
+	l_oItalicFont.setItalic(true);
+	QFontMetricsF l_oItalicFm(l_oItalicFont);
+
+	QFont l_oUnderlineFont(m_oView->font());
+	l_oUnderlineFont.setUnderline(true);
+	QFontMetricsF l_oUnderlineFm(l_oUnderlineFont);
+
 
 	qreal l_iWW = 0, l_iHH = 1;
-	foreach (data_box_method *l_o, m_oBox->m_oMethods) {
-		QRectF l_oR = l_oFm.boundingRect(l_o->m_sText);
-		l_iWW = qMax(l_oR.width() +  3 * PAD + l_iHVisibility, l_iWW);
-		l_iHH += l_oR.height() + PAD;
+
+	if (m_oBox->m_oMethods.size() >= 0)
+	{
+		l_iHH += 1;
 	}
-	foreach (data_box_attribute *l_o, m_oBox->m_oAttributes) {
-		QRectF l_oR = l_oFm.boundingRect(l_o->m_sText);
-		l_iWW = qMax(l_oR.width() +  3 * PAD + l_iHVisibility, l_iWW);
+	foreach (data_box_method *l_o, m_oBox->m_oMethods) {
+		QRectF l_oR;
+		if (l_o->m_bAbstract) {
+			l_oR = l_oItalicFm.boundingRect(l_o->m_sText);
+		} else if (l_o->m_bStatic) {
+			l_oR = l_oUnderlineFm.boundingRect(l_o->m_sText);
+		} else {
+			l_oR = l_oNormalFm.boundingRect(l_o->m_sText);
+		}
+
+		l_iWW = qMax(l_oR.width(), l_iWW);
 		l_iHH += l_oR.height() + PAD;
 	}
 
-	l_oFont.setBold(true);
-	l_oFm = QFontMetricsF(l_oFont);
+	if (m_oBox->m_oAttributes.size() >= 0)
+	{
+		l_iHH += 1;
+	}
+	foreach (data_box_attribute *l_o, m_oBox->m_oAttributes) {
+		QRectF l_oR;
+		if (l_o->m_bStatic) {
+			l_oR = l_oUnderlineFm.boundingRect(l_o->m_sText);
+		} else {
+			l_oR = l_oNormalFm.boundingRect(l_o->m_sText);
+		}
+
+		l_iWW = qMax(l_oR.width(), l_iWW);
+		l_iHH += l_oR.height() + PAD;
+	}
+
+	l_iWW += 3 * PAD + l_iHVisibility;
+
+	l_oNormalFont.setBold(true);
+	QFontMetricsF l_oFm(l_oNormalFont);
 	{
 		QRectF l_oR = l_oFm.boundingRect(m_oBox->m_sText);
+		l_oR.adjust(0, -1, 0, 1);
 		l_iWW = qMax(l_oR.width() +  2 * PAD, l_iWW);
 		l_iHH += l_oR.height() + PAD;
 	}
-
-	if (l_iWW < 100) l_iWW = 100;
-	if (l_iHH < 50) l_iHH = 50;
 
 	return QSizeF(l_iWW, l_iHH);
 }
