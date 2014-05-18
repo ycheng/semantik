@@ -58,7 +58,7 @@ void box_class::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *opti
 	i_oPainter->setPen(l_oPen);
 
 	// oh the text
-	qreal l_oHpos = 0;
+	qreal l_fHpos = 0;
 	{
 		QFont l_oBoldFont(m_oView->font());
 		l_oBoldFont.setBold(true);
@@ -70,10 +70,10 @@ void box_class::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *opti
 		l_oR.adjust(0, -1, 0, 1);
 		l_oR.moveTo(0, 0);
 		l_oR.setWidth(l_oRect.width());
-		l_oR.translate(l_oRect.topLeft() + QPointF(0, l_oHpos));
+		l_oR.translate(l_oRect.topLeft() + QPointF(0, l_fHpos));
 		i_oPainter->drawText(l_oR, Qt::AlignCenter | Qt::TextSingleLine | Qt::AlignVCenter, m_oBox->m_sText);
 
-		l_oHpos += l_oR.height();
+		l_fHpos += l_oR.height();
 	}
 
 	QFont l_oNormalFont(m_oView->font());
@@ -90,8 +90,8 @@ void box_class::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *opti
 
 	if (m_oBox->m_oAttributes.size() >= 0)
 	{
-		i_oPainter->drawLine(l_oRect.topLeft() + QPointF(0, l_oHpos), l_oRect.topRight() + QPointF(0, l_oHpos));
-		l_oHpos += 1;
+		i_oPainter->drawLine(l_oRect.topLeft() + QPointF(0, l_fHpos), l_oRect.topRight() + QPointF(0, l_fHpos));
+		l_fHpos += 1;
 	}
 	foreach (data_box_attribute *l_o, m_oBox->m_oAttributes) {
 		QRectF l_oR;
@@ -103,11 +103,12 @@ void box_class::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *opti
 			i_oPainter->setFont(l_oNormalFont);
 		}
 
+		l_oR.adjust(-2, 0, 2, 0);
 		l_oR.moveTo(0, 0);
 		l_oR.setWidth(l_oRect.width());
 		qreal l_fOff = 2*PAD + l_iHVisibility;
 		l_oR.setWidth(l_oR.width() - l_fOff);
-		l_oR.translate(l_oRect.topLeft() + QPointF(l_fOff, l_oHpos));
+		l_oR.translate(l_oRect.topLeft() + QPointF(l_fOff - PAD, l_fHpos));
 
 		i_oPainter->drawText(l_oR, Qt::AlignLeft | Qt::TextSingleLine | Qt::AlignTop, l_o->m_sText);
 
@@ -129,13 +130,13 @@ void box_class::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *opti
 		l_oR.translate(QPointF(PAD - l_fOff, 0));
 		i_oPainter->setFont(l_oNormalFont);
 		i_oPainter->drawText(l_oR, Qt::AlignLeft | Qt::TextSingleLine | Qt::AlignTop, l_sVis);
-		l_oHpos += l_oR.height();
+		l_fHpos += l_oR.height();
 	}
 
 	if (m_oBox->m_oMethods.size() >= 0)
 	{
-		i_oPainter->drawLine(l_oRect.topLeft() + QPointF(0, l_oHpos), l_oRect.topRight() + QPointF(0, l_oHpos));
-		l_oHpos += 1;
+		i_oPainter->drawLine(l_oRect.topLeft() + QPointF(0, l_fHpos), l_oRect.topRight() + QPointF(0, l_fHpos));
+		l_fHpos += 1;
 	}
 	foreach (data_box_method *l_o, m_oBox->m_oMethods) {
 
@@ -151,11 +152,12 @@ void box_class::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *opti
 			i_oPainter->setFont(l_oNormalFont);
 		}
 
+		l_oR.adjust(-2, 0, 2, 0);
 		l_oR.moveTo(0, 0);
 		l_oR.setWidth(l_oRect.width());
 		qreal l_fOff = 2*PAD + l_iHVisibility;
 		l_oR.setWidth(l_oR.width() - l_fOff);
-		l_oR.translate(l_oRect.topLeft() + QPointF(l_fOff, l_oHpos));
+		l_oR.translate(l_oRect.topLeft() + QPointF(l_fOff - PAD, l_fHpos));
 
 		i_oPainter->drawText(l_oR, Qt::AlignLeft | Qt::TextSingleLine | Qt::AlignTop, l_o->m_sText);
 
@@ -175,10 +177,10 @@ void box_class::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *opti
 		}
 
 		l_oR.translate(QPointF(PAD - l_fOff, 0));
-		//l_oR.translate(l_oRect.topLeft() + QPointF(PAD, l_oHpos));
+		//l_oR.translate(l_oRect.topLeft() + QPointF(PAD, l_fHpos));
 		i_oPainter->setFont(l_oNormalFont);
 		i_oPainter->drawText(l_oR, Qt::AlignLeft | Qt::TextSingleLine | Qt::AlignTop, l_sVis);
-		l_oHpos += l_oR.height();
+		l_fHpos += l_oR.height();
 	}
 
 	i_oPainter->drawRect(l_oRect);
@@ -195,19 +197,19 @@ qreal box_class::minVisibility(const QFontMetricsF i_oFm)
 {
 	qreal l_iHVisibility = 0;
 	if (i_oFm.width("+") > l_iHVisibility) {
-		l_iHVisibility = i_oFm.width("+");
+		l_iHVisibility = i_oFm.boundingRect("+").width();
 	}
 	if (i_oFm.width("-") > l_iHVisibility) {
-		l_iHVisibility = i_oFm.width("-");
+		l_iHVisibility = i_oFm.boundingRect("-").width();
 	}
 	if (i_oFm.width("#") > l_iHVisibility) {
-		l_iHVisibility = i_oFm.width("#");
+		l_iHVisibility = i_oFm.boundingRect("#").width();
 	}
 	if (i_oFm.width("~") > l_iHVisibility) {
-		l_iHVisibility = i_oFm.width("~");
+		l_iHVisibility = i_oFm.boundingRect("~").width();
 	}
 	if (i_oFm.width("/") > l_iHVisibility) {
-		l_iHVisibility = i_oFm.width("/");
+		l_iHVisibility = i_oFm.boundingRect("/").width();
 	}
 	return l_iHVisibility;
 }
@@ -244,8 +246,9 @@ QSizeF box_class::size() {
 			l_oR = l_oNormalFm.boundingRect(l_o->m_sText);
 		}
 
+		l_oR.adjust(-2, 0, 2, 0);
 		l_iWW = qMax(l_oR.width(), l_iWW);
-		l_iHH += l_oR.height() + PAD;
+		l_iHH += l_oR.height();
 	}
 
 	if (m_oBox->m_oAttributes.size() >= 0)
@@ -260,8 +263,9 @@ QSizeF box_class::size() {
 			l_oR = l_oNormalFm.boundingRect(l_o->m_sText);
 		}
 
+		l_oR.adjust(-2, 0, 2, 0);
 		l_iWW = qMax(l_oR.width(), l_iWW);
-		l_iHH += l_oR.height() + PAD;
+		l_iHH += l_oR.height();
 	}
 
 	l_iWW += 3 * PAD + l_iHVisibility;
@@ -272,9 +276,9 @@ QSizeF box_class::size() {
 		QRectF l_oR = l_oFm.boundingRect(m_oBox->m_sText);
 		l_oR.adjust(0, -1, 0, 1);
 		l_iWW = qMax(l_oR.width() +  2 * PAD, l_iWW);
-		l_iHH += l_oR.height() + PAD;
+		l_iHH += l_oR.height();
 	}
 
-	return QSizeF(l_iWW, l_iHH);
+	return QSizeF(l_iWW +  2 * PAD, l_iHH +  2 * PAD); // adjusted
 }
 
