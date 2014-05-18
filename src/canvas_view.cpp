@@ -142,15 +142,16 @@ canvas_view::canvas_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphi
 	m_oMenu->addAction(fullAction);
 
 	m_oColorMenu = m_oMenu->addMenu(trUtf8("Colors"));
-	m_oDataMenu = m_oMenu->addMenu(trUtf8("Data type"));
+	//m_oDataMenu = m_oMenu->addMenu(trUtf8("Data type"));
 
 
 #define newAction(s, v, dest)  dest = l_o = new QAction(s, this); \
 	connect(l_o, SIGNAL(triggered()), this, SLOT(slot_change_data())); \
 	addAction(l_o); l_o->setData(QVariant(v)); \
-	m_oDataMenu->addAction(l_o); \
+	m_oMenu->addAction(l_o); \
 	l_o->setCheckable(true);
 
+	m_oMenu->addSeparator();
 	newAction(trUtf8("Text"), VIEW_TEXT, m_oTextType);
 	newAction(trUtf8("Diagram"), VIEW_DIAG, m_oDiagramType);
 	newAction(trUtf8("Table"), VIEW_TABLE, m_oTableType);
@@ -768,7 +769,7 @@ void canvas_view::enable_menu_actions()
 	m_oDeleteAction->setEnabled(sel.size()>0);
 	//m_oEditAction->setEnabled(sel.size()==1);
 	m_oColorMenu->setEnabled(sel.size()>=1);
-	m_oDataMenu->setEnabled(sel.size()==1);
+	//m_oDataMenu->setEnabled(sel.size()==1);
 	m_oSelectSubtreeAction->setEnabled(sel.size()==1);
 
 	if (sel.size() == 1)
@@ -782,10 +783,15 @@ void canvas_view::enable_menu_actions()
 		fafa(m_oImageType, VIEW_IMG);
 	}
 
+	m_oTextType->setEnabled(sel.size()==1);
+	m_oTableType->setEnabled(sel.size()==1);
+	m_oImageType->setEnabled(sel.size()==1);
+	m_oDiagramType->setEnabled(sel.size()==1);
+	/*
 	foreach (QAction* l_o, m_oDataMenu->actions())
 	{
 		l_o->setEnabled(sel.size()==1);
-	}
+	}*/
 }
 
 void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
