@@ -106,7 +106,7 @@ class RichProcessor(SGMLParser):
 		elif tag == 'li':
 			if self.buf:
 				self.pieces.append(' ' * self.inli)
-				self.pieces.append(self.buf)
+				self.pieces.extend(self.buf)
 				self.pieces.append('\n')
 		elif tag == 'ul':
 			self.inli -= 1
