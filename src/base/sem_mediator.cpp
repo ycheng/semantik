@@ -91,6 +91,8 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		if (m_oMediator->m_iExportHeight < 0 || m_oMediator->m_iExportHeight > 30000)
 			m_oMediator->m_iExportHeight = 0;
 
+		m_oMediator->m_sSpellingLanguage = i_oAttrs.value(notr("spelling_language"));
+
 		m_oMediator->m_sExportUrl = i_oAttrs.value(notr("export_url"));
 
 		if (i_oAttrs.value(notr("location")).size()) m_oMediator->m_sOutDir = i_oAttrs.value(notr("location"));
@@ -479,6 +481,7 @@ QString sem_mediator::doc_to_xml()
 	l_oS<<notr(" export_width=\"%1\"").arg(QString::number(m_iExportWidth));
 	l_oS<<notr(" export_height=\"%1\"").arg(QString::number(m_iExportHeight));
 	l_oS<<notr(" export_url=\"%1\"").arg(bind_node::protectXML(m_sExportUrl));
+	l_oS<<notr(" spelling_language=\"%1\"").arg(bind_node::protectXML(m_sSpellingLanguage));
 
 	l_oS<<notr("/>\n");
 

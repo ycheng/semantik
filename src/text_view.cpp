@@ -66,6 +66,7 @@ text_view::text_view(QWidget *i_oParent, sem_mediator *i_oControl) : QWidget(i_o
 	connect(m_oBoldAct, SIGNAL(triggered()), this, SLOT(text_bold()));
 	connect(m_oItalicAct, SIGNAL(triggered()), this, SLOT(text_italic()));
 	connect(m_oUnderLineAct, SIGNAL(triggered()), this, SLOT(text_underLine()));
+	connect(m_oEdit, SIGNAL(languageChanged(const QString &)), this, SLOT(spelling_language_changed(const QString &)));
 }
 
 void text_view::update_edit()
@@ -148,6 +149,10 @@ void text_view::notify_text(int id) {
 	}
 }
 
+void text_view::spelling_language_changed(const QString & i_sLang) {
+	m_oMediator->m_sSpellingLanguage = i_sLang;
+}
+
 void text_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 	bool one = (sel.size() == 1);
 	m_iId = NO_ITEM;
@@ -155,6 +160,10 @@ void text_view::notify_select(const QList<int>& unsel, const QList<int>& sel) {
 	m_oEdit->setReadOnly(!one);
 	m_oEdit->setEnabled(one);
 	m_oEdit->setCheckSpellingEnabled(one);
+
+	if (!m_oMediator->m_sSpellingLanguage.isEmpty()) {
+		m_oEdit->setSpellCheckingLanguage(m_oMediator->m_sSpellingLanguage);
+	}
 
 	m_oBoldAct->setEnabled(one);
 	m_oItalicAct->setEnabled(one);

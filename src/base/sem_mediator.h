@@ -124,6 +124,7 @@ class sem_mediator: public QObject
 		void next_root();
 		void prev_root();
 		double m_dTriSize;
+		QString m_sSpellingLanguage;
 
 		QColor m_oColor;
 		QString m_sHints;

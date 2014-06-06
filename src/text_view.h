@@ -39,6 +39,7 @@ class text_view : public QWidget
 		void text_bold();
 		void text_italic();
 		void text_underLine();
+		void spelling_language_changed(const QString &);
 
 		void char_format_changed(const QTextCharFormat&);
 		void notify_select(const QList<int>& unsel, const QList<int>& sel);
