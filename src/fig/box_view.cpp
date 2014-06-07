@@ -1387,17 +1387,18 @@ void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 	}
 
 	QGraphicsItem *l_oItem = itemAt(i_oEv->pos());
-	box_link *l_oLink;
-	if (l_oItem && (l_oLink = dynamic_cast<box_link*>(l_oItem)))
+	if (l_oItem)
 	{
-		mem_unlink_box *rm = new mem_unlink_box(m_oMediator, m_iId);
-		rm->link = l_oLink->m_oLink;
-		rm->apply();
-
-		return;
+		editable *l_o;
+		if (l_o = dynamic_cast<editable*>(l_oItem))
+		{
+			l_o->properties();
+		}
 	}
-
-	slot_add_item();
+	else
+	{
+		slot_add_item();
+	}
 }
 
 void box_view::mousePressEvent(QMouseEvent *i_oEv)
