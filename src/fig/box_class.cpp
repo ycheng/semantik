@@ -23,26 +23,22 @@
 #define PAD 2
 #define MIN_FORK_SIZE 30
 
-box_class::box_class(box_view* i_oParent, int i_iId) : QGraphicsRectItem(), connectable(), m_oView(i_oParent)
+box_class::box_class(box_view* view, int id) : box_item(view, id)
 {
-	m_iId = i_iId;
+        setZValue(80);
+        update_size();
+}
 
-	m_oItem = m_oView->m_oMediator->m_oItems[m_oView->m_iId];
-	m_oBox = m_oItem->m_oBoxes[m_iId];
-	Q_ASSERT(m_oBox);
-
-	i_oParent->scene()->addItem(this);
-	m_oChain = new box_chain(i_oParent);
-	m_oChain->setParentItem(this);
-
-	setCacheMode(QGraphicsItem::DeviceCoordinateCache);
-
-	update_size();
-	setZValue(100);
-	setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
-
+void box_class::update_size()
+{
 	QSizeF l_o = size();
 	setRect(0, 0, l_o.width(), l_o.height());
+
+	m_iWW = m_oBox->m_iWW = l_o.width();
+	m_iHH = m_oBox->m_iHH = l_o.height();
+
+	m_oChain->setPos(rect().topRight() + QPointF(3, 0));
+	update_links();
 }
 
 void box_class::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -280,5 +276,10 @@ QSizeF box_class::size() {
 	}
 
 	return QSizeF(l_iWW +  2 * PAD, l_iHH +  2 * PAD); // adjusted
+}
+
+void box_class::mousePressEvent(QGraphicsSceneMouseEvent* i_oE)
+{
+	QGraphicsRectItem::mousePressEvent(i_oE);
 }
 

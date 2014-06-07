@@ -13,18 +13,16 @@
 
 #define OFF 3
 
-class box_class : public QGraphicsRectItem, public connectable
+class box_class : public box_item
 {
 	public:
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
+
 		box_class(box_view*, int i_iId);
 		QSizeF size();
 		qreal minVisibility(const QFontMetricsF i_oFm);
-
-		box_view *m_oView;
-		data_item *m_oItem;
-
-
+		void mousePressEvent(QGraphicsSceneMouseEvent*);
+		void update_size();
 };
 
 #endif // BOX_CLASS_H
