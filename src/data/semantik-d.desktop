@@ -1,7 +1,11 @@
 [Desktop Entry]
 Name=Semantik Diagrams
+Name[ru]=Диаграммы Semantik
 Exec=semantik-d %F
 GenericName=Semantik diagrams
+GenericName[ru]=Диаграммы Semantik
+Comment=Semantik diagrams
+Comment[ru]=Диаграммы Semantik
 Type=Application
 Terminal=false
 Icon=semantik-d
