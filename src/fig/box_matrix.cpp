@@ -277,7 +277,6 @@ void box_matrix::properties()
 	if (l_o.exec() == QDialog::Accepted) {
 		mem_matrix *mem = new mem_matrix(m_oView->m_oMediator, m_oView->m_iId);
 		mem->init(m_oBox);
-		int l_iNew = 2*GRID;
 
 		while (mem->m_oNewRowSizes.size() < l_o.m_oRows->value() - 1)
 		{

@@ -796,13 +796,14 @@ void canvas_view::enable_menu_actions()
 
 void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 {
+	m_oLastPressPoint = i_oEv->pos();
+
 	if (i_oEv->button() == Qt::MidButton) {
 		m_bScroll = true;
 		setDragMode(QGraphicsView::ScrollHandDrag);
 		return;
 	}
 
-	m_oLastPressPoint = i_oEv->pos();
 	if (i_oEv->button() == Qt::RightButton)
 	{
 		// first, we cannot edit an item when right-click is selected
@@ -885,7 +886,7 @@ void canvas_view::mousePressEvent(QMouseEvent *i_oEv)
 		m_oLastPressPoint.setX(r.x() + r.width() / 2.);
 		m_oLastPressPoint.setY(r.y() + r.height() / 2.);
 		m_oLastPressPoint = mapFromScene(m_oLastPressPoint);
-		
+
 		QRect l_oSel = QRect(m_oLastPressPoint, i_oEv->pos());
 		m_oRubberLine->setGeometry(l_oSel);
 

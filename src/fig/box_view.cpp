@@ -1389,8 +1389,8 @@ void box_view::mouseDoubleClickEvent(QMouseEvent* i_oEv)
 	QGraphicsItem *l_oItem = itemAt(i_oEv->pos());
 	if (l_oItem)
 	{
-		editable *l_o;
-		if (l_o = dynamic_cast<editable*>(l_oItem))
+		editable *l_o = dynamic_cast<editable*>(l_oItem);
+		if (l_o)
 		{
 			l_o->properties();
 		}
