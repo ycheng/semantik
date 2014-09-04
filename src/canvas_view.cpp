@@ -1244,6 +1244,7 @@ void canvas_view::reorganize() {
 
 	// now apply the layout for undo/redo
 	mem_move *mv = new mem_move(m_oMediator);
+	mv->sel.clear();
 	foreach(data_item* x, m_oMediator->m_oItems.values()) {
 		canvas_item *v = m_oItems[x->m_iId];
 		QPointF p = v->pos();
