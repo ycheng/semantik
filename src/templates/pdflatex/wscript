@@ -35,7 +35,7 @@ def build(bld) :
 	bld(features='tex', type='pdflatex', source='main.tex')
 
 	def view(ctx):
-		ctx.exec_command('%s build/main.pdf' % ctx.env.VIEW)
+		ctx.exec_command(ctx.env.VIEW + ['build/main.pdf'])
 
 	if bld.env.VIEW and bld.options.view:
 		bld.add_post_fun(view)
