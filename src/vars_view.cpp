@@ -90,13 +90,18 @@ void vars_view::init_completer()
 void vars_view::notify_vars(int id) {
 	if (id == m_iId) {
 		m_bLockEdit = true;
+
+		QString text;
 		if (id != NO_ITEM) {
 			data_item *sel = *m_oMediator + id;
-			setText(sel->m_sHints);
+			text = sel->m_sHints;
 		}
 		else
 		{
-			setText(m_oMediator->m_sHints);
+			text = m_oMediator->m_sHints;
+		}
+		if (text != toPlainText()) {
+			setText(text);
 		}
 		m_bLockEdit = false;
 	}
@@ -158,6 +163,7 @@ void vars_view::update_edit()
 		tmp->add();
 	}
 	tmp->newVars = toPlainText();
+	tmp->apply();
 
 	if (m_iId)
 	{
