@@ -1673,13 +1673,13 @@ bool box_view::import_from_file(const KUrl& l_o)
 	return l_bOk;
 }
 
-void box_view::slot_export_to_file() {
+bool box_view::slot_export_to_file() {
 	choose_export:
 	KUrl l_o = KFileDialog::getSaveUrl(KUrl(notr("kfiledialog:///document")),
 		trUtf8("*.semd|Semantik diagram (*.semd)"), this,
 		trUtf8("Choose a file name"));
 
-	if (l_o.path().isEmpty()) return;
+	if (l_o.path().isEmpty()) return false;
 	if (!l_o.path().endsWith(notr(".semd")))
 	{
 		l_o = KUrl(l_o.path()+notr(".semd"));
@@ -1711,11 +1711,15 @@ void box_view::slot_export_to_file() {
 	x->m_oItems[1] = l_oData;
 	x->m_oColorSchemes = m_oMediator->m_oColorSchemes;
 
-	x->save_file(l_o.path());
-	emit sig_message(trUtf8("Saved '%1'").arg(l_o.path()), 2000);
+	if (x->save_file(l_o.path()))
+	{
+		emit sig_message(trUtf8("Saved '%1'").arg(l_o.path()), 2000);
+		return true;
+	}
+	return false;
 }
 
-void box_view::slot_save() {
+bool box_view::slot_save() {
 	if (m_oCurrentUrl.isValid())
 	{
 		sem_mediator *x = new sem_mediator(this);
@@ -1723,13 +1727,16 @@ void box_view::slot_save() {
 		x->m_oItems[1] = l_oData;
 		x->m_oColorSchemes = m_oMediator->m_oColorSchemes;
 
-		x->save_file(m_oCurrentUrl.path());
-		emit sig_message(trUtf8("Saved '%1'").arg(m_oCurrentUrl.path()), 2000);
+		if (x->save_file(m_oCurrentUrl.path())) {
+			emit sig_message(trUtf8("Saved '%1'").arg(m_oCurrentUrl.path()), 2000);
+			return true;
+		}
 	}
 	else
 	{
-		slot_export_to_file();
+		return slot_export_to_file();
 	}
+	return false;
 }
 
 int box_view::batch_print_map(const QString& url, QPair<int, int> & p)

@@ -153,8 +153,8 @@ class box_view : public QGraphicsView
 		void notify_export_item(int);
 
 		bool slot_import_from_file();
-		void slot_export_to_file();
-		void slot_save();
+		bool slot_export_to_file();
+		bool slot_save();
 		void slot_copy_picture();
 
 	signals:

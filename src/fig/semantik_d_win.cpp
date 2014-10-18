@@ -162,6 +162,9 @@ void semantik_d_win::wire_actions()
 		connect(m_oActiveDocument->m_oMediator, SIGNAL(enable_undo(bool, bool)), this, SLOT(slot_enable_undo(bool, bool)));
 
 		m_oActiveDocument->m_oMediator->check_undo(true);
+
+		connect(m_oActiveDocument->m_oMediator, SIGNAL(update_title()), this, SLOT(update_title()));
+		update_title();
 	}
 }
 
@@ -182,11 +185,13 @@ void semantik_d_win::slot_add_tab()
 
 void semantik_d_win::slot_remove_tab(QWidget* i_oWidget)
 {
-	int l_iIdx = m_oTabWidget->indexOf(i_oWidget);
-	m_oTabWidget->removeTab(l_iIdx);
-	delete i_oWidget;
-
-	wire_actions();
+	if (save_tab(i_oWidget))
+	{
+		int l_iIdx = m_oTabWidget->indexOf(i_oWidget);
+		m_oTabWidget->removeTab(l_iIdx);
+		delete i_oWidget;
+		// slot_tab_changed
+	}
 }
 
 void semantik_d_win::slot_tab_changed(int i_iIndex)
@@ -194,9 +199,9 @@ void semantik_d_win::slot_tab_changed(int i_iIndex)
 	m_oActiveDocument = static_cast<diagram_document*>(m_oTabWidget->currentWidget());
 	if (m_oActiveDocument != NULL)
 	{
-		wire_actions();
 		emit url_opened(m_oActiveDocument->m_oDiagramView->m_oCurrentUrl);
 	}
+	wire_actions();
 }
 
 void semantik_d_win::read_config()
@@ -220,8 +225,39 @@ void semantik_d_win::write_config()
 bool semantik_d_win::queryClose()
 {
 	write_config();
-	//if (!m_oMediator->m_bDirty) return true;
-	//return proceed_save();
+	for (int i = 0; i < m_oTabWidget->count(); ++i)
+	{
+		if (!save_tab(m_oTabWidget->widget(i)))	{
+			return false;
+		}
+	}
+	return true;
+}
+
+bool semantik_d_win::save_tab(QWidget *i_oWidget) {
+	diagram_document *l_oDoc = static_cast<diagram_document*>(i_oWidget);
+	if (l_oDoc->m_oMediator->m_bDirty)
+	{
+		QString l_oTitle = l_oDoc->m_oMediator->m_sLastSaved;
+		if (l_oTitle.isEmpty()) l_oTitle = trUtf8("Untitled");
+
+		int l_o = KMessageBox::warningYesNoCancel(NULL, //this,
+			trUtf8("The document \"%1\" has been modified.\nDo you want to save your changes or discard them?").arg(l_oTitle),
+			trUtf8("Close Document"),
+		KStandardGuiItem::save(), KStandardGuiItem::discard());
+
+		switch (l_o)
+		{
+			case KMessageBox::Yes:
+			{
+				if (!l_oDoc->m_oDiagramView->slot_save()) return false;
+			}
+			case KMessageBox::No:
+				return true;
+			default:
+				return false;
+		}
+	}
 	return true;
 }
 
@@ -262,6 +298,7 @@ void semantik_d_win::slot_open()
 		int l_iIndex = m_oTabWidget->addTab(m_oActiveDocument, m_oActiveDocument->m_oDiagramView->m_oCurrentUrl.fileName());
 		m_oTabWidget->setCurrentIndex(l_iIndex);
 		m_oActiveDocument->m_oMediator->m_oUndoStack.clear();
+		m_oActiveDocument->m_oMediator->set_dirty(false);
 		wire_actions();
 		emit url_opened(m_oActiveDocument->m_oDiagramView->m_oCurrentUrl);
 	}
@@ -297,7 +334,9 @@ void semantik_d_win::slot_recent(const KUrl& i_oUrl)
 		m_oTabWidget->setCurrentIndex(l_iIndex);
 		emit url_opened(m_oActiveDocument->m_oDiagramView->m_oCurrentUrl);
 		m_oActiveDocument->m_oMediator->m_oUndoStack.clear();
+		m_oActiveDocument->m_oMediator->set_dirty(false);
 		wire_actions();
+		emit url_opened(m_oActiveDocument->m_oDiagramView->m_oCurrentUrl);
 	}
 	else
 	{
@@ -329,6 +368,23 @@ void semantik_d_win::print_current(KUrl i_oUrl)
 	{
 		m_oActiveDocument->m_oDiagramView->batch_print_map(i_oUrl.path(), p);
 	}
+}
+
+void semantik_d_win::update_title() {
+	QString mod;
+	if (m_oActiveDocument->m_oMediator->m_bDirty) mod = trUtf8(" [Modified] ");
+
+	QString txt;
+	if (m_oActiveDocument->m_oMediator->m_oCurrentUrl.path().isEmpty())
+	{
+		txt = trUtf8("Semantik Diagram %1").arg(mod);
+	}
+	else
+	{
+		txt = trUtf8("%1 %2 - Semantik Diagram").arg(m_oActiveDocument->m_oMediator->m_oCurrentUrl.path(), mod);
+		//m_oRecentFilesAct->addUrl(m_oMediator->m_oCurrentUrl); // TODO
+	}
+	setWindowTitle(txt);
 }
 
 #include "semantik_d_win.moc"

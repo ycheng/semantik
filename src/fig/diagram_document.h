@@ -26,8 +26,6 @@ class diagram_document : public QFrame
 		box_view *m_oDiagramView;
 		sem_mediator *m_oMediator;
 
-		void update_title();
-
 	public slots:
 		void slot_open();
 		void slot_tab_name(const KUrl&);

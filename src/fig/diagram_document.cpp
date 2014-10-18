@@ -62,10 +62,11 @@ void diagram_document::init()
 	add->parent = NO_ITEM;
 	add->apply();
 
+	m_oMediator->notify_focus(m_oDiagramView);
+
 	m_oMediator->m_oUndoStack.clear();
 	m_oMediator->m_oRedoStack.clear();
-
-	m_oMediator->notify_focus(m_oDiagramView);
+	m_oMediator->set_dirty(false);
 }
 
 diagram_document::~diagram_document()
@@ -81,10 +82,6 @@ void diagram_document::slot_tab_name(const KUrl& i_oUrl)
 }
 
 void diagram_document::slot_open() {
-}
-
-void diagram_document::update_title() {
-
 }
 
 #include "diagram_document.moc"

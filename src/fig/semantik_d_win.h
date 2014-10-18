@@ -55,6 +55,7 @@ class semantik_d_win : public KXmlGuiWindow
 		void slot_properties();
 
 		void slot_generate();
+		bool save_tab(QWidget*);
 
 		void slot_tip_of_day();
 		void slot_add_tab();
@@ -62,6 +63,7 @@ class semantik_d_win : public KXmlGuiWindow
 		void slot_remove_tab(QWidget*);
 		void slot_update_tab_text(diagram_document*, const KUrl &);
 		void record_open_url(const KUrl&);
+		void update_title();
 	signals:
 		void url_opened(const KUrl&);
 };

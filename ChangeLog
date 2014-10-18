@@ -1,3 +1,8 @@
+Semantik 0.9.3
+--------------
+* Generated HTML documents no longer reference pdf files
+* 
+
 Semantik 0.9.2
 --------------
 * New diagram items: matrix, boundary, class
