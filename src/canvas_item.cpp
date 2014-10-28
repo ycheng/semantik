@@ -173,6 +173,7 @@ void canvas_item::update_flags()
 		canvas_flag *l_o = m_oFlags[i];
 		QPointF l_oF = QPointF(l_iWidth - 25*i - 16, -22);
 		l_o->setPos(l_oF);
+		l_o->update();
 	}
 }
 
