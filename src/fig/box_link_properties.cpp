@@ -63,18 +63,24 @@ box_link_properties::box_link_properties(QWidget *i_oParent, box_link *i_oLink):
 	m_oStyle = new QComboBox(widget);
 	m_oStyle->addItem(trUtf8("Invisible line"), (int) Qt::NoPen);
 	m_oStyle->addItem(trUtf8("Solid Line"), (int) Qt::SolidLine);
-	m_oStyle->addItem(trUtf8("Dot Line"),   (int) Qt::DotLine);
 	m_oStyle->addItem(trUtf8("Dash Line"),  (int) Qt::DashLine);
+	m_oStyle->addItem(trUtf8("Dot Line"),   (int) Qt::DotLine);
 	l_oGridLayout->addWidget(m_oStyle, 2, 1);
 
 	m_oLeftArrow = new QComboBox(widget);
 	m_oLeftArrow->addItem(trUtf8("No arrow"), 0);
 	m_oLeftArrow->addItem(trUtf8("Triangle"), 0);
+	m_oLeftArrow->addItem(trUtf8("Link"), 0);
+	m_oLeftArrow->addItem(trUtf8("Inheritance"), 0);
+	m_oLeftArrow->addItem(trUtf8("Aggregation"), 0);
 	l_oGridLayout->addWidget(m_oLeftArrow, 3, 1);
 
 	m_oRightArrow = new QComboBox(widget);
 	m_oRightArrow->addItem(trUtf8("No arrow"), 0);
 	m_oRightArrow->addItem(trUtf8("Triangle"), 0);
+	m_oRightArrow->addItem(trUtf8("Link"), 0);
+	m_oRightArrow->addItem(trUtf8("Inheritance"), 0);
+	m_oRightArrow->addItem(trUtf8("Aggregation"), 0);
 	l_oGridLayout->addWidget(m_oRightArrow, 4, 1);
 
 	setMainWidget(widget);
@@ -108,8 +114,8 @@ void box_link_properties::apply() {
 	mem->next.border_width = m_oThickness->value();
 	mem->next.m_iLineType = m_oType->currentIndex();
 	mem->next.pen_style = (Qt::PenStyle) m_oStyle->currentIndex();
-	mem->next.m_iLeftArrow = m_oLeftArrow->currentIndex();
-	mem->next.m_iRightArrow = m_oRightArrow->currentIndex();
+	mem->next.m_iLeftArrow = (data_link::Arrow) m_oLeftArrow->currentIndex();
+	mem->next.m_iRightArrow = (data_link::Arrow) m_oRightArrow->currentIndex();
 
 	mem->apply();
 	enableButtonApply(false);

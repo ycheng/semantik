@@ -30,7 +30,6 @@ class box_link : public QGraphicsRectItem, public editable
 		box_view *m_oView;
 
 		void update_pos();
-		void draw_triangle(QPainter *i_oPainter, int i_iPosition, QPointF i_oP);
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
 
 		QVariant itemChange(GraphicsItemChange i_oChange, const QVariant &i_oValue);

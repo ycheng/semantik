@@ -271,9 +271,9 @@ data_link::data_link() : diagram_item()
 	color = QColor(Qt::black);
 	m_iParentPos = NORTH;
 	m_iChildPos = NORTH;
-	m_iLeftArrow = 0;
-	m_iRightArrow = 1;
-	m_iLineType = 0;
+	m_iLeftArrow = NONE;
+	m_iRightArrow = ASSOCIATION;
+	m_iLineType = ZIGZAG;
 }
 
 void data_link::copy_from(const data_link& i_oLink)

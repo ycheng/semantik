@@ -122,15 +122,15 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		cur_link->m_iParentPos = i_oAttrs.value(notr("parentpos")).toInt();
 		cur_link->m_iChild = i_oAttrs.value(notr("child")).toInt();
 		cur_link->m_iChildPos = i_oAttrs.value(notr("childpos")).toInt();
-		cur_link->m_iRightArrow = i_oAttrs.value(notr("rightarrow")).toInt();
-		cur_link->m_iLeftArrow = i_oAttrs.value(notr("leftarrow")).toInt();
-		if (i_oAttrs.index("rightarrow") < 0) cur_link->m_iRightArrow = 1; // legacy
+		cur_link->m_iRightArrow = (data_link::Arrow) i_oAttrs.value(notr("rightarrow")).toInt();
+		cur_link->m_iLeftArrow = (data_link::Arrow) i_oAttrs.value(notr("leftarrow")).toInt();
+		if (i_oAttrs.index("rightarrow") < 0) cur_link->m_iRightArrow = data_link::TRIANGLE; // legacy
 		cur_link->color = QColor(i_oAttrs.value(notr("color")));
 		cur_link->m_oStartPoint = QPoint(i_oAttrs.value(notr("startx")).toInt(), i_oAttrs.value(notr("starty")).toInt());
 		cur_link->m_oEndPoint = QPoint(i_oAttrs.value(notr("endx")).toInt(), i_oAttrs.value(notr("endy")).toInt());
 		cur_link->border_width = i_oAttrs.value(notr("border_width")).toInt();
 		cur_link->pen_style = (Qt::PenStyle) i_oAttrs.value(notr("pen_style")).toInt();
-		cur_link->m_iLineType = i_oAttrs.value(notr("line_type")).toInt();
+		cur_link->m_iLineType = (data_link::LineType) i_oAttrs.value(notr("line_type")).toInt();
 	}
 	else if (i_sName == notr("linkbox_offset")) {
 		Q_ASSERT(cur_link);

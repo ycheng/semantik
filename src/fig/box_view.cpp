@@ -1452,14 +1452,14 @@ void box_view::mousePressEvent(QMouseEvent *i_oEv)
 		if (dynamic_cast<box_label*>(l_oParent))
 		{
 			m_oCurrent->m_oInnerLink.pen_style = Qt::DotLine;
-			m_oCurrent->m_oInnerLink.m_iLeftArrow = 0;
-			m_oCurrent->m_oInnerLink.m_iRightArrow = 0;
+			m_oCurrent->m_oInnerLink.m_iLeftArrow = data_link::NONE;
+			m_oCurrent->m_oInnerLink.m_iRightArrow = data_link::NONE;
 		}
 
 		if (dynamic_cast<box_node*>(l_oParent) || dynamic_cast<box_component*>(l_oParent))
 		{
-			m_oCurrent->m_oInnerLink.m_iLeftArrow = 0;
-			m_oCurrent->m_oInnerLink.m_iRightArrow = 0;
+			m_oCurrent->m_oInnerLink.m_iLeftArrow = data_link::NONE;
+			m_oCurrent->m_oInnerLink.m_iRightArrow = data_link::NONE;
 		}
 
 		m_oCurrent->setSelected(true);

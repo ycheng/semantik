@@ -45,6 +45,9 @@ class data_link : public diagram_item
 {
 	public:
 	enum Direction { NORTH=1, WEST=2, SOUTH=4, EAST=8, COORD=15 };
+	enum Arrow { NONE=0, TRIANGLE=1, ASSOCIATION=2, INHERITANCE=3, AGGREGATION=4};
+	enum LineType {ZIGZAG=0, LINE=1};
+
 	data_link();
 	QString m_sLink;
 	QString m_sCaption;
@@ -54,9 +57,9 @@ class data_link : public diagram_item
 	int m_iParentPos;
 	int m_iChildPos;
 
-	bool m_iLeftArrow;
-	bool m_iRightArrow;
-	int m_iLineType;
+	Arrow m_iLeftArrow;
+	Arrow m_iRightArrow;
+	LineType m_iLineType;
 
 	QPoint m_oStartPoint;
 	QPoint m_oEndPoint;

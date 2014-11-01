@@ -1,7 +1,8 @@
 Semantik 0.9.3
 --------------
 * Generated HTML documents no longer reference pdf files
-* 
+* Save Semantik diagrams on exit
+* Minor changes in pdflatex documents
 
 Semantik 0.9.2
 --------------

@@ -65,8 +65,56 @@ box_link::~box_link()
 	delete m_oEndPoint;
 }
 
-#define xw 3.
-#define yw 8.
+#define xw 5.
+#define yw 12.
+
+
+void compute_angles(bool i_bParent, data_link::LineType i_iType, data_link::Direction i_iDir, qreal *cosphi, qreal *sinphi, qreal ddx, qreal ddy)
+{
+	if (i_iType)
+	{
+		if (i_bParent) {
+			*sinphi = ddy;
+			*cosphi = ddx;
+		} else {
+			*sinphi = -ddy;
+			*cosphi = -ddx;
+		}
+	}
+	else
+	{
+		switch (i_iDir) //m_oInnerLink.m_iParentPos & data_link::COORD)
+		{
+			case data_link::NORTH:
+				{
+					*sinphi = -1.;
+					*cosphi = 0.;
+				}
+				break;
+			case data_link::WEST:
+				{
+					*sinphi = 0.;
+					*cosphi = -1.;
+				}
+				break;
+			case data_link::SOUTH:
+				{
+					*sinphi = 1.;
+					*cosphi = 0.;
+				}
+				break;
+			case data_link::EAST:
+				{
+					*sinphi = 0.;
+					*cosphi = 1.;
+				}
+				break;
+			default:
+				Q_ASSERT(false);
+		}
+	}
+}
+
 
 void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *option, QWidget * i_oW)
 {
@@ -82,34 +130,6 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 		int last = m_oGood.size() - 1;
 		QLineF l_oLine(m_oGood[0].x(), m_oGood[0].y(), m_oGood[last].x(), m_oGood[last].y());
 		i_oPainter->drawLine(l_oLine);
-
-		qreal dx = m_oGood[last].x() - m_oGood[0].x();
-		qreal dy = m_oGood[last].y() - m_oGood[0].y();
-		qreal tot = sqrt(dx * dx + dy * dy);
-		if (tot > 0.01)
-		{
-			l_oPen.setStyle(Qt::SolidLine);
-			i_oPainter->setPen(l_oPen);
-
-			qreal sinphi = dy / tot;
-			qreal cosphi = dx / tot;
-			QPolygonF l_oPol(3);
-
-			if (m_oInnerLink.m_iLeftArrow)
-			{
-				l_oPol[0] = m_oGood[0];
-				l_oPol[1] = m_oGood[0] + QPointF(yw * cosphi - xw * sinphi, yw * sinphi + xw * cosphi);
-				l_oPol[2] = m_oGood[0] + QPointF(yw * cosphi + xw * sinphi, yw * sinphi - xw * cosphi);
-				i_oPainter->drawPolygon(l_oPol);
-			}
-			if (m_oInnerLink.m_iRightArrow)
-			{
-				l_oPol[0] = m_oGood[last];
-				l_oPol[1] = m_oGood[last] + QPointF( - yw * cosphi + xw * sinphi, - yw * sinphi - xw * cosphi);
-				l_oPol[2] = m_oGood[last] + QPointF( - yw * cosphi - xw * sinphi, - yw * sinphi + xw * cosphi);
-				i_oPainter->drawPolygon(l_oPol);
-			}
-		}
 	}
 	else
 	{
@@ -118,50 +138,72 @@ void box_link::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *optio
 			QLineF l_oLine(m_oGood[i].x(), m_oGood[i].y(), m_oGood[i+1].x(), m_oGood[i+1].y());
 			i_oPainter->drawLine(l_oLine);
 		}
+	}
 
+	int last = m_oGood.size() - 1;
+	qreal dx = m_oGood[last].x() - m_oGood[0].x();
+	qreal dy = m_oGood[last].y() - m_oGood[0].y();
+	qreal tot = sqrt(dx * dx + dy * dy);
+	if (tot > 0.01)
+	{
 		l_oPen.setStyle(Qt::SolidLine);
 		i_oPainter->setPen(l_oPen);
-		if (m_oInnerLink.m_iRightArrow)
-			draw_triangle(i_oPainter, m_oInnerLink.m_iChildPos, m_oGood[m_oGood.size()-1]);
-		if (m_oInnerLink.m_iLeftArrow)
-			draw_triangle(i_oPainter, m_oInnerLink.m_iParentPos, m_oGood[0]);
-	}
-}
 
-void box_link::draw_triangle(QPainter *i_oPainter, int i_iPos, QPointF i_oP)
-{
-	QPolygonF l_oPol;
-	l_oPol<<i_oP;
-	switch (i_iPos & data_link::COORD)
-	{
-		case data_link::NORTH:
-			{
-				l_oPol<<i_oP+QPointF(-xw, -yw);
-				l_oPol<<i_oP+QPointF( xw, -yw);
+		qreal ddx = dx / tot;
+		qreal ddy = dy / tot;
+
+		qreal cosphi = 0;
+		qreal sinphi = 1;
+
+		compute_angles(true, m_oInnerLink.m_iLineType, (data_link::Direction) (m_oInnerLink.m_iParentPos & data_link::COORD), &cosphi, &sinphi, ddx, ddy);
+		if (m_oInnerLink.m_iLeftArrow)
+		{
+			QPolygonF l_oPol(3);
+			l_oPol[1] = m_oGood[0];
+			l_oPol[0] = m_oGood[0] + QPointF(yw * cosphi - xw * sinphi, yw * sinphi + xw * cosphi);
+			l_oPol[2] = m_oGood[0] + QPointF(yw * cosphi + xw * sinphi, yw * sinphi - xw * cosphi);
+
+			if (m_oInnerLink.m_iLeftArrow == data_link::INHERITANCE) {
+				i_oPainter->setBrush(Qt::white);
 			}
-			break;
-		case data_link::WEST:
-			{
-				l_oPol<<i_oP+QPointF(-yw, -xw);
-				l_oPol<<i_oP+QPointF(-yw,  xw);
+
+			if (m_oInnerLink.m_iLeftArrow == data_link::AGGREGATION) {
+				i_oPainter->setBrush(Qt::white);
+				l_oPol << m_oGood[0] + QPointF(2 * yw * cosphi, 2 * yw * sinphi);
 			}
-			break;
-		case data_link::SOUTH:
-			{
-				l_oPol<<i_oP+QPointF(-xw, yw);
-				l_oPol<<i_oP+QPointF( xw, yw);
+
+			if (m_oInnerLink.m_iLeftArrow == data_link::ASSOCIATION) {
+				i_oPainter->drawPolyline(l_oPol);
+			} else {
+				i_oPainter->drawPolygon(l_oPol);
 			}
-			break;
-		case data_link::EAST:
-			{
-				l_oPol<<i_oP+QPointF(yw, -xw);
-				l_oPol<<i_oP+QPointF(yw,  xw);
+		}
+
+		compute_angles(false, m_oInnerLink.m_iLineType, (data_link::Direction) (m_oInnerLink.m_iChildPos & data_link::COORD), &cosphi, &sinphi, ddx, ddy);
+		if (m_oInnerLink.m_iRightArrow)
+		{
+			QPolygonF l_oPol(3);
+			l_oPol[1] = m_oGood[last];
+			l_oPol[0] = m_oGood[last] + QPointF(yw * cosphi - xw * sinphi, yw * sinphi + xw * cosphi);
+			l_oPol[2] = m_oGood[last] + QPointF(yw * cosphi + xw * sinphi, yw * sinphi - xw * cosphi);
+			if (m_oInnerLink.m_iRightArrow == data_link::INHERITANCE) {
+				i_oPainter->setBrush(Qt::white);
 			}
-			break;
-		default:
-			Q_ASSERT(false);
+
+			if (m_oInnerLink.m_iRightArrow == data_link::AGGREGATION) {
+				i_oPainter->setBrush(Qt::white);
+				l_oPol << m_oGood[last] + QPointF(2 * yw * cosphi, 2 * yw * sinphi);
+			}
+
+			if (m_oInnerLink.m_iRightArrow == data_link::ASSOCIATION) {
+				i_oPainter->drawPolyline(l_oPol);
+			} else {
+				i_oPainter->drawPolygon(l_oPol);
+			}
+		}
 	}
-	i_oPainter->drawPolygon(l_oPol);
+
+
 }
 
 void box_link::set_rectangles(int ax1, int ax2, int ay1, int ay2, int ap, QPoint& apos, int bx1, int bx2, int by1, int by2, int bp, QPoint& bpos)
