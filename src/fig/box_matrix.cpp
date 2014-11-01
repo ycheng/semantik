@@ -179,8 +179,8 @@ void box_matrix::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 
 			setRect(0, 0, m_iWW + 2*PAD, m_iHH + 2*PAD);
 			m_oView->message(m_oView->trUtf8("Last row: %2px, last column: %3px (size: %4 x %5)").arg(
-				QString::number(m_iWW - l_iWidth),
 				QString::number(m_iHH - l_iHeight),
+				QString::number(m_iWW - l_iWidth),
 				QString::number(m_iWW),
 				QString::number(m_iHH)
 			), 5000);
@@ -194,7 +194,7 @@ void box_matrix::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 			m_oBox->m_oRowSizes[m_iMovingRow] = l_iSize;
 			int l_iNewHeight = m_oBox->m_iHH + l_iSize - m_iLastSize;
 			setRect(0, 0, m_oBox->m_iWW + 2 * PAD, l_iNewHeight + 2 * PAD);
-			m_oView->message(m_oView->trUtf8("Column %1: %2px (size: %3 x %4)").arg(
+			m_oView->message(m_oView->trUtf8("Row %1: %2px (size: %3 x %4)").arg(
 				QString::number(m_iMovingRow + 1),
 				QString::number(l_iSize),
 				QString::number(m_iWW),
@@ -210,7 +210,7 @@ void box_matrix::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
 			m_oBox->m_oColSizes[m_iMovingCol] = l_iSize;
 			int l_iNewWidth = m_oBox->m_iWW + l_iSize - m_iLastSize;
 			setRect(0, 0, l_iNewWidth +  2 * PAD, m_oBox->m_iHH +  2 * PAD);
-			m_oView->message(m_oView->trUtf8("Row %1: %2px (size: %3 x %4)").arg(
+			m_oView->message(m_oView->trUtf8("Column %1: %2px (size: %3 x %4)").arg(
 				QString::number(m_iMovingCol + 1),
 				QString::number(l_iSize),
 				QString::number(l_iNewWidth),
