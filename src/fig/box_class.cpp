@@ -54,13 +54,16 @@ void box_class::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *opti
 	l_oPen.setColor(Qt::black);
 	l_oPen.setCosmetic(false);
 	l_oPen.setWidth(1);
+	if (isSelected()) l_oPen.setStyle(Qt::DotLine);
 	i_oPainter->setPen(l_oPen);
 
 	QColor bc(m_oBox->color);
 	i_oPainter->setBrush(bc);
 	i_oPainter->drawRect(l_oRect);
 
+
 	// oh the text
+	l_oPen.setStyle(Qt::SolidLine);
 	qreal l_fHpos = 0;
 	{
 		QFont l_oBoldFont(m_oView->font());
@@ -291,7 +294,13 @@ QSizeF box_class::size() {
 		l_iHH += l_oR.height();
 	}
 
-	return QSizeF(l_iWW +  2 * PAD, l_iHH +  2 * PAD); // adjusted
+	int l_iWWN = l_iWW + 2 * PAD + 1;
+	int l_iHHN = l_iHH + 2 * PAD + 1;
+
+	if (l_iWWN % GRID) l_iWWN = GRID * (1 + l_iWWN / GRID);
+	if (l_iHHN % GRID) l_iHHN = GRID * (1 + l_iHHN / GRID);
+
+	return QSizeF(l_iWWN, l_iHHN); // adjusted
 }
 
 void box_class::mousePressEvent(QGraphicsSceneMouseEvent* i_oE)
