@@ -95,6 +95,8 @@ box_link_properties::box_link_properties(QWidget *i_oParent, box_link *i_oLink):
 	connect(m_oStyle, SIGNAL(currentIndexChanged(int)), this, SLOT(enable_apply(int)));
 	connect(m_oLeftArrow, SIGNAL(currentIndexChanged(int)), this, SLOT(enable_apply(int)));
 	connect(m_oRightArrow, SIGNAL(currentIndexChanged(int)), this, SLOT(enable_apply(int)));
+
+	m_oThickness->setFocus();
 }
 
 void box_link_properties::enable_apply(int) {

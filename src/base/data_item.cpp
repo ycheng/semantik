@@ -26,15 +26,16 @@ node::node() {
 node::~node()
 {
 	while (!m_oChildren.isEmpty()) {
-		delete m_oChildren.takeFirst();
+		m_oChildren.takeFirst();
 	}
 }
 
-node* node::make_node(const QString& i_sTag, const QXmlAttributes& i_oAttrs) {
-	node* l_oNode = new node();
+node& node::make_node(const QString& i_sTag, const QXmlAttributes& i_oAttrs) {
+	node l_oNode;
 	m_oChildren.push_back(l_oNode);
-	l_oNode->read_data(i_sTag, i_oAttrs);
-	return l_oNode;
+	node &ret = m_oChildren.last();
+	ret.read_data(i_sTag, i_oAttrs);
+	return ret;
 }
 
 void node::read_data(const QString&, const QXmlAttributes&)
@@ -44,8 +45,8 @@ void node::read_data(const QString&, const QXmlAttributes&)
 
 void node::dump_xml(QStringList & other)
 {
-	foreach (node* n, m_oChildren) {
-		n->dump_xml(other);
+	foreach (node n, m_oChildren) {
+		n.dump_xml(other);
 	}
 }
 
@@ -154,10 +155,10 @@ data_box::data_box(int id) : diagram_item(), node()
 data_box::~data_box()
 {
 	while (!m_oMethods.isEmpty()) {
-		delete m_oMethods.takeFirst();
+		m_oMethods.takeFirst();
 	}
 	while (!m_oAttributes.isEmpty()) {
-		delete m_oAttributes.takeFirst();
+		m_oAttributes.takeFirst();
 	}
 }
 
@@ -188,11 +189,11 @@ void data_box::dump_xml(QStringList & i_oS)
 	if (!m_sStereotype.isNull()) {
 		i_oS<<notr("      <box_stereotype text=\"%1\"/>\n").arg(m_sStereotype);
 	}
-	foreach (data_box_method* l_o, m_oMethods) {
-		l_o->dump_xml(i_oS);
+	foreach (data_box_method l_o, m_oMethods) {
+		l_o.dump_xml(i_oS);
 	}
-	foreach (data_box_attribute* l_o, m_oAttributes) {
-		l_o->dump_xml(i_oS);
+	foreach (data_box_attribute l_o, m_oAttributes) {
+		l_o.dump_xml(i_oS);
 	}
 	//node::dump_xml(i_oS);
 	i_oS<<notr("</itembox>\n");
@@ -217,7 +218,7 @@ void data_box::read_data(const QString& i_sTag, const QXmlAttributes& i_oAttrs)
 	}
 }
 
-node* data_box::make_node(const QString& i_sName, const QXmlAttributes& i_oAttrs)
+node& data_box::make_node(const QString& i_sName, const QXmlAttributes& i_oAttrs)
 {
 	if (i_sName == notr("box_row_size"))
 	{
@@ -231,23 +232,23 @@ node* data_box::make_node(const QString& i_sName, const QXmlAttributes& i_oAttrs
 	}
 	else if (i_sName == notr("box_class_method"))
 	{
-		data_box_method *l_o = new data_box_method();
-		l_o->read_data(i_sName, i_oAttrs);
+		data_box_method l_o; // = new data_box_method();
+		l_o.read_data(i_sName, i_oAttrs);
 		m_oMethods.push_back(l_o);
-		return l_o;
+		return m_oMethods.last();
 	}
 	else if (i_sName == notr("box_class_attribute"))
 	{
-		data_box_attribute *l_o = new data_box_attribute();
-		l_o->read_data(i_sName, i_oAttrs);
+		data_box_attribute l_o; // = new data_box_attribute();
+		l_o.read_data(i_sName, i_oAttrs);
 		m_oAttributes.push_back(l_o);
-		return l_o;
+		return m_oAttributes.last();
 	}
 	else if (i_sName == notr("box_stereotype"))
 	{
 		m_sStereotype = i_oAttrs.value(notr("text"));
 	}
-	return this;
+	return *this;
 	// return node::make_node(i_sName, i_oAttrs);
 }
 

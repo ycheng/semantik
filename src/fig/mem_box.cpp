@@ -414,4 +414,39 @@ void mem_matrix::init(data_box *i_oBox) {
 	m_iOldHH = m_iNewHH = m_oBox->m_iHH;
 }
 
+///////////////////////////////////////////////////////////////////
+
+mem_class::mem_class(sem_mediator* mod, int id) : mem_command(mod)
+{
+	m_iId = id;
+}
+
+void mem_class::redo() {
+	data_item *item = model->m_oItems[m_iId];
+	data_box *l_oBox = item->m_oBoxes[m_iBoxId];
+	l_oBox->m_sText = m_sNewClassName;
+
+	QList<data_box*> lst;
+	lst.push_back(l_oBox);
+	model->notify_size_box(m_iId, lst);
+	redo_dirty();
+}
+
+void mem_class::undo() {
+	data_item *item = model->m_oItems[m_iId];
+	data_box *l_oBox = item->m_oBoxes[m_iBoxId];
+	l_oBox->m_sText = m_sOldClassName;
+
+
+	QList<data_box*> lst;
+	lst.push_back(l_oBox);
+	model->notify_size_box(m_iId, lst);
+	undo_dirty();
+}
+
+void mem_class::init(data_box *i_oBox) {
+	m_iBoxId = i_oBox->m_iId;
+	m_sOldClassName = i_oBox->m_sText;
+}
+
 

@@ -20,11 +20,11 @@ class node { // so we can read/write a tree of objects
 	public:
 	node();
 	virtual ~node();
-	virtual node* make_node(const QString&, const QXmlAttributes&);
+	virtual node& make_node(const QString&, const QXmlAttributes&);
 	virtual void read_data(const QString&, const QXmlAttributes&);
 	virtual void dump_xml(QStringList & other);
 
-	QList<node*> m_oChildren;
+	QList<node> m_oChildren;
 };
 
 class diagram_item
@@ -114,7 +114,7 @@ class data_box : public diagram_item, public node
 		ACTOR=7, USECASE=8, DECISION=9, MATRIX=10, FRAME=11, CLASS=12, CAPTION=13};
 	data_box::IType m_iType;
 
-	node* make_node(const QString&, const QXmlAttributes&);
+	node& make_node(const QString&, const QXmlAttributes&);
 	void read_data(const QString&, const QXmlAttributes&);
 	void dump_xml(QStringList & other);
 
@@ -130,8 +130,8 @@ class data_box : public diagram_item, public node
 
 	// class
 	QString m_sStereotype;
-	QList<data_box_method*> m_oMethods;
-	QList<data_box_attribute*> m_oAttributes;
+	QList<data_box_method> m_oMethods;
+	QList<data_box_attribute> m_oAttributes;
 };
 
 class data_pic

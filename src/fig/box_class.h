@@ -23,6 +23,8 @@ class box_class : public box_item
 		qreal minVisibility(const QFontMetricsF i_oFm);
 		void mousePressEvent(QGraphicsSceneMouseEvent*);
 		void update_size();
+
+		void properties();
 };
 
 #endif // BOX_CLASS_H

@@ -17,6 +17,7 @@
  #include "box_link.h"
 #include "sem_mediator.h"
 #include "mem_box.h"
+#include "box_class_properties.h"
 
 #include <QFont>
 
@@ -37,7 +38,9 @@ void box_class::update_size()
 	m_iWW = m_oBox->m_iWW = l_o.width();
 	m_iHH = m_oBox->m_iHH = l_o.height();
 
-	m_oChain->setPos(rect().topRight() + QPointF(3, 0));
+	m_oChain->setPos(QPointF(m_iWW + 3, 0));
+
+	update();
 	update_links();
 }
 
@@ -65,7 +68,12 @@ void box_class::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *opti
 		i_oPainter->setFont(l_oBoldFont);
 		QFontMetricsF l_oFm(l_oBoldFont);
 
-		QRectF l_oR = l_oFm.boundingRect(m_oBox->m_sText);
+		QString l_sText = m_oBox->m_sText;
+		if (l_sText.isEmpty()) {
+			l_sText = notr(" ");
+		}
+
+		QRectF l_oR = l_oFm.boundingRect(l_sText);
 
 		l_oR.adjust(0, -1, 0, 1);
 		l_oR.moveTo(0, 0);
@@ -88,18 +96,18 @@ void box_class::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *opti
 	l_oUnderlineFont.setUnderline(true);
 	QFontMetricsF l_oUnderlineFm(l_oUnderlineFont);
 
-	if (m_oBox->m_oAttributes.size() >= 0)
+	if (m_oBox->m_oAttributes.size() > 0)
 	{
 		i_oPainter->drawLine(l_oRect.topLeft() + QPointF(0, l_fHpos), l_oRect.topRight() + QPointF(0, l_fHpos));
 		l_fHpos += 1;
 	}
-	foreach (data_box_attribute *l_o, m_oBox->m_oAttributes) {
+	foreach (data_box_attribute l_o, m_oBox->m_oAttributes) {
 		QRectF l_oR;
-		if (l_o->m_bStatic) {
-			l_oR = l_oUnderlineFm.boundingRect(l_o->m_sText);
+		if (l_o.m_bStatic) {
+			l_oR = l_oUnderlineFm.boundingRect(l_o.m_sText);
 			i_oPainter->setFont(l_oUnderlineFont);
 		} else {
-			l_oR = l_oNormalFm.boundingRect(l_o->m_sText);
+			l_oR = l_oNormalFm.boundingRect(l_o.m_sText);
 			i_oPainter->setFont(l_oNormalFont);
 		}
 
@@ -110,21 +118,21 @@ void box_class::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *opti
 		l_oR.setWidth(l_oR.width() - l_fOff);
 		l_oR.translate(l_oRect.topLeft() + QPointF(l_fOff - PAD, l_fHpos));
 
-		i_oPainter->drawText(l_oR, Qt::AlignLeft | Qt::TextSingleLine | Qt::AlignTop, l_o->m_sText);
+		i_oPainter->drawText(l_oR, Qt::AlignLeft | Qt::TextSingleLine | Qt::AlignTop, l_o.m_sText);
 
 		QString l_sVis;
-		if (l_o->m_oVisibility == visibility::PUBLIC) {
+		if (l_o.m_oVisibility == visibility::PUBLIC) {
 			l_sVis = "+";
-		} else if (l_o->m_oVisibility == visibility::PROTECTED) {
+		} else if (l_o.m_oVisibility == visibility::PROTECTED) {
 			l_sVis = "#";
-		} else if (l_o->m_oVisibility == visibility::PRIVATE) {
+		} else if (l_o.m_oVisibility == visibility::PRIVATE) {
 			l_sVis = "-";
-		} else if (l_o->m_oVisibility == visibility::PACKAGE) {
+		} else if (l_o.m_oVisibility == visibility::PACKAGE) {
 			l_sVis = "~";
-		} else if (l_o->m_oVisibility == visibility::DERIVED) {
+		} else if (l_o.m_oVisibility == visibility::DERIVED) {
 			l_sVis = "/";
 		} else {
-			Q_ASSERT("invalid visibility " + l_o->m_oVisibility);
+			Q_ASSERT("invalid visibility " + l_o.m_oVisibility);
 		}
 
 		l_oR.translate(QPointF(PAD - l_fOff, 0));
@@ -133,22 +141,22 @@ void box_class::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *opti
 		l_fHpos += l_oR.height();
 	}
 
-	if (m_oBox->m_oMethods.size() >= 0)
+	if (m_oBox->m_oMethods.size() > 0)
 	{
 		i_oPainter->drawLine(l_oRect.topLeft() + QPointF(0, l_fHpos), l_oRect.topRight() + QPointF(0, l_fHpos));
 		l_fHpos += 1;
 	}
-	foreach (data_box_method *l_o, m_oBox->m_oMethods) {
+	foreach (data_box_method l_o, m_oBox->m_oMethods) {
 
 		QRectF l_oR;
-		if (l_o->m_bAbstract) {
-			l_oR = l_oItalicFm.boundingRect(l_o->m_sText);
+		if (l_o.m_bAbstract) {
+			l_oR = l_oItalicFm.boundingRect(l_o.m_sText);
 			i_oPainter->setFont(l_oItalicFont);
-		} else if (l_o->m_bStatic) {
-			l_oR = l_oUnderlineFm.boundingRect(l_o->m_sText);
+		} else if (l_o.m_bStatic) {
+			l_oR = l_oUnderlineFm.boundingRect(l_o.m_sText);
 			i_oPainter->setFont(l_oUnderlineFont);
 		} else {
-			l_oR = l_oNormalFm.boundingRect(l_o->m_sText);
+			l_oR = l_oNormalFm.boundingRect(l_o.m_sText);
 			i_oPainter->setFont(l_oNormalFont);
 		}
 
@@ -159,21 +167,21 @@ void box_class::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *opti
 		l_oR.setWidth(l_oR.width() - l_fOff);
 		l_oR.translate(l_oRect.topLeft() + QPointF(l_fOff - PAD, l_fHpos));
 
-		i_oPainter->drawText(l_oR, Qt::AlignLeft | Qt::TextSingleLine | Qt::AlignTop, l_o->m_sText);
+		i_oPainter->drawText(l_oR, Qt::AlignLeft | Qt::TextSingleLine | Qt::AlignTop, l_o.m_sText);
 
 		QString l_sVis;
-		if (l_o->m_oVisibility == visibility::PUBLIC) {
+		if (l_o.m_oVisibility == visibility::PUBLIC) {
 			l_sVis = "+";
-		} else if (l_o->m_oVisibility == visibility::PROTECTED) {
+		} else if (l_o.m_oVisibility == visibility::PROTECTED) {
 			l_sVis = "#";
-		} else if (l_o->m_oVisibility == visibility::PRIVATE) {
+		} else if (l_o.m_oVisibility == visibility::PRIVATE) {
 			l_sVis = "-";
-		} else if (l_o->m_oVisibility == visibility::PACKAGE) {
+		} else if (l_o.m_oVisibility == visibility::PACKAGE) {
 			l_sVis = "~";
-		} else if (l_o->m_oVisibility == visibility::DERIVED) {
+		} else if (l_o.m_oVisibility == visibility::DERIVED) {
 			l_sVis = "/";
 		} else {
-			Q_ASSERT("invalid visibility " + l_o->m_oVisibility);
+			Q_ASSERT("invalid visibility " + l_o.m_oVisibility);
 		}
 
 		l_oR.translate(QPointF(PAD - l_fOff, 0));
@@ -183,7 +191,6 @@ void box_class::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *opti
 		l_fHpos += l_oR.height();
 	}
 
-	
 	/*if (isSelected())
 	{
 		i_oPainter->setBrush(QColor("#FFFF00"));
@@ -236,14 +243,14 @@ QSizeF box_class::size() {
 	{
 		l_iHH += 1;
 	}
-	foreach (data_box_method *l_o, m_oBox->m_oMethods) {
+	foreach (data_box_method l_o, m_oBox->m_oMethods) {
 		QRectF l_oR;
-		if (l_o->m_bAbstract) {
-			l_oR = l_oItalicFm.boundingRect(l_o->m_sText);
-		} else if (l_o->m_bStatic) {
-			l_oR = l_oUnderlineFm.boundingRect(l_o->m_sText);
+		if (l_o.m_bAbstract) {
+			l_oR = l_oItalicFm.boundingRect(l_o.m_sText);
+		} else if (l_o.m_bStatic) {
+			l_oR = l_oUnderlineFm.boundingRect(l_o.m_sText);
 		} else {
-			l_oR = l_oNormalFm.boundingRect(l_o->m_sText);
+			l_oR = l_oNormalFm.boundingRect(l_o.m_sText);
 		}
 
 		l_oR.adjust(-2, 0, 2, 0);
@@ -255,12 +262,12 @@ QSizeF box_class::size() {
 	{
 		l_iHH += 1;
 	}
-	foreach (data_box_attribute *l_o, m_oBox->m_oAttributes) {
+	foreach (data_box_attribute l_o, m_oBox->m_oAttributes) {
 		QRectF l_oR;
-		if (l_o->m_bStatic) {
-			l_oR = l_oUnderlineFm.boundingRect(l_o->m_sText);
+		if (l_o.m_bStatic) {
+			l_oR = l_oUnderlineFm.boundingRect(l_o.m_sText);
 		} else {
-			l_oR = l_oNormalFm.boundingRect(l_o->m_sText);
+			l_oR = l_oNormalFm.boundingRect(l_o.m_sText);
 		}
 
 		l_oR.adjust(-2, 0, 2, 0);
@@ -273,7 +280,12 @@ QSizeF box_class::size() {
 	l_oNormalFont.setBold(true);
 	QFontMetricsF l_oFm(l_oNormalFont);
 	{
-		QRectF l_oR = l_oFm.boundingRect(m_oBox->m_sText);
+		QString l_sText = m_oBox->m_sText;
+		if (l_sText.isEmpty()) {
+			l_sText = notr(" ");
+		}
+
+		QRectF l_oR = l_oFm.boundingRect(l_sText);
 		l_oR.adjust(0, -1, 0, 1);
 		l_iWW = qMax(l_oR.width() +  2 * PAD, l_iWW);
 		l_iHH += l_oR.height();
@@ -285,5 +297,12 @@ QSizeF box_class::size() {
 void box_class::mousePressEvent(QGraphicsSceneMouseEvent* i_oE)
 {
 	QGraphicsRectItem::mousePressEvent(i_oE);
+}
+
+
+void box_class::properties()
+{
+	box_class_properties props(m_oView, this);
+	props.exec();
 }
 

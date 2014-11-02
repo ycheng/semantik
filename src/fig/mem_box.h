@@ -193,5 +193,22 @@ class mem_matrix : public mem_command {
 		IType type() { return SIZE_MATRIX; }
 };
 
+class mem_class : public mem_command {
+	public:
+		mem_class(sem_mediator*, int);
+		void init(data_box*);
+		void undo();
+		void redo();
+
+		int m_iId;
+		int m_iBoxId;
+
+		QString m_sOldClassName;
+		QString m_sNewClassName;
+
+		IType type() { return CHANGE_CLASS_BOX; }
+};
+
+
 #endif
 

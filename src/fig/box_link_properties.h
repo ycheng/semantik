@@ -12,7 +12,7 @@ class box_link_properties : public KDialog
 {
 	Q_OBJECT
 	public:
-		box_link_properties(QWidget *i_oParent, box_link* m_oLink);
+		box_link_properties(QWidget*, box_link*);
 		QSpinBox *m_oThickness;
 		QComboBox *m_oType;
 		QComboBox *m_oStyle;
