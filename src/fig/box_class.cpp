@@ -53,6 +53,10 @@ void box_class::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *opti
 	l_oPen.setWidth(1);
 	i_oPainter->setPen(l_oPen);
 
+	QColor bc(m_oBox->color);
+	i_oPainter->setBrush(bc);
+	i_oPainter->drawRect(l_oRect);
+
 	// oh the text
 	qreal l_fHpos = 0;
 	{
@@ -179,7 +183,7 @@ void box_class::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *opti
 		l_fHpos += l_oR.height();
 	}
 
-	i_oPainter->drawRect(l_oRect);
+	
 	/*if (isSelected())
 	{
 		i_oPainter->setBrush(QColor("#FFFF00"));

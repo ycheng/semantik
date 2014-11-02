@@ -112,7 +112,7 @@ void box_link_properties::apply() {
 	mem->prev.copy_from(m_oLink->m_oInnerLink);
 	mem->next.copy_from(m_oLink->m_oInnerLink);
 	mem->next.border_width = m_oThickness->value();
-	mem->next.m_iLineType = m_oType->currentIndex();
+	mem->next.m_iLineType = (data_link::LineType) m_oType->currentIndex();
 	mem->next.pen_style = (Qt::PenStyle) m_oStyle->currentIndex();
 	mem->next.m_iLeftArrow = (data_link::Arrow) m_oLeftArrow->currentIndex();
 	mem->next.m_iRightArrow = (data_link::Arrow) m_oRightArrow->currentIndex();
