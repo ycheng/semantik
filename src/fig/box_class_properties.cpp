@@ -10,6 +10,7 @@
 #include <QDirModel>
 #include <QCompleter>
 #include <QLineEdit>
+#include <QTextEdit>
 #include "mem_box.h"
 #include "box_view.h"
 
@@ -35,19 +36,19 @@ box_class_properties::box_class_properties(QWidget *i_oParent, box_class *i_oCla
 	l_oGridLayout->addWidget(l_sLabel, 0, 0);
 
 	l_sLabel = new QLabel(widget);
-	l_sLabel->setText(trUtf8("Attributes"));
+	l_sLabel->setText(trUtf8("Definition"));
 	l_oGridLayout->addWidget(l_sLabel, 1, 0);
-
-	l_sLabel = new QLabel(widget);
-	l_sLabel->setText(trUtf8("Methods"));
-	l_oGridLayout->addWidget(l_sLabel, 2, 0);
 
 	m_oClassName = new QLineEdit(widget);
 	l_oGridLayout->addWidget(m_oClassName, 0, 1);
-	m_oClassName->setText(m_oClass->m_oBox->m_sText);
+
+	m_oClassDefinition = new QTextEdit(widget);
+	l_oGridLayout->addWidget(m_oClassDefinition, 1, 1);
+	m_oClassDefinition->setStyleSheet("font-family: \"Courier New\", Courier, monospace;");
+	m_oClassName->setStyleSheet("font-family: \"Courier New\", Courier, monospace;");
 
         setMainWidget(widget);
-        QSize size(350, 120);
+        QSize size(700, 320);
         resize(size.expandedTo(minimumSizeHint()));
 
 	connect(m_oClassName, SIGNAL(textChanged(const QString&)), this, SLOT(enable_apply(const QString &)));
