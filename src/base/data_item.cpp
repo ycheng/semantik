@@ -211,6 +211,10 @@ void data_box::read_data(const QString& i_sTag, const QXmlAttributes& i_oAttrs)
 	m_bIsEnd = i_oAttrs.value(notr("e")).toInt();
 	color = QColor(i_oAttrs.value(notr("color")));
 
+	m_bStatic = i_oAttrs.value(notr("static")).toInt();
+	m_bAbstract = i_oAttrs.value(notr("abstract")).toInt();
+	m_sStereotype = i_oAttrs.value(notr("stereotype"));
+
 	// TODO remove in the future...
 	if (m_iType == data_box::ACTIVITY_START)
 	{

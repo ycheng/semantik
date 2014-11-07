@@ -314,8 +314,18 @@ void box_class::mousePressEvent(QGraphicsSceneMouseEvent* i_oE)
 void box_class::properties()
 {
 	box_class_properties props(m_oView, this);
-	props.m_oClassName->setText(props.m_oClass->m_oBox->m_sText);
 	QStringList l_oS;
+
+	if (props.m_oClass->m_oBox->m_bStatic) {
+		l_oS<<notr("static ");
+	}
+	if (props.m_oClass->m_oBox->m_bAbstract) {
+		l_oS<<notr("abstract ");
+	}
+
+	l_oS<<notr("class ");
+	l_oS<<props.m_oClass->m_oBox->m_sText;
+	l_oS<<notr("\n");
 
 	foreach (data_box_method l_o, m_oBox->m_oMethods) {
 		if (l_o.m_oVisibility == visibility::PUBLIC) {

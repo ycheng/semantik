@@ -29,34 +29,20 @@ box_class_properties::box_class_properties(QWidget *i_oParent, box_class *i_oCla
 
 	QGridLayout *l_oGridLayout = new QGridLayout(widget);
 
-	QLabel *l_sLabel;
-
-	l_sLabel = new QLabel(widget);
-	l_sLabel->setText(trUtf8("Class Name"));
-	l_oGridLayout->addWidget(l_sLabel, 0, 0);
-
-	l_sLabel = new QLabel(widget);
-	l_sLabel->setText(trUtf8("Definition"));
-	l_oGridLayout->addWidget(l_sLabel, 1, 0);
-
-	m_oClassName = new QLineEdit(widget);
-	l_oGridLayout->addWidget(m_oClassName, 0, 1);
-
 	m_oClassDefinition = new QTextEdit(widget);
-	l_oGridLayout->addWidget(m_oClassDefinition, 1, 1);
+	l_oGridLayout->addWidget(m_oClassDefinition, 0, 0);
 	m_oClassDefinition->setStyleSheet("font-family: \"Courier New\", Courier, monospace;");
-	m_oClassName->setStyleSheet("font-family: \"Courier New\", Courier, monospace;");
 
         setMainWidget(widget);
         QSize size(700, 320);
         resize(size.expandedTo(minimumSizeHint()));
 
-	connect(m_oClassName, SIGNAL(textChanged(const QString&)), this, SLOT(enable_apply(const QString &)));
+	connect(m_oClassDefinition, SIGNAL(textChanged(const QString&)), this, SLOT(enable_apply(const QString &)));
 
         connect(this, SIGNAL(applyClicked()), this, SLOT(apply()));
         connect(this, SIGNAL(okClicked()), this, SLOT(apply()));
 
-	m_oClassName->setFocus();
+	m_oClassDefinition->setFocus();
 }
 
 void box_class_properties::enable_apply(int) {
@@ -74,7 +60,7 @@ void box_class_properties::apply() {
 
 	mem_class *mem = new mem_class(m_oClass->m_oView->m_oMediator, m_oClass->m_oView->m_iId);
 	mem->init(m_oClass->m_oBox);
-	mem->m_sNewClassName = m_oClassName->text();
+	//mem->m_sNewClassName = m_oClassName->text();
 	mem->apply();
 	enableButtonApply(false);
 }

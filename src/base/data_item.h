@@ -129,6 +129,8 @@ class data_box : public diagram_item, public node
 	QList<int> m_oColSizes;
 
 	// class
+	bool m_bStatic;
+	bool m_bAbstract;
 	QString m_sStereotype;
 	QList<data_box_method> m_oMethods;
 	QList<data_box_attribute> m_oAttributes;

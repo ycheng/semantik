@@ -14,7 +14,6 @@ class box_class_properties : public KDialog
 	public:
 		box_class_properties(QWidget*, box_class*);
 		box_class *m_oClass;
-		QLineEdit *m_oClassName;
 		QTextEdit *m_oClassDefinition;
 
 	public slots:
