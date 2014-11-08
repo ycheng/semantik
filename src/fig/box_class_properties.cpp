@@ -67,19 +67,53 @@ void box_class_properties::apply() {
 		return;
 	}
 
-	QRegExp rx("\\b(static|abstract)?\\b(static|abstract)?\\bclass\\s+(.*)");
-	rx.setPatternSyntax(QRegExp::Wildcard);
+	QRegExp rx("(static|abstract)?\\s*(static|abstract)?\\s*class\\s+(\\w.*)");
 	if (rx.indexIn(l_oTmp[0]) != -1) {
-		qDebug()<<rx.cap(1)<<rx.cap(2)<<rx.cap(3);
+		mem_class *mem = new mem_class(m_oClass->m_oView->m_oMediator, m_oClass->m_oView->m_iId);
+		mem->init(m_oClass->m_oBox);
+
+		mem->m_oNewBox.m_sText = rx.cap(3);
+		mem->m_oNewBox.m_bStatic = (notr("static") == rx.cap(1) || notr("static") == rx.cap(2));
+		mem->m_oNewBox.m_bAbstract = (notr("abstract") == rx.cap(1) || notr("abstract") == rx.cap(2));
+		mem->m_oNewBox.m_oMethods.clear();
+		mem->m_oNewBox.m_oAttributes.clear();
+
+		QRegExp rm("(public|private|protected|package|derived)?\\s*(static|abstract)?\\s*(static|abstract)?\\s*(\\w.*)");
+		QRegExp rs("stereotype\\s*(.*)");
+		for (int i=1; i < l_oTmp.size() - 1; ++i) {
+			QString l_s = l_oTmp[i];
+			if (rm.indexIn(l_s) >= 0) {
+				QString l_sData = rm.cap(4);
+				bool l_bStatic = (notr("static") == rm.cap(3) || notr("static") == rm.cap(2));
+				bool l_bAbstract = (notr("abstract") == rm.cap(3) || notr("abstract") == rm.cap(2));
+
+				if (l_sData.contains(notr("(")))
+				{
+					data_box_method m;
+					m.m_bStatic = l_bStatic;
+					m.m_bAbstract = l_bAbstract;
+					m.m_sText = rm.cap(4);
+					m.m_oVisibility = visibility::toVisibility(rm.cap(1));
+					mem->m_oNewBox.m_oMethods.push_back(m);
+				}
+				else
+				{
+					data_box_attribute a;
+					a.m_bStatic = l_bStatic;
+					a.m_sText = rm.cap(4);
+					a.m_oVisibility = visibility::toVisibility(rm.cap(1));
+					mem->m_oNewBox.m_oAttributes.push_back(a);
+				}
+			} else if (rs.indexIn(l_s) >= 0) {
+				mem->m_oNewBox.m_sStereotype = rs.cap(1);
+			}
+		}
+		mem->apply();
+		enableButtonApply(false);
 	} else {
 		qDebug()<<"no match for"<<l_oTmp[0];
+		return;
 	}
-
-	mem_class *mem = new mem_class(m_oClass->m_oView->m_oMediator, m_oClass->m_oView->m_iId);
-	mem->init(m_oClass->m_oBox);
-	//mem->m_sNewClassName = m_oClassName->text();
-	mem->apply();
-	enableButtonApply(false);
 }
 
 #include "box_class_properties.moc"

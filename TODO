@@ -1,17 +1,9 @@
-Priority:
----------
-
 z-index in diagrams
 svg export?
-class diagrams
 crossing diagram arrows for the one with higher z-index
 s5 default picture size?
 crash: resize a box, unselect the diagram, then undo?
 display pictures on the map...
-
-Ideas:
-------
-
 Import kdissert weak links
 Serialize undo operations
 

@@ -152,6 +152,31 @@ data_box::data_box(int id) : diagram_item(), node()
 	color = QColor("#a7e89b");
 }
 
+data_box& data_box::operator=(const data_box & i_o)
+{
+	m_iType = i_o.m_iType;
+	m_iId = i_o.m_iId;
+	m_sText = i_o.m_sText;
+
+	m_bIsEnd = i_o.m_bIsEnd;
+	m_bIsEnd = i_o.m_bIsEnd;
+	m_bIsVertical = i_o.m_bIsVertical;
+	m_iType = i_o.m_iType;
+	m_iWW = i_o.m_iWW;
+	m_iHH = i_o.m_iHH;
+	color = i_o.color;
+
+	m_oRowSizes = i_o.m_oRowSizes;
+	m_oColSizes = i_o.m_oColSizes;
+
+	m_bStatic     = i_o.m_bStatic;
+	m_bAbstract   = i_o.m_bAbstract;
+	m_sStereotype = i_o.m_sStereotype;
+	m_oMethods    = i_o.m_oMethods;
+	m_oAttributes = i_o.m_oAttributes;
+	return *this;
+}
+
 data_box::~data_box()
 {
 	while (!m_oMethods.isEmpty()) {

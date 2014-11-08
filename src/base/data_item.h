@@ -73,6 +73,7 @@ class visibility
 {
 	public:
 		enum VisibilityType {PRIVATE=1, PUBLIC=2, PROTECTED=3, PACKAGE=4, DERIVED=5};
+		static VisibilityType toVisibility(const QString&) {return PROTECTED;}
 };
 
 class data_box_method : public node
@@ -103,6 +104,8 @@ class data_box : public diagram_item, public node
 	public:
 	data_box(int id);
 	~data_box();
+
+	data_box& operator=(const data_box &);
 
 	int m_iId;
 	QString m_sText;

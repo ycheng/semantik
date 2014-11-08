@@ -220,7 +220,8 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 	{
 		// FIXME this will never work
 		Q_ASSERT(!m_oNodeStack.empty());
-		m_oNodeStack.top()->make_node(i_sName, i_oAttrs);
+		node& l_o = m_oNodeStack.top()->make_node(i_sName, i_oAttrs);
+		m_oNodeStack.push(&l_o);
 	}
 	return true;
 }

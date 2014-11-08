@@ -327,6 +327,26 @@ void box_class::properties()
 	l_oS<<props.m_oClass->m_oBox->m_sText;
 	l_oS<<notr("\n");
 
+	foreach (data_box_attribute l_o, m_oBox->m_oAttributes) {
+		if (l_o.m_oVisibility == visibility::PUBLIC) {
+			l_oS<<notr("public    ");
+		} else if (l_o.m_oVisibility == visibility::PROTECTED) {
+			l_oS<<notr("protected ");
+		} else if (l_o.m_oVisibility == visibility::PRIVATE) {
+			l_oS<<notr("private   ");
+		} else if (l_o.m_oVisibility == visibility::PACKAGE) {
+			l_oS<<notr("package   ");
+		} else if (l_o.m_oVisibility == visibility::DERIVED) {
+			l_oS<<notr("derived   ");
+		} else {
+			Q_ASSERT("invalid visibility " + l_o.m_oVisibility);
+		}
+		if (l_o.m_bStatic) {
+			l_oS<<notr("static    ");
+		}
+		l_oS<<l_o.m_sText<<notr("\n");
+	}
+
 	foreach (data_box_method l_o, m_oBox->m_oMethods) {
 		if (l_o.m_oVisibility == visibility::PUBLIC) {
 			l_oS<<notr("public    ");
@@ -343,25 +363,6 @@ void box_class::properties()
 		}
 		if (l_o.m_bAbstract) {
 			l_oS<<notr("abstract  ");
-		} else if (l_o.m_bStatic) {
-			l_oS<<notr("static    ");
-		}
-		l_oS<<l_o.m_sText<<notr("\n");
-	}
-
-	foreach (data_box_attribute l_o, m_oBox->m_oAttributes) {
-		if (l_o.m_oVisibility == visibility::PUBLIC) {
-			l_oS<<notr("public    ");
-		} else if (l_o.m_oVisibility == visibility::PROTECTED) {
-			l_oS<<notr("protected ");
-		} else if (l_o.m_oVisibility == visibility::PRIVATE) {
-			l_oS<<notr("private   ");
-		} else if (l_o.m_oVisibility == visibility::PACKAGE) {
-			l_oS<<notr("package   ");
-		} else if (l_o.m_oVisibility == visibility::DERIVED) {
-			l_oS<<notr("derived   ");
-		} else {
-			Q_ASSERT("invalid visibility " + l_o.m_oVisibility);
 		}
 		if (l_o.m_bStatic) {
 			l_oS<<notr("static    ");

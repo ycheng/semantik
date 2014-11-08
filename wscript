@@ -3,7 +3,7 @@
 # Thomas Nagy, 2007-2014 (ita)
 
 APPNAME = 'semantik'
-VERSION = '0.9.2'
+VERSION = '0.9.3'
 
 top = '.'
 
@@ -206,7 +206,7 @@ def configure(conf):
 
 	if not 'CXXFLAGS' in os.environ:
 		conf.env.CXXFLAGS = '-O2 -pipe -Wall'.split()# -DDEBUG=1 -g'
-		#conf.env.CXXFLAGS = ['-g']
+		#conf.env.CXXFLAGS = ['-g', '-Wall']
 	conf.write_config_header('aux.h')
 
 	# the Debian packagers compile with --prefix=/usr and set /etc/ld.so.conf accordingly

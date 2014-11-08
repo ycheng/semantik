@@ -1626,6 +1626,7 @@ void box_view::notify_size_box(int id, const QList<data_box*>& items)
 	Q_ASSERT(id == m_iId);
 	foreach (data_box *box, items)
 	{
+		Q_ASSERT(m_oItems.contains(box->m_iId));
 		m_oItems[box->m_iId]->update_size();
 	}
 }

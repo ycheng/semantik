@@ -416,7 +416,7 @@ void mem_matrix::init(data_box *i_oBox) {
 
 ///////////////////////////////////////////////////////////////////
 
-mem_class::mem_class(sem_mediator* mod, int id) : mem_command(mod)
+mem_class::mem_class(sem_mediator* mod, int id) : mem_command(mod),  m_oOldBox(id), m_oNewBox(id)
 {
 	m_iId = id;
 }
@@ -424,7 +424,7 @@ mem_class::mem_class(sem_mediator* mod, int id) : mem_command(mod)
 void mem_class::redo() {
 	data_item *item = model->m_oItems[m_iId];
 	data_box *l_oBox = item->m_oBoxes[m_iBoxId];
-	l_oBox->m_sText = m_sNewClassName;
+	*l_oBox = m_oNewBox;
 
 	QList<data_box*> lst;
 	lst.push_back(l_oBox);
@@ -435,8 +435,7 @@ void mem_class::redo() {
 void mem_class::undo() {
 	data_item *item = model->m_oItems[m_iId];
 	data_box *l_oBox = item->m_oBoxes[m_iBoxId];
-	l_oBox->m_sText = m_sOldClassName;
-
+	*l_oBox = m_oOldBox;
 
 	QList<data_box*> lst;
 	lst.push_back(l_oBox);
@@ -446,7 +445,7 @@ void mem_class::undo() {
 
 void mem_class::init(data_box *i_oBox) {
 	m_iBoxId = i_oBox->m_iId;
-	m_sOldClassName = i_oBox->m_sText;
+	m_oNewBox = m_oOldBox = *i_oBox;
 }
 
 

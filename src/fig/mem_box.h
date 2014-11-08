@@ -203,8 +203,8 @@ class mem_class : public mem_command {
 		int m_iId;
 		int m_iBoxId;
 
-		QString m_sOldClassName;
-		QString m_sNewClassName;
+		data_box m_oOldBox;
+		data_box m_oNewBox;
 
 		IType type() { return CHANGE_CLASS_BOX; }
 };
