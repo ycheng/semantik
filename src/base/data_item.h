@@ -73,7 +73,26 @@ class visibility
 {
 	public:
 		enum VisibilityType {PRIVATE=1, PUBLIC=2, PROTECTED=3, PACKAGE=4, DERIVED=5};
-		static VisibilityType toVisibility(const QString&) {return PROTECTED;}
+		static VisibilityType toVisibility(const QString& i_s)
+		{
+			if (i_s == notr("public"))
+			{
+				return PUBLIC;
+			}
+			if (i_s == notr("protected"))
+			{
+				return PROTECTED;
+			}
+			if (i_s == notr("private"))
+			{
+				return PRIVATE;
+			}
+			if (i_s == notr("derived"))
+			{
+				return DERIVED;
+			}
+			return PACKAGE;
+		}
 };
 
 class data_box_method : public node

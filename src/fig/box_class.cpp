@@ -324,7 +324,11 @@ void box_class::properties()
 	}
 
 	l_oS<<notr("class ");
-	l_oS<<props.m_oClass->m_oBox->m_sText;
+	l_oS<<props.m_oClass->m_oBox->m_sText<<notr("\n");
+	if (!props.m_oClass->m_oBox->m_sStereotype.isEmpty()) {
+		l_oS<<notr("stereotype ")<<props.m_oClass->m_oBox->m_sStereotype<<notr("\n");
+	}
+
 	l_oS<<notr("\n");
 
 	foreach (data_box_attribute l_o, m_oBox->m_oAttributes) {
@@ -346,6 +350,8 @@ void box_class::properties()
 		}
 		l_oS<<l_o.m_sText<<notr("\n");
 	}
+
+	l_oS<<notr("\n");
 
 	foreach (data_box_method l_o, m_oBox->m_oMethods) {
 		if (l_o.m_oVisibility == visibility::PUBLIC) {

@@ -211,9 +211,7 @@ void data_box::dump_xml(QStringList & i_oS)
 		i_oS<<notr("      <box_col_size val=\"%1\"/>\n").arg(QString::number(l_i));
 	}
 
-	if (!m_sStereotype.isNull()) {
-		i_oS<<notr("      <box_stereotype text=\"%1\"/>\n").arg(m_sStereotype);
-	}
+	i_oS<<notr("      <box_stereotype stereotype=\"%1\" static=\"%2\" abstract=\"%3\" />\n").arg(m_sStereotype, QString::number((int) m_bStatic), QString::number((int) m_bAbstract));
 	foreach (data_box_method l_o, m_oMethods) {
 		l_o.dump_xml(i_oS);
 	}
@@ -236,10 +234,6 @@ void data_box::read_data(const QString& i_sTag, const QXmlAttributes& i_oAttrs)
 	m_bIsEnd = i_oAttrs.value(notr("e")).toInt();
 	color = QColor(i_oAttrs.value(notr("color")));
 
-	m_bStatic = i_oAttrs.value(notr("static")).toInt();
-	m_bAbstract = i_oAttrs.value(notr("abstract")).toInt();
-	m_sStereotype = i_oAttrs.value(notr("stereotype"));
-
 	// TODO remove in the future...
 	if (m_iType == data_box::ACTIVITY_START)
 	{
@@ -261,21 +255,23 @@ node& data_box::make_node(const QString& i_sName, const QXmlAttributes& i_oAttrs
 	}
 	else if (i_sName == notr("box_class_method"))
 	{
-		data_box_method l_o; // = new data_box_method();
+		data_box_method l_o;
 		l_o.read_data(i_sName, i_oAttrs);
 		m_oMethods.push_back(l_o);
 		return m_oMethods.last();
 	}
 	else if (i_sName == notr("box_class_attribute"))
 	{
-		data_box_attribute l_o; // = new data_box_attribute();
+		data_box_attribute l_o;
 		l_o.read_data(i_sName, i_oAttrs);
 		m_oAttributes.push_back(l_o);
 		return m_oAttributes.last();
 	}
 	else if (i_sName == notr("box_stereotype"))
 	{
-		m_sStereotype = i_oAttrs.value(notr("text"));
+		m_bStatic = i_oAttrs.value(notr("static")).toInt();
+		m_bAbstract = i_oAttrs.value(notr("abstract")).toInt();
+		m_sStereotype = i_oAttrs.value(notr("stereotype"));
 	}
 	return *this;
 	// return node::make_node(i_sName, i_oAttrs);

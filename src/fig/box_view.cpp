@@ -863,6 +863,7 @@ void box_view::slot_add_element()
 		add->box->m_iHH = 30;
 
 		add->box->m_sText = "Entity";
+		add->box->m_sStereotype = "interface";
 
 		{
 			data_box_method l_o;
@@ -1726,6 +1727,7 @@ bool box_view::slot_export_to_file() {
 	if (x->save_file(l_o.path()))
 	{
 		emit sig_message(trUtf8("Saved '%1'").arg(l_o.path()), 2000);
+		m_oMediator->set_dirty(false);
 		return true;
 	}
 	return false;
@@ -1740,6 +1742,7 @@ bool box_view::slot_save() {
 		x->m_oColorSchemes = m_oMediator->m_oColorSchemes;
 
 		if (x->save_file(m_oCurrentUrl.path())) {
+			m_oMediator->set_dirty(false);
 			emit sig_message(trUtf8("Saved '%1'").arg(m_oCurrentUrl.path()), 2000);
 			return true;
 		}
