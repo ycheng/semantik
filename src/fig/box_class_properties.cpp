@@ -99,7 +99,7 @@ class_highlighter::class_highlighter(QTextDocument *p): QSyntaxHighlighter(p)
 
 	QTextCharFormat l_oSingle;
 	l_oSingle.setForeground(Qt::darkGreen);
-	l_oRule.m_oPattern = QRegExp("^((static|abstract|static abstract|abstract static)\\s+)*class\\s+");
+	l_oRule.m_oPattern = QRegExp("^((static|abstract|static\\s+abstract|abstract\\s+static)\\s+)*class\\s+");
 	l_oSingle.setFontWeight(QFont::Bold);
 	l_oRule.m_oFormat = l_oSingle;
 	m_oRules.append(l_oRule);
@@ -107,7 +107,7 @@ class_highlighter::class_highlighter(QTextDocument *p): QSyntaxHighlighter(p)
 	QTextCharFormat l_oKeyword;
 	l_oKeyword.setForeground(Qt::darkGreen);
 	l_oKeyword.setFontWeight(QFont::Bold);
-	l_oRule.m_oPattern = QRegExp("^(public|private|protected|package|derived|stereotype)(\\s+(static|abstract|static abstract|abstract static)*)");
+	l_oRule.m_oPattern = QRegExp("^(public|private|protected|package|derived|stereotype)(\\s+(static|abstract|static\\s+abstract|abstract\\s+static)*)");
 	l_oRule.m_oFormat = l_oKeyword;
 	m_oRules.append(l_oRule);
 }
@@ -292,7 +292,7 @@ void box_class_properties::apply() {
 		mem->m_oNewBox.m_oAttributes.clear();
 
 		QRegExp rm("^(public|private|protected|package|derived)\\s*(static|abstract)?\\s*(static|abstract)?\\s*(\\w.*)");
-		QRegExp rs("^stereotype\\s*(.*)");
+		QRegExp rs("^stereotype\\s*(\\w.*)");
 		for (int i=1; i < l_oTmp.size() - 1; ++i) {
 			QString l_s = l_oTmp[i];
 			if (rm.indexIn(l_s) >= 0) {
