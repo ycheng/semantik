@@ -19,7 +19,7 @@ class box_class_properties : public KDialog
 	public slots:
 		void apply();
 		void enable_apply(int);
-		void enable_apply(const QString&);
+		void enable_apply();
 };
 
 #endif

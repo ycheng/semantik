@@ -864,7 +864,6 @@ void box_view::slot_add_element()
 
 		add->box->m_sText = "Entity";
 
-		/*
 		{
 			data_box_method l_o;
 			l_o.m_oVisibility = visibility::PUBLIC;
@@ -931,7 +930,6 @@ void box_view::slot_add_element()
 			l_o.m_sText = "xxx: int";
 			add->box->m_oAttributes.push_back(l_o);
 		}
-		*/
 
 	}
 
