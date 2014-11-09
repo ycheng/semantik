@@ -17,6 +17,7 @@
 #include <QTreeView>
 #include <QStandardItem>
 #include <QKeyEvent>
+#include <QFont>
 #include "mem_box.h"
 #include "box_view.h"
 
@@ -27,7 +28,12 @@
 
 class_editor::class_editor(QWidget *i_oParent) : QTextEdit(i_oParent)
 {
-	/*class_highlighter *l_o =*/ new class_highlighter(document());
+	new class_highlighter(document());
+	//setStyleSheet("font-family: \"DejaVu Sans Mono\", \"Courier New\", Courier, monospace;");
+
+	QFont l_oFont = currentFont();
+	l_oFont.setStyleHint(QFont::Monospace);
+	setFont(l_oFont);
 
 	m_oCompleter = NULL;
 	startup = true;
@@ -246,8 +252,6 @@ box_class_properties::box_class_properties(QWidget *i_oParent, box_class *i_oCla
 
 	m_oClassDefinition = new class_editor(widget);
 	l_oGridLayout->addWidget(m_oClassDefinition, 0, 0);
-	m_oClassDefinition->setStyleSheet("font-family: \"Courier New\", Courier, monospace;");
-
         setMainWidget(widget);
         QSize size(700, 320);
         resize(size.expandedTo(minimumSizeHint()));
