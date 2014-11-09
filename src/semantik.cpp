@@ -336,6 +336,7 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	connect(m_oMediator, SIGNAL(sig_size_box(int, const QList<data_box*>&)), m_oDiagramView, SLOT(notify_size_box(int, const QList<data_box*>&)));
 	connect(m_oMediator, SIGNAL(sig_focus(void *)), m_oDiagramView, SLOT(notify_focus(void *)));
 	connect(m_oMediator, SIGNAL(sig_focus(void *)), m_oCanvas, SLOT(notify_focus(void *)));
+	connect(m_oMediator, SIGNAL(sig_change_properties(void *)), m_oDiagramView, SLOT(notify_change_properties(void *)));
 
 	m_oTree->m_oView->addAction(m_oCanvas->m_oDeleteAction); // FIXME
 

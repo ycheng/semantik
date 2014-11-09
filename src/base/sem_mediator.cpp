@@ -184,6 +184,11 @@ bool semantik_reader::startElement(const QString&, const QString&, const QString
 		l_oItem->m_oCustom.m_oInnerColor = QColor(i_oAttrs.value(notr("custom_inner")));
 		l_oItem->m_oCustom.m_oBorderColor = QColor(i_oAttrs.value(notr("custom_border")));
 		l_oItem->m_oCustom.m_oTextColor = QColor(i_oAttrs.value(notr("custom_text")));
+
+		QString l_s = i_oAttrs.value(notr("diagram_font"));
+		if (!l_s.isEmpty()) {
+			l_oItem->m_oDiagramFont.fromString(l_s);
+		}
 	}
 	else if (i_sName == notr("color_schemes"))
 	{
@@ -533,6 +538,7 @@ QString sem_mediator::doc_to_xml()
 		l_oS<<notr(" custom_inner=\"%1\"").arg(l_o.m_oInnerColor.name());
 		l_oS<<notr(" custom_text=\"%1\"").arg(l_o.m_oTextColor.name());
 
+		l_oS<<notr(" diagram_font=\"%1\"").arg(l_oItem->m_oDiagramFont.toString());
 
 		l_oS<<notr(">\n");
 
@@ -1512,6 +1518,11 @@ void sem_mediator::notify_change_link_box(int id, data_link*link)
 void sem_mediator::notify_size_box(int id, const QList<data_box*>& items)
 {
 	emit sig_size_box(id, items);
+}
+
+void sem_mediator::notify_change_properties(void* i_o)
+{
+	emit sig_change_properties(i_o);
 }
 
 #include "sem_mediator.moc"

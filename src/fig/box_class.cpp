@@ -80,7 +80,7 @@ void box_class::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *opti
 	qreal l_fHpos = 0;
 	if (!m_oBox->m_sStereotype.isEmpty())
 	{
-		QFont l_oFont(m_oView->font());
+		QFont l_oFont(scene()->font());
 		QString l_sText = QChar(0xAB) + m_oBox->m_sStereotype + QChar(0xBB);
 		i_oPainter->setFont(l_oFont);
 		QFontMetricsF l_oFm(l_oFont);
@@ -103,7 +103,7 @@ void box_class::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *opti
 	}
 
 	{
-		QFont l_oBoldFont(m_oView->font());
+		QFont l_oBoldFont(scene()->font());
 		l_oBoldFont.setBold(true);
 		l_oBoldFont.setItalic(m_oBox->m_bAbstract);
 		l_oBoldFont.setUnderline(m_oBox->m_bStatic);
@@ -135,15 +135,15 @@ void box_class::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *opti
 		l_fHpos += l_oR.height();
 	}
 
-	QFont l_oNormalFont(m_oView->font());
+	QFont l_oNormalFont(scene()->font());
 	QFontMetricsF l_oNormalFm(l_oNormalFont);
 	qreal l_iHVisibility = minVisibility(l_oNormalFm);
 
-	QFont l_oItalicFont(m_oView->font());
+	QFont l_oItalicFont(scene()->font());
 	l_oItalicFont.setItalic(true);
 	QFontMetricsF l_oItalicFm(l_oItalicFont);
 
-	QFont l_oUnderlineFont(m_oView->font());
+	QFont l_oUnderlineFont(scene()->font());
 	l_oUnderlineFont.setUnderline(true);
 	QFontMetricsF l_oUnderlineFm(l_oUnderlineFont);
 
@@ -307,15 +307,15 @@ qreal box_class::minVisibility(const QFontMetricsF i_oFm)
 QSizeF box_class::size() {
 	QSizeF l_oRet;
 
-	QFont l_oNormalFont(m_oView->font());
+	QFont l_oNormalFont(scene()->font());
 	QFontMetricsF l_oNormalFm(l_oNormalFont);
 	qreal l_iHVisibility = minVisibility(l_oNormalFm);
 
-	QFont l_oItalicFont(m_oView->font());
+	QFont l_oItalicFont(scene()->font());
 	l_oItalicFont.setItalic(true);
 	QFontMetricsF l_oItalicFm(l_oItalicFont);
 
-	QFont l_oUnderlineFont(m_oView->font());
+	QFont l_oUnderlineFont(scene()->font());
 	l_oUnderlineFont.setUnderline(true);
 	QFontMetricsF l_oUnderlineFm(l_oUnderlineFont);
 

@@ -57,7 +57,7 @@
 #include "box_view.h"
 #include "sembind.h"
  #include "mem_box.h"
-
+#include "box_document_properties.h"
 
 #define ALIGN_LEFT 22
 #define ALIGN_CENTER 33
@@ -401,6 +401,8 @@ void box_view::sync_view()
 
 	data_item *item = m_oMediator->m_oItems.value(m_iId);
 	Q_ASSERT(item);
+	scene()->setFont(item->m_oDiagramFont);
+
 	if (item->m_iDataType != VIEW_DIAG)
 	{
 		return;
@@ -628,7 +630,7 @@ void box_view::enable_menu_actions()
 	m_oDeleteAction->setEnabled(selected >= 1);
 	m_oColorAction->setEnabled(selected >= 1);
 
-	m_oPropertiesAction->setEnabled(selected == 1 and dynamic_cast<editable*>(selection.at(0)));
+	m_oPropertiesAction->setEnabled(selected == 0 or (selected == 1 and dynamic_cast<editable*>(selection.at(0))));
 
 	m_oSizeMenu->setEnabled(selected > 1);
 	foreach(QAction* l_o, m_oSizeGroup->actions())
@@ -958,13 +960,18 @@ void box_view::slot_penwidth()
 
 void box_view::slot_edit_properties()
 {
-	QList<QGraphicsItem*> lst = scene()->selectedItems();
-	if (lst.length() == 1)
+	QList<QGraphicsItem*> l_o = scene()->selectedItems();
+	if (l_o.length() == 1)
 	{
-		if (editable*e = dynamic_cast<editable*>(lst.at(0)))
+		if (editable*e = dynamic_cast<editable*>(l_o.at(0)))
 		{
 			e->properties();
 		}
+	}
+	else if (l_o.length() == 0)
+	{
+		box_document_properties l_oProps(this);
+		l_oProps.exec();
 	}
 }
 
@@ -1673,6 +1680,8 @@ bool box_view::import_from_file(const KUrl& l_o)
 	if (x->open_file(l_o.path()) && x->m_oItems.size() == 1) {
 		l_bOk = true;
 		data_item *tmp = x->m_oItems.values().at(0);
+		scene()->setFont(tmp->m_oDiagramFont);
+
 		mem_import_box *imp = new mem_import_box(m_oMediator, m_iId);
 		imp->init(tmp->m_oBoxes.values(), tmp->m_oLinks);
 		imp->apply();
@@ -1935,6 +1944,23 @@ void box_view::slot_copy_picture()
 
 	//QApplication::clipboard()->setMimeType("application/x-png");
 	QApplication::clipboard()->setImage(l_oImage);
+}
+
+void box_view::notify_change_properties(void *)
+{
+	// this may be the wrong approach entirely
+	data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
+	if (l_oData->m_oDiagramFont != font()) {
+		scene()->setFont(l_oData->m_oDiagramFont);
+		foreach (QGraphicsItem *l_o, scene()->items())
+		{
+			if (connectable* t = dynamic_cast<connectable*>(l_o))
+			{
+				t->update_size();
+			}
+			l_o->update();
+		}
+	}
 }
 
 #include "box_view.moc"

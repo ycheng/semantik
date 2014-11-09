@@ -38,6 +38,7 @@ box_node::box_node(box_view* view, int id) : box_item(view, id)
 void box_node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 	painter->save();
+	doc.setDefaultFont(scene()->font());
 
 	QRectF l_oRect = boundingRect().adjusted(PAD, PAD, -PAD, -PAD);
 

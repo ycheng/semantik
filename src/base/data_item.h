@@ -219,6 +219,7 @@ class data_item
 
 		//bool load_from_path(const QString &);
 
+		QFont m_oDiagramFont;
 		QHash<int, data_box*> m_oBoxes;
 		QList<data_link*> m_oLinks;
 

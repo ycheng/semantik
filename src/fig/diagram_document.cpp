@@ -52,6 +52,7 @@ void diagram_document::init()
 	connect(m_oMediator, SIGNAL(sig_pos_box(int, const QList<data_box*>&)), m_oDiagramView, SLOT(notify_pos_box(int, const QList<data_box*>&)));
 	connect(m_oMediator, SIGNAL(sig_size_box(int, const QList<data_box*>&)), m_oDiagramView, SLOT(notify_size_box(int, const QList<data_box*>&)));
 	connect(m_oMediator, SIGNAL(sig_focus(void *)), m_oDiagramView, SLOT(notify_focus(void *)));
+	connect(m_oMediator, SIGNAL(sig_change_properties(void *)), m_oDiagramView, SLOT(notify_change_properties(void *)));
 
 	connect(m_oDiagramView, SIGNAL(sig_Url(const KUrl&)), this, SLOT(slot_tab_name(const KUrl&)));
 
@@ -61,6 +62,8 @@ void diagram_document::init()
 	add->item->m_iYY = 0;
 	add->parent = NO_ITEM;
 	add->apply();
+
+	m_oDiagramView->setFont(add->item->m_oDiagramFont);
 
 	m_oMediator->notify_focus(m_oDiagramView);
 

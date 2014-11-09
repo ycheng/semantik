@@ -448,4 +448,22 @@ void mem_class::init(data_box *i_oBox) {
 	m_oNewBox = m_oOldBox = *i_oBox;
 }
 
+///////////////////////////////////////////////////////////////////
+
+mem_diagram_properties::mem_diagram_properties(sem_mediator* mod, int id) : mem_command(mod)
+{
+	m_iId = id;
+}
+
+void mem_diagram_properties::redo() {
+	data_item *item = model->m_oItems[m_iId];
+	item->m_oDiagramFont = m_oNewFont;
+	model->notify_change_properties(NULL);
+}
+
+void mem_diagram_properties::undo() {
+	data_item *item = model->m_oItems[m_iId];
+	item->m_oDiagramFont = m_oOldFont;
+	model->notify_change_properties(NULL);
+}
 

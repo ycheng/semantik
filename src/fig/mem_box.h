@@ -3,6 +3,7 @@
 #ifndef MEM_BOX
 #define MEM_BOX
 
+#include <QFont>
 #include "QHash"
 #include "QGraphicsItem"
 #include "mem_command.h"
@@ -209,6 +210,18 @@ class mem_class : public mem_command {
 		IType type() { return CHANGE_CLASS_BOX; }
 };
 
+class mem_diagram_properties : public mem_command {
+	public:
+		mem_diagram_properties(sem_mediator*, int);
+		void undo();
+		void redo();
+
+		int m_iId;
+		QFont m_oOldFont;
+		QFont m_oNewFont;
+
+		IType type() { return DIAGRAM_PROPERTIES; }
+};
 
 #endif
 

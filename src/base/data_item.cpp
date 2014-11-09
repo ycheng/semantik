@@ -77,6 +77,8 @@ data_item::data_item(sem_mediator *i_oControl, int i_iId)
 
 	m_iYY = m_iXX = -200000.0;
 	m_bSelected = false;
+
+	m_oDiagramFont.fromString("DejaVu Sans Mono,10,-1,5,50,0,0,0,0,0");
 }
 
 QPixmap data_item::getPix()
