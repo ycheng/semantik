@@ -290,6 +290,7 @@ void box_class_properties::apply() {
 		mem->m_oNewBox.m_bAbstract = (notr("abstract") == rx.cap(1) || notr("abstract") == rx.cap(2));
 		mem->m_oNewBox.m_oMethods.clear();
 		mem->m_oNewBox.m_oAttributes.clear();
+		mem->m_oNewBox.m_sStereotype = QString::null;
 
 		QRegExp rm("^(public|private|protected|package|derived)\\s*(static|abstract)?\\s*(static|abstract)?\\s*(\\w.*)");
 		QRegExp rs("^stereotype\\s*(\\w.*)");
