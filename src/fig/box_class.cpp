@@ -401,11 +401,13 @@ QSizeF box_class::size() {
 	}
 
 	// +2 for the border width
-	int l_iWWN = l_iWW + 2 + 2 * PAD;
-	int l_iHHN = l_iHH + 2 + 2 * PAD;
+	int l_iWWN = (int) (l_iWW + 2 + 2 * PAD);
+	int l_iHHN = (int) (l_iHH + 2 + 2 * PAD);
 
-	//if (l_iWWN % GRID) l_iWWN = GRID * (1 + l_iWWN / GRID);
-	//if (l_iHHN % GRID) l_iHHN = GRID * (1 + l_iHHN / GRID);
+	int RG = GRID/2;
+
+	if (l_iWWN % RG) l_iWWN = RG * (1 + l_iWWN / RG);
+	if (l_iHHN % RG) l_iHHN = RG * (1 + l_iHHN / RG);
 
 	return QSizeF(l_iWWN, l_iHHN); // adjusted
 }

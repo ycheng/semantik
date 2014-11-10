@@ -152,6 +152,9 @@ data_box::data_box(int id) : diagram_item(), node()
 	m_iWW = 100;
 	m_iHH = 40;
 	color = QColor("#a7e89b");
+
+	m_bAbstract = false;
+	m_bStatic = false;
 }
 
 data_box& data_box::operator=(const data_box & i_o)

@@ -864,76 +864,27 @@ void box_view::slot_add_element()
 		add->box->m_iWW = 70;
 		add->box->m_iHH = 30;
 
-		add->box->m_sText = "Entity";
-		add->box->m_sStereotype = "interface";
+		add->box->m_sText = "MyClass";
+		add->box->m_sStereotype = "entity";
+		add->box->m_bStatic = false;
+		add->box->m_bAbstract = false;
 
 		{
 			data_box_method l_o;
 			l_o.m_oVisibility = visibility::PUBLIC;
+			l_o.m_sText = "hello() : void";
 			l_o.m_bStatic = false;
 			l_o.m_bAbstract = false;
-			l_o.m_sText = "test1() : void";
 			add->box->m_oMethods.push_back(l_o);
-		}
-		{
-			data_box_method l_o;
-			l_o.m_oVisibility = visibility::PROTECTED;
-			l_o.m_bStatic = false;
-			l_o.m_bAbstract = false;
-			l_o.m_sText = "test2() : void";
-			add->box->m_oMethods.push_back(l_o);
-		}
-		{
-			data_box_method l_o;
-			l_o.m_oVisibility = visibility::PRIVATE;
-			l_o.m_bStatic = true;
-			l_o.m_bAbstract = false;
-			l_o.m_sText = "test3() : void";
-			add->box->m_oMethods.push_back(l_o);
-		}
-		{
-			data_box_method l_o;
-			l_o.m_oVisibility = visibility::PACKAGE;
-			l_o.m_bStatic = true;
-			l_o.m_bAbstract = true;
-			l_o.m_sText = "test4() : void";
-			add->box->m_oMethods.push_back(l_o);
-		}
-
-
-
-		{
-			data_box_attribute l_o;
-			l_o.m_oVisibility = visibility::PROTECTED;
-			l_o.m_bStatic = false;
-			l_o.m_sText = "foo: int";
-			add->box->m_oAttributes.push_back(l_o);
 		}
 
 		{
 			data_box_attribute l_o;
 			l_o.m_oVisibility = visibility::PUBLIC;
-			l_o.m_bStatic = true;
-			l_o.m_sText = "zap: string";
-			add->box->m_oAttributes.push_back(l_o);
-		}
-
-		{
-			data_box_attribute l_o;
-			l_o.m_oVisibility = visibility::PRIVATE;
-			l_o.m_bStatic = true;
-			l_o.m_sText = "bar: string";
-			add->box->m_oAttributes.push_back(l_o);
-		}
-
-		{
-			data_box_attribute l_o;
-			l_o.m_oVisibility = visibility::PROTECTED;
 			l_o.m_bStatic = false;
-			l_o.m_sText = "xxx: int";
+			l_o.m_sText = "id: int";
 			add->box->m_oAttributes.push_back(l_o);
 		}
-
 	}
 
 	add->apply();
