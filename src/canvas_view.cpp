@@ -529,7 +529,6 @@ void canvas_view::wheelEvent(QWheelEvent *i_oEvent)
 	qreal i_rFactor = matrix().scale(i_iScaleFactor, i_iScaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
 	if (i_rFactor < 0.01 || i_rFactor > 1000) return;
 
-
 	if (scene()->selectedItems().size())
 	{
 		QRectF l_oRect = scene()->selectedItems().at(0)->sceneBoundingRect();

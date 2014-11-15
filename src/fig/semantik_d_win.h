@@ -62,6 +62,8 @@ class semantik_d_win : public KXmlGuiWindow
 		void slot_tab_changed(int);
 		void slot_remove_tab(QWidget*);
 		void slot_update_tab_text(diagram_document*, const KUrl &);
+
+		void fit_zoom();
 		void record_open_url(const KUrl&);
 		void update_title();
 	signals:

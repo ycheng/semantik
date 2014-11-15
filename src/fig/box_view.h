@@ -121,6 +121,7 @@ class box_view : public QGraphicsView
 	public slots:
 		void change_colors(QAction* i_oAct);
 		void enable_actions(); // used on focus in
+		void fit_zoom();
 		void slot_delete();
 		void slot_add_item();
 		void slot_color();

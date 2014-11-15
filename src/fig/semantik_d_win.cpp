@@ -59,6 +59,10 @@ semantik_d_win::semantik_d_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	m_oRedoAct = KStandardAction::redo(this, NULL, actionCollection());
 	m_oRedoAct->setEnabled(false);
 
+	KAction *l_oFitZoom = KStandardAction::fitToPage(this, SLOT(fit_zoom()), actionCollection());
+	l_oFitZoom->setIcon(KIcon(notr("zoom-best-fit")));
+	l_oFitZoom->setShortcut(trUtf8("Ctrl+H"));
+
 	m_oRecentFilesAct = KStandardAction::openRecent(this, SLOT(slot_recent(const KUrl&)), actionCollection());
 
 	QDockWidget *l_oDock = new QDockWidget(trUtf8("Files"), this);
@@ -306,6 +310,13 @@ void semantik_d_win::slot_open()
 	{
 		delete m_oActiveDocument;
 		m_oActiveDocument = l_oTmp;
+	}
+}
+
+void semantik_d_win::fit_zoom()
+{
+	if (m_oActiveDocument != NULL) {
+		m_oActiveDocument->m_oDiagramView->fit_zoom();
 	}
 }
 

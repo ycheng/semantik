@@ -70,6 +70,8 @@
 #define SAME_HEIGHT 102
 #define SAME_WIDTH_HEIGHT 103
 
+#define PIPAD 20
+
 class box_reader : public QXmlDefaultHandler
 {
     public:
@@ -1222,9 +1224,60 @@ void box_view::wheelEvent(QWheelEvent *i_oEvent)
 	qreal i_iScaleFactor = pow(2.0, i_oEvent->delta() / 440.0);
 	qreal i_rFactor = matrix().scale(i_iScaleFactor, i_iScaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
 	if (i_rFactor < 0.01 || i_rFactor > 1000) return;
-	scale(i_iScaleFactor, i_iScaleFactor);
-	centerOn(l_o + mapToScene(viewport()->rect().center()) - mapToScene(i_oEvent->pos()));
-	check_canvas_size();
+
+	if (scene()->selectedItems().size())
+	{
+		QRectF l_oRect = scene()->selectedItems().at(0)->sceneBoundingRect();
+		foreach (QGraphicsItem *l_o, scene()->selectedItems())
+		{
+			l_oRect |= l_o->sceneBoundingRect();
+		}
+		l_oRect = QRectF(l_oRect.topLeft() - QPointF(10, 10), l_oRect.bottomRight() + QPointF(10, 10));
+
+		QRectF l_oViewRect = viewport()->rect();
+		QRectF l_oNewRect = matrix().scale(i_iScaleFactor, i_iScaleFactor).mapRect(l_oRect);
+		if (l_oNewRect.width() > l_oViewRect.width() or l_oNewRect.height() > l_oViewRect.height())
+		{
+			return;
+		}
+		scale(i_iScaleFactor, i_iScaleFactor);
+		centerOn(l_o + mapToScene(viewport()->rect().center()) - mapToScene(i_oEvent->pos()));
+		ensureVisible(l_oRect, 5, 5);
+	}
+	else
+	{
+		QRectF l_oRect = scene()->itemsBoundingRect();
+		l_oRect = QRectF(l_oRect.topLeft() - QPointF(PIPAD, PIPAD), l_oRect.bottomRight() + QPointF(PIPAD, PIPAD));
+		l_oRect = matrix().scale(i_iScaleFactor, i_iScaleFactor).mapRect(l_oRect);
+
+		QRectF l_oViewRect = viewport()->rect();
+		if (i_iScaleFactor < 1 and 1.1 * l_oRect.width() < l_oViewRect.width() and 1.1 * l_oRect.height() < l_oViewRect.height())
+		{
+			return;
+		}
+
+		scale(i_iScaleFactor, i_iScaleFactor);
+		centerOn(l_o + mapToScene(viewport()->rect().center()) - mapToScene(i_oEvent->pos()));
+	}
+
+}
+
+void box_view::fit_zoom()
+{
+	if (scene()->selectedItems().size())
+	{
+		QRectF l_oRect = scene()->selectedItems().at(0)->sceneBoundingRect();
+		foreach (QGraphicsItem *l_o, scene()->selectedItems())
+		{
+			l_oRect |= l_o->sceneBoundingRect();
+		}
+		l_oRect = QRectF(l_oRect.topLeft() - QPointF(PIPAD, PIPAD), l_oRect.bottomRight() + QPointF(PIPAD, PIPAD));
+		fitInView(l_oRect, Qt::KeepAspectRatio);
+	}
+	else
+	{
+		fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
+	}
 }
 
 void box_view::keyPressEvent(QKeyEvent *i_oEvent)

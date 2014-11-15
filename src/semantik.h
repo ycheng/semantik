@@ -102,6 +102,8 @@ class semantik_win : public KXmlGuiWindow
 	public slots:
 		void update_title();
 
+
+		void fit_zoom();
 		void slot_open();
 		bool slot_save();
 		bool slot_save_as();

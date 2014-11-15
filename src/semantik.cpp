@@ -196,7 +196,7 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	//actionCollection()->addAction(notr("zoom_map"), m_oCanvasFitZoom);
 	//m_oCanvasFitZoom->setIcon(KIcon(notr("zoom-best-fit")));
 	//connect(m_oCanvasFitZoom, SIGNAL(triggered(bool)), m_oCanvas, SLOT(fit_zoom()));
-	m_oCanvasFitZoom = KStandardAction::fitToPage(m_oCanvas, SLOT(fit_zoom()), actionCollection());
+	m_oCanvasFitZoom = KStandardAction::fitToPage(this, SLOT(fit_zoom()), actionCollection());
 	m_oCanvasFitZoom->setIcon(KIcon(notr("zoom-best-fit")));
 	m_oCanvasFitZoom->setShortcut(trUtf8("Ctrl+H"));
 
@@ -351,6 +351,18 @@ semantik_win::semantik_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 
 	connect(m_oMediator, SIGNAL(enable_undo(bool, bool)), this, SLOT(slot_enable_undo(bool, bool)));
 	KTipDialog::showTip(this, notr("semantik/tips"));
+}
+
+void semantik_win::fit_zoom()
+{
+	if (m_oCanvas->hasFocus())
+	{
+		m_oCanvas->fit_zoom();
+	}
+	else if (m_oDiagramView->hasFocus())
+	{
+		m_oDiagramView->fit_zoom();
+	}
 }
 
 void semantik_win::read_config()
