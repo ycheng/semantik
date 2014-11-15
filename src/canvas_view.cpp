@@ -556,7 +556,7 @@ void canvas_view::wheelEvent(QWheelEvent *i_oEvent)
 		l_oRect = matrix().scale(i_iScaleFactor, i_iScaleFactor).mapRect(l_oRect);
 
 		QRectF l_oViewRect = viewport()->rect();
-		if (i_iScaleFactor < 1 and 1.1 * l_oRect.width() < l_oViewRect.width() and 1.1 * l_oRect.height() < l_oViewRect.height())
+		if (i_rFactor < 1 and i_iScaleFactor < 1 and 1.1 * l_oRect.width() < l_oViewRect.width() and 1.1 * l_oRect.height() < l_oViewRect.height())
 		{
 			return;
 		}

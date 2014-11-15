@@ -2,14 +2,14 @@
 <html>
 <h3>1. Essential commands</h3>
 <ul>
- <li>Double click to add a concept</li>
+ <li>Double click to add a concept, type &quot;Enter&quot; to edit it</li>
  <li>Double click on a leaf or use the link mode to connect concepts</li>
  <li>Double click on a link to remove it</li>
  <li>Middle button + move to scroll on the map</li>
  <li>Scroll wheel for zooming</li>
  <li>When a concept is selected, press enter to start editing it</li>
  <li>Control+R to reorganize the map</li>
- <li>Control+H to center the zoom</li>
+ <li>Control+H to center the zoom on selected objects</li>
  <li>When a map is ready, use Ctrl+G to generate a document</li>
 </ul>
 </html>
@@ -80,6 +80,8 @@ The size of the diagrams exported can be tuned by specific values in the variabl
 <b>diagram_width</b>=200<br>
 <b>diagram_height</b>=500<br>
 </p>
+</html>
+
 
 <tip category="semantik">
 <html>
@@ -87,6 +89,8 @@ The size of the diagrams exported can be tuned by specific values in the variabl
 <p>
 The application called "semantik-d" can be used to create diagrams individually.
 </p>
+</html>
+
 
 <tip category="semantik">
 <html>
@@ -97,6 +101,7 @@ There is no knowledge without an observer, therefore knowledge is always about o
 And since observers are indissociable from universe, all the knowledge is about the universe itself.
 As the whole universe is observing itself through you, all your knowledge - gathered or desired - is just the illusion of your self.
 </p>
+</html>
 
 
 </tip>
