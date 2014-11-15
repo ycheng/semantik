@@ -45,6 +45,8 @@
 
 #include <math.h>
 
+#define PIPAD 20
+
 canvas_view::canvas_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView(i_oWidget)
 {
 	m_oSemantikWindow = i_oWidget;
@@ -526,8 +528,32 @@ void canvas_view::wheelEvent(QWheelEvent *i_oEvent)
 	qreal i_iScaleFactor = pow(2.0, i_oEvent->delta() / 440.0);
 	qreal i_rFactor = matrix().scale(i_iScaleFactor, i_iScaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
 	if (i_rFactor < 0.01 || i_rFactor > 1000) return;
-	scale(i_iScaleFactor, i_iScaleFactor);
-	centerOn(l_o + mapToScene(viewport()->rect().center()) - mapToScene(i_oEvent->pos()));
+
+
+	if (scene()->selectedItems().size())
+	{
+		QRectF l_oRect = scene()->selectedItems().at(0)->sceneBoundingRect();
+		foreach (QGraphicsItem *l_o, scene()->selectedItems())
+		{
+			l_oRect |= l_o->sceneBoundingRect();
+		}
+		l_oRect = QRectF(l_oRect.topLeft() - QPointF(10, 10), l_oRect.bottomRight() + QPointF(10, 10));
+
+		QRectF l_oViewRect = viewport()->rect();
+		QRectF l_oNewRect = matrix().scale(i_iScaleFactor, i_iScaleFactor).mapRect(l_oRect);
+		if (l_oNewRect.width() > l_oViewRect.width() or l_oNewRect.height() > l_oViewRect.height())
+		{
+			return;
+		}
+		scale(i_iScaleFactor, i_iScaleFactor);
+		centerOn(l_o + mapToScene(viewport()->rect().center()) - mapToScene(i_oEvent->pos()));
+		ensureVisible(l_oRect, 5, 5);
+	}
+	else
+	{
+		scale(i_iScaleFactor, i_iScaleFactor);
+		centerOn(l_o + mapToScene(viewport()->rect().center()) - mapToScene(i_oEvent->pos()));
+	}
 }
 
 void canvas_view::notify_open_map() {
@@ -1067,7 +1093,20 @@ void canvas_view::fit_zoom()
 	}
 #endif
 	//check_canvas_size();
-	fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
+	if (scene()->selectedItems().size())
+	{
+		QRectF l_oRect = scene()->selectedItems().at(0)->sceneBoundingRect();
+		foreach (QGraphicsItem *l_o, scene()->selectedItems())
+		{
+			l_oRect |= l_o->sceneBoundingRect();
+		}
+		l_oRect = QRectF(l_oRect.topLeft() - QPointF(PIPAD, PIPAD), l_oRect.bottomRight() + QPointF(PIPAD, PIPAD));
+		fitInView(l_oRect, Qt::KeepAspectRatio);
+	}
+	else
+	{
+		fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
+	}
 }
 
 void canvas_view::slot_change_data()
@@ -1287,7 +1326,7 @@ void canvas_view::pack(QMap<int, double> &width, QMap<int, double> &height, QMap
 void canvas_view::export_map_size()
 {
 	QRectF l_oRect = scene()->itemsBoundingRect();
-        l_oRect = QRectF(l_oRect.topLeft() - QPointF(25, 25), l_oRect.bottomRight() + QPointF(25, 25));
+	l_oRect = QRectF(l_oRect.topLeft() - QPointF(PIPAD, PIPAD), l_oRect.bottomRight() + QPointF(PIPAD, PIPAD));
 
 	export_map_dialog* exp = new export_map_dialog(this);
 
@@ -1350,7 +1389,7 @@ void canvas_view::export_map_size()
 			l_oImage = l_oImage.scaledToHeight(exp->m_oHeight->value());
 		}
 		l_oImage.fill(qRgb(255,255,255));
-	
+
 		QPainter l_oP;
 		l_oP.begin(&l_oImage);
 		l_oP.setRenderHints(QPainter::Antialiasing);
@@ -1374,7 +1413,7 @@ void canvas_view::export_map_size()
 void canvas_view::notify_export_doc()
 {
 	QRectF l_oRect = scene()->itemsBoundingRect();
-	l_oRect = QRectF(l_oRect.topLeft() - QPointF(25, 25), l_oRect.bottomRight() + QPointF(25, 25));
+	l_oRect = QRectF(l_oRect.topLeft() - QPointF(PIPAD, PIPAD), l_oRect.bottomRight() + QPointF(PIPAD, PIPAD));
 	QRectF l_oR(0, 0, l_oRect.width(), l_oRect.height());
 
 	// fill with white
@@ -1673,7 +1712,7 @@ int canvas_view::batch_print_map(const KUrl& i_oUrl, QPair<int, int> & p) {
 // The following looks copy-pasted but it is not. Watch carefully
 void canvas_view::slot_print()
 {
-        QPrinter *l_oP = new QPrinter;
+	QPrinter *l_oP = new QPrinter;
 
 	QRectF l_oRect;
 	foreach (QGraphicsItem*it, scene()->items())
