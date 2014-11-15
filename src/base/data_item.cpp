@@ -216,13 +216,18 @@ void data_box::dump_xml(QStringList & i_oS)
 		i_oS<<notr("      <box_col_size val=\"%1\"/>\n").arg(QString::number(l_i));
 	}
 
-	i_oS<<notr("      <box_stereotype stereotype=\"%1\" static=\"%2\" abstract=\"%3\" />\n").arg(m_sStereotype, QString::number((int) m_bStatic), QString::number((int) m_bAbstract));
-	foreach (data_box_method l_o, m_oMethods) {
-		l_o.dump_xml(i_oS);
+	if (m_iType == data_box::CLASS)
+	{
+		i_oS<<notr("      <box_class stereotype=\"%1\" static=\"%2\" abstract=\"%3\">\n").arg(m_sStereotype, QString::number((int) m_bStatic), QString::number((int) m_bAbstract));
+		foreach (data_box_method l_o, m_oMethods) {
+			l_o.dump_xml(i_oS);
+		}
+		foreach (data_box_attribute l_o, m_oAttributes) {
+			l_o.dump_xml(i_oS);
+		}
+		i_oS<<notr("      </box_class>\n");
 	}
-	foreach (data_box_attribute l_o, m_oAttributes) {
-		l_o.dump_xml(i_oS);
-	}
+
 	//node::dump_xml(i_oS);
 	i_oS<<notr("</itembox>\n");
 }
@@ -272,7 +277,7 @@ node& data_box::make_node(const QString& i_sName, const QXmlAttributes& i_oAttrs
 		m_oAttributes.push_back(l_o);
 		return m_oAttributes.last();
 	}
-	else if (i_sName == notr("box_stereotype"))
+	else if (i_sName == notr("box_class"))
 	{
 		m_bStatic = i_oAttrs.value(notr("static")).toInt();
 		m_bAbstract = i_oAttrs.value(notr("abstract")).toInt();
@@ -375,14 +380,12 @@ void data_box_method::read_data(const QString&i_sName, const QXmlAttributes& i_o
 
 void data_box_method::dump_xml(QStringList &i_oS)
 {
-	i_oS<<notr("       <box_class_method text=\"%1\" visibility=\"%2\" static=\"%3\" abstract=\"%4\">\n").arg(
+	i_oS<<notr("          <box_class_method text=\"%1\" visibility=\"%2\" static=\"%3\" abstract=\"%4\" />\n").arg(
 		m_sText,
 		QString::number((int) m_oVisibility),
 		QString::number((int) m_bStatic),
 		QString::number((int) m_bAbstract)
 	);
-	//node::dump_xml(i_oS);
-	i_oS<<notr("      </box_class_method>\n");
 }
 
 void data_box_attribute::read_data(const QString& i_sName, const QXmlAttributes& i_oAttrs)
@@ -395,13 +398,11 @@ void data_box_attribute::read_data(const QString& i_sName, const QXmlAttributes&
 
 void data_box_attribute::dump_xml(QStringList &i_oS)
 {
-	i_oS<<notr("      <box_class_attribute text=\"%1\" visibility=\"%2\" static=\"%3\">\n").arg(
+	i_oS<<notr("          <box_class_attribute text=\"%1\" visibility=\"%2\" static=\"%3\" />\n").arg(
 		m_sText,
 		QString::number((int) m_oVisibility),
 		QString::number((int) m_bStatic)
 	);
-	//node::dump_xml(i_oS);
-	i_oS<<notr("      </box_class_attribute>\n");
 }
 
 
