@@ -558,6 +558,7 @@ void canvas_view::wheelEvent(QWheelEvent *i_oEvent)
 		QRectF l_oViewRect = viewport()->rect();
 		if (i_rFactor < 1 and i_iScaleFactor < 1 and 1.1 * l_oRect.width() < l_oViewRect.width() and 1.1 * l_oRect.height() < l_oViewRect.height())
 		{
+			ensureVisible(scene()->itemsBoundingRect(), 10, 10);
 			return;
 		}
 

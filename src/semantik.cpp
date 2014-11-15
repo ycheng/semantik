@@ -18,6 +18,7 @@
 #include <KMessageBox>
 #include <ktip.h>
 #include <QFrame>
+ #include <QUuid>
 
 #include "box_view.h"
 #include  "sembind.h"
@@ -374,6 +375,19 @@ void semantik_win::read_config()
 	m_oMediator->m_sOutDir = l_oConfig.readEntry(notr("outdir"), notr("/tmp/"));
 	bind_node::set_var(notr("outdir"), m_oMediator->m_sOutDir);
 
+	QString l_oGuidString = l_oConfig.readEntry(notr("guid"));
+	if (!l_oGuidString.isEmpty())
+	{
+		m_oQUuid = QUuid(l_oGuidString);
+	}
+	else
+	{
+		m_oQUuid = QUuid::createUuid();
+		write_config();
+	}
+
+	qDebug()<<m_oQUuid.toString();
+
 	//QString lang_code(config.readEntry("currentLanguageCode", QVariant(QString())).toString());
 	//if (lang_code.isEmpty()) lang_code = "en_US";  // null-string are saved as empty-strings
 	//setCurrentLanguage(lang_code);
@@ -385,7 +399,7 @@ void semantik_win::write_config()
 	m_oRecentFilesAct->saveEntries(KGlobal::config()->group(notr("Recent Files")));
 	l_oConfig.writeEntry(notr("winpos"), pos());
 	l_oConfig.writeEntry(notr("outdir"), bind_node::get_var(notr("outdir")));
-	//config.writeEntry("currentLanguageCode", currentLanguageCode);
+	l_oConfig.writeEntry(notr("guid"), m_oQUuid.toString());
 	l_oConfig.sync();
 }
 

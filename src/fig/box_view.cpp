@@ -388,7 +388,7 @@ void box_view::notify_select(const QList<int>& unsel, const QList<int>& sel)
 			if (!l_oData->m_sDiag.isEmpty())
 			{
 				from_string(l_oData->m_sDiag);
-				l_oData->m_sDiag = "";
+				l_oData->m_sDiag = notr("");
 			}
 			sync_view();
 			check_canvas_size();
@@ -1253,6 +1253,7 @@ void box_view::wheelEvent(QWheelEvent *i_oEvent)
 		QRectF l_oViewRect = viewport()->rect();
 		if (i_rFactor < 1 and i_iScaleFactor < 1 and 1.1 * l_oRect.width() < l_oViewRect.width() and 1.1 * l_oRect.height() < l_oViewRect.height())
 		{
+			ensureVisible(scene()->itemsBoundingRect(), 10, 10);
 			return;
 		}
 

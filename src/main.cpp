@@ -30,12 +30,6 @@ int grid_int(int x) {
 
 int main(int i_iArgc, char **i_iArgv)
 {
-	int l_iSeed;
-	std::ifstream l_oInfile("/dev/urandom", std::ios::binary | std::ios::in);
-	l_oInfile.read(reinterpret_cast<char *>(&l_iSeed), sizeof(int));
-	l_oInfile.close();
-	srandom(l_iSeed);
-
 	KCmdLineOptions options;
 	options.add("+[url]", ki18n("A file to open on startup"));
 	options.add("o <file>", ki18n("An output file for printing the map"));

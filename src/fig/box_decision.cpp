@@ -62,6 +62,7 @@ void box_decision::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	{
 		l_oPen.setStyle(Qt::DotLine);
 	}
+	painter->setPen(l_oPen);
 
 	QPointF pts[4]; // NESW
 	QPointF topLeft = l_oRect.topLeft();

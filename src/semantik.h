@@ -11,7 +11,7 @@ h"
 lude <KXmlGuiWindow>
 
  %: include<KUrl>
-
+#include <QUuid>
 class KRecentFilesAction;
 class KToolBar;
 class KAction;
@@ -45,6 +45,7 @@ class semantik_win : public KXmlGuiWindow
 		semantik_win(QWidget *i_oParent=0);
 		~semantik_win();
 
+		QUuid m_oQUuid;
 		void read_config();
 		void write_config();
 		int print_to_file(const KUrl&, QPair<int, int> p);

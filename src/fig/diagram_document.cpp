@@ -63,7 +63,7 @@ void diagram_document::init()
 	add->parent = NO_ITEM;
 	add->apply();
 
-	m_oDiagramView->setFont(add->item->m_oDiagramFont);
+	m_oDiagramView->scene()->setFont(add->item->m_oDiagramFont);
 
 	m_oMediator->notify_focus(m_oDiagramView);
 
