@@ -551,6 +551,17 @@ void canvas_view::wheelEvent(QWheelEvent *i_oEvent)
 	}
 	else
 	{
+		// AAAAAA!!!
+		QRectF l_oRect = scene()->itemsBoundingRect();
+		l_oRect = QRectF(l_oRect.topLeft() - QPointF(PIPAD, PIPAD), l_oRect.bottomRight() + QPointF(PIPAD, PIPAD));
+		l_oRect = matrix().scale(i_iScaleFactor, i_iScaleFactor).mapRect(l_oRect);
+
+		QRectF l_oViewRect = viewport()->rect();
+		if (i_iScaleFactor < 1 and 1.1 * l_oRect.width() < l_oViewRect.width() and 1.1 * l_oRect.height() < l_oViewRect.height())
+		{
+			return;
+		}
+
 		scale(i_iScaleFactor, i_iScaleFactor);
 		centerOn(l_o + mapToScene(viewport()->rect().center()) - mapToScene(i_oEvent->pos()));
 	}
