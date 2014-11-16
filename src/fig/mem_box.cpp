@@ -312,12 +312,15 @@ void mem_import_box::init(QList<data_box*> _items, QList<data_link*> _links)
 	data_item *item = model->m_oItems[m_iId];
 	old_items.append(item->m_oBoxes.values());
 	old_links.append(item->m_oLinks);
+	m_iOldFont = item->m_oDiagramFont;
 }
 
 
 void mem_import_box::undo()
 {
 	data_item *item = model->m_oItems[m_iId];
+	item->m_oDiagramFont = m_iOldFont;
+	model->notify_change_properties(NULL);
 	foreach (data_link *k, new_links) {
 		model->notify_unlink_box(m_iId, k);
 		item->m_oLinks.removeAll(k);
@@ -340,6 +343,8 @@ void mem_import_box::undo()
 void mem_import_box::redo()
 {
 	data_item *item = model->m_oItems[m_iId];
+	item->m_oDiagramFont = m_iNewFont;
+	model->notify_change_properties(NULL);
 	foreach (data_link *k, old_links) {
 		model->notify_unlink_box(m_iId, k);
 		item->m_oLinks.removeAll(k);

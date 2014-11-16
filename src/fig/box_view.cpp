@@ -1685,10 +1685,10 @@ bool box_view::import_from_file(const KUrl& l_o)
 	if (x->open_file(l_o.path()) && x->m_oItems.size() == 1) {
 		l_bOk = true;
 		data_item *tmp = x->m_oItems.values().at(0);
-		scene()->setFont(tmp->m_oDiagramFont);
 
 		mem_import_box *imp = new mem_import_box(m_oMediator, m_iId);
 		imp->init(tmp->m_oBoxes.values(), tmp->m_oLinks);
+		imp->m_iNewFont = tmp->m_oDiagramFont;
 		imp->apply();
 
 		m_oCurrentUrl = l_o;
