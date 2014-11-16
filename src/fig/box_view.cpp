@@ -33,6 +33,7 @@
 #include <QStandardItemModel>
 #include <QPrinter>
  #include <QSvgGenerator>
+#include <QX11Info>
 
 #include "aux.h"
 #include "con.h"
@@ -574,6 +575,8 @@ void box_view::notify_export_item(int id)
 	l_oGenerator.setFileName(QString(m_oMediator->m_sTempDir + QString("/") + QString("diag-%1.svg")).arg(QString::number(m_iId)));
 	l_oGenerator.setSize(QSize(l_oR.width(), l_oR.height()));
 	l_oGenerator.setViewBox(l_oR);
+	l_oGenerator.setResolution(QX11Info().appDpiX());
+	l_oGenerator.setTitle(trUtf8("Semantik diagram"));
 
 	QPainter l_oSvg;
 	if (l_oSvg.begin(&l_oGenerator))
@@ -1838,11 +1841,15 @@ int box_view::batch_print_map(const QString& url, QPair<int, int> & p)
 			l_oPdf.end();
 			m_bDisableGradient = false;
 		}
-	} else if (url.endsWith("svg")) {
+	}
+	else if (url.endsWith("svg"))
+	{
 		QSvgGenerator l_oGenerator;
 		l_oGenerator.setFileName(url);
 		l_oGenerator.setSize(QSize(l_oR.width(), l_oR.height()));
 		l_oGenerator.setViewBox(l_oR);
+		l_oGenerator.setTitle(trUtf8("Semantik diagram"));
+		l_oGenerator.setResolution(QX11Info().appDpiX());
 
 		QPainter l_oP;
 		l_oP.begin(&l_oGenerator);

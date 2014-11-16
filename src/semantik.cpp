@@ -386,8 +386,6 @@ void semantik_win::read_config()
 		write_config();
 	}
 
-	qDebug()<<m_oQUuid.toString();
-
 	//QString lang_code(config.readEntry("currentLanguageCode", QVariant(QString())).toString());
 	//if (lang_code.isEmpty()) lang_code = "en_US";  // null-string are saved as empty-strings
 	//setCurrentLanguage(lang_code);

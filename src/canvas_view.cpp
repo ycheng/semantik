@@ -15,6 +15,7 @@
 #include <KDialog>
 #include <KUrl>
 #include  <QActionGroup> 
+#include <QX11Info>
 #include "canvas_item.h"
 #include "canvas_link.h"
 #include<QCoreApplication>
@@ -1708,6 +1709,8 @@ int canvas_view::batch_print_map(const KUrl& i_oUrl, QPair<int, int> & p) {
 		l_oGenerator.setFileName(url);
 		l_oGenerator.setSize(QSize(l_oR.width(), l_oR.height()));
 		l_oGenerator.setViewBox(l_oR);
+		l_oGenerator.setResolution(QX11Info().appDpiX());
+		l_oGenerator.setTitle(trUtf8("Semantik map"));
 
 		QPainter l_oP;
 		l_oP.begin(&l_oGenerator);
