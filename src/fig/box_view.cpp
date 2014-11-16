@@ -1158,16 +1158,6 @@ void box_view::notify_add_box(int id, int box)
 	}
 	else if (db->m_iType == data_box::ACTIVITY_PARALLEL)
 	{
-		if (db->m_bIsVertical)
-		{
-			db->m_iHH = FORK_LENGTH;
-			db->m_iWW = FORK_WIDTH;
-		}
-		else
-		{
-			db->m_iWW = FORK_LENGTH;
-			db->m_iHH = FORK_WIDTH;
-		}
 		l_o = new box_fork(this, box);
 	}
 	Q_ASSERT(l_o != NULL);
