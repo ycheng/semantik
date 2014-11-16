@@ -63,6 +63,7 @@ class box_view : public QGraphicsView
 		QAction *m_oAddMatrix;
 		QAction *m_oAddFrame;
 		QAction *m_oAddClass;
+		QAction *m_oAddDatabase;
 		QAction *m_oFileExport;
 		QAction *m_oFileImport;
 		QAction *m_oCopyToClipboard;

@@ -133,7 +133,7 @@ class data_box : public diagram_item, public node
 	int m_iWW;
 	int m_iHH;
 	enum IType { ACTIVITY=1, ACTIVITY_START=2, ACTIVITY_PARALLEL=3, LABEL=4, COMPONENT=5, NODE=6, \
-		ACTOR=7, USECASE=8, DECISION=9, MATRIX=10, FRAME=11, CLASS=12, CAPTION=13};
+		ACTOR=7, USECASE=8, DECISION=9, MATRIX=10, FRAME=11, CLASS=12, CAPTION=13, DATABASE=14};
 	data_box::IType m_iType;
 
 	node& make_node(const QString&, const QXmlAttributes&);

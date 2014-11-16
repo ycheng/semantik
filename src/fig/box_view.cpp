@@ -43,6 +43,7 @@
 #include "box_item.h"
 #include "box_dot.h"
 #include "box_label.h"
+#include "box_database.h"
 #include "box_fork.h"
 #include "box_chain.h"
 #include "box_link.h"
@@ -216,6 +217,8 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	connect(m_oAddNode, SIGNAL(triggered()), this, SLOT(slot_add_element()));
 	m_oAddDecision = new QAction(QObject::trUtf8("Decision"), this);
 	connect(m_oAddDecision, SIGNAL(triggered()), this, SLOT(slot_add_element()));
+	m_oAddDatabase = new QAction(QObject::trUtf8("Database"), this);
+	connect(m_oAddDatabase, SIGNAL(triggered()), this, SLOT(slot_add_element()));
 	m_oAddDotStart = new QAction(QObject::trUtf8("Activity start"), this);
 	connect(m_oAddDotStart, SIGNAL(triggered()), this, SLOT(slot_add_element()));
 	m_oAddDotEnd = new QAction(QObject::trUtf8("Activity end"), this);
@@ -284,6 +287,7 @@ void box_view::init_menu()
 	m_oAddBoxMenu->addAction(m_oAddMatrix);
 	m_oAddBoxMenu->addAction(m_oAddFrame);
 	m_oAddBoxMenu->addAction(m_oAddClass);
+	m_oAddBoxMenu->addAction(m_oAddDatabase);
 
 	//m_oMenu->addAction(m_oEditAction);
 	m_oMenu->addAction(m_oDeleteAction);
@@ -468,6 +472,10 @@ void box_view::sync_view()
 		else if (box->m_iType == data_box::CLASS)
 		{
 			l_o = new box_class(this, box->m_iId);
+		}
+		else if (box->m_iType == data_box::DATABASE)
+		{
+			l_o = new box_database(this, box->m_iId);
 		}
 		else
 		{
@@ -864,6 +872,12 @@ void box_view::slot_add_element()
 		add->box->m_iWW = 510;
 		add->box->m_iHH = 320;
 	}
+	else if (sender == m_oAddDatabase)
+	{
+		add->box->m_iType = data_box::DATABASE;
+		add->box->m_iWW = 60;
+		add->box->m_iHH = 90;
+	}
 	else if (sender == m_oAddClass)
 	{
 		add->box->m_iType = data_box::CLASS;
@@ -1159,6 +1173,10 @@ void box_view::notify_add_box(int id, int box)
 	else if (db->m_iType == data_box::ACTIVITY_PARALLEL)
 	{
 		l_o = new box_fork(this, box);
+	}
+	else if (db->m_iType == data_box::DATABASE)
+	{
+		l_o = new box_database(this, box);
 	}
 	Q_ASSERT(l_o != NULL);
 	m_oItems[box] = l_o;
