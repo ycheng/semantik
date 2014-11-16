@@ -846,8 +846,8 @@ void box_view::slot_add_element()
 	else if (sender == m_oAddDecision)
 	{
 		add->box->m_iType = data_box::DECISION;
-		add->box->m_iWW = 50;
-		add->box->m_iHH = 50;
+		add->box->m_iWW = 40;
+		add->box->m_iHH = 40;
 	}
 	else if (sender == m_oAddMatrix)
 	{
