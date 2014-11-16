@@ -167,6 +167,8 @@ box_view::box_view(QWidget *i_oWidget, sem_mediator *i_oControl) : QGraphicsView
 	m_bDisableGradient = false;
 	m_bShowFileMenu = false;
 
+	num_seq = 1111;
+
 	QGraphicsScene *l_oScene = new QGraphicsScene(this);
 	l_oScene->setSceneRect(-400, -400, 400, 400);
 	setScene(l_oScene);
