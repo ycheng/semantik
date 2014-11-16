@@ -1824,11 +1824,18 @@ int box_view::batch_print_map(const QString& url, QPair<int, int> & p)
 		l_oP.end();
 
 		l_oImage.save(url);
-	} else if (url.endsWith("pdf")) {
+	} else if (url.endsWith("pdf") or url.endsWith("ps") or url.endsWith("eps")) {
 		QPrinter l_oPrinter;
-		//l_oPrinter.setResolution(QPrinter::HighResolution);
 		l_oPrinter.setOrientation(QPrinter::Portrait);
-		l_oPrinter.setOutputFormat(QPrinter::PdfFormat);
+		if (url.endsWith("pdf"))
+		{
+			l_oPrinter.setOutputFormat(QPrinter::PdfFormat);
+		}
+		else
+		{
+			l_oPrinter.setOutputFormat(QPrinter::PostScriptFormat);
+			l_oPrinter.setResolution(QPrinter::HighResolution);
+		}
 		l_oPrinter.setPaperSize(l_oR.size(), QPrinter::DevicePixel);
 		l_oPrinter.setPageMargins(0, 0, 0, 0, QPrinter::DevicePixel);
 		l_oPrinter.setOutputFileName(url);

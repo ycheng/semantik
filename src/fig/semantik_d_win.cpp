@@ -372,12 +372,11 @@ void semantik_d_win::slot_generate() {
 void semantik_d_win::slot_tip_of_day() {
 }
 
-void semantik_d_win::print_current(KUrl i_oUrl)
+void semantik_d_win::print_current(KUrl i_oUrl, QPair<int, int> i_oP)
 {
-	QPair<int, int> p;
 	if (m_oActiveDocument != NULL)
 	{
-		m_oActiveDocument->m_oDiagramView->batch_print_map(i_oUrl.path(), p);
+		m_oActiveDocument->m_oDiagramView->batch_print_map(i_oUrl.path(), i_oP);
 	}
 }
 

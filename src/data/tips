@@ -87,7 +87,10 @@ The size of the diagrams exported can be tuned by specific values in the variabl
 <html>
 <h3>8. Diagram editor</h3>
 <p>
-The application called "semantik-d" can be used to create diagrams individually.
+The application called "semantik-d" can be used to create diagrams individually. The diagrams can be imported or exported from the diagram view of semantik.
+Additionally, the diagrams can be exported to a variety of formats by using the command-line. Just specify the extension, and a diagram will be produced if it is supported:
+<pre>semantik-d /tmp/foo.semd -o /tmp/foo.svg</pre>
+The options &quot;--width&quot; and &quot;--height&quot; can be used to change the size of png files.
 </p>
 </html>
 

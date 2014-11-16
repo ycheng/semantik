@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <iostream>
 
+#include <QPair>
 #include <KGlobal>
 
 #include <X11/Xlib.h>
@@ -40,6 +41,8 @@ int main(int i_iArgc, char **i_iArgv)
 	KCmdLineOptions options;
 	options.add("+[url]", ki18n("A file to open on startup"));
 	options.add("o <file>", ki18n("An output file for exporting the diagram"));
+	options.add("width <width>", ki18n("Diagram width for printing"), "0");
+	options.add("height <height>", ki18n("Diagram height for printing"), "0");
 
 	KAboutData l_o("semantik-d", 0, ki18n("Semantik-d"), version, ki18n(description), KAboutData::License_GPL_V3, ki18n("(C) 2013-2014 Thomas Nagy"), KLocalizedString());
 	l_o.setBugAddress("http://code.google.com/p/semantik/issues/list");
@@ -68,8 +71,14 @@ int main(int i_iArgc, char **i_iArgv)
 				return 2;
 			}
 
+			int l_oWidth = args->getOption("width").toInt();
+			if (l_oWidth < 0 or l_oWidth > 50000) return 69;
+			int l_oHeight = args->getOption("height").toInt();
+			if (l_oHeight < 0 or l_oHeight > 50000) return 70;
+
+			QPair<int, int> l_oP(l_oWidth, l_oHeight);
 			l_oMainWin->slot_recent(args->url(0));
-			l_oMainWin->print_current(url);
+			l_oMainWin->print_current(url, l_oP);
 			return 0;
 		}
 	} else {
