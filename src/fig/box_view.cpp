@@ -875,6 +875,7 @@ void box_view::slot_add_element()
 	else if (sender == m_oAddDatabase)
 	{
 		add->box->m_iType = data_box::DATABASE;
+		add->box->color = QColor("#FCF2E2");
 		add->box->m_iWW = 60;
 		add->box->m_iHH = 90;
 	}
