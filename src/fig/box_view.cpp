@@ -1748,6 +1748,7 @@ bool box_view::slot_export_to_file() {
 	// now the magic
 	sem_mediator *x = new sem_mediator(this);
 	data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
+	l_oData->m_iDataType = VIEW_DIAG;
 	x->m_oItems[1] = l_oData;
 	x->m_oColorSchemes = m_oMediator->m_oColorSchemes;
 
@@ -1765,6 +1766,7 @@ bool box_view::slot_save() {
 	{
 		sem_mediator *x = new sem_mediator(this);
 		data_item *l_oData = m_oMediator->m_oItems.value(m_iId);
+		l_oData->m_iDataType = VIEW_DIAG;
 		x->m_oItems[1] = l_oData;
 		x->m_oColorSchemes = m_oMediator->m_oColorSchemes;
 

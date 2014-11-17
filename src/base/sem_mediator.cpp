@@ -724,6 +724,12 @@ bool sem_mediator::open_file(const QString& i_sUrl)
 		KMessageBox::sorry(NULL, trUtf8("Could not load the document %1").arg(bind_node::get_var(notr("fulldoc"))), trUtf8("Broken document"));
 		return false;
 	}
+	if (m_oColorSchemes.isEmpty()) {
+		init_colors();
+	}
+	if (m_oFlagSchemes.isEmpty()) {
+		init_flags();
+	}
 
 	QDir l_oDir(m_sTempDir);
 
