@@ -40,29 +40,29 @@ void box_database::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	l_oPen.setColor(Qt::black);
 	l_oPen.setCosmetic(false);
 	l_oPen.setWidth(1);
+	//l_oPen.setJoinStyle(Qt::RoundJoin);
 	painter->setPen(l_oPen);
 
-	painter->drawRect(l_oRect);
-
-	/*
-	qreal xtop = l_oRect.x();
-	qreal ytop = l_oRect.y();
-	qreal xcoord = xtop + l_oRect.width() / 2.0;
-	qreal ycoord = l_oRect.height() / 5.;
-
-	painter->drawLine(QLineF(xcoord, ytop + 2 * ycoord, xcoord, ytop + 4 * ycoord));
-	painter->drawLine(QLineF(xtop, ytop + 3 * ycoord, xtop + l_oRect.width(), ytop + 3 * ycoord));
-
-	painter->drawLine(QLineF(xtop, ytop + l_oRect.height(), xcoord, ytop + 4 * ycoord));
-	painter->drawLine(QLineF(xtop + l_oRect.width(), ytop + l_oRect.height(), xcoord, ytop + 4 * ycoord));
-
-	double cir = 4 * l_oRect.width() / 10.;
-	if (cir > ycoord) {
-		cir = ycoord;
+	QRectF l_oRect2(l_oRect);
+	qreal l_fRat = l_oRect2.width()/2.2;
+	if (l_fRat > l_oRect.height() - 5)
+	{
+		l_fRat = l_oRect.height() - 5;
 	}
-	painter->drawEllipse(QRectF(xcoord - cir, ytop + 2 * ycoord - 2 * cir, 2 * cir, 2 * cir));
+	l_oRect2.setHeight(l_fRat);
+	painter->drawEllipse(l_oRect2);
 
-	*/
+	QRectF l_oRect3 = l_oRect2.translated(0, l_oRect.height() - l_oRect2.height());
+	painter->drawArc(l_oRect3, 180*16, 180*16);
+
+	qreal l_fY1 = l_oRect2.topLeft().y() + l_oRect2.height()/2.;
+	qreal l_fY2 = l_oRect3.topLeft().y() + l_oRect3.height()/2.;
+
+	qreal l_fX1 = l_oRect.topLeft().x();
+	qreal l_fX2 = l_oRect.topRight().x();
+	painter->drawLine(l_fX1, l_fY1, l_fX1, l_fY2);
+	painter->drawLine(l_fX2, l_fY1, l_fX2, l_fY2);
+
 
 	if (isSelected())
 	{
