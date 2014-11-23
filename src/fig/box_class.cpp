@@ -31,21 +31,16 @@
 box_class::box_class(box_view* view, int id) : box_item(view, id)
 {
         setZValue(80);
-        update_size();
+	update_size();
 }
 
-void box_class::update_size()
+void box_class::force_size()
 {
 	QSizeF l_o = size();
 	setRect(0, 0, l_o.width(), l_o.height());
 
 	m_iWW = m_oBox->m_iWW = l_o.width();
 	m_iHH = m_oBox->m_iHH = l_o.height();
-
-	m_oChain->setPos(QPointF(m_iWW + 3, 0));
-
-	update();
-	update_links();
 }
 
 void box_class::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -278,12 +273,14 @@ void box_class::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *opti
 		l_fHpos += l_oR.height();
 	}
 
-	/*if (isSelected())
+	if (isSelected())
 	{
+		l_oPen.setStyle(Qt::SolidLine);
+		i_oPainter->setPen(l_oPen);
 		i_oPainter->setBrush(QColor("#FFFF00"));
 		QRectF l_oR2(m_iWW - 8, m_iHH - 8, 6, 6);
 		i_oPainter->drawRect(l_oR2);
-	}*/
+	}
 	i_oPainter->restore();
 }
 
@@ -411,12 +408,6 @@ QSizeF box_class::size() {
 
 	return QSizeF(l_iWWN, l_iHHN); // adjusted
 }
-
-void box_class::mousePressEvent(QGraphicsSceneMouseEvent* i_oE)
-{
-	QGraphicsRectItem::mousePressEvent(i_oE);
-}
-
 
 void box_class::properties()
 {

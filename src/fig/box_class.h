@@ -21,8 +21,7 @@ class box_class : public box_item
 		box_class(box_view*, int i_iId);
 		QSizeF size();
 		qreal minVisibility(const QFontMetricsF i_oFm);
-		void mousePressEvent(QGraphicsSceneMouseEvent*);
-		void update_size();
+		void force_size();
 
 		void properties();
 };
