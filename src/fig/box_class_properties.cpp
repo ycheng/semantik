@@ -326,6 +326,9 @@ void box_class_properties::apply() {
 				mem->m_oNewBox.m_sStereotype = rs.cap(1);
 			}
 		}
+
+		// must ask the ui to know the size :/
+		*m_oClass->m_oBox = mem->m_oNewBox;
 		m_oClass->force_size();
 		if (m_oClass->m_iWW > mem->m_oOldBox.m_iWW or m_oClass->m_iHH > mem->m_oOldBox.m_iHH)
 		{

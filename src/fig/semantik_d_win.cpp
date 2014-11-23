@@ -73,10 +73,10 @@ semantik_d_win::semantik_d_win(QWidget *i_oParent) : KXmlGuiWindow(i_oParent)
 	m_oFileTree = new filetree(l_oDock);
 	l_oDock->setWidget(m_oFileTree);
 
+	setupGUI(QSize(1000, 800), Default, notr("semantik/semantik-dui.rc"));
+
 	read_config();
 	setAutoSaveSettings();
-
-	setupGUI(QSize(1000, 800), Default, notr("semantik/semantik-dui.rc"));
 	statusBar()->showMessage(trUtf8("This is Semantik-d"), 2000);
 
 	connect(m_oFileTree, SIGNAL(url_selected(const KUrl&)), this, SLOT(slot_recent(const KUrl&)));
