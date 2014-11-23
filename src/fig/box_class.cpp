@@ -47,7 +47,7 @@ void box_class::paint(QPainter *i_oPainter, const QStyleOptionGraphicsItem *opti
 {
 	i_oPainter->save();
 
-	QRectF l_oRect = boundingRect().adjusted(PAD, PAD, -PAD, -PAD);
+	QRectF l_oRect = boundingRect().adjusted(1, 1, -1, -1);
 
 	QPen l_oPen;
 	l_oPen.setCosmetic(false);
@@ -399,12 +399,11 @@ QSizeF box_class::size() {
 
 	// +2 for the border width
 	int l_iWWN = (int) (l_iWW + 2 + 2 * PAD);
-	int l_iHHN = (int) (l_iHH + 2 + 2 * PAD);
+	int l_iHHN = (int) (l_iHH + 2 * PAD);
 
-	int RG = GRID/2;
-
-	if (l_iWWN % RG) l_iWWN = RG * (1 + l_iWWN / RG);
-	if (l_iHHN % RG) l_iHHN = RG * (1 + l_iHHN / RG);
+	//int RG = GRID/2;
+	//if (l_iWWN % RG) l_iWWN = RG * (1 + l_iWWN / RG);
+	//if (l_iHHN % RG) l_iHHN = RG * (1 + l_iHHN / RG);
 
 	return QSizeF(l_iWWN, l_iHHN); // adjusted
 }
