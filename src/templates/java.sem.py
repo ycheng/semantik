@@ -2,7 +2,7 @@
 #sem:tip: Generates a web applet in java (requires java)
 #sem:picture
 
-# Thomas Nagy, 2007-2014
+# Thomas Nagy, 2007-2015
 
 import os, shutil, time, sys
 

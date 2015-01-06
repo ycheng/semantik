@@ -1,7 +1,7 @@
 #sem:name: Web document
 #sem:tip: Generates a simple html document with a stylesheet
 
-# Thomas Nagy, 2007-2014
+# Thomas Nagy, 2007-2015
 
 # exclude
 # caption

@@ -1,4 +1,4 @@
-/// Thomas Nagy 2007-2014 GPLV3
+/// Thomas Nagy 2007-2015 GPLV3
 
 #ifndef CANVAS_FLAG_H
 #define CANVAS_FLAG_H

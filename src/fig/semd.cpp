@@ -1,4 +1,4 @@
-// Thomas Nagy 2007-2014 GPLV3
+// Thomas Nagy 2007-2015 GPLV3
 
 #include <fstream>
 #include <QCoreApplication>
@@ -44,7 +44,7 @@ int main(int i_iArgc, char **i_iArgv)
 	options.add("width <width>", ki18n("Diagram width for printing"), "0");
 	options.add("height <height>", ki18n("Diagram height for printing"), "0");
 
-	KAboutData l_o("semantik-d", 0, ki18n("Semantik-d"), version, ki18n(description), KAboutData::License_GPL_V3, ki18n("(C) 2013-2014 Thomas Nagy"), KLocalizedString());
+	KAboutData l_o("semantik-d", 0, ki18n("Semantik-d"), version, ki18n(description), KAboutData::License_GPL_V3, ki18n("(C) 2013-2015 Thomas Nagy"), KLocalizedString());
 	l_o.setBugAddress("http://code.google.com/p/semantik/issues/list");
 	l_o.addAuthor(ki18n("Thomas Nagy"), KLocalizedString());
 

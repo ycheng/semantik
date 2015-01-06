@@ -1,7 +1,7 @@
 #sem:name: OpenDocument Presentation
 #sem:tip: Generates presentations for Kpresenter or OpenOffice.org Impress
 
-# Thomas Nagy, 2007-2014
+# Thomas Nagy, 2007-2015
 
 mimetype = "application/vnd.oasis.opendocument.presentation"
 

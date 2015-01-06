@@ -1,4 +1,4 @@
-// Thomas Nagy 2012-2014 GPLV3
+// Thomas Nagy 2014-2015 GPLV3
 
 #ifndef BOX_CLASS_PROPERTIES_H
 #define BOX_CLASS_PROPERTIES_H

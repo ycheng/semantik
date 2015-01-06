@@ -1,4 +1,4 @@
-// Thomas Nagy 2007-2014 GPLV3
+// Thomas Nagy 2007-2015 GPLV3
 
 #ifndef FLAG_SCHEME_H
 #define FLAG_SCHEME_H

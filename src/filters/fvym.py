@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # encoding: utf-8
-# Thomas Nagy, 2007-2014 (ita)
+# Thomas Nagy, 2007-2015 (ita)
 
 import os, sys, tarfile, StringIO
 from xml.sax import make_parser

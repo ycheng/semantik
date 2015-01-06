@@ -1,7 +1,7 @@
 #sem:name: S5 presentation
 #sem:tip: Generates a xhtml presentation using s5
 
-# Thomas Nagy, 2007-2014
+# Thomas Nagy, 2007-2015
 
 import os, shutil, time, getpass
 

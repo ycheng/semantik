@@ -1,4 +1,4 @@
-// Thomas Nagy 2014 GPLV3
+// Thomas Nagy 2014-2015 GPLV3
 
 #ifndef MATRIX_DIALOG_H
 #define MATRIX_DIALOG_H

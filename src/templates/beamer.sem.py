@@ -1,7 +1,7 @@
 #sem:name: Beamer presentation
 #sem:tip: Generates a LaTeX presentation using Beamer
 
-# Thomas Nagy, 2007-2014
+# Thomas Nagy, 2007-2015
 
 import os, shutil, time, StringIO, sys
 import getpass
