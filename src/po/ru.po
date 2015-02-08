@@ -1,158 +1,217 @@
 # Алексей, 2009.
 # Алексей Кузнецов Alexey.Kouznetsov gmail.com, 2011.
 # Alexey D. Kouznetsov Alexey.Kouznetsov gmail.com, 2011.
+# Alexey Loginov <loginov.alex.valer@gmail.com>, 2015.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: semantik\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/semantik/issues\n"
-"POT-Creation-Date: 2012-10-09 23:25+0200\n"
-"PO-Revision-Date: 2011-05-10 00:58+0400\n"
-"Last-Translator: Alexey D. Kouznetsov Alexey.Kouznetsov gmail.com\n"
+"POT-Creation-Date: 2015-02-07 23:12+0300\n"
+"PO-Revision-Date: 2015-02-08 01:01+0300\n"
+"Last-Translator: AlexL <loginov.alex.valer@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.2\n"
+"X-Generator: Poedit 1.6.9\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: browser.cpp:21 canvas_view.cpp:134
-msgid "Toggle fullscreen"
-msgstr ""
-
-#: canvas_view.cpp:83
-#, fuzzy
-msgid "Add an element"
-msgstr "Вставлен столбец"
-
-#: canvas_view.cpp:88 fig/box_view.cpp:170
-msgid "Delete selection"
-msgstr "Удалить выбранное"
-
-#: canvas_view.cpp:93
-#, fuzzy
-msgid "Insert a sibling"
-msgstr "Добавить равнозначный элемент"
-
-#: canvas_view.cpp:98 fig/box_view.cpp:180
-msgid "Move up"
-msgstr "Поднять"
-
-#: canvas_view.cpp:99 fig/box_view.cpp:185
-msgid "Move down"
-msgstr "Опустить"
-
-#: canvas_view.cpp:100
-msgid "Move left"
-msgstr "Сдвинуть влево"
-
-#: canvas_view.cpp:101
-msgid "Move right"
-msgstr "Сдвинуть вправо"
-
-#: canvas_view.cpp:103
-msgid "Select up"
-msgstr "Перейти выше"
-
-#: canvas_view.cpp:104
-msgid "Select down"
-msgstr "Перейти ниже"
-
-#: canvas_view.cpp:105
-msgid "Select left"
-msgstr "Перейти влево"
-
-#: canvas_view.cpp:106
-msgid "Select right"
-msgstr "Перейти вправо"
-
-#: canvas_view.cpp:109
-#, fuzzy
-msgid "Select subtree"
-msgstr "Перейти выше"
-
-#: canvas_view.cpp:114
-msgid "Next root"
-msgstr "Следующий корень"
-
-#: canvas_view.cpp:117
-msgid "Toggle edit"
-msgstr "Правка"
-
-#: canvas_view.cpp:122
-#, fuzzy
-msgid "Cancel edit"
-msgstr "&Отменить"
-
-#: canvas_view.cpp:138
-msgid "Colors"
-msgstr "Цвета"
-
-#: canvas_view.cpp:139
-msgid "Data type"
-msgstr "Тип данных"
-
-#: canvas_view.cpp:148
-msgid "Text"
-msgstr "Текст"
-
-#: canvas_view.cpp:149
-msgid "Diagram"
-msgstr "Диаграмма"
-
-#: canvas_view.cpp:150
-msgid "Table"
-msgstr "Таблица"
-
-#: canvas_view.cpp:151
-msgid "Image"
-msgstr "Картинка"
-
-#: canvas_view.cpp:224 canvas_view.cpp:276 canvas_view.cpp:288
-#: data_item.cpp:27
+#: base/data_item.cpp:60 canvas_view.cpp:246 canvas_view.cpp:298
+#: canvas_view.cpp:310
 msgid "Empty"
 msgstr "Пусто"
 
-#: canvas_view.cpp:573
+#: base/flag_scheme.cpp:14
+msgid "Flag item(s) as..."
+msgstr "Пометить элемент(ы) как..."
+
+#: base/sem_mediator.cpp:282
+msgid "Automatic save failed for file: %1"
+msgstr "Не удалось сохранить автоматически файл «%1»"
+
+#: base/sem_mediator.cpp:285
+msgid "%1 saved automatically"
+msgstr "«%1» автоматически сохранён."
+
+#: base/sem_mediator.cpp:304
+msgid "Color %1"
+msgstr "Цвет %1"
+
+#: base/sem_mediator.cpp:617
+msgid "File saving: missing file %1"
+msgstr "Сохранение файла: файл «%1» не существует"
+
+#: base/sem_mediator.cpp:642 base/sem_mediator.cpp:1147
+#: base/sem_mediator.cpp:1190
+msgid "Missing bindings for opening files"
+msgstr "Не могу открыть файл: ошибка поддержки Python"
+
+#: base/sem_mediator.cpp:693
+msgid "Missing filter file %1 for opening files"
+msgstr "Не найден файл фильтра «%1» для открытия файлов"
+
+#: base/sem_mediator.cpp:693 base/sem_mediator.cpp:708
+msgid "Broken installation"
+msgstr "Битая установка"
+
+#: base/sem_mediator.cpp:708
+msgid "Missing python bindings for opening files"
+msgstr "Отсутствует поддержка в python для открытия файлов"
+
+#: base/sem_mediator.cpp:724
+msgid "Could not load the document %1"
+msgstr "Не удалось загрузить документ %1"
+
+#: base/sem_mediator.cpp:724
+msgid "Broken document"
+msgstr "Битый документ"
+
+#: base/sem_mediator.cpp:1113
+msgid "Code generation failed: missing file %1"
+msgstr "Не удалось генерировать код: нет файла «%1»"
+
+#: base/sem_mediator.cpp:1152
+msgid "Document generation completed successfully"
+msgstr "Создание документа успешно завершено"
+
+#: browser.cpp:21 canvas_view.cpp:143
+msgid "Toggle fullscreen"
+msgstr "Полноэкранный режим"
+
+#: canvas_view.cpp:92
+msgid "Add an element"
+msgstr "Добавить элемент"
+
+#: canvas_view.cpp:97 fig/box_view.cpp:192
+msgid "Delete selection"
+msgstr "Удалить выбранное"
+
+#: canvas_view.cpp:102
+msgid "Insert a sibling"
+msgstr "Вставить равнозначный элемент"
+
+#: canvas_view.cpp:107
+msgid "Move up"
+msgstr "Поднять"
+
+#: canvas_view.cpp:108
+msgid "Move down"
+msgstr "Опустить"
+
+#: canvas_view.cpp:109
+msgid "Move left"
+msgstr "Сдвинуть влево"
+
+#: canvas_view.cpp:110
+msgid "Move right"
+msgstr "Сдвинуть вправо"
+
+#: canvas_view.cpp:112
+msgid "Select up"
+msgstr "Перейти выше"
+
+#: canvas_view.cpp:113
+msgid "Select down"
+msgstr "Перейти ниже"
+
+#: canvas_view.cpp:114
+msgid "Select left"
+msgstr "Перейти влево"
+
+#: canvas_view.cpp:115
+msgid "Select right"
+msgstr "Перейти вправо"
+
+#: canvas_view.cpp:118
+msgid "Select subtree"
+msgstr "Выбрать вложенное дерево"
+
+#: canvas_view.cpp:123
+msgid "Next root"
+msgstr "Следующий корень"
+
+#: canvas_view.cpp:126
+msgid "Toggle edit"
+msgstr "Правка"
+
+#: canvas_view.cpp:131
+msgid "Cancel edit"
+msgstr "Отменить правку"
+
+#: canvas_view.cpp:147
+msgid "Colors"
+msgstr "Цвета"
+
+#: canvas_view.cpp:158
+msgid "Text"
+msgstr "Текст"
+
+#: canvas_view.cpp:159
+msgid "Diagram"
+msgstr "Диаграмма"
+
+#: canvas_view.cpp:160
+msgid "Table"
+msgstr "Таблица"
+
+#: canvas_view.cpp:161
+msgid "Image"
+msgstr "Картинка"
+
+#: canvas_view.cpp:630
 msgid "Color"
 msgstr "Цвет"
 
-#: canvas_view.cpp:623
+#: canvas_view.cpp:680
 msgid "Flag"
 msgstr "Флаг"
 
-#: canvas_view.cpp:940
+#: canvas_view.cpp:1003
 msgid "Click to set Item %1"
 msgstr "Нажмите, чтобы установить объект %1"
 
-#: canvas_view.cpp:1250
+#: canvas_view.cpp:1346
 msgid "*.png|PNG Files (*.png)"
-msgstr ""
+msgstr "*.png|PNG файлы (*.png)"
 
-#: canvas_view.cpp:1288
+#: canvas_view.cpp:1384
 msgid "No destination file selected"
-msgstr ""
+msgstr "Не выбран файл назначения"
 
-#: canvas_view.cpp:1323
-#, fuzzy
+#: canvas_view.cpp:1419
 msgid "Exported '%1'"
-msgstr "«%1» сохранён"
+msgstr "'%1' экспортирован"
 
-#: canvas_view.cpp:1325
-#, fuzzy
+#: canvas_view.cpp:1421
 msgid "Could not save to %1"
-msgstr "Нажмите, чтобы установить объект %1"
+msgstr "Не удалось сохранить %1"
 
-#: canvas_view.cpp:1325
-#, fuzzy
+#: canvas_view.cpp:1421
 msgid "Missing picture"
-msgstr "Изменить картинку"
+msgstr "Отсутствует картинка"
+
+#: canvas_view.cpp:1713
+msgid "Semantik map"
+msgstr "Карта Semantik"
+
+#: canvas_view.cpp:1763 fig/box_view.cpp:1922
+msgid "Printing cancelled"
+msgstr "Печать отменена"
+
+#: canvas_view.cpp:1774 fig/box_view.cpp:1933
+msgid "Printing completed"
+msgstr "Печать завершена"
+
+#: canvas_view.cpp:1778 fig/box_view.cpp:1937
+msgid "Problem during printing :-("
+msgstr "Проблема при печати :-("
 
 #: config_dialog.cpp:29
-#, fuzzy
 msgid "Document settings"
-msgstr "Заголовок документа"
+msgstr "Настройки документа"
 
 #: config_dialog.cpp:37
 msgid "Reorganization type"
@@ -172,15 +231,15 @@ msgstr "Цвет фона"
 
 #: config_dialog.cpp:54
 msgid "Fixed"
-msgstr ""
+msgstr "Фиксированный"
 
 #: config_dialog.cpp:54
 msgid "Force-based"
-msgstr ""
+msgstr "Принудительно основанный"
 
 #: config_dialog.cpp:54
 msgid "Incremental"
-msgstr ""
+msgstr "Инкрементальный"
 
 #: config_dialog.cpp:58
 msgid "Lines"
@@ -223,262 +282,477 @@ msgid "Email"
 msgstr "Эл. почта"
 
 #: export_map_dialog.cpp:31
-#, fuzzy
 msgid "Export the map"
-msgstr "Пустой план"
+msgstr "Экспортировать карту"
 
 #: export_map_dialog.cpp:37
 msgid "File to write"
-msgstr ""
+msgstr "Файл для записи"
 
 #: export_map_dialog.cpp:43
 msgid "Width"
-msgstr ""
+msgstr "Ширина"
 
 #: export_map_dialog.cpp:51
-#, fuzzy
 msgid "Height"
-msgstr "Сдвинуть вправо"
+msgstr "Высота"
 
-#: fig/box_fork.cpp:334 fig/box_item.cpp:133
+#: fig/box_class_properties.cpp:89 vars_view.cpp:77
+msgid "Code complete"
+msgstr "Код готов"
+
+#: fig/box_class_properties.cpp:90 vars_view.cpp:78
+msgid "Ctrl+space"
+msgstr "Ctrl+пробел"
+
+#: fig/box_class_properties.cpp:246
+msgid "Class properties"
+msgstr "Свойства класса"
+
+#: fig/box_class_properties.cpp:283
+msgid "No class name given"
+msgstr "Классу не дано имя"
+
+#: fig/box_class_properties.cpp:283
+msgid "Missing class name"
+msgstr "Отсутствует имя класса"
+
+#: fig/box_document_properties.cpp:27
+msgid "Diagram properties"
+msgstr "Свойства диаграммы"
+
+#: fig/box_document_properties.cpp:37
+msgid "Font"
+msgstr "Шрифт"
+
+#: fig/box_document_properties.cpp:39
+msgid "Font for diagram objects"
+msgstr "Шрифт для объектов диаграммы"
+
+#: fig/box_fork.cpp:334 fig/box_item.cpp:136
 msgid "%1 x %2"
-msgstr ""
+msgstr "%1 x %2"
 
-#: fig/box_item.cpp:189
-msgid "Properties for diagram box"
-msgstr ""
+#: fig/box_item.cpp:192
+msgid "Diagram box properties"
+msgstr "Свойства диаграммы бокса"
 
-#: fig/box_item.cpp:190
-#, fuzzy
+#: fig/box_item.cpp:193
 msgid "Text:"
-msgstr "Текст"
+msgstr "Текст:"
 
-#: fig/box_link_properties.cpp:21
+#: fig/box_link_properties.cpp:23
 msgid "Link properties"
-msgstr ""
-
-#: fig/box_link_properties.cpp:29
-msgid "Thickness"
-msgstr ""
+msgstr "Свойства ссылки"
 
 #: fig/box_link_properties.cpp:33
-msgid "Line Style"
-msgstr ""
+msgid "Thickness"
+msgstr "Толщина"
 
 #: fig/box_link_properties.cpp:37
-msgid "Left arrow"
-msgstr ""
+msgid "Line Type"
+msgstr "Тип линии"
 
 #: fig/box_link_properties.cpp:41
-msgid "Right arrow"
-msgstr ""
+msgid "Line Style"
+msgstr "Стиль линии"
 
-#: fig/box_link_properties.cpp:51
+#: fig/box_link_properties.cpp:45
+msgid "Origin arrow"
+msgstr "Начальная стрелка"
+
+#: fig/box_link_properties.cpp:49
+msgid "Target arrow"
+msgstr "Целевая стрелка"
+
+#: fig/box_link_properties.cpp:59
+msgid "Zigzag"
+msgstr "Зигзаг"
+
+#: fig/box_link_properties.cpp:60
+msgid "Straight"
+msgstr "Прямая"
+
+#: fig/box_link_properties.cpp:64
 msgid "Invisible line"
-msgstr ""
+msgstr "Невидимая линия"
 
-#: fig/box_link_properties.cpp:52
-#, fuzzy
+#: fig/box_link_properties.cpp:65
 msgid "Solid Line"
-msgstr "сплошная линия"
+msgstr "Сплошная линия"
 
-#: fig/box_link_properties.cpp:53
-#, fuzzy
-msgid "Dot Line"
-msgstr "Отрезки"
-
-#: fig/box_link_properties.cpp:54
-#, fuzzy
+#: fig/box_link_properties.cpp:66
 msgid "Dash Line"
-msgstr "штриховая линия"
+msgstr "Штриховая линия"
 
-#: fig/box_link_properties.cpp:58 fig/box_link_properties.cpp:63
+#: fig/box_link_properties.cpp:67
+msgid "Dot Line"
+msgstr "Точечная линия"
+
+#: fig/box_link_properties.cpp:71 fig/box_link_properties.cpp:79
 msgid "No arrow"
-msgstr ""
+msgstr "Нет стрелки"
 
-#: fig/box_link_properties.cpp:59 fig/box_link_properties.cpp:64
+#: fig/box_link_properties.cpp:72 fig/box_link_properties.cpp:80
 msgid "Triangle"
-msgstr ""
+msgstr "Треугольник"
 
-#: fig/box_view.cpp:83
+#: fig/box_link_properties.cpp:73 fig/box_link_properties.cpp:81
+msgid "Link"
+msgstr "Ссылка"
+
+#: fig/box_link_properties.cpp:74 fig/box_link_properties.cpp:82
+msgid "Inheritance"
+msgstr "Наследование"
+
+#: fig/box_link_properties.cpp:75 fig/box_link_properties.cpp:83
+msgid "Aggregation"
+msgstr "Скопление"
+
+#: fig/box_matrix.cpp:181
+msgid "Last row: %2px, last column: %3px (size: %4 x %5)"
+msgstr "Последняя строка: %2px, последний столбец: %3px (размер: %4 x %5)"
+
+#: fig/box_matrix.cpp:197
+msgid "Row %1: %2px (size: %3 x %4)"
+msgstr "Строка %1: %2px (размер: %3 x %4)"
+
+#: fig/box_matrix.cpp:213
+msgid "Column %1: %2px (size: %3 x %4)"
+msgstr "Столбец %1: %2px (размер: %3 x %4)"
+
+#: fig/box_view.cpp:102
 msgid "box_item"
-msgstr ""
+msgstr "элемент_бокса"
 
-#: fig/box_view.cpp:85
+#: fig/box_view.cpp:104
 msgid "id"
-msgstr ""
+msgstr "id"
 
-#: fig/box_view.cpp:90 fig/box_view.cpp:100
+#: fig/box_view.cpp:109 fig/box_view.cpp:119
 msgid "c1"
-msgstr ""
+msgstr "c1"
 
-#: fig/box_view.cpp:91 fig/box_view.cpp:102
+#: fig/box_view.cpp:110 fig/box_view.cpp:121
 msgid "c2"
-msgstr ""
+msgstr "c2"
 
-#: fig/box_view.cpp:92
+#: fig/box_view.cpp:111
 msgid "text"
-msgstr ""
+msgstr "текст"
 
-#: fig/box_view.cpp:93
-#, fuzzy
+#: fig/box_view.cpp:112
 msgid "col"
-msgstr "&Прокрутка"
+msgstr "колонка"
 
-#: fig/box_view.cpp:96 fig/box_view.cpp:132
+#: fig/box_view.cpp:115 fig/box_view.cpp:151
 msgid "box_link"
-msgstr ""
+msgstr "ссылка_бокса"
 
-#: fig/box_view.cpp:99
+#: fig/box_view.cpp:118
 msgid "p1"
-msgstr ""
+msgstr "p1"
 
-#: fig/box_view.cpp:101
+#: fig/box_view.cpp:120
 msgid "p2"
-msgstr ""
+msgstr "p2"
 
-#: fig/box_view.cpp:114
-msgid "sl"
-msgstr ""
+#: fig/box_view.cpp:133
+msgid "pen_style"
+msgstr "стиль_пера"
 
-#: fig/box_view.cpp:115
-msgid "wl"
-msgstr ""
+#: fig/box_view.cpp:134
+msgid "border_width"
+msgstr "ширина_границы"
 
-#: fig/box_view.cpp:119
+#: fig/box_view.cpp:138
 msgid "box_link_offset"
-msgstr ""
+msgstr "смещение_ссылки_бокса"
 
-#: fig/box_view.cpp:123
+#: fig/box_view.cpp:142
 msgid "x"
-msgstr ""
+msgstr "x"
 
-#: fig/box_view.cpp:123
+#: fig/box_view.cpp:142
 msgid "y"
-msgstr ""
+msgstr "y"
 
-#: fig/box_view.cpp:160
+#: fig/box_view.cpp:182
 msgid "Properties..."
-msgstr ""
+msgstr "Свойства..."
 
-#: fig/box_view.cpp:165
+#: fig/box_view.cpp:187
 msgid "Activity"
-msgstr ""
+msgstr "Деятельность"
 
-#: fig/box_view.cpp:166
+#: fig/box_view.cpp:188
 msgid "Ctrl+Return"
-msgstr ""
+msgstr "Ctrl+Enter"
 
-#: fig/box_view.cpp:171
+#: fig/box_view.cpp:193
 msgid "Delete"
 msgstr "Удалить"
 
-#: fig/box_view.cpp:175
+#: fig/box_view.cpp:197
 msgid "Color..."
 msgstr "Цвет..."
 
-#: fig/box_view.cpp:181
-msgid "PgUp"
-msgstr ""
-
-#: fig/box_view.cpp:186
-msgid "PgDown"
-msgstr ""
-
-#: fig/box_view.cpp:190
-msgid "Floating text"
-msgstr ""
-
-#: fig/box_view.cpp:192
-msgid "Component"
-msgstr ""
-
-#: fig/box_view.cpp:194
-msgid "Node"
-msgstr ""
-
-#: fig/box_view.cpp:196
-msgid "Activity start"
-msgstr ""
-
-#: fig/box_view.cpp:198
-msgid "Activity end"
-msgstr ""
-
-#: fig/box_view.cpp:200
-msgid "Horizontal fork/join"
-msgstr ""
-
 #: fig/box_view.cpp:202
+msgid "Raise"
+msgstr "Поднять"
+
+#: fig/box_view.cpp:203
+msgid "PgUp"
+msgstr "PgUp"
+
+#: fig/box_view.cpp:207
+msgid "Send back"
+msgstr "Отправить назад"
+
+#: fig/box_view.cpp:208
+msgid "PgDown"
+msgstr "PgDown"
+
+#: fig/box_view.cpp:212
+msgid "Floating text"
+msgstr "Плавающий текст"
+
+#: fig/box_view.cpp:214
+msgid "Component"
+msgstr "Компонент"
+
+#: fig/box_view.cpp:216
+msgid "Node"
+msgstr "Узел"
+
+#: fig/box_view.cpp:218
+msgid "Decision"
+msgstr "Решение"
+
+#: fig/box_view.cpp:220
+msgid "Database"
+msgstr "База данных"
+
+#: fig/box_view.cpp:222
+msgid "Activity start"
+msgstr "Начало деятельности"
+
+#: fig/box_view.cpp:224
+msgid "Activity end"
+msgstr "Конец деятельности"
+
+#: fig/box_view.cpp:226
+msgid "Horizontal fork/join"
+msgstr "Горизонтальное разветвление/присоединение"
+
+#: fig/box_view.cpp:228
 msgid "Vertical fork/join"
-msgstr ""
+msgstr "Вертикальное разветвление/присоединение"
 
-#: fig/box_view.cpp:204
+#: fig/box_view.cpp:230
 msgid "Actor"
-msgstr ""
+msgstr "Привязка"
 
-#: fig/box_view.cpp:206
+#: fig/box_view.cpp:232
 msgid "Usecase"
-msgstr ""
+msgstr "Вариант использования"
 
-#: fig/box_view.cpp:215
+#: fig/box_view.cpp:234
+msgid "Matrix"
+msgstr "Матрица"
+
+#: fig/box_view.cpp:236
+msgid "Boundary"
+msgstr "Граница"
+
+#: fig/box_view.cpp:238
+msgid "Class"
+msgstr "Класс"
+
+#: fig/box_view.cpp:241
+msgid "Import from file..."
+msgstr "Импортировать из файла..."
+
+#: fig/box_view.cpp:243
+msgid "Export to file..."
+msgstr "Экспортировать в файл..."
+
+#: fig/box_view.cpp:245
+msgid "Copy image to clipboard"
+msgstr "Копировать изображение в буфер обмена"
+
+#: fig/box_view.cpp:267
+msgid "File operations"
+msgstr "Файловые операции"
+
+#: fig/box_view.cpp:279
 msgid "More elements"
-msgstr ""
+msgstr "Ещё элементы"
 
-#: fig/box_view.cpp:247
+#: fig/box_view.cpp:317
 msgid "Alignment"
-msgstr ""
+msgstr "Выравнивание"
 
-#: fig/box_view.cpp:249
+#: fig/box_view.cpp:319
 msgid "Align left"
-msgstr ""
+msgstr "Выровнять по левому краю"
 
-#: fig/box_view.cpp:250
+#: fig/box_view.cpp:320
 msgid "Align center"
-msgstr ""
+msgstr "Выровнять по центру"
 
-#: fig/box_view.cpp:251
-#, fuzzy
+#: fig/box_view.cpp:321
 msgid "Align right"
-msgstr "Перейти вправо"
+msgstr "Привязка справа"
 
-#: fig/box_view.cpp:253
+#: fig/box_view.cpp:323
 msgid "Align top"
-msgstr ""
+msgstr "Выровнять по верху"
 
-#: fig/box_view.cpp:254
+#: fig/box_view.cpp:324
 msgid "Align middle"
-msgstr ""
+msgstr "Выровнять по середине"
 
-#: fig/box_view.cpp:255
+#: fig/box_view.cpp:325
 msgid "Align bottom"
-msgstr ""
+msgstr "Выровнять по низу"
 
-#: fig/box_view.cpp:258
+#: fig/box_view.cpp:328
 msgid "Size"
-msgstr ""
+msgstr "Размер"
 
-#: fig/box_view.cpp:260
+#: fig/box_view.cpp:330
 msgid "Same width"
-msgstr ""
+msgstr "Такая же ширина"
 
-#: fig/box_view.cpp:261
-#, fuzzy
+#: fig/box_view.cpp:331
 msgid "Same height"
-msgstr "Перейти вправо"
+msgstr "Такая же высота"
 
-#: fig/box_view.cpp:262
+#: fig/box_view.cpp:332
 msgid "Same width and height"
-msgstr ""
+msgstr "Такая же ширина и высота"
 
-#: flag_scheme.cpp:14
-msgid "Flag item(s) as..."
-msgstr "Пометить элемент(ы) как..."
+#: fig/box_view.cpp:589 fig/box_view.cpp:1871
+msgid "Semantik diagram"
+msgstr "Диаграмма Semantik"
+
+#: fig/box_view.cpp:1684 fig/box_view.cpp:1720 fig/semantik_d_win.cpp:280
+msgid "*.semd|Semantik diagram (*.semd)"
+msgstr "*.semd|Диаграмма Semantik (*.semd)"
+
+#: fig/box_view.cpp:1685 fig/semantik_d_win.cpp:281
+msgid "Choose a file to open"
+msgstr "Укажите имя файла для открытия"
+
+#: fig/box_view.cpp:1721 semantik.cpp:419 semantik.cpp:481
+msgid "Choose a file name"
+msgstr "Укажите имя файла"
+
+#: fig/box_view.cpp:1735 semantik.cpp:432
+msgid ""
+"The file \"%1\" already exists.\n"
+"Overwrite it?"
+msgstr ""
+"Файл \"%1\" уже существует.\n"
+"Переписать его?"
+
+#: fig/box_view.cpp:1736 semantik.cpp:433
+msgid "Overwrite existing file"
+msgstr "Переписать существующий файл"
+
+#: fig/box_view.cpp:1758 fig/box_view.cpp:1776 semantik.cpp:444
+#: semantik.cpp:466
+msgid "Saved '%1'"
+msgstr "«%1» сохранён"
+
+#: fig/matrix_dialog.cpp:32 table_dialog.cpp:32
+msgid "Rows"
+msgstr "Строки"
+
+#: fig/matrix_dialog.cpp:36 table_dialog.cpp:36
+msgid "Columns"
+msgstr "Столбцы"
+
+#: fig/semantik_d_win.cpp:64 semantik.cpp:202
+msgid "Ctrl+H"
+msgstr "Ctrl+H"
+
+#: fig/semantik_d_win.cpp:68
+msgid "Files"
+msgstr "Файлы"
+
+#: fig/semantik_d_win.cpp:80
+msgid "This is Semantik-d"
+msgstr "Это Semantik-d"
+
+#: fig/semantik_d_win.cpp:185
+msgid "[Untitled]"
+msgstr "[Неназванный]"
+
+#: fig/semantik_d_win.cpp:246 semantik.cpp:548
+msgid "Untitled"
+msgstr "Неназванный"
+
+#: fig/semantik_d_win.cpp:249 semantik.cpp:551
+msgid ""
+"The document \"%1\" has been modified.\n"
+"Do you want to save your changes or discard them?"
+msgstr ""
+"Документ «%1» изменён. \n"
+"Сохранить изменения или отклонить их?"
+
+#: fig/semantik_d_win.cpp:250 semantik.cpp:552
+msgid "Close Document"
+msgstr "Закрыть документ"
+
+#: fig/semantik_d_win.cpp:385 semantik.cpp:492
+msgid " [Modified] "
+msgstr " [Изменён] "
+
+#: fig/semantik_d_win.cpp:390
+msgid "Semantik Diagram %1"
+msgstr "Диаграмма Semantik %1"
+
+#: fig/semantik_d_win.cpp:394
+msgid "%1 %2 - Semantik Diagram"
+msgstr "%1 %2 - Диаграмма Semantik"
+
+#: fig/semd.cpp:26
+msgid "A tool for editing and organizing Semantik diagrams"
+msgstr "Утилита для редактирования и организации диаграмм Semantik"
+
+#: fig/semd.cpp:42 main.cpp:34
+msgid "A file to open on startup"
+msgstr "Файл для открытия при старте"
+
+#: fig/semd.cpp:43
+msgid "An output file for exporting the diagram"
+msgstr "Выходной файл для экспортирования диаграммы"
+
+#: fig/semd.cpp:44
+msgid "Diagram width for printing"
+msgstr "Ширина диаграммы для печати"
+
+#: fig/semd.cpp:45
+msgid "Diagram height for printing"
+msgstr "Высота диаграммы для печати"
+
+#: fig/semd.cpp:47
+msgid "Semantik-d"
+msgstr "Semantik-d"
+
+#: fig/semd.cpp:47
+msgid "(C) 2013-2015 Thomas Nagy"
+msgstr "(C) 2013-2015 Thomas Nagy"
+
+#: fig/semd.cpp:49 main.cpp:40
+msgid "Thomas Nagy"
+msgstr "Thomas Nagy"
 
 #: generator_dialog.cpp:30
-#, fuzzy
 msgid "Generate documents"
-msgstr "Генераторы"
+msgstr "Генерировать документы"
 
 #: generator_dialog.cpp:36
 msgid "Generators"
@@ -508,380 +782,312 @@ msgstr "Неверный целевой каталог «%1»"
 msgid "Missing location"
 msgstr "Не указано расположение"
 
-#: image_view.cpp:36
+#: image_view.cpp:37
 msgid "Change picture"
 msgstr "Изменить картинку"
 
-#: image_view.cpp:40
+#: image_view.cpp:41
 msgid "Clear picture"
 msgstr "Убрать картинку"
 
-#: image_view.cpp:65
+#: image_view.cpp:66
 msgid "Click to set a picture"
 msgstr "Нажмите, чтобы задать картинку"
 
-#: image_view.cpp:69
+#: image_view.cpp:70
 msgid "Select an item on the map"
 msgstr "Выбрать объект на плане"
 
-#: image_view.cpp:165
-#, fuzzy
-msgid "*.png *.jpg *.jpeg *.gif|Image Files (*.png *.jpg *.jpeg *.gif)"
-msgstr "Файлы изображений (*.png *.jpg *.jpeg *.gif)"
-
 #: image_view.cpp:166
-#, fuzzy
+msgid "*.png *.jpg *.jpeg *.gif|Image Files (*.png *.jpg *.jpeg *.gif)"
+msgstr "*.png *.jpg *.jpeg *.gif|Файлы изображений (*.png *.jpg *.jpeg *.gif)"
+
+#: image_view.cpp:167
 msgid "Choose a picture"
-msgstr "Выбор файла"
+msgstr "Выберите картинку"
 
-#: image_view.cpp:178
-#, fuzzy
+#: image_view.cpp:179
 msgid "Could not load the picture"
-msgstr "Нажмите, чтобы задать картинку"
+msgstr "Не удалось загрузить картинку"
 
-#: main.cpp:25
+#: main.cpp:24
 msgid ""
 "A mind-mapping tool for KDE\n"
 "Available exclusively for open systems such as OpenSuse, Gentoo or Fedora."
 msgstr ""
+"Программа для создания диаграмм связей для KDE\n"
+"Доступна эксклюзивно для открытых систем, таких как OpenSuse, Gentoo или "
+"Fedora."
 
-#: main.cpp:41
-msgid "A file to open on startup"
-msgstr ""
+#: main.cpp:35
+msgid "An output file for printing the map"
+msgstr "Выходной файл для печати карты"
 
-#: main.cpp:43
+#: main.cpp:37
 msgid "Semantik"
 msgstr "Semantik"
 
-#: main.cpp:44
+#: main.cpp:38
 msgid "(C) 2007-2012 Thomas Nagy"
-msgstr ""
+msgstr "(C) 2007-2012 Thomas Nagy"
 
-#: main.cpp:47
-msgid "Thomas Nagy"
-msgstr ""
-
+#. i18n: file: data/semantik-dui.rc:5
+#. i18n: ectx: Menu (file)
 #. i18n: file: data/semantikui.rc:5
 #. i18n: ectx: Menu (file)
-#: po/rc.cpp:3 rc.cpp:3
+#. i18n: file: data/semantik-dui.rc:5
+#. i18n: ectx: Menu (file)
+#. i18n: file: data/semantikui.rc:5
+#. i18n: ectx: Menu (file)
+#: po/rc.cpp:3 po/rc.cpp:21 rc.cpp:3 rc.cpp:21
 msgid "&File"
-msgstr ""
+msgstr "&Файл"
 
-#. i18n: file: data/semantikui.rc:7
+#. i18n: file: data/semantik-dui.rc:25
 #. i18n: ectx: Menu (edit)
-#: po/rc.cpp:6 rc.cpp:6
+#. i18n: file: data/semantikui.rc:8
+#. i18n: ectx: Menu (edit)
+#. i18n: file: data/semantik-dui.rc:25
+#. i18n: ectx: Menu (edit)
+#. i18n: file: data/semantikui.rc:8
+#. i18n: ectx: Menu (edit)
+#: po/rc.cpp:6 po/rc.cpp:24 rc.cpp:6 rc.cpp:24
 msgid "&Edit"
-msgstr ""
+msgstr "&Правка"
 
-#. i18n: file: data/semantikui.rc:12
+#. i18n: file: data/semantik-dui.rc:28
 #. i18n: ectx: Menu (view)
-#: po/rc.cpp:9 rc.cpp:9
+#. i18n: file: data/semantikui.rc:13
+#. i18n: ectx: Menu (view)
+#. i18n: file: data/semantik-dui.rc:28
+#. i18n: ectx: Menu (view)
+#. i18n: file: data/semantikui.rc:13
+#. i18n: ectx: Menu (view)
+#: po/rc.cpp:9 po/rc.cpp:27 rc.cpp:9 rc.cpp:27
 msgid "&View"
-msgstr ""
+msgstr "&Вид"
 
-#. i18n: file: data/semantikui.rc:20
+#. i18n: file: data/semantik-dui.rc:33
 #. i18n: ectx: Menu (tools)
-#: po/rc.cpp:12 rc.cpp:12
+#. i18n: file: data/semantikui.rc:21
+#. i18n: ectx: Menu (tools)
+#. i18n: file: data/semantik-dui.rc:33
+#. i18n: ectx: Menu (tools)
+#. i18n: file: data/semantikui.rc:21
+#. i18n: ectx: Menu (tools)
+#: po/rc.cpp:12 po/rc.cpp:30 rc.cpp:12 rc.cpp:30
 msgid "&Tools"
-msgstr ""
+msgstr "&Инструменты"
 
-#. i18n: file: data/semantikui.rc:23
+#. i18n: file: data/semantik-dui.rc:36
 #. i18n: ectx: Menu (settings)
-#: po/rc.cpp:15 rc.cpp:15
+#. i18n: file: data/semantikui.rc:24
+#. i18n: ectx: Menu (settings)
+#. i18n: file: data/semantik-dui.rc:36
+#. i18n: ectx: Menu (settings)
+#. i18n: file: data/semantikui.rc:24
+#. i18n: ectx: Menu (settings)
+#: po/rc.cpp:15 po/rc.cpp:33 rc.cpp:15 rc.cpp:33
 msgid "&Settings"
-msgstr ""
+msgstr "&Настройки"
 
-#. i18n: file: data/semantikui.rc:26
+#. i18n: file: data/semantik-dui.rc:39
 #. i18n: ectx: Menu (help)
-#: po/rc.cpp:18 rc.cpp:18
+#. i18n: file: data/semantikui.rc:27
+#. i18n: ectx: Menu (help)
+#. i18n: file: data/semantik-dui.rc:39
+#. i18n: ectx: Menu (help)
+#. i18n: file: data/semantikui.rc:27
+#. i18n: ectx: Menu (help)
+#: po/rc.cpp:18 po/rc.cpp:36 rc.cpp:18 rc.cpp:36
 msgid "&Help"
-msgstr ""
+msgstr "&Помощь"
 
-#. i18n: file: data/semantikui.rc:40
+#. i18n: file: data/semantikui.rc:41
 #. i18n: ectx: ToolBar (colorsToolBar)
-#: po/rc.cpp:21 rc.cpp:21
-#, fuzzy
+#: po/rc.cpp:39 rc.cpp:39
 msgid "Colors Toolbar"
-msgstr "Цвета"
+msgstr "Панель инструментов \"Цвета\""
 
-#. i18n: file: data/semantikui.rc:44
+#. i18n: file: data/semantikui.rc:45
 #. i18n: ectx: ToolBar (flagsToolBar)
-#: po/rc.cpp:24 rc.cpp:24
+#: po/rc.cpp:42 rc.cpp:42
 msgid "Flags Toolbar"
-msgstr ""
+msgstr "Панель инструментов \"Флаги\""
 
-#: po/rc.cpp:25 rc.cpp:25
+#: po/rc.cpp:43 rc.cpp:43
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr ""
+msgstr "Кузнецов Алексей, Логинов Алексей"
 
-#: po/rc.cpp:26 rc.cpp:26
+#: po/rc.cpp:44 rc.cpp:44
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr ""
+msgstr "Alexey.Kouznetsov@gmail.com, loginov.alex.valer@gmail.com"
 
 #: pre_view.cpp:23
 msgid "<p align='center'>No preview available<br/>at this time</p>"
 msgstr "<p align='center'>В настоящее время<br/>предпросмотр недоступен</p>"
 
-#: semantik.cpp:45
+#: semantik.cpp:46
 msgid ""
 "The map is empty, Semantik\n"
 "cannot create documents from it"
 msgstr ""
-"План пуст; Semantik\n"
-"не может создать документ."
+"План пуст;\n"
+"Semantik не может создать документ."
 
-#: semantik.cpp:45
+#: semantik.cpp:46
 msgid "Empty map"
 msgstr "Пустой план"
 
-#: semantik.cpp:52
+#: semantik.cpp:53
 msgid "Template folder %1 is not readable"
 msgstr "Каталог с шаблонами («%1») недоступен для чтения"
 
-#: semantik.cpp:166
+#: semantik.cpp:167
 msgid "&Reorganize the map"
 msgstr "&Перегруппировать"
 
-#: semantik.cpp:168
+#: semantik.cpp:169
 msgid "Ctrl+R"
-msgstr ""
+msgstr "Ctrl+R"
 
-#: semantik.cpp:171
+#: semantik.cpp:172
 msgid "&Export the map..."
-msgstr ""
+msgstr "&Экспортировать карту..."
 
-#: semantik.cpp:173
+#: semantik.cpp:174
 msgid "Ctrl+Shift+E"
-msgstr ""
+msgstr "Ctrl+Shift+E"
 
-#: semantik.cpp:178
+#: semantik.cpp:179
 msgid "&Generate..."
 msgstr "&Создать..."
 
-#: semantik.cpp:181
+#: semantik.cpp:182
 msgid "Ctrl+G"
-msgstr ""
+msgstr "Ctrl+G"
 
-#: semantik.cpp:187
+#: semantik.cpp:188
 msgid "CustomColor"
 msgstr "Другой цвет"
 
-#: semantik.cpp:201
-msgid "Ctrl+H"
-msgstr ""
-
-#: semantik.cpp:210
+#: semantik.cpp:211
 msgid "Data"
 msgstr "Данные"
 
-#: semantik.cpp:233
+#: semantik.cpp:235
 msgid "Variables"
 msgstr "Переменные"
 
-#: semantik.cpp:242
+#: semantik.cpp:244
 msgid "Preview"
-msgstr "Предв. просмотр"
+msgstr "Предпросмотр"
 
-#: semantik.cpp:254
+#: semantik.cpp:256
 msgid "Linear view"
 msgstr "Структура"
 
-#: semantik.cpp:347
+#: semantik.cpp:350
 msgid "Welcome to Semantik"
 msgstr "Добро пожаловать в Semantik"
 
-#: semantik.cpp:393
-msgid "Ready"
-msgstr "Готово"
-
-#: semantik.cpp:400
+#: semantik.cpp:418
 msgid "*.sem|Semantik file (*.sem)"
 msgstr "*.sem|Файлы Semantik (*.sem)"
 
-#: semantik.cpp:401 semantik.cpp:463
-msgid "Choose a file name"
-msgstr "Укажите имя файла"
-
-#: semantik.cpp:414
-msgid ""
-"The file \"%1\" already exists.\n"
-"Overwrite it?"
-msgstr ""
-
-#: semantik.cpp:415
-msgid "Overwrite existing file"
-msgstr ""
-
-#: semantik.cpp:426 semantik.cpp:448
-msgid "Saved '%1'"
-msgstr "«%1» сохранён"
-
-#: semantik.cpp:462
+#: semantik.cpp:480
 msgid "*.sem *.kdi *.mm *.vym|All Supported Files (*.sem *.kdi *.mm *.vym)"
 msgstr ""
 "*.sem *.kdi *.mm *.vym|Файлы поддерживаемых форматов (*.sem *.kdi *.mm *.vym)"
 
-#: semantik.cpp:474
-msgid " [Modified] "
-msgstr ""
-
-#: semantik.cpp:479
-#, fuzzy
+#: semantik.cpp:497
 msgid "Semantik %1"
-msgstr "Semantik"
+msgstr "Semantik %1"
 
-#: semantik.cpp:483
-#, fuzzy
+#: semantik.cpp:501
 msgid "%1 %2 - Semantik"
-msgstr "%1 - Semantik"
+msgstr "%1 %2 - Semantik"
 
-#: semantik.cpp:530
-msgid "Untitled"
-msgstr "Неназванный"
-
-#: semantik.cpp:533
-msgid ""
-"The document \"%1\" has been modified.\n"
-"Do you want to save your changes or discard them?"
-msgstr ""
-"Документ «%1» изменён. \n"
-"Сохранить изменения или отклонить их?"
-
-#: semantik.cpp:534
-msgid "Close Document"
-msgstr "Закрыть документ"
-
-#: sem_mediator.cpp:270
-msgid "Automatic save failed for file: %1"
-msgstr "Не удалось сохранить автоматически файл «%1»"
-
-#: sem_mediator.cpp:273
-msgid "%1 saved automatically"
-msgstr "«%1» автоматически сохранён."
-
-#: sem_mediator.cpp:292
-msgid "Color %1"
-msgstr "Цвет %1"
-
-#: sem_mediator.cpp:618
-msgid "File saving: missing file %1"
-msgstr "Сохранение файла: файл «%1» не существует"
-
-#: sem_mediator.cpp:643 sem_mediator.cpp:1142 sem_mediator.cpp:1185
-msgid "Missing bindings for opening files"
-msgstr "Не могу открыть файл: ошибка поддержки Python"
-
-#: sem_mediator.cpp:694
-msgid "Missing filter file %1 for opening files"
-msgstr "Не найден файл фильтра «%1» для открытия файлов"
-
-#: sem_mediator.cpp:694 sem_mediator.cpp:709
-msgid "Broken installation"
-msgstr ""
-
-#: sem_mediator.cpp:709
-#, fuzzy
-msgid "Missing python bindings for opening files"
-msgstr "Не могу открыть файл: ошибка поддержки Python"
-
-#: sem_mediator.cpp:725
-msgid "Could not load the document %1"
-msgstr ""
-
-#: sem_mediator.cpp:725
-#, fuzzy
-msgid "Broken document"
-msgstr "Закрыть документ"
-
-#: sem_mediator.cpp:1108
-msgid "Code generation failed: missing file %1"
-msgstr "Не удалось генерировать код: нет файла «%1»"
-
-#: sem_mediator.cpp:1147
-msgid "Document generation completed successfully"
-msgstr ""
-
-#: table_dialog.cpp:32
-msgid "Rows"
-msgstr "Строки"
-
-#: table_dialog.cpp:36
-msgid "Columns"
-msgstr "Столбцы"
-
-#: table_view.cpp:25 table_view.cpp:79
+#: table_view.cpp:26 table_view.cpp:80
 msgid "Add Row"
 msgstr "Добавить строку"
 
-#: table_view.cpp:26
+#: table_view.cpp:27
 msgid "Add a row"
 msgstr "Вставлена строка"
 
-#: table_view.cpp:30 table_view.cpp:80
+#: table_view.cpp:31 table_view.cpp:81
 msgid "Add Column"
 msgstr "Добавить столбец"
 
-#: table_view.cpp:31
+#: table_view.cpp:32
 msgid "Add a column"
 msgstr "Вставлен столбец"
 
-#: table_view.cpp:36 table_view.cpp:81
+#: table_view.cpp:37 table_view.cpp:82
 msgid "Remove Row"
 msgstr "Удалить строку"
 
-#: table_view.cpp:37
+#: table_view.cpp:38
 msgid "Remove a row"
 msgstr "Строка удалена"
 
-#: table_view.cpp:41 table_view.cpp:82
+#: table_view.cpp:42 table_view.cpp:83
 msgid "Remove Column"
 msgstr "Удалить столбец"
 
-#: table_view.cpp:42
+#: table_view.cpp:43
 msgid "Remove a column"
 msgstr "Столбец удалён"
 
-#: table_view.cpp:46
+#: table_view.cpp:47
 msgid "Redimension"
 msgstr "Указать размер таблицы"
 
-#: table_view.cpp:47
+#: table_view.cpp:48
 msgid "Change table dimensions"
 msgstr "Изменение размеров таблицы"
 
-#: text_view.cpp:40
+#: text_view.cpp:41
 msgid "&Bold"
 msgstr "Полу&жирный"
 
-#: text_view.cpp:41
+#: text_view.cpp:42
 msgid "Ctrl+B"
-msgstr ""
+msgstr "Ctrl+B"
 
-#: text_view.cpp:44
+#: text_view.cpp:45
 msgid "&Italic"
 msgstr "&Курсив"
 
-#: text_view.cpp:45
+#: text_view.cpp:46
 msgid "Ctrl+I"
-msgstr ""
+msgstr "Ctrl+I"
 
-#: text_view.cpp:48
+#: text_view.cpp:49
 msgid "&Underline"
 msgstr "&Подчёркнутый"
 
-#: text_view.cpp:49
+#: text_view.cpp:50
 msgid "Ctrl+U"
-msgstr ""
+msgstr "Ctrl+U"
 
-#: vars_view.cpp:76
-msgid "Code complete"
-msgstr "Код готов"
+#: fig/box_item.cpp:190
+msgid "Properties for diagram box"
+msgstr "Свойства для диаграммы бокса"
 
-#: vars_view.cpp:77
-msgid "Ctrl+space"
-msgstr ""
+#: fig/semd.cpp:44
+msgid "(C) 2013 Thomas Nagy"
+msgstr "(C) 2013 Thomas Nagy"
+
+#: canvas_view.cpp:145
+msgid "Data type"
+msgstr "Тип данных"
+
+#~ msgid "Ready"
+#~ msgstr "Готово"
 
 #~ msgid "Insert child"
 #~ msgstr "Вставить потомка"
@@ -890,23 +1096,17 @@ msgstr ""
 #~ msgstr "черновик"
 
 #~ msgid "Add Box"
-#~ msgstr "Добавить элемент"
+#~ msgstr "Добавить бокс"
 
 #~ msgid "Connection width"
 #~ msgstr "Толщина соед. линии"
 
-# Не нашёл стандартного сокращения для пикселя, пока что "п."
-#, fuzzy
 #~ msgid "1px"
 #~ msgstr "1 п."
 
-# Не нашёл стандартного сокращения для пикселя, пока что "п."
-#, fuzzy
 #~ msgid "2px"
 #~ msgstr "2 п."
 
-# Не нашёл стандартного сокращения для пикселя, пока что "п."
-#, fuzzy
 #~ msgid "3px"
 #~ msgstr "3 п."
 
@@ -914,7 +1114,7 @@ msgstr ""
 #~ msgstr "Тип соединений"
 
 #~ msgid "dot line"
-#~ msgstr "пунктир"
+#~ msgstr "точечная линия"
 
 #~ msgid "exclude the table"
 #~ msgstr "исключить таблицу"
@@ -946,12 +1146,11 @@ msgstr ""
 #~ msgid "firefox %s"
 #~ msgstr "firefox %s"
 
-# In Russia we generally use OO.o build from the Infra-resource (http://i-rs.ru) which uses "openoffice.org3 -impress" syntax
 #~ msgid "ooimpress %s"
-#~ msgstr "openoffice.org3 -impress %s"
+#~ msgstr "ooimpress %s"
 
 #~ msgid "oowriter %s"
-#~ msgstr "openoffice.org3 -writer %s"
+#~ msgstr "oowriter %s"
 
 #~ msgid "document author"
 #~ msgstr "Автор документа"
@@ -978,19 +1177,19 @@ msgstr ""
 #~ msgstr "Скрыть заголовок (LaTeX)"
 
 #~ msgid "footer center (pdflatex)"
-#~ msgstr "Нижний колонтитул, по центру"
+#~ msgstr "Нижний колонтитул, по центру (pdflatex)"
 
 #~ msgid "footer left (pdflatex)"
-#~ msgstr "Нижний колонтитул, слева"
+#~ msgstr "Нижний колонтитул, слева (pdflatex)"
 
 #~ msgid "turn off the fancy output"
-#~ msgstr "не использовать \"украшенный\" вывод (latex)"
+#~ msgstr "не использовать \"украшенный\" вывод"
 
 #~ msgid "footer right"
 #~ msgstr "Нижний колонтитул, справа"
 
 #~ msgid "header center (pdflatex)"
-#~ msgstr "Верхний колонтитул, по центру"
+#~ msgstr "Верхний колонтитул, по центру (pdflatex)"
 
 #~ msgid "header left"
 #~ msgstr "Верхний колонтитул, слева"
@@ -1011,7 +1210,7 @@ msgstr ""
 #~ msgstr "Диалог создания документа"
 
 #~ msgid "&Ok"
-#~ msgstr "&Угу"
+#~ msgstr "&ОК"
 
 #~ msgid "File %1 does not exist"
 #~ msgstr "Файл «%1» не существует"
@@ -1028,9 +1227,6 @@ msgstr ""
 #~ msgid "&Select"
 #~ msgstr "&Выбрать"
 
-#~ msgid "&Link"
-#~ msgstr "&Ссылка"
-
 #~ msgid "&Sort"
 #~ msgstr "&Упорядочить"
 
@@ -1038,7 +1234,7 @@ msgstr ""
 #~ msgstr "исключить изображение"
 
 #~ msgid "latex language: english (frenchb, )"
-#~ msgstr "langage pour latex: english (frenchb, )"
+#~ msgstr "язык latex: английский (frenchb, )"
 
 #~ msgid "Code generation failed: missing bindings"
-#~ msgstr "La génération a échoué: le support Python est manquant"
+#~ msgstr "Ошибка генерации кода: отсутствуют поддержка"
