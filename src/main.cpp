@@ -35,7 +35,7 @@ int main(int i_iArgc, char **i_iArgv)
 	options.add("o <file>", ki18n("An output file for printing the map"));
 
 	KAboutData l_o("semantik", 0, ki18n("Semantik"), version, ki18n(description),
-			KAboutData::License_GPL_V3, ki18n("(C) 2007-2012 Thomas Nagy"), KLocalizedString());
+			KAboutData::License_GPL_V3, ki18n("(C) 2007-2015 Thomas Nagy"), KLocalizedString());
 	l_o.setBugAddress("http://code.google.com/p/semantik/issues/list");
 	l_o.addAuthor(ki18n("Thomas Nagy"), KLocalizedString());
 

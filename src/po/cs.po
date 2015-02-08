@@ -1,11 +1,11 @@
 # This file is put in the public domain.
-#
+# 
 # Pavel Fric <pavelfric@seznam.cz>, 2009, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/semantik/issues\n"
-"POT-Creation-Date: 2012-10-09 23:25+0200\n"
+"POT-Creation-Date: 2015-02-08 16:12+0100\n"
 "PO-Revision-Date: 2012-10-21 19:45+0200\n"
 "Last-Translator: Pavel Fric <pavelfric@seznam.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -18,132 +18,196 @@ msgstr ""
 "X-Language: cs_CZ\n"
 "X-Source-Language: C\n"
 
-#: browser.cpp:21 canvas_view.cpp:134
-msgid "Toggle fullscreen"
-msgstr "Zapnout/Vypnout zobrazení na celou obrazovku"
-
-#: canvas_view.cpp:83
-msgid "Add an element"
-msgstr "Přidat prvek"
-
-#: canvas_view.cpp:88 fig/box_view.cpp:170
-msgid "Delete selection"
-msgstr "Smazat výběr"
-
-#: canvas_view.cpp:93
-msgid "Insert a sibling"
-msgstr "Vložit sourozence"
-
-#: canvas_view.cpp:98 fig/box_view.cpp:180
-msgid "Move up"
-msgstr "Posunout nahoru"
-
-#: canvas_view.cpp:99 fig/box_view.cpp:185
-msgid "Move down"
-msgstr "Posunout dolů"
-
-#: canvas_view.cpp:100
-msgid "Move left"
-msgstr "Posunout doleva"
-
-#: canvas_view.cpp:101
-msgid "Move right"
-msgstr "Posunout doprava"
-
-#: canvas_view.cpp:103
-msgid "Select up"
-msgstr "Vybrat nahoru"
-
-#: canvas_view.cpp:104
-msgid "Select down"
-msgstr "Vybrat dolů"
-
-#: canvas_view.cpp:105
-msgid "Select left"
-msgstr "Vybrat doleva"
-
-#: canvas_view.cpp:106
-msgid "Select right"
-msgstr "Vybrat doprava"
-
-#: canvas_view.cpp:109
-msgid "Select subtree"
-msgstr "Vybrat podstrom"
-
-#: canvas_view.cpp:114
-msgid "Next root"
-msgstr "Další kořen"
-
-#: canvas_view.cpp:117
-msgid "Toggle edit"
-msgstr "Přepnout úpravy"
-
-#: canvas_view.cpp:122
-msgid "Cancel edit"
-msgstr "Zrušit úpravy"
-
-#: canvas_view.cpp:138
-msgid "Colors"
-msgstr "Barvy"
-
-#: canvas_view.cpp:139
-msgid "Data type"
-msgstr "Datový typ"
-
-#: canvas_view.cpp:148
-msgid "Text"
-msgstr "Text"
-
-#: canvas_view.cpp:149
-msgid "Diagram"
-msgstr "Nákres"
-
-#: canvas_view.cpp:150
-msgid "Table"
-msgstr "Tabulka"
-
-#: canvas_view.cpp:151
-msgid "Image"
-msgstr "Obrázek"
-
-#: canvas_view.cpp:224 canvas_view.cpp:276 canvas_view.cpp:288 data_item.cpp:27
+#: base/data_item.cpp:60 canvas_view.cpp:246 canvas_view.cpp:298
+#: canvas_view.cpp:310
 msgid "Empty"
 msgstr "Prázdné"
 
-#: canvas_view.cpp:573
+#: base/flag_scheme.cpp:14
+msgid "Flag item(s) as..."
+msgstr "Označit položku(y) jako..."
+
+#: base/sem_mediator.cpp:282
+msgid "Automatic save failed for file: %1"
+msgstr "Automatické uložení se nepodařilo u souboru: %1"
+
+#: base/sem_mediator.cpp:285
+msgid "%1 saved automatically"
+msgstr "%1 uložen automaticky"
+
+#: base/sem_mediator.cpp:304
+msgid "Color %1"
+msgstr "Barva %1"
+
+#: base/sem_mediator.cpp:617
+msgid "File saving: missing file %1"
+msgstr "Ukládání souboru: chybí soubor %1"
+
+#: base/sem_mediator.cpp:642 base/sem_mediator.cpp:1147
+#: base/sem_mediator.cpp:1190
+msgid "Missing bindings for opening files"
+msgstr "Chybí spojení pro otevření souborů"
+
+#: base/sem_mediator.cpp:693
+msgid "Missing filter file %1 for opening files"
+msgstr "Chybí soubor s filtrem %1 pro otevření souborů"
+
+#: base/sem_mediator.cpp:693 base/sem_mediator.cpp:708
+msgid "Broken installation"
+msgstr "Poškozená instalace"
+
+#: base/sem_mediator.cpp:708
+msgid "Missing python bindings for opening files"
+msgstr "Chybí spojení python pro otevření souborů"
+
+#: base/sem_mediator.cpp:724
+msgid "Could not load the document %1"
+msgstr "Nepodařilo se nahrát dokument %1"
+
+#: base/sem_mediator.cpp:724
+msgid "Broken document"
+msgstr "Poškozený dokument"
+
+#: base/sem_mediator.cpp:1113
+msgid "Code generation failed: missing file %1"
+msgstr "Vytvoření kódu se nepodařilo: chybí soubor %1"
+
+#: base/sem_mediator.cpp:1152
+msgid "Document generation completed successfully"
+msgstr "Vytvoření dokumentu úspěšně dokončeno"
+
+#: browser.cpp:21 canvas_view.cpp:143
+msgid "Toggle fullscreen"
+msgstr "Zapnout/Vypnout zobrazení na celou obrazovku"
+
+#: canvas_view.cpp:92
+msgid "Add an element"
+msgstr "Přidat prvek"
+
+#: canvas_view.cpp:97 fig/box_view.cpp:192
+msgid "Delete selection"
+msgstr "Smazat výběr"
+
+#: canvas_view.cpp:102
+msgid "Insert a sibling"
+msgstr "Vložit sourozence"
+
+#: canvas_view.cpp:107
+msgid "Move up"
+msgstr "Posunout nahoru"
+
+#: canvas_view.cpp:108
+msgid "Move down"
+msgstr "Posunout dolů"
+
+#: canvas_view.cpp:109
+msgid "Move left"
+msgstr "Posunout doleva"
+
+#: canvas_view.cpp:110
+msgid "Move right"
+msgstr "Posunout doprava"
+
+#: canvas_view.cpp:112
+msgid "Select up"
+msgstr "Vybrat nahoru"
+
+#: canvas_view.cpp:113
+msgid "Select down"
+msgstr "Vybrat dolů"
+
+#: canvas_view.cpp:114
+msgid "Select left"
+msgstr "Vybrat doleva"
+
+#: canvas_view.cpp:115
+msgid "Select right"
+msgstr "Vybrat doprava"
+
+#: canvas_view.cpp:118
+msgid "Select subtree"
+msgstr "Vybrat podstrom"
+
+#: canvas_view.cpp:123
+msgid "Next root"
+msgstr "Další kořen"
+
+#: canvas_view.cpp:126
+msgid "Toggle edit"
+msgstr "Přepnout úpravy"
+
+#: canvas_view.cpp:131
+msgid "Cancel edit"
+msgstr "Zrušit úpravy"
+
+#: canvas_view.cpp:147
+msgid "Colors"
+msgstr "Barvy"
+
+#: canvas_view.cpp:158
+msgid "Text"
+msgstr "Text"
+
+#: canvas_view.cpp:159
+msgid "Diagram"
+msgstr "Nákres"
+
+#: canvas_view.cpp:160
+msgid "Table"
+msgstr "Tabulka"
+
+#: canvas_view.cpp:161
+msgid "Image"
+msgstr "Obrázek"
+
+#: canvas_view.cpp:630
 msgid "Color"
 msgstr "Barva"
 
-#: canvas_view.cpp:623
+#: canvas_view.cpp:680
 msgid "Flag"
 msgstr "Příznak"
 
-#: canvas_view.cpp:940
-#, qt-format
+#: canvas_view.cpp:1003
 msgid "Click to set Item %1"
 msgstr "Klepněte pro umístění položky %1"
 
-#: canvas_view.cpp:1250
+#: canvas_view.cpp:1346
 msgid "*.png|PNG Files (*.png)"
 msgstr "*.png|Soubory PNG (*.png)"
 
-#: canvas_view.cpp:1288
+#: canvas_view.cpp:1384
 msgid "No destination file selected"
 msgstr "Nevybrán žádný cílový soubor"
 
-#: canvas_view.cpp:1323
-#, qt-format
+#: canvas_view.cpp:1419
 msgid "Exported '%1'"
 msgstr "Vyvedeno '%1'"
 
-#: canvas_view.cpp:1325
-#, qt-format
+#: canvas_view.cpp:1421
 msgid "Could not save to %1"
 msgstr "Nepodařilo se uložit do %1"
 
-#: canvas_view.cpp:1325
+#: canvas_view.cpp:1421
 msgid "Missing picture"
 msgstr "Chybí obrázek"
+
+#: canvas_view.cpp:1713
+#, fuzzy
+msgid "Semantik map"
+msgstr "Semantik"
+
+#: canvas_view.cpp:1763 fig/box_view.cpp:1922
+msgid "Printing cancelled"
+msgstr ""
+
+#: canvas_view.cpp:1774 fig/box_view.cpp:1933
+msgid "Printing completed"
+msgstr ""
+
+#: canvas_view.cpp:1778 fig/box_view.cpp:1937
+msgid "Problem during printing :-("
+msgstr ""
 
 #: config_dialog.cpp:29
 msgid "Document settings"
@@ -233,234 +297,483 @@ msgstr "Šířka"
 msgid "Height"
 msgstr "Výška"
 
-#: fig/box_fork.cpp:334 fig/box_item.cpp:133
-#, qt-format
+#: fig/box_class_properties.cpp:89 vars_view.cpp:77
+msgid "Code complete"
+msgstr "Kód dokončen"
+
+#: fig/box_class_properties.cpp:90 vars_view.cpp:78
+msgid "Ctrl+space"
+msgstr "Ctrl+mezerník"
+
+#: fig/box_class_properties.cpp:246
+#, fuzzy
+msgid "Class properties"
+msgstr "Vlastnosti odkazu"
+
+#: fig/box_class_properties.cpp:283
+msgid "No class name given"
+msgstr ""
+
+#: fig/box_class_properties.cpp:283
+#, fuzzy
+msgid "Missing class name"
+msgstr "Chybí data"
+
+#: fig/box_document_properties.cpp:27
+#, fuzzy
+msgid "Diagram properties"
+msgstr "Vlastnosti odkazu"
+
+#: fig/box_document_properties.cpp:37
+msgid "Font"
+msgstr ""
+
+#: fig/box_document_properties.cpp:39
+#, fuzzy
+msgid "Font for diagram objects"
+msgstr "Vlastnosti pro okno s diagramem"
+
+#: fig/box_fork.cpp:334 fig/box_item.cpp:136
 msgid "%1 x %2"
 msgstr "%1 x %2"
 
-#: fig/box_item.cpp:189
-msgid "Properties for diagram box"
-msgstr "Vlastnosti pro okno s diagramem"
+#: fig/box_item.cpp:192
+#, fuzzy
+msgid "Diagram box properties"
+msgstr "Vlastnosti odkazu"
 
-#: fig/box_item.cpp:190
+#: fig/box_item.cpp:193
 msgid "Text:"
 msgstr "Text:"
 
-#: fig/box_link_properties.cpp:21
+#: fig/box_link_properties.cpp:23
 msgid "Link properties"
 msgstr "Vlastnosti odkazu"
 
-#: fig/box_link_properties.cpp:29
+#: fig/box_link_properties.cpp:33
 msgid "Thickness"
 msgstr "Tloušťka"
 
-#: fig/box_link_properties.cpp:33
+#: fig/box_link_properties.cpp:37
+#, fuzzy
+msgid "Line Type"
+msgstr "Styl čáry"
+
+#: fig/box_link_properties.cpp:41
 msgid "Line Style"
 msgstr "Styl čáry"
 
-#: fig/box_link_properties.cpp:37
-msgid "Left arrow"
-msgstr "Šipka doleva"
-
-#: fig/box_link_properties.cpp:41
-msgid "Right arrow"
+#: fig/box_link_properties.cpp:45
+#, fuzzy
+msgid "Origin arrow"
 msgstr "Šipka doprava"
 
-#: fig/box_link_properties.cpp:51
+#: fig/box_link_properties.cpp:49
+#, fuzzy
+msgid "Target arrow"
+msgstr "Šipka doleva"
+
+#: fig/box_link_properties.cpp:59
+msgid "Zigzag"
+msgstr ""
+
+#: fig/box_link_properties.cpp:60
+#, fuzzy
+msgid "Straight"
+msgstr "Vybrat doprava"
+
+#: fig/box_link_properties.cpp:64
 msgid "Invisible line"
 msgstr "Neviditelná čára"
 
-#: fig/box_link_properties.cpp:52
+#: fig/box_link_properties.cpp:65
 msgid "Solid Line"
 msgstr "Plná čára"
 
-#: fig/box_link_properties.cpp:53
-msgid "Dot Line"
-msgstr "Tečkovaná čára"
-
-#: fig/box_link_properties.cpp:54
+#: fig/box_link_properties.cpp:66
 msgid "Dash Line"
 msgstr "Čárkovaná čára"
 
-#: fig/box_link_properties.cpp:58 fig/box_link_properties.cpp:63
+#: fig/box_link_properties.cpp:67
+msgid "Dot Line"
+msgstr "Tečkovaná čára"
+
+#: fig/box_link_properties.cpp:71 fig/box_link_properties.cpp:79
 msgid "No arrow"
 msgstr "Žádná šipka"
 
-#: fig/box_link_properties.cpp:59 fig/box_link_properties.cpp:64
+#: fig/box_link_properties.cpp:72 fig/box_link_properties.cpp:80
 msgid "Triangle"
 msgstr "Trojúhelník"
 
-#: fig/box_view.cpp:83
+#: fig/box_link_properties.cpp:73 fig/box_link_properties.cpp:81
+#, fuzzy
+msgid "Link"
+msgstr "&Spojit"
+
+#: fig/box_link_properties.cpp:74 fig/box_link_properties.cpp:82
+msgid "Inheritance"
+msgstr ""
+
+#: fig/box_link_properties.cpp:75 fig/box_link_properties.cpp:83
+#, fuzzy
+msgid "Aggregation"
+msgstr "Organizace"
+
+#: fig/box_matrix.cpp:181
+msgid "Last row: %2px, last column: %3px (size: %4 x %5)"
+msgstr ""
+
+#: fig/box_matrix.cpp:197
+msgid "Row %1: %2px (size: %3 x %4)"
+msgstr ""
+
+#: fig/box_matrix.cpp:213
+msgid "Column %1: %2px (size: %3 x %4)"
+msgstr ""
+
+#: fig/box_view.cpp:102
 msgid "box_item"
 msgstr "Položka okna"
 
-#: fig/box_view.cpp:85
+#: fig/box_view.cpp:104
 msgid "id"
 msgstr "ID"
 
-#: fig/box_view.cpp:90 fig/box_view.cpp:100
+#: fig/box_view.cpp:109 fig/box_view.cpp:119
 msgid "c1"
 msgstr "c1"
 
-#: fig/box_view.cpp:91 fig/box_view.cpp:102
+#: fig/box_view.cpp:110 fig/box_view.cpp:121
 msgid "c2"
 msgstr "c2"
 
-#: fig/box_view.cpp:92
+#: fig/box_view.cpp:111
 msgid "text"
 msgstr "text"
 
-#: fig/box_view.cpp:93
+#: fig/box_view.cpp:112
 msgid "col"
 msgstr "sloup"
 
-#: fig/box_view.cpp:96 fig/box_view.cpp:132
+#: fig/box_view.cpp:115 fig/box_view.cpp:151
 msgid "box_link"
 msgstr "odkaz"
 
-#: fig/box_view.cpp:99
+#: fig/box_view.cpp:118
 msgid "p1"
 msgstr "p1"
 
-#: fig/box_view.cpp:101
+#: fig/box_view.cpp:120
 msgid "p2"
 msgstr "p2"
 
-#: fig/box_view.cpp:114
-msgid "sl"
-msgstr "sl"
+#: fig/box_view.cpp:133
+msgid "pen_style"
+msgstr ""
 
-#: fig/box_view.cpp:115
-msgid "wl"
-msgstr "wl"
+#: fig/box_view.cpp:134
+msgid "border_width"
+msgstr ""
 
-#: fig/box_view.cpp:119
+#: fig/box_view.cpp:138
 msgid "box_link_offset"
 msgstr "posun_odkazu"
 
-#: fig/box_view.cpp:123
+#: fig/box_view.cpp:142
 msgid "x"
 msgstr "x"
 
-#: fig/box_view.cpp:123
+#: fig/box_view.cpp:142
 msgid "y"
 msgstr "y"
 
-#: fig/box_view.cpp:160
+#: fig/box_view.cpp:182
 msgid "Properties..."
 msgstr "Vlastnosti..."
 
-#: fig/box_view.cpp:165
+#: fig/box_view.cpp:187
 msgid "Activity"
 msgstr "Činnost"
 
-#: fig/box_view.cpp:166
+#: fig/box_view.cpp:188
 msgid "Ctrl+Return"
 msgstr "Ctrl+Return"
 
-#: fig/box_view.cpp:171
+#: fig/box_view.cpp:193
 msgid "Delete"
 msgstr "Smazat"
 
-#: fig/box_view.cpp:175
+#: fig/box_view.cpp:197
 msgid "Color..."
 msgstr "Barva..."
 
-#: fig/box_view.cpp:181
+#: fig/box_view.cpp:202
+msgid "Raise"
+msgstr ""
+
+#: fig/box_view.cpp:203
 msgid "PgUp"
 msgstr "O stranu nahoru (PgUp)"
 
-#: fig/box_view.cpp:186
+#: fig/box_view.cpp:207
+msgid "Send back"
+msgstr ""
+
+#: fig/box_view.cpp:208
 msgid "PgDown"
 msgstr "O stranu dolů (PgDown)"
 
-#: fig/box_view.cpp:190
+#: fig/box_view.cpp:212
 msgid "Floating text"
 msgstr "Plovoucí text"
 
-#: fig/box_view.cpp:192
+#: fig/box_view.cpp:214
 msgid "Component"
 msgstr "Součástka"
 
-#: fig/box_view.cpp:194
+#: fig/box_view.cpp:216
 msgid "Node"
 msgstr "Uzel"
 
-#: fig/box_view.cpp:196
+#: fig/box_view.cpp:218
+#, fuzzy
+msgid "Decision"
+msgstr "Změnit rozměry"
+
+#: fig/box_view.cpp:220
+#, fuzzy
+msgid "Database"
+msgstr "Data"
+
+#: fig/box_view.cpp:222
 msgid "Activity start"
 msgstr "Začátek činnosti"
 
-#: fig/box_view.cpp:198
+#: fig/box_view.cpp:224
 msgid "Activity end"
 msgstr "Konec činnosti"
 
-#: fig/box_view.cpp:200
+#: fig/box_view.cpp:226
 msgid "Horizontal fork/join"
 msgstr "Vodorovná odnož/spojnice"
 
-#: fig/box_view.cpp:202
+#: fig/box_view.cpp:228
 msgid "Vertical fork/join"
 msgstr "Svislá odnož/spojnice"
 
-#: fig/box_view.cpp:204
+#: fig/box_view.cpp:230
 msgid "Actor"
 msgstr "Herec"
 
-#: fig/box_view.cpp:206
+#: fig/box_view.cpp:232
 msgid "Usecase"
 msgstr "Případ užití"
 
-#: fig/box_view.cpp:215
+#: fig/box_view.cpp:234
+msgid "Matrix"
+msgstr ""
+
+#: fig/box_view.cpp:236
+msgid "Boundary"
+msgstr ""
+
+#: fig/box_view.cpp:238
+msgid "Class"
+msgstr ""
+
+#: fig/box_view.cpp:241
+msgid "Import from file..."
+msgstr ""
+
+#: fig/box_view.cpp:243
+#, fuzzy
+msgid "Export to file..."
+msgstr "&Vyvést mapu..."
+
+#: fig/box_view.cpp:245
+msgid "Copy image to clipboard"
+msgstr ""
+
+#: fig/box_view.cpp:267
+#, fuzzy
+msgid "File operations"
+msgstr "Vlastnosti odkazu"
+
+#: fig/box_view.cpp:279
 msgid "More elements"
 msgstr "Další prvky"
 
-#: fig/box_view.cpp:247
+#: fig/box_view.cpp:317
 msgid "Alignment"
 msgstr "Zarovnání"
 
-#: fig/box_view.cpp:249
+#: fig/box_view.cpp:319
 msgid "Align left"
 msgstr "Zarovnat vlevo"
 
-#: fig/box_view.cpp:250
+#: fig/box_view.cpp:320
 msgid "Align center"
 msgstr "Zarovnat na střed"
 
-#: fig/box_view.cpp:251
+#: fig/box_view.cpp:321
 msgid "Align right"
 msgstr "Vybrat vpravo"
 
-#: fig/box_view.cpp:253
+#: fig/box_view.cpp:323
 msgid "Align top"
 msgstr "Zarovnat nahoru"
 
-#: fig/box_view.cpp:254
+#: fig/box_view.cpp:324
 msgid "Align middle"
 msgstr "Zarovnat doprostřed"
 
-#: fig/box_view.cpp:255
+#: fig/box_view.cpp:325
 msgid "Align bottom"
 msgstr "Zarovnat dolů"
 
-#: fig/box_view.cpp:258
+#: fig/box_view.cpp:328
 msgid "Size"
 msgstr "Velikost"
 
-#: fig/box_view.cpp:260
+#: fig/box_view.cpp:330
 msgid "Same width"
 msgstr "Stejná šířka"
 
-#: fig/box_view.cpp:261
+#: fig/box_view.cpp:331
 msgid "Same height"
 msgstr "Stejná výška"
 
-#: fig/box_view.cpp:262
+#: fig/box_view.cpp:332
 msgid "Same width and height"
 msgstr "Stejná šířka a výška"
 
-#: flag_scheme.cpp:14
-msgid "Flag item(s) as..."
-msgstr "Označit položku(y) jako..."
+#: fig/box_view.cpp:589 fig/box_view.cpp:1871
+#, fuzzy
+msgid "Semantik diagram"
+msgstr "Semantik %1"
+
+#: fig/box_view.cpp:1684 fig/box_view.cpp:1720 fig/semantik_d_win.cpp:280
+#, fuzzy
+msgid "*.semd|Semantik diagram (*.semd)"
+msgstr "*.sem|Soubor pro Semantik (*.sem)"
+
+#: fig/box_view.cpp:1685 fig/semantik_d_win.cpp:281
+#, fuzzy
+msgid "Choose a file to open"
+msgstr "Vybrat název souboru"
+
+#: fig/box_view.cpp:1721 semantik.cpp:419 semantik.cpp:481
+msgid "Choose a file name"
+msgstr "Vybrat název souboru"
+
+#: fig/box_view.cpp:1735 semantik.cpp:432
+msgid ""
+"The file \"%1\" already exists.\n"
+"Overwrite it?"
+msgstr ""
+"Soubor \"%1\" již existuje.\n"
+"Přepsat jej?"
+
+#: fig/box_view.cpp:1736 semantik.cpp:433
+msgid "Overwrite existing file"
+msgstr "Přepsat stávající soubor"
+
+#: fig/box_view.cpp:1758 fig/box_view.cpp:1776 semantik.cpp:444
+#: semantik.cpp:466
+msgid "Saved '%1'"
+msgstr "Uloženo '%1'"
+
+#: fig/matrix_dialog.cpp:32 table_dialog.cpp:32
+msgid "Rows"
+msgstr "Řádky"
+
+#: fig/matrix_dialog.cpp:36 table_dialog.cpp:36
+msgid "Columns"
+msgstr "Sloupce"
+
+#: fig/semantik_d_win.cpp:64 semantik.cpp:202
+msgid "Ctrl+H"
+msgstr "Ctrl+H"
+
+#: fig/semantik_d_win.cpp:68
+#, fuzzy
+msgid "Files"
+msgstr "&Soubor"
+
+#: fig/semantik_d_win.cpp:80
+#, fuzzy
+msgid "This is Semantik-d"
+msgstr "Semantik"
+
+#: fig/semantik_d_win.cpp:185
+#, fuzzy
+msgid "[Untitled]"
+msgstr "Nepojmenovaný"
+
+#: fig/semantik_d_win.cpp:246 semantik.cpp:548
+msgid "Untitled"
+msgstr "Nepojmenovaný"
+
+#: fig/semantik_d_win.cpp:249 semantik.cpp:551
+msgid ""
+"The document \"%1\" has been modified.\n"
+"Do you want to save your changes or discard them?"
+msgstr ""
+"Dokument \"%1\" byl změněn.\n"
+"Chcete svoje změny uložit nebo je vyhodit?"
+
+#: fig/semantik_d_win.cpp:250 semantik.cpp:552
+msgid "Close Document"
+msgstr "Zavřít dokument"
+
+#: fig/semantik_d_win.cpp:385 semantik.cpp:492
+msgid " [Modified] "
+msgstr " [Změněno] "
+
+#: fig/semantik_d_win.cpp:390
+#, fuzzy
+msgid "Semantik Diagram %1"
+msgstr "Semantik %1"
+
+#: fig/semantik_d_win.cpp:394
+#, fuzzy
+msgid "%1 %2 - Semantik Diagram"
+msgstr "%1 %2 - Semantik"
+
+#: fig/semd.cpp:26
+msgid "A tool for editing and organizing Semantik diagrams"
+msgstr ""
+
+#: fig/semd.cpp:42 main.cpp:34
+msgid "A file to open on startup"
+msgstr "Soubor k otevření při spuštění"
+
+#: fig/semd.cpp:43
+msgid "An output file for exporting the diagram"
+msgstr ""
+
+#: fig/semd.cpp:44
+msgid "Diagram width for printing"
+msgstr ""
+
+#: fig/semd.cpp:45
+msgid "Diagram height for printing"
+msgstr ""
+
+#: fig/semd.cpp:47
+#, fuzzy
+msgid "Semantik-d"
+msgstr "Semantik"
+
+#: fig/semd.cpp:47
+#, fuzzy
+msgid "(C) 2013-2015 Thomas Nagy"
+msgstr "(C) 2007-2015 Thomas Nagy"
+
+#: fig/semd.cpp:49 main.cpp:40
+msgid "Thomas Nagy"
+msgstr "Thomas Nagy"
 
 #: generator_dialog.cpp:30
 msgid "Generate documents"
@@ -487,7 +800,6 @@ msgid "Missing data"
 msgstr "Chybí data"
 
 #: generator_dialog.cpp:120
-#, qt-format
 msgid "Invalid output directory %1"
 msgstr "Neplatný výstupní adresář %1"
 
@@ -495,35 +807,35 @@ msgstr "Neplatný výstupní adresář %1"
 msgid "Missing location"
 msgstr "Chybí umístění"
 
-#: image_view.cpp:36
+#: image_view.cpp:37
 msgid "Change picture"
 msgstr "Změnit obrázek"
 
-#: image_view.cpp:40
+#: image_view.cpp:41
 msgid "Clear picture"
 msgstr "Smazat obrázek"
 
-#: image_view.cpp:65
+#: image_view.cpp:66
 msgid "Click to set a picture"
 msgstr "Klepněte pro položení obrázku"
 
-#: image_view.cpp:69
+#: image_view.cpp:70
 msgid "Select an item on the map"
 msgstr "Vybrat položku na zobrazení"
 
-#: image_view.cpp:165
+#: image_view.cpp:166
 msgid "*.png *.jpg *.jpeg *.gif|Image Files (*.png *.jpg *.jpeg *.gif)"
 msgstr "*.png *.jpg *.jpeg *.gif|Obrázkové soubory (*.png *.jpg *.jpeg *.gif)"
 
-#: image_view.cpp:166
+#: image_view.cpp:167
 msgid "Choose a picture"
 msgstr "Vybrat obrázek"
 
-#: image_view.cpp:178
+#: image_view.cpp:179
 msgid "Could not load the picture"
 msgstr "Nepodařilo se nahrát obrázek"
 
-#: main.cpp:25
+#: main.cpp:24
 msgid ""
 "A mind-mapping tool for KDE\n"
 "Available exclusively for open systems such as OpenSuse, Gentoo or Fedora."
@@ -531,76 +843,108 @@ msgstr ""
 "Nástroj na vytváření myšlenkových map pro KDE\n"
 "Dostupný exkluzivně pro systémy jako OpenSuse, Gentoo nebo Fedora."
 
-#: main.cpp:41
-msgid "A file to open on startup"
-msgstr "Soubor k otevření při spuštění"
+#: main.cpp:35
+msgid "An output file for printing the map"
+msgstr ""
 
-#: main.cpp:43
+#: main.cpp:37
 msgid "Semantik"
 msgstr "Semantik"
 
-#: main.cpp:44
-msgid "(C) 2007-2012 Thomas Nagy"
-msgstr "(C) 2007-2012 Thomas Nagy"
+#: main.cpp:38
+msgid "(C) 2007-2015 Thomas Nagy"
+msgstr "(C) 2007-2015 Thomas Nagy"
 
-#: main.cpp:47
-msgid "Thomas Nagy"
-msgstr "Thomas Nagy"
-
+#. i18n: file: data/semantik-dui.rc:5
+#. i18n: ectx: Menu (file)
 #. i18n: file: data/semantikui.rc:5
 #. i18n: ectx: Menu (file)
-#: po/rc.cpp:3 rc.cpp:3
+#. i18n: file: data/semantik-dui.rc:5
+#. i18n: ectx: Menu (file)
+#. i18n: file: data/semantikui.rc:5
+#. i18n: ectx: Menu (file)
+#: po/rc.cpp:3 po/rc.cpp:21 rc.cpp:3 rc.cpp:21
 msgid "&File"
 msgstr "&Soubor"
 
-#. i18n: file: data/semantikui.rc:7
+#. i18n: file: data/semantik-dui.rc:25
 #. i18n: ectx: Menu (edit)
-#: po/rc.cpp:6 rc.cpp:6
+#. i18n: file: data/semantikui.rc:8
+#. i18n: ectx: Menu (edit)
+#. i18n: file: data/semantik-dui.rc:25
+#. i18n: ectx: Menu (edit)
+#. i18n: file: data/semantikui.rc:8
+#. i18n: ectx: Menu (edit)
+#: po/rc.cpp:6 po/rc.cpp:24 rc.cpp:6 rc.cpp:24
 msgid "&Edit"
 msgstr "Úp&ravy"
 
-#. i18n: file: data/semantikui.rc:12
+#. i18n: file: data/semantik-dui.rc:28
 #. i18n: ectx: Menu (view)
-#: po/rc.cpp:9 rc.cpp:9
+#. i18n: file: data/semantikui.rc:13
+#. i18n: ectx: Menu (view)
+#. i18n: file: data/semantik-dui.rc:28
+#. i18n: ectx: Menu (view)
+#. i18n: file: data/semantikui.rc:13
+#. i18n: ectx: Menu (view)
+#: po/rc.cpp:9 po/rc.cpp:27 rc.cpp:9 rc.cpp:27
 msgid "&View"
 msgstr "&Pohled"
 
-#. i18n: file: data/semantikui.rc:20
+#. i18n: file: data/semantik-dui.rc:33
 #. i18n: ectx: Menu (tools)
-#: po/rc.cpp:12 rc.cpp:12
+#. i18n: file: data/semantikui.rc:21
+#. i18n: ectx: Menu (tools)
+#. i18n: file: data/semantik-dui.rc:33
+#. i18n: ectx: Menu (tools)
+#. i18n: file: data/semantikui.rc:21
+#. i18n: ectx: Menu (tools)
+#: po/rc.cpp:12 po/rc.cpp:30 rc.cpp:12 rc.cpp:30
 msgid "&Tools"
 msgstr "Nás&troje"
 
-#. i18n: file: data/semantikui.rc:23
+#. i18n: file: data/semantik-dui.rc:36
 #. i18n: ectx: Menu (settings)
-#: po/rc.cpp:15 rc.cpp:15
+#. i18n: file: data/semantikui.rc:24
+#. i18n: ectx: Menu (settings)
+#. i18n: file: data/semantik-dui.rc:36
+#. i18n: ectx: Menu (settings)
+#. i18n: file: data/semantikui.rc:24
+#. i18n: ectx: Menu (settings)
+#: po/rc.cpp:15 po/rc.cpp:33 rc.cpp:15 rc.cpp:33
 msgid "&Settings"
 msgstr "&Nastavení"
 
-#. i18n: file: data/semantikui.rc:26
+#. i18n: file: data/semantik-dui.rc:39
 #. i18n: ectx: Menu (help)
-#: po/rc.cpp:18 rc.cpp:18
+#. i18n: file: data/semantikui.rc:27
+#. i18n: ectx: Menu (help)
+#. i18n: file: data/semantik-dui.rc:39
+#. i18n: ectx: Menu (help)
+#. i18n: file: data/semantikui.rc:27
+#. i18n: ectx: Menu (help)
+#: po/rc.cpp:18 po/rc.cpp:36 rc.cpp:18 rc.cpp:36
 msgid "&Help"
 msgstr "Nápo&věda"
 
-#. i18n: file: data/semantikui.rc:40
+#. i18n: file: data/semantikui.rc:41
 #. i18n: ectx: ToolBar (colorsToolBar)
-#: po/rc.cpp:21 rc.cpp:21
+#: po/rc.cpp:39 rc.cpp:39
 msgid "Colors Toolbar"
 msgstr "Nástrojový pruh barev"
 
-#. i18n: file: data/semantikui.rc:44
+#. i18n: file: data/semantikui.rc:45
 #. i18n: ectx: ToolBar (flagsToolBar)
-#: po/rc.cpp:24 rc.cpp:24
+#: po/rc.cpp:42 rc.cpp:42
 msgid "Flags Toolbar"
 msgstr "Nástrojový pruh příznaků"
 
-#: po/rc.cpp:25 rc.cpp:25
+#: po/rc.cpp:43 rc.cpp:43
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
 msgstr "Pavel Fric"
 
-#: po/rc.cpp:26 rc.cpp:26
+#: po/rc.cpp:44 rc.cpp:44
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "fripohled.blogspot.com"
@@ -609,7 +953,7 @@ msgstr "fripohled.blogspot.com"
 msgid "<p align='center'>No preview available<br/>at this time</p>"
 msgstr "<p align='center'>V této chvíli<br/>není dostupný žádný náhled</p>"
 
-#: semantik.cpp:45
+#: semantik.cpp:46
 msgid ""
 "The map is empty, Semantik\n"
 "cannot create documents from it"
@@ -617,267 +961,154 @@ msgstr ""
 "Zobrazení je prázdné, Semantik\n"
 "z něj nedokáže vytvářet dokumenty"
 
-#: semantik.cpp:45
+#: semantik.cpp:46
 msgid "Empty map"
 msgstr "Prázdné zobrazení"
 
-#: semantik.cpp:52
-#, qt-format
+#: semantik.cpp:53
 msgid "Template folder %1 is not readable"
 msgstr "Složka s předlohami %1 je nečitelná"
 
-#: semantik.cpp:166
+#: semantik.cpp:167
 msgid "&Reorganize the map"
 msgstr "&Přeuspořádat zobrazení"
 
-#: semantik.cpp:168
+#: semantik.cpp:169
 msgid "Ctrl+R"
 msgstr "Ctrl+R"
 
-#: semantik.cpp:171
+#: semantik.cpp:172
 msgid "&Export the map..."
 msgstr "&Vyvést mapu..."
 
-#: semantik.cpp:173
+#: semantik.cpp:174
 msgid "Ctrl+Shift+E"
 msgstr "Ctrl+Shift+E"
 
-#: semantik.cpp:178
+#: semantik.cpp:179
 msgid "&Generate..."
 msgstr "&Vytvořit..."
 
-#: semantik.cpp:181
+#: semantik.cpp:182
 msgid "Ctrl+G"
 msgstr "Ctrl+G"
 
-#: semantik.cpp:187
+#: semantik.cpp:188
 msgid "CustomColor"
 msgstr "Vlastní barva"
 
-#: semantik.cpp:201
-msgid "Ctrl+H"
-msgstr "Ctrl+H"
-
-#: semantik.cpp:210
+#: semantik.cpp:211
 msgid "Data"
 msgstr "Data"
 
-#: semantik.cpp:233
+#: semantik.cpp:235
 msgid "Variables"
 msgstr "Proměnné"
 
-#: semantik.cpp:242
+#: semantik.cpp:244
 msgid "Preview"
 msgstr "Náhled"
 
-#: semantik.cpp:254
+#: semantik.cpp:256
 msgid "Linear view"
 msgstr "Přímočarý pohled"
 
-#: semantik.cpp:347
+#: semantik.cpp:350
 msgid "Welcome to Semantik"
 msgstr "Vítejte v Semantiku"
 
-#: semantik.cpp:393
-msgid "Ready"
-msgstr "Připraven"
-
-#: semantik.cpp:400
+#: semantik.cpp:418
 msgid "*.sem|Semantik file (*.sem)"
 msgstr "*.sem|Soubor pro Semantik (*.sem)"
 
-#: semantik.cpp:401 semantik.cpp:463
-msgid "Choose a file name"
-msgstr "Vybrat název souboru"
-
-#: semantik.cpp:414
-#, qt-format
-msgid ""
-"The file \"%1\" already exists.\n"
-"Overwrite it?"
-msgstr ""
-"Soubor \"%1\" již existuje.\n"
-"Přepsat jej?"
-
-#: semantik.cpp:415
-msgid "Overwrite existing file"
-msgstr "Přepsat stávající soubor"
-
-#: semantik.cpp:426 semantik.cpp:448
-#, qt-format
-msgid "Saved '%1'"
-msgstr "Uloženo '%1'"
-
-#: semantik.cpp:462
+#: semantik.cpp:480
 msgid "*.sem *.kdi *.mm *.vym|All Supported Files (*.sem *.kdi *.mm *.vym)"
 msgstr ""
 "*.sem *.kdi *.mm *.vym|Všechny podporované soubory (*.sem *.kdi *.mm *.vym)"
 
-#: semantik.cpp:474
-msgid " [Modified] "
-msgstr " [Změněno] "
-
-#: semantik.cpp:479
-#, qt-format
+#: semantik.cpp:497
 msgid "Semantik %1"
 msgstr "Semantik %1"
 
-#: semantik.cpp:483
-#, qt-format
+#: semantik.cpp:501
 msgid "%1 %2 - Semantik"
 msgstr "%1 %2 - Semantik"
 
-#: semantik.cpp:530
-msgid "Untitled"
-msgstr "Nepojmenovaný"
-
-#: semantik.cpp:533
-#, qt-format
-msgid ""
-"The document \"%1\" has been modified.\n"
-"Do you want to save your changes or discard them?"
-msgstr ""
-"Dokument \"%1\" byl změněn.\n"
-"Chcete svoje změny uložit nebo je vyhodit?"
-
-#: semantik.cpp:534
-msgid "Close Document"
-msgstr "Zavřít dokument"
-
-#: sem_mediator.cpp:270
-#, qt-format
-msgid "Automatic save failed for file: %1"
-msgstr "Automatické uložení se nepodařilo u souboru: %1"
-
-#: sem_mediator.cpp:273
-#, qt-format
-msgid "%1 saved automatically"
-msgstr "%1 uložen automaticky"
-
-#: sem_mediator.cpp:292
-#, qt-format
-msgid "Color %1"
-msgstr "Barva %1"
-
-#: sem_mediator.cpp:618
-#, qt-format
-msgid "File saving: missing file %1"
-msgstr "Ukládání souboru: chybí soubor %1"
-
-#: sem_mediator.cpp:643 sem_mediator.cpp:1142 sem_mediator.cpp:1185
-msgid "Missing bindings for opening files"
-msgstr "Chybí spojení pro otevření souborů"
-
-#: sem_mediator.cpp:694
-#, qt-format
-msgid "Missing filter file %1 for opening files"
-msgstr "Chybí soubor s filtrem %1 pro otevření souborů"
-
-#: sem_mediator.cpp:694 sem_mediator.cpp:709
-msgid "Broken installation"
-msgstr "Poškozená instalace"
-
-#: sem_mediator.cpp:709
-msgid "Missing python bindings for opening files"
-msgstr "Chybí spojení python pro otevření souborů"
-
-#: sem_mediator.cpp:725
-#, qt-format
-msgid "Could not load the document %1"
-msgstr "Nepodařilo se nahrát dokument %1"
-
-#: sem_mediator.cpp:725
-msgid "Broken document"
-msgstr "Poškozený dokument"
-
-#: sem_mediator.cpp:1108
-#, qt-format
-msgid "Code generation failed: missing file %1"
-msgstr "Vytvoření kódu se nepodařilo: chybí soubor %1"
-
-#: sem_mediator.cpp:1147
-msgid "Document generation completed successfully"
-msgstr "Vytvoření dokumentu úspěšně dokončeno"
-
-#: table_dialog.cpp:32
-msgid "Rows"
-msgstr "Řádky"
-
-#: table_dialog.cpp:36
-msgid "Columns"
-msgstr "Sloupce"
-
-#: table_view.cpp:25 table_view.cpp:79
+#: table_view.cpp:26 table_view.cpp:80
 msgid "Add Row"
 msgstr "Přidat řádek"
 
-#: table_view.cpp:26
+#: table_view.cpp:27
 msgid "Add a row"
 msgstr "Přidat řádek"
 
-#: table_view.cpp:30 table_view.cpp:80
+#: table_view.cpp:31 table_view.cpp:81
 msgid "Add Column"
 msgstr "Přidat sloupec"
 
-#: table_view.cpp:31
+#: table_view.cpp:32
 msgid "Add a column"
 msgstr "Přidat sloupec"
 
-#: table_view.cpp:36 table_view.cpp:81
+#: table_view.cpp:37 table_view.cpp:82
 msgid "Remove Row"
 msgstr "Odstranit řádek"
 
-#: table_view.cpp:37
+#: table_view.cpp:38
 msgid "Remove a row"
 msgstr "Odstranit řádek"
 
-#: table_view.cpp:41 table_view.cpp:82
+#: table_view.cpp:42 table_view.cpp:83
 msgid "Remove Column"
 msgstr "Odstranit sloupec"
 
-#: table_view.cpp:42
+#: table_view.cpp:43
 msgid "Remove a column"
 msgstr "Odstranit sloupec"
 
-#: table_view.cpp:46
+#: table_view.cpp:47
 msgid "Redimension"
 msgstr "Změnit rozměry"
 
-#: table_view.cpp:47
+#: table_view.cpp:48
 msgid "Change table dimensions"
 msgstr "Změnit rozměry tabulky"
 
-#: text_view.cpp:40
+#: text_view.cpp:41
 msgid "&Bold"
 msgstr "&Tučné"
 
-#: text_view.cpp:41
+#: text_view.cpp:42
 msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
-#: text_view.cpp:44
+#: text_view.cpp:45
 msgid "&Italic"
 msgstr "&Kurzíva"
 
-#: text_view.cpp:45
+#: text_view.cpp:46
 msgid "Ctrl+I"
 msgstr "Ctrl+I"
 
-#: text_view.cpp:48
+#: text_view.cpp:49
 msgid "&Underline"
 msgstr "&Podtržení"
 
-#: text_view.cpp:49
+#: text_view.cpp:50
 msgid "Ctrl+U"
 msgstr "CTRL+U"
 
-#: vars_view.cpp:76
-msgid "Code complete"
-msgstr "Kód dokončen"
+#~ msgid "Data type"
+#~ msgstr "Datový typ"
 
-#: vars_view.cpp:77
-msgid "Ctrl+space"
-msgstr "Ctrl+mezerník"
+#~ msgid "sl"
+#~ msgstr "sl"
+
+#~ msgid "wl"
+#~ msgstr "wl"
+
+#~ msgid "Ready"
+#~ msgstr "Připraven"
 
 #~ msgid "Insert child"
 #~ msgstr "Vložit potomka"
@@ -1005,11 +1236,9 @@ msgstr "Ctrl+mezerník"
 #~ msgid "&Ok"
 #~ msgstr "&OK"
 
-#, qt-format
 #~ msgid "File %1 does not exist"
 #~ msgstr "Soubor %1 neexistuje"
 
-#, qt-format
 #~ msgid "File %1 could not be opened"
 #~ msgstr "Soubor %1 se nepodařilo otevřít"
 
@@ -1021,9 +1250,6 @@ msgstr "Ctrl+mezerník"
 
 #~ msgid "&Select"
 #~ msgstr "&Vybrat"
-
-#~ msgid "&Link"
-#~ msgstr "&Spojit"
 
 #~ msgid "&Sort"
 #~ msgstr "&Třídit"

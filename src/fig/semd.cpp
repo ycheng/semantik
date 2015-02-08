@@ -54,6 +54,7 @@ int main(int i_iArgc, char **i_iArgv)
 	KApplication l_oApp;
 
 	KGlobal::locale()->insertCatalog("libkdeedu");
+	KGlobal::locale()->insertCatalog("semantik");
 
 	semantik_d_win *l_oMainWin = new semantik_d_win;
 

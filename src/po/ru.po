@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: semantik\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/semantik/issues\n"
-"POT-Creation-Date: 2015-02-07 23:12+0300\n"
+"POT-Creation-Date: 2015-02-08 16:12+0100\n"
 "PO-Revision-Date: 2015-02-08 01:01+0300\n"
 "Last-Translator: AlexL <loginov.alex.valer@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -828,8 +828,8 @@ msgid "Semantik"
 msgstr "Semantik"
 
 #: main.cpp:38
-msgid "(C) 2007-2012 Thomas Nagy"
-msgstr "(C) 2007-2012 Thomas Nagy"
+msgid "(C) 2007-2015 Thomas Nagy"
+msgstr "(C) 2007-2015 Thomas Nagy"
 
 #. i18n: file: data/semantik-dui.rc:5
 #. i18n: ectx: Menu (file)
@@ -1074,17 +1074,14 @@ msgstr "&Подчёркнутый"
 msgid "Ctrl+U"
 msgstr "Ctrl+U"
 
-#: fig/box_item.cpp:190
-msgid "Properties for diagram box"
-msgstr "Свойства для диаграммы бокса"
+#~ msgid "Properties for diagram box"
+#~ msgstr "Свойства для диаграммы бокса"
 
-#: fig/semd.cpp:44
-msgid "(C) 2013 Thomas Nagy"
-msgstr "(C) 2013 Thomas Nagy"
+#~ msgid "(C) 2013 Thomas Nagy"
+#~ msgstr "(C) 2013 Thomas Nagy"
 
-#: canvas_view.cpp:145
-msgid "Data type"
-msgstr "Тип данных"
+#~ msgid "Data type"
+#~ msgstr "Тип данных"
 
 #~ msgid "Ready"
 #~ msgstr "Готово"
