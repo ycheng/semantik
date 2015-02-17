@@ -118,6 +118,7 @@ class sem_mediator: public QObject
 
 		int num_children(int i_iParent);
 		int m_iConnType;
+		int m_iAutoReorg;
 		int m_iReorgType;
 		void select_root_item(int);
 		QList<int> all_roots();

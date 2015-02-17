@@ -429,14 +429,17 @@ void canvas_view::slot_add_item()
 
 	deselect_all();
 
+	data_item *p = m_oMediator->m_oItems[l_iId];
 	mem_add *add = new mem_add(m_oMediator);
 	add->init();
-	add->item->m_iXX = m_oLastPoint.x();
-	add->item->m_iYY = m_oLastPoint.y();
 	add->parent = l_iId;
+	add->item->m_iXX = p->m_iXX + 30;
+	add->item->m_iYY = p->m_iYY + 30;
 	add->apply();
-
-	reorganize(); // this was here before
+	if (m_oMediator->m_iAutoReorg)
+	{
+		reorganize();
+	}
 }
 
 void canvas_view::slot_add_sibling()
@@ -447,13 +450,17 @@ void canvas_view::slot_add_sibling()
 	if (l_iId == NO_ITEM) return;
 	deselect_all();
 
+	data_item *p = m_oMediator->m_oItems[l_iId];
 	mem_add *add = new mem_add(m_oMediator);
 	add->init();
-	add->item->m_iXX = m_oLastPoint.x();
-	add->item->m_iYY = m_oLastPoint.y();
 	add->parent = l_iId;
+	add->item->m_iXX = p->m_iXX + 30;
+	add->item->m_iYY = p->m_iYY + 30;
 	add->apply();
-	reorganize(); // this was here before
+	if (m_oMediator->m_iAutoReorg)
+	{
+		reorganize();
+	}
 }
 
 void canvas_view::slot_delete()

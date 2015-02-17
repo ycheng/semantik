@@ -311,6 +311,7 @@ void sem_mediator::init_colors()
         m_iReorgType = l_oSettings.readEntry(notr("reorg"), 0);
 	m_dTriSize = l_oSettings.readEntry(notr("trisize"), (double) 4.5);
 	m_iTimerValue = l_oSettings.readEntry(notr("auto"), 0);
+	m_iAutoReorg = l_oSettings.readEntry(notr("autoReorg"), 1);
 
 	init_timer();
 

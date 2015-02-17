@@ -513,6 +513,7 @@ void semantik_win::slot_properties()
 	l_oGen.m_oConnType->setCurrentIndex(l_oSettings.readEntry(notr("conn"), 0));
 	l_oGen.m_oReorgType->setCurrentIndex(l_oSettings.readEntry(notr("reorg"), 0));
 	l_oGen.m_oAutoSave->setValue(l_oSettings.readEntry(notr("auto"), 5));
+	l_oGen.m_oAutoReorg->setCurrentIndex(l_oSettings.readEntry(notr("autoReorg"), 1));
 
 	QString l_o = l_oSettings.readEntry(notr("bgcolor"), notr("#FFFDE8"));
 	l_oGen.m_oColorWidget->setText(l_o);
@@ -529,6 +530,7 @@ void semantik_win::slot_properties()
 		l_oSettings.writeEntry(notr("reorg"), m_oMediator->m_iReorgType = l_oGen.m_oReorgType->currentIndex());
 		l_oSettings.writeEntry(notr("auto"), m_oMediator->m_iTimerValue = l_oGen.m_oAutoSave->value());
 		l_oSettings.writeEntry(notr("bgcolor"), l_oGen.m_oColor.name());
+		l_oSettings.writeEntry(notr("autoReorg"), m_oMediator->m_iAutoReorg = l_oGen.m_oAutoReorg->currentIndex());
 		m_oMediator->init_timer();
 
 		m_oCanvas->setBackgroundBrush(l_oGen.m_oColor);

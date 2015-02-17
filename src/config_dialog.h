@@ -16,6 +16,7 @@ class config_dialog : public KDialog
 	public:
 		config_dialog(QWidget *i_oParent);
 		QComboBox *m_oReorgType;
+		QComboBox *m_oAutoReorg;
 		QComboBox *m_oConnType;
 		QSpinBox *m_oAutoSave;
 		QPushButton *m_oColorWidget;

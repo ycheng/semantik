@@ -38,34 +38,42 @@ config_dialog::config_dialog(QWidget *i_oParent):
 	l_oGridLayout->addWidget(l_sLabel, 0, 0, 1, 1);
 
 	l_sLabel = new QLabel(widget);
-	l_sLabel->setText(trUtf8("Connection type"));
+	l_sLabel->setText(trUtf8("Item position after keyboard insertion"));
 	l_oGridLayout->addWidget(l_sLabel, 1, 0, 1, 1);
 
 	l_sLabel = new QLabel(widget);
-	l_sLabel->setText(trUtf8("Save document automatically"));
+	l_sLabel->setText(trUtf8("Connection type"));
 	l_oGridLayout->addWidget(l_sLabel, 2, 0, 1, 1);
 
 	l_sLabel = new QLabel(widget);
-	l_sLabel->setText(trUtf8("Background color"));
+	l_sLabel->setText(trUtf8("Save document automatically"));
 	l_oGridLayout->addWidget(l_sLabel, 3, 0, 1, 1);
+
+	l_sLabel = new QLabel(widget);
+	l_sLabel->setText(trUtf8("Background color"));
+	l_oGridLayout->addWidget(l_sLabel, 4, 0, 1, 1);
 
 
 	m_oReorgType = new QComboBox(widget);
 	m_oReorgType->addItems(QStringList()<<trUtf8("Fixed")<<trUtf8("Force-based")<<trUtf8("Incremental"));
 	l_oGridLayout->addWidget(m_oReorgType, 0, 1, 1, 1);
 
+	m_oAutoReorg = new QComboBox(widget);
+	m_oAutoReorg->addItems(QStringList()<<trUtf8("Close to parent")<<trUtf8("Reorganize map"));
+	l_oGridLayout->addWidget(m_oAutoReorg, 1, 1, 1, 1);
+
 	m_oConnType = new QComboBox(widget);
 	m_oConnType->addItems(QStringList()<<trUtf8("Lines")<<trUtf8("Splines"));
-	l_oGridLayout->addWidget(m_oConnType, 1, 1, 1, 1);
+	l_oGridLayout->addWidget(m_oConnType, 2, 1, 1, 1);
 
 	m_oAutoSave = new QSpinBox(widget);
 	m_oAutoSave->setSuffix(trUtf8(" min"));
 	m_oAutoSave->setRange(0, 69 /* 69 hmmm */);
-	l_oGridLayout->addWidget(m_oAutoSave, 2, 1, 1, 1);
+	l_oGridLayout->addWidget(m_oAutoSave, 3, 1, 1, 1);
 	m_oAutoSave->setToolTip(trUtf8("Interval in minutes for saving the document automatically, 0 for disabling this feature"));
 
 	m_oColorWidget = new QPushButton(widget);
-	l_oGridLayout->addWidget(m_oColorWidget, 3, 1, 1, 1);
+	l_oGridLayout->addWidget(m_oColorWidget, 4, 1, 1, 1);
 	connect(m_oColorWidget, SIGNAL(clicked()), this, SLOT(select_color()));
 
 	setMainWidget(widget);
